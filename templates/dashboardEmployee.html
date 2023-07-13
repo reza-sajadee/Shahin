@@ -1,0 +1,346 @@
+{% extends 'baseEmployee.html'%}
+{% load static %}
+{% load jalali_tags %}
+
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/layout.min.css' %}" />
+<link href="{% static '/css/mainCalender.css' %}" rel='stylesheet' />
+<script src="{% static '/js/mainCalender.js' %}"></script>
+
+
+{% endblock %}
+
+{% block content %}
+<script>
+
+  const eventsData = []
+  $.ajax({
+    type: 'GET',
+    url: '/event/json/load-events/',
+    success: function (response) {
+      console.log('hello')
+      console.log(response)
+
+
+    },
+    error: function (error) {
+      console.log(error)
+    },
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    var calendarEl = document.getElementById('calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      locale: 'fa',
+      direction: 'rtl',
+      firstDay: '6',
+      dayMaxEvents: false,
+      
+      eventMaxStack: 3,
+      headerToolbar: {
+        right: 'prev,next today',
+        center: 'title',
+        left: ''
+      },
+      buttonText: {
+        today: 'امروز',
+        month: 'ماه',
+        week: 'هفته',
+        day: 'روز',
+        list: 'لیست'
+      },
+      //navLinks: true, // can click day/week names to navigate views
+      //businessHours: true, // display business hours
+      //editable: true,
+      selectable: true,
+      //events: eventsData,
+
+      events: {
+        url: '/event/json/load-events/',
+
+        failure: function () {
+          document.getElementById('script-warning').style.display = 'block'
+        }
+      },
+      
+      eventClick: function (info) {
+        alert( "رویداد "  + info.event["title"] + " : " + info.event.extendedProps["description"]) + info.event["end"];
+      },
+
+    });
+
+    calendar.render();
+  });
+
+</script>
+<!-- 
+<div class="container py-3">
+  <div id="carouselSlider" class="carousel carousel-dark slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselSlider" data-bs-slide-to="0" class="active" aria-current="true"
+        aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselSlider" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselSlider" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner rounded shadow-sm">
+      <div class="carousel-item active">
+
+        <img src="{{firstSlide.image.url}}" class="img-fluid d-block w-100 " alt="...">
+        {% if firstSlide.title != None %}
+        {%if firstSlide.description != None%}
+        <div class="carousel-caption d-none d-md-block">
+
+          <h3>{{ firstSlide.title }}</h3>
+
+
+          <p class="text-lg font-monospace">{{firstSlide.description}}</p>
+
+        </div>
+        {%else%}
+        {%if firstSlide.description != None%}
+        <div class="carousel-caption d-none d-md-block">
+
+          <h3>{{ firstSlide.title }}</h3>
+
+
+          <p class="text-lg font-monospace">{{firstSlide.description}}</p>
+
+        </div>
+        {%endif%}
+        {%endif%}
+        {%endif%}
+      </div>
+      {% for slide in sliders %}
+      <div class="carousel-item ">
+        <img src="{{slide.image.url}}" class="img-fluid d-block w-100" alt="...">
+        {% if firstSlide.title != None %}
+        {%if firstSlide.description != None%}
+        <div class="carousel-caption d-none d-md-block">
+
+          <h3>{{ slide.title }}</h3>
+
+
+          <p class="text-lg font-monospace">{{slide.description}}</p>
+
+        </div>
+        {%else%}
+        {%if firstSlide.description != None%}
+        <div class="carousel-caption d-none d-md-block">
+
+          <h3>{{ firstSlide.title }}</h3>
+
+
+          <p class="text-lg font-monospace">{{firstSlide.description}}</p>
+
+        </div>
+        {%endif%}
+        {%endif%}
+        {%endif%}
+      </div>
+      {% endfor %}
+
+
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselSlider" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">قبلی</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselSlider" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">بعدی</span>
+    </button>
+  </div>
+
+</div> -->
+
+<div class="container py-5">
+  <div class="row">
+
+
+
+    <div class="col-6">
+
+      <section class="page" dir="rtl">
+
+
+        <div class="widget" id="widget">
+          <div class="container-data">
+            <main>
+              <div class="widget-content">
+                <time>
+                  <p id="day"></p>
+                </time>
+                <time>
+                  <p id="date"></p>
+                </time>
+                <time>
+                  <p id="lunar"></p>
+                </time>
+                <time>
+                  <p id="gregorian" dir="ltr"></p>
+                </time>
+                <time>
+                  <p id="time"></p>
+                </time>
+              </div>
+            </main>
+            <div class="container ">
+              <footer class="row align-items-end">
+                <div class="widget-footer py-5">
+                  <div class="col-lg-3 col-md-6 col-sm-12 widget-footer-item">
+                    <p><img src="{% static '/img/icon3.png' %}" title="طلوع آفتاب" alt="طلوع آفتاب" /></p>
+                    <time>
+                      <p id="toloaftab"></p>
+                    </time>
+                  </div>
+                  <div class="col-lg-3 col-md-6 col-sm-12 widget-footer-item">
+                    <p><img src="{% static '/img/icon5.png' %}" title="اذان صبح" alt="اذان صبح" /></p>
+                    <time>
+                      <p id="azansobh"></p>
+                    </time>
+                  </div>
+                  <div class="col-lg-3 col-md-6 col-sm-12 widget-footer-item">
+                    <p><img src="{% static '/img/icon1.png' %}" title="اذان ظهر" alt="اذان ظهر" /></p>
+                    <time>
+                      <p id="azanzohr"></p>
+                    </time>
+                  </div>
+                  <div class="col-lg-3 col-md-6 col-sm-12 widget-footer-item">
+                    <p><img src="{% static '/img/icon4.png' %}" title="اذان  مغرب و عشا" alt="اذان  مغرب و عشا" /></p>
+                    <time>
+                      <p id="azanmaghrebasha"></p>
+                    </time>
+                  </div>
+                  <!-- <div class="col widget-footer-item">
+                    <p><img src="{% static '/img/icon2.png' %}" title="نیمه شب شرعی" alt="نیمه شب شرعی" /></p>
+                    <time>
+                      <p id="nimeshabeshari"></p>
+                    </time>
+                  </div> -->
+                  <div class="clearfix"></div>
+                </div>
+              </footer>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+    </div>
+
+
+    <div class="col-6">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="text-center">اخبار</h3>
+          <hr class="horizontal dark my-2">
+
+          <div class="card card-plain h-100">
+
+
+            <ul class="list-group">
+              {% for n in news %}
+              <div class="row">
+                <div class="text-center text-md card-headr py-3 font-monospace">
+
+                  روز {{n.updated_at|to_jalali:'%d'}} ماه {{n.updated_at|to_jalali:'%m'}} سال
+                  {{n.updated_at|to_jalali:'%Y'}} | دسته بندی : {{n.NewsCategoriy}}
+                </div>
+
+              </div>
+              <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2 pt-0">
+
+
+
+                <div class="row">
+                  <div class="col-4">
+                    {%if n.image.url != None %}
+                    <img src="{{  n.image.url}}" class="border-radius-lg img-fluid shadow">
+                    {%endif%}
+                  </div>
+                  <div class="col-8">
+                    <div class="d-flex align-items-start flex-column justify-content-center">
+                      <h6 class="mb-0 text-lg">{{n.title}}</h6>
+                      <p class="mb-0 text-lg font-monospace">{{n.description|truncatechars_html:100}} <a
+                          class="btn btn-link pe-3 ps-0 mb-0 ms-auto w-25 w-md-auto"
+                          href="{% url 'ViewNews'  n.id %}">ادامه مطلب</a></p>
+
+                    </div>
+                  </div>
+
+
+                </div>
+
+
+
+
+              </li>
+
+
+              <hr class="horizontal dark my-2">
+              {% endfor %}
+            </ul>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+  </div>
+</div>
+
+<div class="container py-6">
+  <div class="row justify-content-md-center">
+    <div class="card card-frame col-12">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="row">
+          <div class="bg-gradient-primary shadow-primary text-center border-radius-lg pt-4 pb-3">
+            <h4 class="text-white text-capitalize ps-3">تقویم شرکت</h4>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div id="calendar"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<hr class="horizontal dark my-5">
+
+
+{% endblock content %}
+
+
+{% block scripts %}
+<script src="{% static '/js/script.min.js' %}"></script>
+<script src="{% static '/js/hijri.min.js' %}"></script>
+
+<script>
+  var month = get_jalali_month();
+  if (month <= 3)
+    document.getElementById("widget").classList.add("spring");
+  else if (month <= 6)
+    document.getElementById("widget").classList.add("summer");
+  else if (month <= 9)
+    document.getElementById("widget").classList.add("fall");
+  else if (month <= 12)
+    document.getElementById("widget").classList.add("winter");
+</script>
+
+<!-- 
+<script>
+  var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+  var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+    console.log(5 + 6);
+    return new bootstrap.Popover(popoverTriggerEl)
+  })
+</script> -->
+
+
+{%endblock scripts%}

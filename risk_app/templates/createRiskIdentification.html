@@ -1,0 +1,393 @@
+{% extends extend%}
+
+
+{% load static %}
+{% block style %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css">
+<!-- <link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}"> -->
+
+{%endblock style%}
+
+{% block content %}
+{{get_jalali_date}}
+<script type="text/javascript">
+  function show_hide_row(row)
+  {
+   $("#"+row).slideToggle();
+  }
+  </script>
+
+</script>
+<div class="container py-6">
+  
+    <div class="row justify-content-md-center">
+        <div class="card card-frame col-12">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="row">
+              <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+                <h4 class="text-white text-capitalize ps-3">شناسایی ریسک </h4>
+              </div>
+            </div>
+           
+          </div>
+            <div class="card-body">
+                
+              <ul class="list-group">
+                <div class="row justify-content-center">
+                  <div class="col-4 mx-4 ">
+                    <li class="list-group-item  border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                      <div class="d-flex    flex-column">
+                        <h5 class="mb-1 text-dark font-weight-bold">سرفصل</h5> <h6>{{activitySlected.riskTopic}}</h6>
+                      </div>
+                      <div class="d-flex align-items-center ">
+                        
+                      </div>
+                    </li>
+                  </div>
+                  <div class="col-4 mx-4 ">
+                    <li class="list-group-item  border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                      <div class="d-flex    flex-column">
+                        <h5 class="mb-1 text-dark font-weight-bold">حوزه فرآیندی</h5> <h6>{{activitySlected.hoze}} </h6>
+                      </div>
+                      <div class="d-flex align-items-center ">
+                        
+                      </div>
+                    </li>
+                  </div>
+                </div>
+
+                <div class="row justify-content-center">
+                  <div class="col-4 mx-4 ">
+                    <li class="list-group-item  border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                      <div class="d-flex    flex-column">
+                        <h5 class="mb-1 text-dark font-weight-bold">تیم</h5> <h6> {{activitySlected.team.title}}</h6>
+                      </div>
+                      <div class="d-flex align-items-center ">
+                        
+                      </div>
+                    </li>
+                  </div>
+                  <div class="col-4 mx-4 ">
+                    <li class="list-group-item  border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                      <div class="d-flex    flex-column">
+                        <h5 class="mb-1 text-dark font-weight-bold">عنوان</h5> <h6>{{activitySlected.activity}}</h6>
+                      </div>
+                      <div class="d-flex align-items-center ">
+                        
+                      </div>
+                    </li>
+                  </div>
+                </div>
+                
+                <div class="row justify-content-md-center">
+           
+                  <div class="col-5">
+                    <a href="{%url menuBack%}" class="btn w-100  btn-outline-danger">
+                      بازگشت </a>
+                  </div>
+                </div>
+              </ul>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card my-4">
+                <div class="card-header p-0 position-relative mt-4 mx-3 z-index-2">
+                    <div class="bg-gradient-danger shadow-info border-radius-lg px-3 pt-4 pb-3">
+                        <h6 class="text-white text-center ps-3">لیست تیم ها</h6>
+                    </div>
+                </div>
+                <div class="card-body px-0 pb-2">
+                    
+         
+          
+          <div class="container-fluid fulled">
+            <div class="row border-bottom py-3">
+              <div class="col-5 text-center">عنوان ریسک</div>
+              <div class="col-4 text-center">نام فرآیند</div>
+              <div class="col-2 text-center">بیشتر</div>
+              <div class="col-1 text-center">حذف</div>
+            </div>
+            {%for datas in list_data%}
+               
+            
+            
+                {% for key, values in datas.items %}
+                  <div class="row border-bottom py-3">
+                    {% for v in values %}
+                  
+                      {% if v.0 == 0%}
+                        <div class="col-5 text-center">{{v.1}}</div>
+                      {% endif %}
+                      {% if v.0 == 1 %}
+                        <div class="col-4 text-center">{{v.1}}</div>
+                      {%endif %}
+                      {% if v.0 == 2 %}
+                      
+                        <a href="#" onclick="show_hide_row('hidden_row{{v.1}}');" class="col-2"><div class="  ms-2 d-flex align-items-center justify-content-center">
+                          <img style="max-width: 50px;" src="{% static 'img/svg/view.svg' %}" >
+                        </div></a>
+                        
+
+                        <a class="nav-link text-black-80 col-1" href="/risk/identification/delete/{{v.1}}""   >
+                          <div class="  ms-2 d-flex align-items-center justify-content-center">
+                            <img style="max-width: 50px;" src="{% static 'img/svg/close.svg' %}" >
+                          </div>
+                        </a>
+                        <div id="hidden_row{{v.1}}" class="hidden_row row moreData py-3" style="display:none">
+                          
+                      {%endif %}
+                      {% if v.0 == 3 or v.0 == 4 %}
+                      {% if v.0 == 3 %}
+                          <div class="row py-3">
+                            {% endif %}
+                            {% if v.0 == 3 %}
+                              <div class="col-8">
+                                <span class="nowrap fw-bold text-dark" >   گروه کسب و کار : </span><span class="nowrap"> {{v.1}}</span> 
+                              </div>
+                            {% endif %}
+                            {% if v.0 == 4 %}
+                              <div class="col-4">
+                                <span class="nowrap fw-bold text-dark" >   کد فرآیند :</span> <span> {{v.1}} </span>
+                              </div>
+                              
+                            {% endif %}
+                            {% if v.0 == 4 %}
+                              </div>
+                              <hr class="dark horizontal">
+                            {%endif%}
+                      {% endif %}
+
+
+                      {% if v.0 == 5 %}
+                      <div class="py-3">
+                        <span class="fw-bold text-dark" >  علل بروز : </span>
+                        <p class="py-3">{{v.1}}</p>
+                      </div>
+                      <hr class="dark horizontal">
+                      {% endif %}
+
+                      {% if v.0 == 6 %}
+                      <div class="py-3">
+                        <span class="fw-bold text-dark" >  اثرات بروز خطا  : </span>
+                        <p class="py-3 .text-secondary">{{v.1}}</p>
+                      </div>
+                      <hr class="dark horizontal">
+                      {% endif %}
+
+                      {% if v.0 == 7 %}
+                      <div class="py-3">
+                        <span class="fw-bold text-dark" >  کنترل های فعلی  : </span>
+                        <p class="py-3 .text-secondary">{{v.1}}</p>
+                      </div>
+                      <hr class="dark horizontal">
+                        </div>
+                        
+                      {% endif %}
+
+                    {% endfor %}
+                    
+                    
+
+                  </div>
+                {% endfor %}
+              
+            {%endfor%}
+          </div>
+
+
+
+        
+                    <div class="row py-3 mx-3">  
+                      <form action="{% url 'ChangeViewRiskActivityChange' activitySlected.id %}"   id="iactive-form" method="get" ">               
+
+                        <a  data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        
+                        <img style="max-width: 50px; min-width: 30px;" src="{% static 'img/svg/plus.svg' %}" >
+                        </a>
+                        <a method="POST" class="btn btn-primary" style="float:left;" href="{% url 'ChangeViewRiskActivityChange' activitySlected.id %}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                          اتمام
+                        </a>
+                        
+                          {% csrf_token %}
+                            <input type="hidden" id="sender"   name="sender"   value={{activitySlected.sender.id}}>
+                            <input type="hidden" id="reciver"  name="reciver"  value={{activitySlected.reciver.id}}>
+                            <input type="hidden" id="status"   name="status"   value='done'>
+                            <input type="hidden" id="activity" name="activity" value={{activitySlected.activity}}>
+                            <input type="hidden" id="team"     name="team"     value={{activitySlected.team.id}}>
+                            
+                            
+                            
+                        
+                        
+                    
+                      
+                    </form>
+                      <div class="collapse" id="collapseExample">
+                        <form action="" id="ident-form" method="POST" data-cities-url="{% url 'json_load_process' %}">
+                        {% csrf_token %}
+                          <div class="row justify-content-center">
+                            <input type="hidden" id="team" name="team" value={{activitySlected.team.id}}>
+                            <input type="hidden" id="activity" name="activity" value={{activitySlected.id}}>
+                            <input type="hidden" id="recommender" name="recommender" value={{activitySlected.reciver.id}}>
+                            <div class="col-3">
+                                <div class="input-group input-group-static my-3">
+                              <label >گروه فرآیندی</label>
+                              
+                              <select name="group" class="form-control" id="id_group">
+                                <option value="" selected>---------</option>
+                                {% for group in groupFiltered %}
+                                  <option value="{{group.id}}" >{{group.title}}</option>
+                                {% endfor %}
+                              </select>
+                            
+                            </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="input-group input-group-static my-3">
+                              <label > نام فرآیند   </label>
+                              <select name="process" class="form-control" id="id_process">
+                                <option value="" selected="">---------</option>
+                                
+                              </select>
+                            
+                            </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="input-group input-group-lg input-group-dynamic my-3">
+                              
+                              {{form.riskFailureModes}}
+                            
+                            </div>
+                            </div>
+                          </div>
+
+                          <div class="row justify-content-center">
+                              <div class="col-3">
+                                  <div class="input-group input-group-lg input-group-dynamic my-3">
+                                
+                                {{form.riskCauses}}
+                              
+                              </div>
+                              </div>
+                              <div class="col-3">
+                                  <div class="input-group input-group-lg input-group-dynamic my-3">
+                                
+                                {{form.riskEffects}}
+                              
+                              </div>
+                              </div>
+                              <div class="col-4">
+                                  <div class="input-group input-group-lg input-group-dynamic my-3">
+                                
+                                {{form.currentAction}}
+                                
+                              </div>
+                              </div>
+                          </div>
+                          <div class="row justify-content-center">
+                            <div class="col-3">
+                            {{form.status.as_hidden}}
+                            <input type="hidden"  name="hoze" id="id_hoze" value='{{hozeSelected.id}}' ></input>
+                            <input type="submit" class="btn btn-primary  btn-block" value="افزودن">
+                            </div>
+                            
+                            
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+</div>
+
+  <div id="results"></div>
+
+
+{% endblock content %}
+
+
+{% block scripts %}
+<script
+src="https://code.jquery.com/jquery-3.6.0.min.js"
+integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf8" src="{% static '/js/dataTables.js' %}"></script>
+
+
+		<!-- <script src="{% static 'admin/js/django_jalali.min.js' %}"></script> -->
+	<!-- OR -->
+	<!-- loading by form (if used AdminJalaliDateWidget) -->
+		{{ form.media }}
+
+<script>
+  // json_load_process
+  const groupDataBox =document.getElementById('id_group') 
+  const groupBox = document.getElementById('id_group')
+
+  const processDataBox =document.getElementById('id_process') 
+  const processBox = document.getElementById('id_process')
+
+  $.ajax({
+    type:'GET',
+    url: '/risk/identification/json/load-prcoess/',
+    success:function(response){
+      console.log(response.data)
+      const processData = response.data
+      processData.map(item=>{
+        const option = document.createElement('div')
+        option.textContent = item.name
+        option.setAttribute('class','item')
+        option.setAttribute('data-value',item.name)
+        groupDataBox.appendChild(option)
+      }
+
+      )
+    },
+    error: function(error){
+      console.log(error)
+    },
+  })
+
+  groupBox.addEventListener('change' , e=>{
+    console.log(e.target.value)
+    const selectedGroup = e.target.value
+    processBox.innerHTML = ''
+    processBox.textContent = "---------"
+    $.ajax({
+      type:'GET',
+      url: '/risk/identification/json/get_json_group_data/' + e.target.value,
+      
+      success: function(response){
+        console.log(response.data)
+        const processData = response.data
+        
+        processData.map(item=>{
+          const option = document.createElement('option')
+          option.textContent = item.title
+          option.value = item.id
+      
+          processDataBox.appendChild(option)
+        })
+      },
+      error: function(error){
+        console.log(error)
+      }
+    })
+
+  })
+
+ 
+</script>
+
+{%endblock scripts%}
+
+
+
+
+

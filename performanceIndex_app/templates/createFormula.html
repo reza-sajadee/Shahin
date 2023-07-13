@@ -1,0 +1,100 @@
+{% extends extend%}
+{% load static %}
+{% block style %}
+<link rel="stylesheet" href="{%static '/css/select2.min.css'%}">
+<link rel="stylesheet" href="{%static '/css/select2-bootstrap-5-theme.rtl.min.css'%}">
+<script src="{% static 'js/htmx.js' %}" defer></script>
+{%endblock style%}
+{% block content %}
+<script>
+  $(document).ready(function() { 
+  $("select").select2({
+   theme: "bootstrap-5",
+   placeholder: "یک گزینه را انتخاب کنید",
+   allowClear: true
+  });
+  });
+
+ </script>
+<div class="container py-6" >
+  <div class="row justify-content-md-center">
+    <div class="card card-frame col-8">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="row">
+
+          <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+            <h4 class="text-white text-capitalize ps-3">{{ header_title }}</h4>
+
+          </div>
+        </div>
+
+      </div>
+      <div class="container-fluid">
+        <div class="wrapper option-1 option-1-1">
+          <ol class="c-stepper">
+            <li
+              class="c-stepper__item  done ">
+              <h3 class="c-stepper__title">مرحله اول</h3>
+              <p class="c-stepper__desc">تعریف شناسنامه عملکردی</p>
+            </li>
+            <li class="c-stepper__item active">
+              <h3 class="c-stepper__title">مرحله دوم</h3>
+              <p class="c-stepper__desc">تعریف فرمول</p>
+            </li>
+            <li class="c-stepper__item {%if wizard.steps.step1 == 3%} active {%elif wizard.steps.step1 > 3%} done {%endif%}">
+              <h3 class="c-stepper__title">مرحله آخر</h3>
+              <p class="c-stepper__desc">تعریف متغییر ها</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+      <form action="" method="POST" enctype="multipart/form-data">
+        <div class="card-body">
+          <div class="card card-frame col-12">
+            <div class="card-body">
+
+              {% csrf_token %}
+          
+
+              {% for field in form.visible_fields %}
+
+              <div class="input-group input-group-static mb-4">
+                <label class="" for="{{ field.auto_id }}">
+                  {{ field.label }}
+                </label>
+                {{field }}
+                {% if field.errors %}
+                <div class="alert alert-danger" role="alert">
+                  {{ field.errors.as_text}}
+                </div>
+                {% endif %}
+              </div>
+              {%endfor%}
+
+
+              <div class="row justify-content-md-center">
+                <div class="col-5"><button type="submit" name="submit" class="btn w-100  btn-outline-primary"
+                    value="yes">ثبت</button></div>
+                <div class="col-5"><button type="submit" name="submit" class="btn w-100  btn-outline-danger"
+                    value="no">کنسل </button></div>
+              </div>
+
+
+
+            </div>
+          </div>
+
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+{% endblock content %}
+{%block scripts%}
+<script src="{% static '/js/select2.min.js' %}"></script>
+{%endblock scripts%}

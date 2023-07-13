@@ -1,0 +1,60 @@
+
+{%if performanceVariable %}
+<div  class="row" id="variable_list"> 
+<div class="table-responsive ">
+          
+    <table id="example" class="table uk-table uk-table-hover uk-table-striped align-items-center py-3 mb-0">
+      <br>
+      <thead>
+        
+        <tr>
+            
+            
+            
+            
+            <th class="text-center text-lg font-weight-bolder opacity-7">ردیف</th>
+            <th class="text-center text-lg font-weight-bolder opacity-7">نماد متغییر</th>
+            <th class="text-center text-lg font-weight-bolder opacity-7"> عنوان</th>
+            <th class="text-center text-lg font-weight-bolder opacity-7"> مسئول وارد کردن</th>
+            <th class="text-center text-lg font-weight-bolder opacity-7">حذف</th>
+
+      
+         
+        </tr>
+      </thead>
+      <tbody>
+      
+      {%for variable in performanceVariable.variablesRelated.all%}
+       
+          <tr>
+              
+            
+            
+            
+            
+            <td class="narowFont text-center overflow-hidden">{{forloop.counter}}</td>
+              <td class="narowFont text-center overflow-hidden">{{variable.code}}</td>
+              <td class="narowFont text-center overflow-hidden">{{variable.title}}</td>
+              <td class="narowFont text-center overflow-hidden">{{variable.responsible.profile.firstName}}-{{variable.responsible.profile.lastName}}</td>
+              <td class="narowFont text-center overflow-hidden"> <span style="cursor:pointer" hx-delete="{%url 'delete-variable' performanceVariable.id  variable.id  %}" hx-target="#variable_list" hx-confirm="آیا مطمئن هستید ؟" class="badge bg-danger badge-pill">X</span ></td>
+              
+              
+             
+             
+
+           
+          </tr>
+         
+        {%endfor%}
+
+                  
+      </tbody>
+    </table>
+   
+  </div>
+{%else%}
+
+<p>متغییری افزوده نشده است</p>
+
+{%endif%}
+</div>

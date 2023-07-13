@@ -1,0 +1,25 @@
+{% load static %}
+{% load jalali_tags %}
+<ul id="message-dropdown" hx-swap-oop="afterbegin" class="dropdown-menu position-fixed mx-6  me-sm-n4" aria-labelledby="dropdownMenuButton">
+    
+  {%for msg in messages%}
+    <li class="mb-2">
+      <a class="dropdown-item border-radius-md" >
+        <div class="d-flex py-1">
+        
+          <div class="d-flex flex-column justify-content-center">
+            <h6 class="text-lg font-weight-normal mb-1">
+              <span class="font-weight-bold"> {{msg.title|truncatechars_html:20}}</span> از طرف {{msg.sender}}
+            </h6>
+            <p class="text-lg narowFont text-secondary mb-0 ">
+              
+              <img class="mx-2"  style="max-width: 20px; min-width: 12px; opacity: 0.6;" src=" {% static 'img/svg/clock.svg'  %}">{{msg.created_at|to_jalali:'%Y/%M/%d'}}
+            </p>
+          </div>
+        </div>
+      </a>
+    </li>
+    <hr class="horizontal dark my-2">
+   {%endfor%}
+   
+  </ul>

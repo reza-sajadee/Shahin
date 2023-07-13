@@ -1,0 +1,67 @@
+{% extends extend%}
+{% load static %}
+{% block content %}
+
+<div class="container py-6">
+    <div class="row justify-content-md-center">
+        <div class="card card-frame col-12">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="row">
+             
+              <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+                <h4 class="text-white text-capitalize ps-3">درخواست عضویت در تیم ممیزی</h4>
+                
+              </div>
+            </div>
+           
+          </div>
+            <div class="card-body">
+              <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden"  name="memberMomayezi" id="id_memberMomayezi" value="{{profile.id}}">
+                <input type="hidden"  name="status" id="id_status" value="no">
+              <div style="display: inline;" class="text-center">
+                <h3>
+                  اینجانب {{profile.firstName}} {{profile.lastName}} پرسنل شاغل در {{profile.bakhshShoghliCode}} با {{profile.sabegheDakhelSanaat}} سال سابقه کار در مجموعه و
+                  
+                    <input name="sabegheYear" id="id_sabegheYear" style="display: inline;white-space:nowrap;    width: 7% !important;" type="number">
+                    
+                      سال سابقه فعالیت های مرتبط با توسعه سیستم های مدیریت 
+                  و استاندارد سازی مطابق رزومه و دارای گواهینامه معتبر ، درخواست عضویت در تیم ممیزی سیستم های مدیریت شرکت را دارم .
+                </h3>
+              </div>
+              
+              
+                  
+                  
+                  <h5 class="pt-10">بارگزاری مستندات</h5>
+                  <label>
+                    <input name="document" id="id_document" type="file" style="display: none;">
+                    <a class="text-success">لطفا تصویر کلیه گواهینامه های ممیزی ، رزومه و دوره های آموزشی مرتبط را در قالب یک فایل بارگزاری کنید </a>
+                  </label>
+                  
+                    <div style="direction:ltr;">
+                      
+                        
+                        <div class="row">
+                          <input type="button" class="btn mx-2 btn-md btn-outline-danger  w-25 mt-4 mb-0" value="لغو">
+                          <input type="submit" class="btn btn-md btn-outline-success  w-25 mt-4 mb-0" value="ثبت">
+                        </div>
+                        
+                      
+
+                    </div>
+                    
+                    
+
+              </form>
+            </div>
+        </div>
+      </div>
+</div>
+
+    
+    
+   
+{% endblock content %}
+

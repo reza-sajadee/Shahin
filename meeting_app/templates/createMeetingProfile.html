@@ -1,0 +1,198 @@
+{% extends extend%}
+{% load static %}
+{% block style %}
+<script src="https://unpkg.com/htmx.org@1.8.5"
+  integrity="sha384-7aHh9lqPYGYZ7sTHvzP1t3BAfLhYSTy9ArHdP3Xsr9/3TlGurYgcPBoFmXX2TX/w" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/htmx.org/dist/ext/multi-swap.js"></script>
+<link rel="stylesheet" type="text/css" href="{% static '/css/dataTables.css' %}">
+
+<link rel="stylesheet" href="{%static '/css/select2.min.css'%}">
+<link rel="stylesheet" href="{%static '/css/select2-bootstrap-5-theme.rtl.min.css'%}">
+<script type="text/javascript" charset="utf8" src="{% static '/js/dataTables.js' %}"></script>
+
+<script src="{% static '/js/jquery.dataTables.js' %}"></script>
+{%endblock style%}
+
+{% block content %}
+
+<script>
+  $(document).ready(function() { 
+  $("select").select2({
+   theme: "bootstrap-5",
+   placeholder: "یک گزینه را انتخاب کنید",
+   allowClear: true
+  });
+  });
+
+ </script>
+<!-- Button trigger modal -->
+
+
+{%csrf_token%}
+<form action="" method="POST" enctype="multipart/form-data">
+
+<div class="container py-4 ">
+
+  <div class="row mx-2 justify-content-between">
+    <div class="col-4">
+      <div class="card card-frame py-3 ">
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div class="row">
+  
+            <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+              <h4 class="text-white text-capitalize ps-3">ایجاد پروفایل جلسه جدید</h4>
+  
+            </div>
+          </div>
+  
+        </div>
+  
+        <div class="card-body">
+  
+          
+          <div class="row shadow-sm border-radius-lg ">
+  
+            
+  
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-12">
+                  <div class="input-group input-group-static mb-4">
+                    <label class="" for="{{ field.auto_id }}">
+                      {{ form.meetingType.label }}
+                    </label>
+                    {{form.meetingType }}
+  
+                  </div>
+                </div>
+  
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="input-group input-group-static mb-4">
+                    <label class="" for="{{ field.auto_id }}">
+                      {{ form.title.label }}
+                    </label>
+                    {{form.title }}
+  
+                  </div>
+                </div>
+  
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="input-group input-group-static mb-4">
+                    <label class="" for="{{ field.auto_id }}">
+                      {{ form.responsible.label }}
+                    </label>
+                    {{form.responsible }}
+  
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="input-group input-group-static mb-4">
+                    <label class="" for="{{ field.auto_id }}">
+                      {{ form.manager.label }}
+                    </label>
+                    {{form.manager }}
+  
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="input-group input-group-static mb-4">
+                    <label class="" for="{{ field.auto_id }}">
+                      {{ form.firstSuccessor.label }}
+                    </label>
+                    {{form.firstSuccessor }}
+  
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="input-group input-group-static mb-4">
+                    <label class="" for="{{ field.auto_id }}">
+                      {{ form.secondSuccessor.label }}
+                    </label>
+                    {{form.secondSuccessor }}
+  
+                  </div>
+                </div>
+              </div>
+  
+              <div class="row">
+                <div class="col-12">
+                  <div class="input-group input-group-static mb-4">
+                    <label class="" for="{{ field.auto_id }}">
+                      {{ form.text.label }}
+                    </label>
+                    {{form.text }}
+                    
+                  </div>
+                </div>
+              </div>
+             
+                <div class="row justify-content-md-center">
+                  <div class="col-5">
+                    <button type="submit" class="btn w-100  btn-outline-primary">
+                      افزودن </button>
+                  </div>
+                  <div class="col-5">
+                    <a href="{%url 'ViewProfileMeeting' %}" class="btn w-100  btn-outline-danger">
+                      کنسل </a>
+                  </div>
+                </div>
+  
+  
+  
+  
+           
+          </div>
+         
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-8">
+      <div class="card card-frame py-3 ">
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div class="row">
+  
+            <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+              <h4 class="text-white text-capitalize ps-3">{{ header_title }}</h4>
+  
+            </div>
+          </div>
+  
+        </div>
+  
+        <div class="card-body">
+  
+  
+  
+          <div class="row" id="variable_list">
+            {% include 'partials/profile-list.html' %}
+          </div>
+  
+  
+        </div>
+      </div>
+    </div>
+    
+ 
+
+  </div>
+
+</div>
+
+</form>
+
+{% endblock content %}
+
+{%block scripts%}
+<script src="{% static '/js/select2.min.js' %}"></script>
+{%endblock scripts%}

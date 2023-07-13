@@ -1,0 +1,254 @@
+{% extends extend%}
+
+{% load jalali_tags %}
+{% load static %}
+{% block style %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css">
+<!-- <link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}"> -->
+
+{%endblock style%}
+
+{% block content %}
+{{get_jalali_date}}
+<script type="text/javascript">
+  function show_hide_row(row)
+  {
+   $("#"+row).slideToggle();
+  }
+  </script>
+
+</script>
+<div class="container py-6">
+    <div class="row justify-content-md-center">
+        <div class="card  frame col-12">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="row">
+              <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+                <h4 class="text-white text-capitalize ps-3">لیست کنترل سوابق سیستم مدیریت یکپارچه </h4>
+              </div>
+            </div>
+           
+          </div>
+          <div class="card-body px-0 pb-2">
+                    
+        
+          
+            <div class="container-fluid fulled">
+              <div class="row border-bottom py-3">
+                
+                <div class="col-3 text-center">عنوان سابقه </div>
+                <div class="col-2 text-center">کد سابقه </div>
+                <div class="col-2 text-center">سطح محرمانگی</div>
+                <div class="col-2 text-center">نحوه نگه داری</div>
+                <div class="col-1 text-center">بیشتر</div>
+                <div class="col-2 text-center">درخواست</div>
+              </div>
+              {%for data in queryset%}
+                 
+              
+              
+                  
+                 
+                    <div class="row border-bottom py-3">
+                      
+                         
+                        
+                          <div class="col-3 narowFont text-center">{{data.title}}</div>
+                          <div class="col-2 narowFont text-center">{{data.recordCode}}</div>
+                        
+                          <div class="col-2 narowFont text-center">{{data.get_privacy_display}}</div>
+                          <div class="col-2 narowFont text-center">{{data.get_typeKeeping_display}}</div>
+                         
+                        
+                        
+                        
+                          <a href="#" onclick="show_hide_row('hidden_row{{data.id}}');" class="col-1">
+                            <div class="  ms-2 d-flex align-items-center justify-content-center">
+                              <img style="max-width: 50px;" src="{% static 'img/svg/view.svg' %}" >
+                            </div>
+                          </a>
+                          <a href="{%url 'CreateViewRecordChange' data.id%}" class="col-2">
+                            <div class="  ms-2 d-flex align-items-center justify-content-center">
+                              <img style="max-width: 50px;" src="{% static 'img/svg/edit.svg' %}" >
+                            </div>
+                          </a>
+                    </div>
+  
+                    <div id="hidden_row{{data.id}}" class="hidden_row row moreData py-3" style="display:none">
+                            
+                       
+                        
+                        <div class="row py-3">
+                          
+                          
+                            <div class="col-8">
+                              <span class="nowrap fw-bold text-dark" >  عنوان سابقه   : </span>
+                              <span class="nowrap narowFont"> {{data.title}} </span> 
+                            </div>
+
+                            <div class="col-4">
+                              <span class="nowrap fw-bold text-dark" >  کد سابقه (شناسه): </span>
+                              <span class="nowrap narowFont"> {{data.recordCode}}  </span> 
+                            </div>
+                            
+  
+                        </div>
+  
+                        <hr class="dark horizontal">
+                        <div class="row py-3">
+                          
+                          
+                          <div class="col-6">
+                            <span class="nowrap fw-bold text-dark" >  پست مسئول نگه داری سابقه   : </span>
+                            <span class="nowrap narowFont"> {{data.postKeeper}} </span> 
+                          </div>
+
+                          <div class="col-6">
+                            <span class="nowrap fw-bold text-dark" >    محل نگه داری سابقه: </span>
+                            <span class="nowrap narowFont"> {{data.vahedKeeper.title}}  </span> 
+                          </div>
+                          
+
+                          <hr class="dark horizontal">
+                        <div class="row py-3">
+                          
+                          
+                          <div class="col-6">
+                            <span class="nowrap fw-bold text-dark" >سطح محرمانگی: </span>
+                            <span class="nowrap narowFont"> {{data.get_privacy_display}} </span> 
+                          </div>
+
+                          <div class="col-6">
+                            <span class="nowrap fw-bold text-dark" >نحوه نگه داری: </span>
+                            <span class="nowrap narowFont"> {{data.get_typeKeeping_display}}  </span> 
+                          </div>
+
+                      </div>
+
+
+                      <hr class="dark horizontal">
+                        <div class="row py-3">
+                          
+                          
+                          <div class="col-6">
+                            <span class="nowrap fw-bold text-dark" >مدت نگه داری جاری : </span>
+                            <span class="nowrap narowFont"> {{data.jariY}} سال {% if data.jariM %}  -  {{jariM}} ماه {%endif%}</span> 
+                          </div>
+
+                          <div class="col-6">
+                            <span class="nowrap fw-bold text-dark" >  مدت نگه داری راکد : </span>
+                            <span class="nowrap narowFont"> {{data.rakedY}} سال {% if data.rakedM %}  -  {{rakedM}} ماه {%endif%}  </span> 
+                          </div>
+
+                      </div>
+                      <hr class="dark horizontal">
+                      <div class="row py-3">
+                        
+                        
+                        <div class="col-12">
+                          <span class="nowrap fw-bold text-dark" >نحوه تعیین تکلیف (وا رهایی): </span>
+                          <span class="nowrap narowFont"> {{data.determine}} </span> 
+                        </div>
+
+                       
+                    </div>
+                    </div>
+                          
+                  
+
+                
+              
+            
+                  </div>
+                  {% endfor %}
+              </div>
+        </div>
+    </div>
+
+   
+
+ 
+
+
+{% endblock content %}
+
+
+{% block scripts %}
+<script
+src="https://code.jquery.com/jquery-3.6.0.min.js"
+integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf8" src="{% static '/js/dataTables.js' %}"></script>
+
+
+		<!-- <script src="{% static 'admin/js/django_jalali.min.js' %}"></script> -->
+	<!-- OR -->
+	<!-- loading by form (if used AdminJalaliDateWidget) -->
+		{{ form.media }}
+
+<script>
+  // json_load_process
+  const groupDataBox =document.getElementById('id_group') 
+  const groupBox = document.getElementById('id_group')
+
+  const processDataBox =document.getElementById('id_process') 
+  const processBox = document.getElementById('id_process')
+
+  $.ajax({
+    type:'GET',
+    url: '/risk/identification/json/load-prcoess/',
+    success:function(response){
+      console.log(response.data)
+      const processData = response.data
+      processData.map(item=>{
+        const option = document.createElement('div')
+        option.textContent = item.name
+        option.setAttribute('class','item')
+        option.setAttribute('data-value',item.name)
+        groupDataBox.appendChild(option)
+      }
+
+      )
+    },
+    error: function(error){
+      console.log(error)
+    },
+  })
+
+  groupBox.addEventListener('change' , e=>{
+    console.log(e.target.value)
+    const selectedGroup = e.target.value
+    processBox.innerHTML = ''
+    processBox.textContent = "---------"
+    $.ajax({
+      type:'GET',
+      url: '/risk/identification/json/get_json_group_data/' + e.target.value,
+      
+      success: function(response){
+        console.log(response.data)
+        const processData = response.data
+        
+        processData.map(item=>{
+          const option = document.createElement('option')
+          option.textContent = item.title
+          option.value = item.id
+      
+          processDataBox.appendChild(option)
+        })
+      },
+      error: function(error){
+        console.log(error)
+      }
+    })
+
+  })
+
+ 
+</script>
+
+{%endblock scripts%}
+
+
+
+
+

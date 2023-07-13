@@ -1,0 +1,117 @@
+
+ {% load static %}
+
+{%block dashboard%}
+
+<div class="container">
+  <div class="row col-12 py-3">
+    <div class="col-12">
+      <div class="table-responsive my-5">
+        
+        <table id="committeeTable" class="table uk-table uk-table-hover uk-table-striped align-items-center py-3 mb-0">
+          <br>
+          <thead>
+            
+            <tr>
+              
+             
+                <th class="text-center text-lg font-weight-bolder opacity-7">عنوان کارگروه</th>
+                <th class="text-center text-lg font-weight-bolder opacity-7">سرفصل </th>
+               
+                <th class="text-center text-lg font-weight-bolder opacity-7">نوع کمیته  </th>
+                <th class="text-center text-lg font-weight-bolder opacity-7">مشاهده</th>
+                {% if request.user.is_superuser %}
+                <th class="text-center text-lg font-weight-bolder opacity-7">حذف</th>
+                {%endif%}
+              
+             
+          
+            
+            </tr>
+          </thead>
+          <tbody>
+           
+          {{allCommittee}}
+            {%for committee in allCommitee%}
+             
+              <tr>
+                  
+                  
+                  <td class="narowFont text-center overflow-hidden">{{committee.topic}}</td>
+                  <td class="narowFont text-center overflow-hidden">{{committee.title}}</td>
+               
+                  <td class="narowFont text-center overflow-hidden">{{committee.typeComittee}}</td>
+                  <td>
+                    <a class="nav-link text-black-80" href="{%url 'ViewCommittee' committee.id %}"   >
+                      <div class="  ms-2 d-flex align-items-center justify-content-center">
+                        <img style="max-width: 50px; min-width: 30px;" src="{% static 'img/svg/view.svg' %}" >
+                      </div>
+                    </a>
+                  </td>
+                  {% if request.user.is_superuser %}
+                  <td>
+                    <a class="nav-link text-black-80" data-bs-toggle="modal" data-bs-target="#ModalDellet{{committee.id}}"   >
+                      <div class="  ms-2 d-flex align-items-center justify-content-center">
+                        <img style="max-width: 50px; min-width: 30px;" src="{% static 'img/svg/close.svg' %}" >
+                      </div>
+                    </a>
+                  </td>
+                  <div class="modal fade" id="ModalDellet{{committee.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title font-weight-normal" id="exampleModalLabel">   آیا اطمینان دارید که میخواهید کمیته / کارگروه {{committee.title}} را حذف کنید ؟</h5>
+                          <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                       
+                        <div class="modal-footer">
+                          <button type="button" class="btn bg-gradient-danger" data-bs-dismiss="modal">لغو</button>
+                          <a href="{%url 'DeleteViewCommittee' committee.id%}" class="btn bg-gradient-success">پاک کردن </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {%endif%}
+                
+                
+                  
+               
+              </tr>
+              
+            {%endfor%}
+            
+
+                      
+          </tbody>
+        </table>
+        
+      </div>
+    </div>
+</div>
+{% endblock dashboard %}
+ {% block scripts %}
+ <script src="{%static '/js/chart.js' %}"></script>
+<script>
+  
+  $(document).ready(function () {
+    $("#committeeTable").dataTable({
+      order: [3, "dsc"],
+      pageLength: 25,
+      oLanguage: {
+        oPaginate: {
+          sNext: "صفحه بعدی",
+          sPrevious: "صفحه قبلی",
+        },
+        sEmptyTable: "اطلاعاتی برای نمایش وجود ندارد",
+        sSearch: "جستجو   :  ",
+        sInfo: "نمایش _START_ تا_END_ از تعداد کل _TOTAL_",
+        sLengthMenu: "  تعداد در صفحه  _MENU_ ",
+        sInfoEmpty: "رکوردی برای نمایش وجود ندارد",
+      },
+    });
+  });
+</script>
+
+{%endblock scripts%}

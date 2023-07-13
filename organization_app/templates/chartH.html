@@ -1,0 +1,191 @@
+{% extends 'baseEmployee.html'%}
+{% load static %}
+{%block style%}
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-org-chart@2.6.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-flextree@2.1.2/build/d3-flextree.js"></script>
+
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+  rel="stylesheet"
+/>
+{%endblock style%}
+{% block content %}
+
+<div
+class="chart-container"
+style="height: 1200px; background-color: #fffeff"
+></div>
+
+
+{% endblock content %}
+
+
+{%block scripts%}
+
+
+    <script>
+ var chart;
+      d3.csv(
+        '{%static "csv.csv"%}'
+      ).then((dataFlattened) => {
+        chart = new d3.OrgChart()
+          .container('.chart-container')
+          .data(dataFlattened)
+          .rootMargin(100)
+          .nodeWidth((d) => 210)
+          .nodeHeight((d) => 240)
+          .childrenMargin((d) => 80)
+          .compactMarginBetween((d) => 75)
+          .compactMarginPair((d) => 80)
+          .linkUpdate(function (d, i, arr) {
+            d3.select(this)
+              .attr('stroke', (d) =>
+                d.data._upToTheRootHighlighted ? '#152785' : 'lightgray'
+              )
+              .attr('stroke-width', (d) =>
+                d.data._upToTheRootHighlighted ? 5 : 1.5
+              )
+              .attr('stroke-dasharray', '4,4');
+
+            if (d.data._upToTheRootHighlighted) {
+              d3.select(this).raise();
+            }
+          })
+          .nodeContent(function (d, i, arr, state) {
+            const colors = [
+              '#6E6B6F',
+              '#18A8B6',
+              '#F45754',
+              '#96C62C',
+              '#BD7E16',
+              '#802F74',
+            ];
+            const color = colors[d.depth % colors.length];
+            const imageDim = 80;
+            const lightCircleDim = 95;
+            const outsideCircleDim = 110;
+
+            return `
+                <div style="background-color:white; position:absolute;width:${
+                  d.width
+                }px;height:${d.height}px;">
+                   <div style="background-color:${color};position:absolute;margin-top:-${outsideCircleDim / 2}px;margin-left:${d.width / 2 - outsideCircleDim / 2}px;border-radius:100px;width:${outsideCircleDim}px;height:${outsideCircleDim}px;"></div>
+                   <div style="background-color:#ffffff;position:absolute;margin-top:-${
+                     lightCircleDim / 2
+                   }px;margin-left:${d.width / 2 - lightCircleDim / 2}px;border-radius:100px;width:${lightCircleDim}px;height:${lightCircleDim}px;"></div>
+                   <img src=" ${
+                     d.data.imageUrl
+                   }" style="position:absolute;margin-top:-${imageDim / 2}px;margin-left:${d.width / 2 - imageDim / 2}px;border-radius:100px;width:${imageDim}px;height:${imageDim}px;" />
+                   <div class="card" style="top:${
+                     outsideCircleDim / 2 + 10
+                   }px;position:absolute;height:30px;width:${d.width}px;background-color:#3AB6E3;">
+                      <div style="background-color:${color};height:28px;text-align:center;padding-top:10px;color:#ffffff;font-weight:bold;font-size:16px">
+                        ${d.data.name} 
+                      </div>
+                      <div style="background-color:#F0EDEF;height:28px;text-align:center;padding-top:10px;color:#424142;font-size:16px">
+                        ${d.data.tags} 
+                      </div>
+                    
+                   </div>
+               </div>
+  `;
+          })
+          .render();
+      });
+    </script>
+
+   
+  </body>
+  <script src="https://storage.ko-fi.com/cdn/scripts/overlay-widget.js"></script>
+  <script>
+   
+
+
+
+
+  //     var chart;
+     
+  //     d3.csv(
+  //       ''
+  //     ).then((dataFlattened) => {
+  //       chart = new d3.OrgChart()
+  //         .container('.chart-container')
+  //         .data(dataFlattened)
+  //         .nodeHeight((d) => 85)
+  //         .compact(false)
+  //         .nodeWidth((d) => {
+  //           return 220;
+  //         })
+  //         .childrenMargin((d) => 25)
+  //         .compactMarginBetween((d) => 25)
+  //         .compactMarginPair((d) => 50)
+  //         .neightbourMargin((a, b) => 25)
+  //         .siblingsMargin((d) => 25)
+  //         .buttonContent(({ node, state }) => {
+  //           return `<div style="px;color:#716E7B;border-radius:5px;padding:4px;font-size:10px;margin:auto auto;background-color:white;border: 1px solid #E4E2E9"> <span style="font-size:9px">${
+  //             node.children
+  //               ? `<i class="fas fa-angle-up"></i>`
+  //               : `<i class="fas fa-angle-down"></i>`
+  //           }</span> ${node.data._directSubordinates}  </div>`;
+  //         })
+  //         .linkUpdate(function (d, i, arr) {
+  //           d3.select(this)
+  //             .attr('stroke', (d) =>
+  //               d.data._upToTheRootHighlighted ? '#152785' : '#E4E2E9'
+  //             )
+  //             .attr('stroke-width', (d) =>
+  //               d.data._upToTheRootHighlighted ? 5 : 1
+  //             );
+
+  //           if (d.data._upToTheRootHighlighted) {
+  //             d3.select(this).raise();
+  //           }
+  //         })
+  //         .nodeContent(function (d, i, arr, state) {
+  //           const color = '#FFFFFF';
+  //           return `
+  //           <div style="font-family: 'Inter', sans-serif;background-color:${color}; position:absolute;margin-top:-1px; margin-left:-1px;width:${d.width}px;height:${d.height}px;border-radius:10px;border: 1px solid #E4E2E9">
+  //              <div style="background-color:${color};position:absolute;margin-top:-25px;margin-left:${15}px;border-radius:100px;width:50px;height:50px;" ></div>
+  //              <img src=" ${
+  //                d.data.imageUrl
+  //              }" style="position:absolute;margin-top:-20px;margin-left:${20}px;border-radius:100px;width:40px;height:40px;" />
+               
+  //             <div style="color:#08011E;position:absolute;right:20px;top:17px;font-size:10px;"><i class="fas fa-ellipsis-h"></i></div>
+
+  //             <div style="font-size:15px;color:#08011E;margin-left:20px;margin-top:32px"> ${
+  //               d.data.name
+  //             } </div>
+  //             <div style="color:#716E7B;margin-left:20px;margin-top:3px;font-size:10px;"> ${
+  //               d.data.positionName
+  //             } </div>
+
+
+  //          </div>
+  // `;
+  //         })
+  //         .render();
+  //     });
+    </script>
+
+{%endblock%}
+
+
+
+
+<html>
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    
+     
+
+   
+
+    
+  </body>
+
+  
+</html>

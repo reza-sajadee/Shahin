@@ -1,0 +1,179 @@
+{% extends extend%} {% load static %} {% block style %}
+<link href="{% static '/css/picker.css' %}" rel="stylesheet" />
+<link
+  rel="stylesheet"
+  href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}"
+/>
+<link rel="stylesheet" href="{%static '/css/select2.min.css'%}">
+<link rel="stylesheet" href="{%static '/css/select2-bootstrap-5-theme.rtl.min.css'%}">
+{%endblock style%} {% block content %}
+<script>
+  
+</script>
+<script>
+  $(document).ready(function() { 
+  $("#id_responsible").select2({
+   theme: "bootstrap-5",
+   placeholder: "یک گزینه را انتخاب کنید",
+   allowClear: true
+  });
+  });
+
+ </script>
+<div class="container py-6">
+  <div class="row justify-content-md-center">
+    <div class="card card-frame col-12">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="row">
+          <div
+            class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3"
+          >
+            <h4 class="text-white text-capitalize ps-3">{{ header_title }}</h4>
+            <p class="text-md font-monospace text-light mb-0">
+              {{discribtion}}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <form action="" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="input-group input-group-static mb-4">
+            <label class="" for="id_title"> عنوان گزارش </label>
+            <input
+              type="text"
+              name="title"
+              maxlength="250"
+              class="form-control"
+              id="id_title"
+              value="{{ form.meetingPlace.value|default_if_none:'' }}"
+            />
+          </div>
+         
+          <div class="input-group input-group-static mb-4">
+            <label class="" for="id_title"> مسئول گزارش </label>
+            <select name="responsible" class="form-control" id="id_responsible">
+              <option value="" selected>---------</option>
+              {% for job in allJob %}
+                <option value="{{job.id}}" >{{job}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="input-group input-group-static mb-4">
+            <label class="" for="id_startTime"> تاریخ آغاز گزارش </label>
+            <input
+              type="text"
+              name="startTime"
+              class="jalali_date-date form-control"
+              value="{{ form.meetingDate.value|default_if_none:'' }}"
+              size="10"
+              required=""
+              id="id_startTime"
+              autocomplete="False"
+            />
+          </div>
+          <div class="input-group input-group-static mb-4">
+            <label class="" for="id_deadLine"> موعد تحویل گزارش </label>
+            <input
+              type="text"
+              name="deadLine"
+              class="jalali_date-date form-control"
+              value="{{ form.meetingDate.value|default_if_none:'' }}"
+              size="10"
+              required=""
+              id="id_deadLine"
+              autocomplete="False"
+            />
+          </div>
+          
+          
+          <div class="input-group input-group-static mb-4">
+            <label for="id_text"> شرح مسئل مورد درخواست: </label>
+            <textarea
+              name="text"
+              cols="40"
+              rows="5"
+              class="form-control"
+              id="id_text"
+            ></textarea>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="1" name="referabl" id="id_referabl" checked="">
+            <label class="custom-control-label text-lg" for="referabl"> آیا درخواست قابلیت ارجاع به دیگران را داشته باشد ؟  </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="1" name="forward" id="id_forward" checked="">
+            <label class="custom-control-label text-lg" for="forward">آیا نتیجه درخواست قابلیت فروارد کردن داشته باشد ؟ </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="1" name="arcane" id="id_arcane" >
+            <label class="custom-control-label text-lg" for="arcane">آیا درخواست از نوع محرمانه میباشد ؟</label>
+          </div>
+          <label>
+            <input
+              name="document"
+              id="id_document"
+              type="file"
+              style="display: none"
+            />
+            <a class="text-success text-lg"
+              >در صورت که فایلی جهت پیوست دارید ضمیمه کنید</a
+            >
+          </label>
+
+          <div class="row justify-content-md-center">
+            <div class="col-5">
+              <button type="submit" class="btn w-100 btn-outline-primary">
+                ثبت
+              </button>
+            </div>
+            <div class="col-5">
+              <a
+                href="{%url 'ViewProfileMeeting' %}"
+                class="btn w-100 btn-outline-danger"
+              >
+                کنسل
+              </a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %} {% block scripts%}
+<script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
+<script src="{% static 'js/picker.js' %}"></script>
+<script>
+  new Picker(document.querySelector(".js-time-picker"), {
+    format: "HH:mm",
+    headers: true,
+    date: new Date(1, 0),
+    text: {
+      title: "مدت زمان را انتخاب کنید",
+    },
+    increment: {
+      hour: 1,
+      minute: 15,
+    },
+  });
+
+  new Picker(document.querySelector(".js-time-picker-start"), {
+    format: "HH:mm",
+    headers: true,
+    date: new Date(1, 0),
+    text: {
+      title: "مدت زمان را انتخاب کنید",
+    },
+    increment: {
+      hour: 1,
+      minute: 15,
+    },
+  });
+</script>
+
+<!-- OR -->
+<!-- loading by form (if used AdminJalaliDateWidget) -->
+<script src="{% static '/js/select2.min.js' %}"></script>
+{%endblock scripts%}

@@ -1,0 +1,58 @@
+{% extends extend%}
+{%block style%}
+<link rel="stylesheet" href="{%static '/css/select2.min.css'%}">
+<link rel="stylesheet" href="{%static '/css/select2-bootstrap-5-theme.rtl.min.css'%}">
+{%endblock style%}
+{% block content %}
+<script>
+  $(document).ready(function() { 
+  $("select").select2({
+   theme: "bootstrap-5",
+   placeholder: "یک گزینه را انتخاب کنید",
+   allowClear: true
+  });
+  });
+
+ </script>
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="card card-frame col-6">
+            <div class="card-body">
+
+    <form action="" method="POST">
+        {% csrf_token %}
+
+       
+
+        {% for field  in form.visible_fields %}
+             
+              
+                <div class="input-group input-group-dynamic mb-4">
+                  <label class="input-group-text" for="{{ field.auto_id }}">
+                   
+                  </label>
+                  {{field }}
+                  {% if field.errors %}
+                  <div class="alert alert-info" role="alert">
+                    {{ field.errors.as_text}}
+                  </div>
+
+                  {% endif %}
+                </div>
+             
+              {% endfor %}
+        <input type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0" value="add">
+
+    </form>
+</div>
+</div>
+</div>
+</div>
+
+    
+    
+   
+{% endblock content %}
+{%block scripts%}
+<script src="{% static '/js/select2.min.js' %}"></script>
+{%endblock scripts%}

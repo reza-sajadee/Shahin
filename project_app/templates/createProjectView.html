@@ -1,0 +1,293 @@
+{% extends extend%} {% load static %} {% load jalali_tags %} {% block style %}
+<link href="{% static '/css/picker.css' %}" rel="stylesheet" />
+<link
+  rel="stylesheet"
+  href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}"
+/>
+{%endblock style%} {% block content %} 
+{% include 'partials/profile-project.html'  %}
+<div class="container py-6">
+  <div class="row justify-content-md-center">
+    <div class="card card-frame col-12">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="row">
+          <div
+            class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3"
+          >
+            <h4 class="text-white text-capitalize ps-3">{{ header_title }}</h4>
+          </div>
+        </div>
+      </div>
+      <div class="card-body px-0 pb-2">
+        <div class="container-fluid fulled">
+          <div class="row border-bottom py-3">
+            <div class="col-2 text-center">سطح شکست</div>
+            <div class="col-1 text-center">کد</div>
+            <div class="col-5 text-center">عنوان</div>
+            <div class="col-2 text-center">بیشتر</div>
+            <div class="col-1 text-center">نمایش</div>
+            <div class="col-1 text-center">حذف</div>
+          </div>
+
+          {%for datas in allProjects%} {% if datas.level == 1%}
+
+          <div class="row border-bottom py-3">
+            <div class="col-2 narowFont text-center">سطح شکست 1</div>
+            <div class="col-1 narowFont text-center">{{datas.code}}</div>
+            <div class="col-5 narowFont text-center">{{datas.title}}</div>
+            <div class="col-2 narowFont text-center">
+              <a
+                data-bs-toggle="collapse"
+                href="#collapseExample{{datas.id}}"
+                role="button"
+                aria-expanded="false"
+                aria-controls="collapseExample{{datas.id}}"
+              >
+                <i class="fa fa-plus-circle fa-2x" aria-hidden="true">سطح بعدی</i>
+              </a>
+            </div>
+            <div class="col-1 narowFont text-center">
+          
+                      
+                <a class="nav-link text-black-80" href="{%url 'ViewProject' datas.id %}"   >
+                  <div class="  ms-2 d-flex align-items-center justify-content-center">
+                    <img style="max-width: 50px;min-width: 30px;" src="{% static 'img/svg/view.svg' %}" >
+                  </div>
+                </a>
+
+      
+            
+            </div> 
+            <div class="col-1 narowFont text-center">
+          
+                      
+                <a class="nav-link text-black-80" href="delete/{{ datas.id }}"   >
+                  <div class="  ms-2 d-flex align-items-center justify-content-center">
+                    <img style="max-width: 50px;" src="{% static 'img/svg/close.svg' %}" >
+                  </div>
+                </a>
+
+      
+            
+            </div> 
+          </div>
+          <div
+            style="background-color: rgb(181, 181, 181); margin-right: 2em"
+            class="collapse"
+            id="collapseExample{{datas.id}}"
+          >
+            <div class="card-body px-0 pb-2">
+              <div class="container-fluid fulled">
+                <div class="row border-bottom py-3">
+                  <div class="col-2 text-center">سطح شکست</div>
+                  <div class="col-1 text-center">کد</div>
+                  <div class="col-5 text-center">عنوان</div>
+                  <div class="col-2 text-center">بیشتر</div>
+                  <div class="col-1 text-center">نمایش</div>
+                  <div class="col-1 text-center">حذف</div>
+                </div>
+
+                {% for datasNext in datas.nextProject.all %}
+                <div class="row border-bottom py-3">
+                  <div class="col-2 narowFont text-center">سطح شکست 2</div>
+                  <div class="col-1 narowFont text-center">
+                    {{datasNext.code}}
+                  </div>
+                  <div class="col-5 narowFont text-center">
+                    {{datasNext.title}}
+                  </div>
+                  <div class="col-2 narowFont text-center">
+                    <a
+                      data-bs-toggle="collapse"
+                      href="#collapseExample{{datasNext.id}}"
+                      role="button"
+                      aria-expanded="false"
+                      aria-controls="collapseExample{{datas.id}}"
+                    >
+                      <i class="fa fa-plus-circle fa-2x" aria-hidden="true"
+                        >سطح بعدی</i
+                      >
+                    </a>
+                  </div>
+                  <div class="col-1 narowFont text-center">
+          
+                      
+                    <a class="nav-link text-black-80" href="{%url 'ViewProject' datasNext.id %}"   >
+                      <div class="  ms-2 d-flex align-items-center justify-content-center">
+                        <img style="max-width: 50px;min-width: 30px;" src="{% static 'img/svg/view.svg' %}" >
+                      </div>
+                    </a>
+    
+          
+                
+                </div> 
+                  <div class="col-1 narowFont text-center">
+          
+                      
+                    <a class="nav-link text-black-80" href="delete/{{ datasNext.id }}"   >
+                      <div class="  ms-2 d-flex align-items-center justify-content-center">
+                        <img style="max-width: 50px;" src="{% static 'img/svg/close.svg' %}" >
+                      </div>
+                    </a>
+    
+          
+                
+                </div> 
+                </div>
+                <div
+                  class="collapse"
+                  style="
+                    background-color: rgb(125, 125, 125);
+                    margin-right: 4em;
+                  "
+                  id="collapseExample{{datasNext.id}}"
+                >
+                  <div class="card-body px-0 pb-2">
+                    <div class="container-fluid fulled">
+                    
+                      
+                      <div class="row border-bottom py-3">
+                        <div class="col-2 text-white text-center">سطح شکست</div>
+                        <div class="col-1 text-white text-center">کد</div>
+                        <div class="col-5 text-white text-center">عنوان</div>
+                        <div class="col-1 text-white text-center">نمایش</div>
+                        <div class="col-1 text-white text-center">حذف</div>
+                      </div>
+                      {%for datasNextNext in datasNext.nextProject.all %}
+                      <div class="row text-white border-bottom py-3">
+                        <div class="col-2 narowFont text-center">
+                          سطح شکست 3
+                        </div>
+                        <div class="col-1 narowFont text-center">
+                          {{datasNextNext.code}}
+                        </div>
+                        <div class="col-5 narowFont text-center">
+                          {{datasNextNext.title}}
+                        </div>
+                        <div class="col-1 narowFont text-center">
+          
+                      
+                          <a class="nav-link text-black-80" href="{%url 'ViewProject' datasNextNext.id %}"   >
+                            <div class="  ms-2 d-flex align-items-center justify-content-center">
+                              <img style="max-width: 50px;min-width: 30px;" src="{% static 'img/svg/view.svg' %}" >
+                            </div>
+                          </a>
+          
+                
+                      
+                      </div>
+                        <div class="col-1 narowFont text-center">
+          
+                      
+                          <a class="nav-link text-black-80" href="delete/{{ datasNextNext.id }}"   >
+                            <div class="  ms-2 d-flex align-items-center justify-content-center">
+                              <img style="max-width: 50px;" src="{% static 'img/svg/close.svg' %}" >
+                            </div>
+                          </a>
+          
+                
+                      
+                      </div>
+                      </div>
+                      {%endfor%}
+                      <div class="row justify-content-md-center">
+                        <div class="col-5">
+                          <button type="submit"  class="btn w-100  btn-outline-primary" data-bs-toggle="collapse"
+                          href="#addlvl2"
+                          role="button"
+                          aria-expanded="false"
+                          aria-controls="addlvl2">
+                            افزودن تسک جدید   </button>
+                        </div>
+                       
+                      </div>
+                      
+                      <div class="collapse" id="addlvl2" >
+                       {%include 'partials/add-project.html' with headP='تسک' profileId=profileSelected.id pp=datasNext.id %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {%endfor%}
+                <div class="row justify-content-md-center">
+                  <div class="col-5">
+                    <button type="submit"  class="btn w-100  btn-outline-primary" data-bs-toggle="collapse"
+                    href="#addlvl2"
+                    role="button"
+                    aria-expanded="false"
+                    aria-controls="addlvl2">
+                      افزودن عملیات جدید   </button>
+                  </div>
+                 
+                </div>
+                
+                <div class="collapse" id="addlvl2" >
+                 {%include 'partials/add-project.html' with headP='عملیات' profileId=profileSelected.id pp=datas.id %}
+                </div>
+              </div>
+            </div>
+          </div>
+          {%endif%} {% endfor %}
+          <div class="row justify-content-md-center">
+            <div class="col-5">
+              <button type="submit"  class="btn w-100  btn-outline-primary" data-bs-toggle="collapse"
+              href="#addlvl1"
+              role="button"
+              aria-expanded="false"
+              aria-controls="addlvl1">
+                افزودن فاز جدید   </button>
+            </div>
+            <div class="col-5">
+              <a href="{%url menuBack %}" class="btn w-100  btn-outline-danger">
+                بازگشت </a>
+            </div>
+          </div>
+          
+          <div class="collapse" id="addlvl1" >
+           {%include 'partials/add-project.html' with headP='فاز' profileId=profileSelected.id %}
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %} {% block scripts%}
+<script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
+<script src="{% static 'js/picker.js' %}"></script>
+<script>
+  new Picker(document.querySelector('.js-time-picker'), {
+    format: 'HH:mm',
+    headers: true,
+    date: new Date(1, 0),
+    text: {
+      title: 'مدت زمان را انتخاب کنید',
+    },
+    increment: {
+      hour: 1,
+      minute: 15,
+
+    },
+  });
+
+  new Picker(document.querySelector('.js-time-picker-start'), {
+    format: 'HH:mm',
+    headers: true,
+    date: new Date(1, 0),
+    text: {
+      title: 'مدت زمان را انتخاب کنید',
+
+    },
+    increment: {
+      hour: 1,
+      minute: 15,
+
+    },
+  });
+
+
+</script>
+{%endblock scripts%}

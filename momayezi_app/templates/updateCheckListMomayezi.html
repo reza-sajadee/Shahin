@@ -1,0 +1,120 @@
+{% extends extend%}
+{% load static %}
+{% block content %}
+
+<div class="container py-6">
+    <div class="row justify-content-md-center">
+        <div class="card card-frame col-12">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="row">
+            
+              <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+                <h4 class="text-white text-capitalize ps-3">{{ header_title }}</h4>
+                
+              </div>
+            </div>
+           
+          </div>
+            <div class="card-body">
+              <form action="" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <input type="hidden" id="id_title" name="title" value="{{object.title}}">
+                  <input type="hidden" id="id_activity" name="activity" value={{object.activity.id}}>
+            
+                    <div class="contaner">
+                      <div class="row py-3">
+                        
+                        
+                        <div class="col-12">
+                          <span class="nowrap fw-bold text-dark">  پرسش   : </span>
+                          <span class="nowrap narowFont">{{form.title.value}}</span>
+                          
+                        </div>
+                      </div>
+                      <div class="row py-3">
+                        <div class="col-6">
+
+                          <span class="nowrap fw-bold text-dark">  سیستم مدیریتی   : </span>
+                          <span class="nowrap narowFont">{{standardSelected}}</span>   
+                        </div>
+                        <div class="col-6">
+
+                          <span class="nowrap fw-bold text-dark">  بند استاندارد    : </span>
+                          {%for band in bands%}
+                            <span class=" narowFont d-block mx-3"  >{{band.clauseNumber}} - {{band.title}}
+                              
+                             
+                              
+                                  <img data-bs-custom-class="custom-tooltip" data-bs-toggle="tooltip" data-bs-placement="top" title="{{band.text}}" data-container="body" data-animation="true" style="max-width: 25px;" src="{% static 'img/svg/attention.svg' %}" >
+                                
+                              
+                              
+                              </span>
+                            </span>
+                          {%endfor%}
+                          
+                        </div>
+                      </div>
+
+                      <div class="input-group input-group-static mb-4">
+                        <label class=" fw-bold" for="id_description">
+                             مشاهدات / یافته ها
+                        </label>
+                        
+                        <textarea name="observed" cols="40" rows="5" class="form-control" id="id_observed" >{%if object.observed%}{{object.observed}} {%endif%}</textarea>
+                        
+                      </div>
+                      
+                      <div class="input-group">
+                        <span class="nowrap fw-bold text-dark mx-3">  نتیحه   : </span>
+                        <div class="form-check mb-3">
+                          <input class="form-check-input check-input-ok" type="radio" name="result" value="ok" id="customRadio1">
+                          <label class="custom-control-label" for="customRadio1">OK</label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input check-input-obs" type="radio" name="result" value="Obs" id="customRadio2">
+                          <label class="custom-control-label" for="customRadio2">Obs</label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input check-input-min" type="radio" name="result" value="min" id="customRadio2">
+                          <label class="custom-control-label" for="customRadio2">NC/Min</label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input check-input-maj" type="radio" name="result" value="maj" id="customRadio2">
+                          <label class="custom-control-label" for="customRadio2">NC/Maj</label>
+                        </div>
+                          
+
+                      </div>
+
+                      <label>
+                        <input name="document" id="id_document" type="file" style="display: none;">
+                        <a class="text-danger">بارگزاری یافته های ممیزی</a>
+                      </label>
+                      
+                        
+
+                    
+                      
+                    </div>
+                    
+                 
+
+                        <div class="row">
+                          <button type="submit" class="btn w-10 mx-3 btn-outline-primary">تایید</button>
+                          <a  class="btn w-10 mx-3 btn-outline-danger" href="{%url menuBack %}">لغو</a>
+                        </div>
+                       
+                        
+
+              </form>
+            </div>
+        </div>
+      </div>
+</div>
+
+    
+    
+   
+{% endblock content %}
+

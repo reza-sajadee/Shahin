@@ -1,0 +1,228 @@
+{% extends extend%}
+{% load static %}
+{% load jalali_tags %}
+{% block style %}
+<link rel="stylesheet" href="{% static  '/css/foundation.min.css' %}">
+
+{%endblock style%}
+
+
+{% block content %}
+
+<div class="container py-6">
+    <div class="row justify-content-md-center">
+        <div class="card  frame col-12">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                <div class="row">
+                    <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+                        <h4 class="text-white text-capitalize ps-3">شناسنامه شغلی</h4>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-body">
+              <div class="row py-4 justify-content-center">
+                <div class="col-1"></div>
+                <div class="col-5">
+                    <span class=" fw-bold text-dark"> عنوان نوع پسن : </span>
+                    <span class=" narowFont">{{PostDescriptionSelected.typePostRelated.title}} </span>
+                </div>
+                <div class="col-5">
+                    <span class=" fw-bold text-dark"> کد پست : </span>
+                    <span class=" narowFont">{{PostDescriptionSelected.typePostRelated.typePostSazmaniCode}} </span>
+                </div>
+
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <h4 class="text-center">
+                  پست های مرتبط با شرح شغل
+                </h4>
+              </div>
+            </div>
+              <div class="table-responsive my-3">
+               
+                <table id="example" class="table uk-table uk-table-hover uk-table-striped align-items-center py-3 mb-0">
+                  <br>
+                  <thead>
+
+                    <tr>
+                      
+                     
+                        <th class="text-center text-lg font-weight-bolder opacity-7">عنوان پست</th>
+                        <th class="text-center text-lg font-weight-bolder opacity-7">عنوان واححد</th>
+                        <th class="text-center text-lg font-weight-bolder opacity-7"> سطح واحد</th>
+                        <th class="text-center text-lg font-weight-bolder opacity-7">پست مافوق </th>
+                 
+                     
+                      
+                     
+                    </tr>
+                  </thead>
+                  <tbody>
+                    
+                  
+                    {%for post in allPost%}
+                     
+                      <tr>
+                          
+                         
+                          <td class="narowFont text-center overflow-hidden">{{post.title}}</td>
+                          <td class="narowFont text-center overflow-hidden">{{post.vahed}}</td>
+                          <td class="narowFont text-center overflow-hidden">{{post.SathPost}}</td>
+                          <td class="narowFont text-center overflow-hidden">{{post.postMafogh}}</td>
+                      
+                         
+                          
+                        
+                      </tr>
+                     
+                    {%endfor%}
+                    
+      
+                              
+                  </tbody>
+                </table>
+                
+                
+              </div>
+
+<!-- 
+
+                <div class="row py-3 justify-content-center">
+                    <div class="col-1"></div>
+                    <div class="col-5">
+                        <span class=" fw-bold text-dark"> عنوان پست : </span>
+                        <span class=" narowFont">{{PostDescriptionSelected.postRelated.title}} </span>
+                    </div>
+                    <div class="col-5">
+                        <span class=" fw-bold text-dark"> کد پست : </span>
+                        <span class=" narowFont">{{PostDescriptionSelected.postRelated.codePostSazmani}} </span>
+                    </div>
+
+                </div>
+                <div class="row py-3 justify-content-center">
+                    <div class="col-1"></div>
+                    <div class="col-5">
+                        <span class=" fw-bold text-dark"> واحد : </span>
+                        <span class=" narowFont">{{PostDescriptionSelected.postRelated.vahed.title}} </span>
+                    </div>
+                    <div class="col-5">
+                        <span class=" fw-bold text-dark"> کد واحد : </span>
+                        <span class=" narowFont">{{PostDescriptionSelected.postRelated.vahed.vahedCode}} </span>
+                    </div>
+
+                </div>
+                <div class="row py-3 justify-content-center">
+                    <div class="col-1"></div>
+                    <div class="col-5">
+                        <span class=" fw-bold text-dark"> پست مافوق سازمانی : </span>
+                        <span class=" narowFont">{{PostDescriptionSelected.postRelated.postMafogh.title}} </span>
+                    </div>
+                    <div class="col-5">
+                        <span class=" fw-bold text-dark"> حوزه : </span>
+                        <span class=" narowFont">{{PostDescriptionSelected.postRelated.postMafogh.vahed.hoze}} </span>
+                    </div>
+
+                </div>
+                <div class="row py-3 justify-content-center">
+                    <div class="col-1"></div>
+                    <div class="col-5">
+                        <span class=" fw-bold text-dark"> جانمایی پست : </span>
+
+                       
+                        {%for person in allPersonels %}
+                        <span class=" narowFont">{{person.profile.firstName}}   {{person.profile.lastName}} - </span>
+                        {%endfor%}
+                    </div>
+                    <div class="col-5"></div>
+
+
+                </div> -->
+
+
+            </div>
+
+        
+        </div>
+        <div class="card-body">
+            <div class="tabs">
+                <div class="single-tabs tabs-one">
+                  <ul class="nav nav-justified py-5" id="myTab" role="tablist">
+                    <li class="nav-item">
+                      <a class="active  " id="tab-one-one-tab " data-bs-toggle="tab" href="#tab-one-one" role="tab"
+                        aria-controls="tab-one-one" aria-selected="true">شرح شغل</a>
+                    </li>
+                    <li class="nav-item">
+                      <a id="tab-one-two-tab " data-bs-toggle="tab" href="#tab-one-two" role="tab" aria-controls="tab-one-two"
+                        aria-selected="false">شرایط احراز</a>
+                    </li>
+                    <li class="nav-item">
+                      <a id="tab-one-three-tab " data-bs-toggle="tab" href="#tab-one-three" role="tab"
+                        aria-controls="tab-one-three" aria-selected="false">اختیارات</a>
+                    </li>
+                    <li class="nav-item">
+                      <a id="tab-one-four-tab " data-bs-toggle="tab" href="#tab-one-four" role="tab"
+                        aria-controls="tab-one-four" aria-selected="false">مسئولیت ها</a>
+                    </li>
+                    <li class="nav-item">
+                      <a id="tab-one-five-tab " data-bs-toggle="tab" href="#tab-one-five" role="tab"
+                        aria-controls="tab-one-five" aria-selected="false">ایمنی و بهداشت حرفه ای</a>
+                    </li>
+        
+        
+        
+                  </ul>
+                  <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="tab-one-one" role="tabpanel" aria-labelledby="tab-one-one-tab">
+                        <div class="row py-5 justify-content-md-center">
+                            <div class="col-6 px-5">
+                              <div class="card " style="border: 2px dotted#747474 !important;">
+                                <div class="card-header ">
+                                  <strong>شرح وظایف اختصاصی</strong>
+                                </div>
+                                <ul class="list-group list-group-flush " style="display: contents;">
+                                  {%for exclusive in PostDescriptionSelected.get_exclusive %}
+                                  <li class="list-group-item " >{{exclusive}} </li>
+                                  {%endfor%}
+                                </ul>
+                              </div>
+                            </div>
+                           
+                            <div class="col-6 px-5">
+                              <div class="card " style="border: 2px dotted#747474 !important;">
+                                <div class="card-header ">
+                                  <strong>شرح وظایف عمومی</strong>
+                                </div>
+                                <ul class="list-group list-group-flush " style="display: contents;">
+                                    {%for general in PostDescriptionSelected.get_general %}
+                                    <li class="list-group-item " >{{general}} </li>
+                                    {%endfor%}
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="tab-pane fade " id="tab-one-two" role="tabpanel" aria-labelledby="tab-one-two-tab">
+        
+        
+                    </div>
+        
+        
+        
+        
+                  </div>
+        
+                </div>
+              </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+
+{% block scripts %}
+
+
+{%endblock scripts%}

@@ -1,0 +1,102 @@
+
+ {% extends extend %} 
+ {% load jalali_tags %}
+
+
+
+{% load static %}
+{% block style %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css">
+
+
+  <script type="text/javascript" charset="utf8" src="{% static '/js/dataTables.js' %}"></script>
+
+  <script src="{% static '/js/jquery.dataTables.js' %}"  ></script>
+{%endblock style%}
+
+{% block content %}
+<div class="container py-6">
+  <div class="row justify-content-md-center">
+    <div class="card card-fram col-12">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="row">
+          
+          <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+            <h4 class="text-white text-capitalize ps-3">{{ header_title }}</h4>
+            
+          </div>
+        </div>
+      </div>
+     
+      
+    
+        <div class="card-body my-5">
+          
+         <div class="container">
+          {% for news in queryset %}
+           <div class="row">
+             <div class="col-3">
+              <a class="d-block blur-shadow-image">
+                <img src="{{  news.image.url}}" alt="img-blur-shadow" class="img-fluid shadow ">
+              </a>
+             </div>
+             <div class="col-9">
+              <div class="row">
+                <h3 class="text-right">{{news.title}}</h3>
+              </div>
+               <div class="row">
+                <div class="card-footer d-flex">          
+                  <p class="my-auto narowFont">روز {{news.updated_at|to_jalali:'%d'}} ماه {{news.updated_at|to_jalali:'%m'}} سال</p>
+                  <p class="text-sm my-auto"> {{news.updated_at|to_jalali:'%Y'}} | دسته بندی : {{news.NewsCategoriy}}</p>
+                </div>
+                <div class="row">
+                  <p class="text-lg narowFont">
+                    {{news.description|truncatechars_html:200}}
+                  </p>
+                </div>
+                <div class="row">
+                  <a href="{% url 'ViewNews' news.id %}">ادامه مطلب</a>
+                </div>
+               </div>
+             </div>
+           </div>
+           <hr class="dark horizontal my-5">
+           {% endfor %}
+         </div>
+          
+         
+        </div>
+      </div>
+       
+    
+    </div>
+  </div>
+</div>
+  {% endblock content %}
+
+
+  {% block scripts %}
+  
+  
+  <script>
+    $(document).ready( function() {
+  $('#example').dataTable( {
+    "oLanguage": {
+      "oPaginate": {
+        "sNext": "صفحه بعدی",
+        "sPrevious": "صفحه قبلی"
+      },
+      "sEmptyTable": "اطلاعاتی برای نمایش وجود ندارد",
+      "sSearch": "جستجو   :  ",
+      "sInfo": "نمایش _START_ تا_END_ از تعداد کل _TOTAL_" ,
+      "sLengthMenu": "  تعداد در صفحه  _MENU_ ",
+      "sInfoEmpty": "رکوردی برای نمایش وجود ندارد"
+    
+    }
+  } );
+} );
+  </script>
+  {%endblock scripts%}
+  
+
+

@@ -1,0 +1,114 @@
+{% extends extend%}
+{% load jalali_tags %}
+
+{% load static %}
+{% block style %}
+
+<link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/tabs.css' %}">
+{%endblock style%}
+
+{% block content %}
+<!-- {{get_jalali_date}} -->
+
+<div class="container py-6">
+    <div class="row justify-content-md-center">
+        <div class="card card-frame col-12">
+          {%if object.NewsCategoriy.title != 'اختصاصی' %}
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="row">
+              
+              <div class="bg-gradient-primary text-center border-radius-lg pt-4 pb-3">
+                <h4 class="text-white text-capitalize ps-3">{{ header_title }}</h4>
+                <p class="text-sm font-monospace text-white mb-0">
+                    {{discribtion|linebreaks}}
+                    </p>
+              </div>
+            </div>
+          </div>
+        {%endif%}
+            <div class="card-body">
+
+                            <div class="col-10 mx-auto">
+                              {%if object.image.url != None %}
+                                <div class="row">
+                                    <img src="{{  object.image.url}}" class="   img-fluid   ">
+                                </div>
+                                {%endif%}
+                                {%if object.NewsCategoriy.title != 'اختصاصی' %}
+                                <div class="text-right text-primary text-lg card-headr py-3 font-monospace">
+
+                                    روز {{object.updated_at|to_jalali:'%d'}} ماه {{object.updated_at|to_jalali:'%m'}} سال
+                                    {{object.updated_at|to_jalali:'%Y'}} | دسته بندی : {{object.NewsCategoriy}}
+                                    </div>
+
+                                    {%endif%}
+                                    <h3 class="text-center">{{object.title}}</h3>
+                                <p class="text-lg narowFont">
+                                    {{object.description|safe}}
+                                </p>
+                                
+                            
+                            </div>
+                            
+            </div>
+        </div>
+
+        
+    </div>{% if object.NewsCategoriy.title == 'عمومی' %}
+    <h1 class="text-center py-4"> آخرین مطلب</h1>
+    <div class="row py-5 justify-content-center">
+    
+       {% for news in allNews %}
+            <div class="col-3 ">
+                <div class="card" data-animation="true">
+                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                      {%if news.image.url != None %}
+                      <a class="d-block blur-shadow-image">
+                        <img src="{{  news.image.url}}" alt="img-blur-shadow" class="img-fluid shadow border-radius-lg">
+                      </a>
+                      {%endif%}
+                    </div>
+                    <div class="card-body text-center">
+                      <div class="d-flex mt-n6 mx-auto">
+                        <div class="card-footer d-flex">          
+                            <p class="my-auto narowFont">روز {{object.updated_at|to_jalali:'%d'}} ماه {{object.updated_at|to_jalali:'%m'}} سال</p>
+                            <p class="text-sm my-auto"> {{object.updated_at|to_jalali:'%Y'}} | دسته بندی : {{object.NewsCategoriy}}</p>
+                          </div>
+                        
+                      </div>
+                      <h5 class="font-weight-normal mt-3">
+                        <a href="{% url 'ViewNews' news.id %}">{{news.title}}</a>
+                      </h5>
+                      <p class="mb-0">
+                        {{news.description|truncatechars_html:100}} <a href="{% url 'ViewNews' news.id %}" >ادامه مطلب</a>
+                      </p>
+                    </div>
+                    <hr class="dark horizontal my-0">
+                    
+                  </div>
+            </div>
+       {% endfor %}
+       
+       
+
+      
+
+    </div>
+    {% endif %}
+</div>
+
+    
+    
+   
+{% endblock content %}
+
+
+{% block scripts %}
+
+		<script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
+	<!-- OR -->
+	<!-- loading by form (if used AdminJalaliDateWidget) -->
+		{{ form.media }}
+
+{%endblock scripts%}

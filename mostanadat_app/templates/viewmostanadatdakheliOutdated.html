@@ -1,0 +1,273 @@
+{% extends extend%}
+{% load static %}
+{% load jalali_tags %}
+{% block style %}
+<link rel="stylesheet" href="{% static  '/css/foundation.min.css' %}">
+
+{%endblock style%}
+
+
+{% block content %}
+{{get_jalali_date}}
+<script type="text/javascript">
+  function show_hide_row(row)
+  {
+   $("#"+row).slideToggle();
+  }
+  </script>
+<div class="row">
+    <div class="col-12">
+        <div class="card my-4">
+            <div class="card-header p-0 position-relative mt-4 mx-3 z-index-2">
+                <div class="bg-gradient-danger shadow-info border-radius-lg px-3 pt-4 pb-3">
+                    <h4 class="text-white text-capitalize ps-3">شناسنامه سند منسوخ شده</h4>
+                </div>
+            </div>
+            <div class="card-body px-0 pb-2">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card card-frame mx-3">
+                            <div class="card-body">
+                                <h5 class=" text-center">عنوان سند : {{form.title.value}}  </h5>
+                                <h6 class="py-3"> کد سند : {{form.dakheliSanadCode.value}}  </h6>
+                                <h6 class="py-3"> نوع مدرک  : {{typeMadrakTitle}}  </h6>
+                                <h6 class="py-3"> شماره آخرین ویرایش  : {{form.versionNumber.value}}  </h6>
+                                <h6 class="py-3">  تاریخ  منسوخ شدن : {{dateLastUpdate}}  </h6>
+                            </div>
+                           
+                               
+                          </div>
+                    </div>
+                    <div class="col-lg-6 justify-content-right">
+                        <ul class="tabs mx-3   mb-2"data-active-collapse="true"data-tabs id="tabs_example">
+                            <li class="tabs-title ">
+                                <a href="#content1">ملاحظات</a>
+                            </li>
+                            <li class="tabs-title">
+                                <a href="#content2">کلید واژه ( ها)</a>
+                            </li>
+                            <li class="tabs-title">
+                                <a href="#content3">دسترسی سازمانی</a>
+                            </li>
+                            <li class="tabs-title is-active">
+                                <a href="#content4">نگاه کلی  </a>
+                            </li>
+                        </ul>
+                        <div class="tabs-content mx-3"
+                             data-tabs-content="tabs_example">
+                            <div class="tabs-panel "id="content1">
+                                <h6 class="py-3"> طبقه بندی   :{{form.tabaghbandi.value}}  </h6>
+                                <h6 class="py-3">  مرتبط با سیستم ها : {{vahedMortabet}}</h6>
+                                <h6 class="py-3"> سایر: {{form.molahezat.value|safe}}</h6>
+                            </div>
+                            <div class="tabs-panel" id="content2">
+                                <h5 class="">کلید واژه ها :</h5>
+                            </div>
+                            <div class="tabs-panel"id="content3">
+                                <h6 class="py-3"> واحد متولی  : {{vahedMotevali}} </h6>
+                                <h6 class="py-3"> تایید کننده   : {{vahedTaeid}} </h6>
+                                <h6 class="py-3">  تصویب کننده: {{vahedTasvib}}</h6>
+                                <h6 class="py-3"> واحدهاى بهره بردار: {{vahedTasvib}}</h6>
+
+
+                            </div>
+                            <div class="tabs-panel is-active"id="content4">
+                                <h5 class="">نگاه کلی</h5>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="card mt-4">
+                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                    <div class="login-card shadow-info border-radius-lg px-3 pt-4 pb-3">
+                        <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+
+                            <h4 class="text-white text-capitalize ps-3">شناسنامه تغییرات سند <span  class="fa fa-caret-down pl-1"></span> </h4>
+
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body px-0 pb-2">
+                    <div class="row">
+
+
+
+                          <div class="collapse" id="collapseExample">
+
+                            <!-- <div class="table-responsive my-5">
+
+                                <table id="example" class="table uk-table uk-table-hover uk-table-striped align-items-center py-3  mb-0">
+                                <br>
+                                <thead>
+
+                                    <tr>
+
+
+                                    <th class="text-secondary text-lg font-weight-bolder opacity-7">ردیف</th>
+                                    <th class="text-secondary text-lg font-weight-bolder opacity-7">تاریخ تغییرات</th>
+                                    <th class="text-secondary text-lg font-weight-bolder opacity-7">موضوع/ دلیل تغییر</th>
+                                    <th class="text-secondary text-lg font-weight-bolder opacity-7"> شماره ویرایش</th>
+                                    <th class="text-secondary text-lg font-weight-bolder opacity-7">درخواست کننده / پیشنهاد دهنده تغییر</th>
+
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+
+                                    {%for datas in list_data%}
+                                    {% for key, values in datas.items %}
+                                    <tr>
+
+                                        {% for v in values %}
+                                        <td class="narowFont overflow-hidden">{{v}}</td>
+                                        {% endfor %}
+                                        <td>
+
+                                            <a class="btn btn-link text-dark px-3 mb-0" method="GET" href="{{ key }}">
+                                            <i class="material-icons text-sm me-2">edit</i>
+                                            ویرایش
+                                            </a>
+                                        </td>
+                                        <td>
+
+                                            <a class="btn btn-link text-danger text-gradient px-3 mb-0" method="POST" href="delete/{{ key }}">
+                                            <i class="material-icons text-sm me-2">delete</i>
+                                            حذف کردن
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    {%endfor%}
+
+
+
+                                </tbody>
+                                </table>
+
+
+                            </div> -->
+                            <div class="container-fluid fulled">
+                                <div class="row border-bottom py-3" >
+                                  <div class="col-1 text-secondary text-center">ردیف </div>
+                                  <div class="col-4 text-secondary text-center">تاریخ نغییرات </div>
+                                  <div class="col-4 text-secondary text-center">شماره ویرایش</div>
+                                  <div class="col-3 text-secondary text-center">بیشتر</div>
+                                </div>
+                               
+                                {%for datas in listData%}
+                                   
+           
+                                
+                                    
+                                   
+                                    <div class="row border-bottom py-3">
+                                    
+                                        <div class="col-1 narowFont text-center">{{ forloop.counter }}</div>
+                                        
+                                        <div class="col-4 narowFont  text-center">{{datas.0.documentRelated.updated_at|to_jalali:'%Y/%m/%d'}}</div>
+                                        <div class="col-4 narowFont text-center">{{datas.0.documentRelated.versionNumber}}</div>
+                                        
+                                    
+                                   
+                                        
+                                        
+                                        
+                                        <a href="#" onclick="show_hide_row('hidden_row{{forloop.counter}}');" class="col-3">
+                                            <div class="  ms-2 d-flex align-items-center justify-content-center">
+                                            <img style="max-width: 50px;" src="{% static 'img/svg/view.svg' %}" >
+                                            </div>
+                                        </a>
+                                    </div>
+                    
+                                      <div id="hidden_row{{forloop.counter}}" class="hidden_row row moreData py-3" style="display:none">
+                                              
+                                         
+                                          
+                                          <div class="row py-3">
+                                            
+                                            
+                                              <div class="col-6">
+                                                <span class="nowrap fw-bold text-dark" >    درخواست کننده / پیشنهاد دهنده تغییر : </span>
+                                                <span class="nowrap narowFont">{{datas.1.reciver.firstName}} - {{datas.1.reciver.lastName}}</span>  
+                                              </div>
+                                              <div class="col-6">
+                                                <span class="nowrap fw-bold text-dark" >    تاریخ درخواست : </span>
+                                                <span class="nowrap narowFont">{{datas.1.created_at|to_jalali:'%Y/%m/%d'}} </span>  
+                                              </div>
+                                              
+                    
+                                          </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <span class="nowrap fw-bold text-dark" >   شرح درخواست: </span>
+                                                <span class="narowFont text-justify">
+                                                    {%for text in datas.1.texts.all%}
+                                                    {{text.text}}
+                                                    {%endfor%}
+                                                 </span>  
+                                              </div>
+                                        </div>
+                    
+                                          <hr class="dark horizontal">
+                                          <div class="row py-3">
+                                            <div class="col-12">                                              
+                                              <span class="nowrap fw-bold text-dark" >   تاریخ منسوخ شدن : </span>
+                                              <span class="narowFont nowrap">  {{datas.2.updated_at|to_jalali:'%Y/%m/%d'}}</span>
+                                            </div>
+                                            <div class="col-12">
+                                                <span class="nowrap fw-bold text-dark" >     موضوع / دلیل تغییر : </span>
+                                                <span class="narowFont nowrap">  
+                                                    {% for text in datas.2.texts.all%}
+                                                    {{text.text}}
+                                                    {%endfor%}
+                                                </span>
+                                              </div>
+                                          </div>
+                    
+                                          
+                    
+                                      </div>
+                                            
+                                    
+                    
+                                       
+                                        
+                                        
+                    
+                                      
+                                  
+                                  
+                                {% endfor %}
+                              
+                                    </div>
+                          </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+{% endblock content %}
+
+
+{% block scripts %}
+
+<script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.5.1/dist/js/foundation.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $(document).foundation();
+    })
+</script>
+{%endblock scripts%}

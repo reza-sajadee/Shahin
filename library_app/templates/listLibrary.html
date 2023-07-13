@@ -1,0 +1,151 @@
+{% extends 'baseEmployee.html'%}
+{% load static %}
+
+{% load jalali_tags %}
+{%block style%}
+
+{%endblock style%}
+{% block content %}
+
+ 
+
+    <div class="row py-7">
+      <div align="center">
+        <button class="btn btn-default filter-button btn-lg" data-filter="all">همه</button>
+        <button class="btn btn-default filter-button btn-lg" data-filter="video">فیلم</button>
+        <button class="btn btn-default filter-button btn-lg" data-filter="article">مقاله</button>
+        
+        
+    </div>
+    {%for item in queryset%}
+    
+      <div class="col-lg-3  py-5 filter {{item.category}}">
+        <div class="card" data-animation="true">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <a class="d-block blur-shadow-image">
+              <img src="{{item.imageUploaded.url}}" alt="img-blur-shadow" class="img-fluid shadow  border-radius-lg">
+            </a>
+            <div class="colored-shadow" style="background-image: url(&quot;{{item.imageUploaded.url}}&quot;);"></div>
+          </div>
+          <div class="card-body text-center">
+            <div class="d-flex mt-n6 mx-auto justify-content-around">
+              <a  href="#" >
+                <img style="max-width: 40px; min-width: 40px;" class="mx-2 " src="{% static 'img/svg/view.svg' %}" data-bs-toggle="modal" data-bs-target="#exampleModal{{item.id}}">
+              </a>
+              <a  href="{{item.fileUploaded.url}}"">
+                <img style="max-width: 40px; min-width: 40px;" class="mx-2 " src="{% static 'img/svg/download.svg' %}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="دانلود" >
+              </a>
+              
+              
+            </div>
+            <h5 class="font-weight-normal mt-3">
+              <a href="javascript:;">{{item.title}}</a>
+            </h5>
+            <p class="mb-0">
+              {{item.description|truncatechars_html:200}}
+            </p>
+          </div>
+          <hr class="dark horizontal my-0">
+          <div class="card-footer d-flex">
+            <p class="font-weight-normal narowFont  my-auto">{{item.updated_at|to_jalali:'%Y/%m/%d '}}</p>
+            
+            <div class="  ms-2 d-flex align-items-center justify-content-center">
+              <img style="max-width: 15px;" class="mx-2 opacity-50" src="{% static 'img/svg/clock.svg' %}" >
+            </div>
+            <p class="font-weight-normal narowFont  my-auto">{{item.get_category_display}}</p>
+          </div>
+        </div>
+      </div>
+    
+      <div class="modal fade" id="exampleModal{{item.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title font-weight-normal" id="exampleModalLabel"> {{item.title}}</h5>
+              <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+    
+              <div class="card-header">
+                <a class="d-block blur-shadow-image">
+                  <img src="{{item.imageUploaded.url}}" alt="img-blur-shadow" class="img-fluid shadow  border-radius-lg">
+                </a>
+                <div class="colored-shadow" style="background-image: url(&quot;{{item.imageUploaded.url}}&quot;);"></div>
+              </div>
+              <div class="text-justify">
+                {{item.description}}
+              </div>
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">بستن</button>
+              <a href="{{item.fileUploaded.url}}" class="btn bg-gradient-primary">دانلود </a>
+            </div>
+          </div>
+        </div>
+      </div>
+       
+    
+      
+    
+    {%endfor%}
+    </div>
+  
+
+
+
+{% endblock content %}
+
+
+{%block scripts%}
+<script>
+$(document).ready(function(){
+
+  $(".filter-button").click(function(){
+      var value = $(this).attr('data-filter');
+      
+      if(value == "all")
+      {
+          //$('.filter').removeClass('hidden');
+          $('.filter').show('1000');
+      }
+      else
+      {
+//            $('.filter[filter-item="'+value+'"]').removeClass('hidden');
+//            $(".filter").not('.filter[filter-item="'+value+'"]').addClass('hidden');
+          $(".filter").not('.'+value).hide('3000');
+          $('.filter').filter('.'+value).show('3000');
+          
+      }
+  });
+  
+  if ($(".filter-button").removeClass("active")) {
+$(this).removeClass("active");
+}
+$(this).addClass("active");
+
+});
+</script>
+{%endblock%}
+
+
+
+
+<html>
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    
+     
+
+   
+
+    
+  </body>
+
+  
+</html>

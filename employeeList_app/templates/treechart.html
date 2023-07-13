@@ -1,0 +1,137 @@
+{% extends extend%}
+
+
+{% block style %}
+<style>
+
+    
+    #tree {
+        width: 100%;
+        height: 100%;
+    }
+    
+    [data-id="search"] input {
+        direction: rtl;
+    }
+    
+    
+    .chart-menu{
+        text-align: start !important;
+    }
+    
+    </style>
+{%endblock style%}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+      <div class="card my-4">
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div class="bg-gradient-danger shadow-info border-radius-lg pt-4 pb-3">
+            <h4 class="text-white text-capitalize ps-3">نمودار چارت سازمانی</h4>
+          </div>
+        </div>
+        <div class="card-body px-0 pb-2">
+            <div style="width:100%; height:700px;" id="tree" ></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% for obj in object_list %}
+ <h2> {{obj.employeeNumber.superiorNumber.superiorNumber}}</h2>
+  {% endfor %}
+
+{% endblock content %}
+
+{% autoescape on %}
+{% block scripts %}
+
+<script>
+  var endpoint = 'api/chart/data'
+  var defultData = [];
+  var storage = [];
+  $.ajax({
+  method:"GET",
+  url : endpoint,
+  success:function(data){
+
+      stockWeghit = data.firstName
+      
+            for (counter = 0; counter < stockWeghit.length; counter++) 
+            {
+                var entery = {y: stockWeghit[counter]};
+                storage.push(entery);
+            }
+      
+
+  },
+  error:function(error_data){
+      console.log('error')
+      console.log(error_data)
+  },
+  })
+  console.log(storage);
+</script>
+
+
+<script>
+
+
+    OrgChart.templates.ana.field_0 =
+      '<text class="field_0" style="font-size: 25px;" fill="#ffffff" x="125" y="30" text-anchor="middle">{val}</text>';
+    OrgChart.templates.ana.field_1 =
+      '<text class="field_1" style="font-size: 14px;" fill="#ffffff" x="125" y="50"  text-anchor="middle">{val}</text>';
+    OrgChart.templates.ana.field_2 =
+      '<text class="field_2" style="font-size: 14px;" fill="#ffffff" x="125" y="70" text-anchor="middle">{val}</text>';
+      
+   
+      var nodd2 = {{ object_list|safe }};
+      var basenod = []
+      for (const x of Array(nodd2.length).keys()) {
+        temp = {id :nodd2[x].employeeNumber.id  , pid : 1}
+        basenod.push(temp)
+      
+} 
+
+console.log(basenod);
+      var nodd  = {{tree|safe}};
+  var chart = new OrgChart(document.getElementById("tree"), {
+      collapse: {
+              level: 2
+          },
+          editForm: {
+              buttons: {
+                  edit: null,
+                  share: null,
+                  pdf: null,
+                  remove: null
+              }
+          },  
+      nodeBinding: {
+          field_1: "نام و نام خانوادگی",
+          field_0: "شماره داخلی",
+          field_2: "سمت",
+
+
+      },
+      
+          layout: OrgChart.mixed,
+        
+          template: "ana", 
+      nodes: [
+            { id: 3, name: "Amber McKenzie" },
+        { id: 4, pid: 3, نام: "رضا سجادی " ,سمت:"مدیر مالی" , داخلی:"452"  },
+        { id: 5, pid: 3, نام: "Peter Stevens" }  ,
+        { id: 6,  pid: 4 , نام: "Amber McKenzie" },
+        { id: 7,  pid: 4 , نام: "Ava Field" },
+        { id: 8,  pid: 5 , نام: "Peter Stevens" }  
+        ]
+  });
+
+ 
+</script> 
+
+{%endblock scripts%}
+{% endautoescape %}

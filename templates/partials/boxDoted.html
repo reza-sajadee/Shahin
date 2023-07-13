@@ -1,0 +1,12 @@
+<div class="card my-3" style="border: 2px dotted#747474 !important;">
+    <div class="card-header ">
+      <strong>  {{titleBox}}  </strong>
+    </div>
+    <ul class="list-group list-group-flush " style="display: contents;">
+
+      {%for member in absents%}
+      <li class="list-group-item ">{{forloop.counter}} - {{member.JobBankRelated}}</li>
+      {%endfor%}
+
+    </ul>
+  </div>

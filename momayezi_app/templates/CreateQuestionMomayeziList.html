@@ -1,0 +1,131 @@
+{% extends extend%}
+{% load static %}
+{%block style%}
+<link rel="stylesheet" href="{%static '/css/select2.min.css'%}">
+<link rel="stylesheet" href="{%static '/css/select2-bootstrap-5-theme.rtl.min.css'%}">
+{%endblock style%}
+{% block content %}
+<script>
+  $(document).ready(function() { 
+  $("#id_vahedQuestion").select2({
+   theme: "bootstrap-5",
+   placeholder: "یک گزینه را انتخاب کنید",
+   allowClear: true
+  });
+  });
+
+ </script>
+<div class="container py-6">
+    <div class="row justify-content-md-center">
+        <div class="card card-frame col-8">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="row">
+            
+              <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+                <h4 class="text-white text-capitalize ps-3">{{ header_title }}</h4>
+                <p class="text-md font-monospace text-light mb-0">
+                  {{discribtion}}
+                </p>
+              </div>
+            </div>
+           
+          </div>
+            <div class="card-body">
+              <form action="" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  {% if columns == 1%}
+                    {% for field  in form.visible_fields %}
+
+                    <div class="input-group input-group-static mb-4">
+                      <label class="" for="{{ field.auto_id }}">
+                        {{ field.label }}
+                      </label>
+                      {{field }}
+                      {% if field.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ field.errors.as_text}}
+                        </div>
+                      {% endif %}
+                    </div>
+                   
+                    {% endfor %}
+                  {% endif %}
+                  <div class="input-group input-group-static my-3">
+                    <label >سیستم ممیزی را انتخاب کنید </label>
+                    
+                    <select name="standardQuestion" class="form-control" id="id_standardQuestion">
+                      <option value="" selected>---------</option>
+                      {% for system in allSystem %}
+                        <option value="{{system.id}}" >{{system.standardNumber}}</option>
+                      {% endfor %}
+                    </select>
+                    
+                              
+                  </div>
+                  
+                  <div class="input-group input-group-static mb-4">
+                    <label class="" for="id_requirementStandardQuestion">
+                      بند های را انتخاب کنید
+                    </label>
+                    <select name="requirementStandardQuestion" class="form-control" required="" id="id_requirementStandardQuestion" multiple="">
+                      
+                      <option value="-">---------</option>
+                  
+                    </select>
+                  
+                  </div>
+                  
+                  
+                        <input type="submit" class="btn btn-lg bg-gradient-{{ color }} btn-lg w-100 mt-4 mb-0" value="ثبت">
+
+              </form>
+            </div>
+        </div>
+      </div>
+</div>
+
+    
+
+   
+{% endblock content %}
+{% block scripts %}
+<script>
+  const systemBox = document.getElementById('id_standardQuestion')
+  const bandBox = document.getElementById('id_requirementStandardQuestion')
+  const systemDataBox =document.getElementById('id_standardQuestion')
+  const bandDataBox =document.getElementById('id_requirementStandardQuestion')
+  
+
+ 
+
+  systemBox.addEventListener('change' , e=>{
+    console.log(e.target.value)
+    const selectedGroup = e.target.value
+    bandBox.innerHTML = ''
+    bandBox.textContent = "---------"
+    $.ajax({
+      type:'GET',
+      url: '/momayezi/json/get_json_band_data/' + e.target.value,
+      
+      success: function(response){
+        console.log(response.data)
+        const processData = response.data
+        
+        processData.map(item=>{
+          const option = document.createElement('option')
+          option.textContent =item.clauseNumber + ' ' + item.title 
+          option.value = item.id
+      
+          bandDataBox.appendChild(option)
+        })
+      },
+      error: function(error){
+        console.log(error)
+      }
+    })
+
+  })
+
+</script>
+<script src="{% static '/js/select2.min.js' %}"></script>
+  {% endblock scripts %}

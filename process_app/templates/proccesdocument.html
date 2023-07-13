@@ -1,0 +1,274 @@
+{% extends extend%}
+{% load static %}
+{% block style %}
+<link rel="stylesheet" href="{% static  '/css/foundation.min.css' %}">
+
+{%endblock style%}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card my-4">
+            <div class="card-header p-0 position-relative mt-4 mx-3 z-index-2">
+                <div class="bg-gradient-danger shadow-info border-radius-lg px-3 pt-4 pb-3">
+                    <h5 class="text-white  ps-3"> 
+                        <div class="row">
+                            <div class="col-5">شناسنامه فرآیند  : <strong> {{pd.process.title}}</strong> </div>
+                            <div class="col-3">
+                                کد فرآیند  :  <strong> {{pd.process.processCode}} </strong></br>
+                                ضریب تاثیر فرآیند  :  <strong> {{pd.process.impactFactor}} </strong>
+                            </div>
+                          
+                            
+                            <div class="col-4">حوزه فرآیند  :  <strong> {{pd.scopeProcess}} </strong></div>
+                        </div>
+                         
+                         
+                    
+                    </h5>
+                    
+                </div>
+            </div>
+            <div class="card-body px-0 pb-2">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card card-frame mx-3">
+                            <div class="card-body">
+                                    <h5 class="py-2">هدف فرآیند  :  </h5> 
+                                   
+                                    
+                                    <hr class="dark horizontal">
+                                    <p class="text-lg">
+                                        {{pd.goalProcess}} 
+                                    </p>
+                                    
+                            </div>
+                            
+                          </div>
+                    </div>
+
+                    
+                    
+                    
+                 
+                </div>
+
+                <div class="row py-4">
+                    <div class="col-lg-12">
+                        <div class="card card-frame mx-3">
+                            <div class="card-body">
+                                    <h5 class="py-2">مالک فرآیند  : {{pd.process.ownerVahed.title}}  </h5> 
+                                   
+                                    
+                                   
+                                   
+                                    <h5  style=" display: inline;" class="py-2">محرک فرآیند  :   </h5> 
+                                    
+                                    <p style=" display: inline;" class="text-lg" >
+                                        {{pd.driverProcess}}
+                                    </p>
+                                    
+                            </div>
+                            
+                          </div>
+                    </div>
+
+                    
+                    
+                    
+                 
+                </div>
+                
+
+                <div class="row py-4">
+
+                    <div class="col-lg-12">
+                        <div class="card card-frame mx-3">
+                            <div class="card-body">
+                                    <h5 class="py-2">ورودی های فرآیند    : {{pd.process.title}}  </h5> 
+                                    <hr class="dark horizontal">
+                                        {%for from in processFromSelected%}
+                                        <div class="row border-bottom border-light-subtle">
+                                            <div class="col-6">
+                                                <p class="text-lg">
+                                                    {{from.inputProcess}}
+                                                </p>
+                                            </div>
+                                            <div class="col-6 border-right">
+                                                <p class="text-lg ">
+                                                    {%if from.fromProcessRelated == None%}
+                                                    <strong>از ذینفع </strong> : {{from.fromBeneficiary}}
+                                                    {%else%}
+                                                    <a style=" color: inherit; text-decoration: inherit; " href="{%url 'ViewProcessDocument' from.fromProcessRelated.id %}"><strong> از  فرآیند  </strong>: {{from.fromProcessRelated}}</a>
+                                                    {%endif%}
+                                                    
+                                                    
+                                                </p>
+                                            </div>
+                                        </div>
+                                        
+                                       {%endfor%}
+                                    
+                            </div>
+                            
+                          </div>
+                    </div>
+
+
+                 
+                 
+                </div>
+
+
+                <div class="row py-4">
+                    <div class="col-lg-12">
+                        <div class="card card-frame mx-3">
+                            <div class="card-header p-0 position-relative  z-index-2">
+                                <div class="bg-gradient-primary shadow-primary border-radius-lg px-3 pt-2 pb-1 ">
+                                    <h5 class="text-center text-white">شرح فرآیند</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive ">
+          
+                                <table id="example" class="table uk-table uk-table-hover uk-table-striped align-items-center  mb-0">
+                                  <br>
+                                  <thead>
+                                    
+                                    <tr>
+                                      
+                                      {% for header in header_table %}
+                                        <th class="text-center text-lg font-weight-bolder opacity-7">{{header}}</th>
+                                      {% endfor %}
+                                     
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    
+                                  
+                                    {%for datas in ProcessDescriptionSelected%}
+                                    {%if datas.activityCondition == None%}
+                                      <tr>
+                                   
+                                        
+                                          <td class="narowFont text-center overflow-hidden">{{ forloop.counter}}</td>
+                                          <td style="white-space: pre-wrap;" class="narowFont text-center overflow-hidden">{{datas.activityDescription}}</td>
+                                          <td style="white-space: pre-wrap;" class="narowFont text-center overflow-hidden">{{datas.ownerActivity}}</td>
+                                          {%if datas.activityDocumentation == None %}
+                                          <td class="narowFont text-center overflow-hidden"></td>
+                                          {%else%}
+                                          <td class="narowFont text-center overflow-hidden">{{datas.activityDocumentation}}</td>
+                                          {%endif%}
+                                          {%if datas.description == None %}
+                                          <td style="white-space: pre-wrap;" class="narowFont text-center overflow-hidden"> </td>
+                                          {%else%}
+                                          <td style="white-space: pre-wrap;" class="narowFont text-center overflow-hidden">{{datas.description}}</td>
+                                          {%endif%}
+                                          
+                                         
+                                        
+                                      </tr>
+                                     {%else%}
+                                     <tr>
+                                        <td colspan = "5" style="white-space: pre-wrap;" class="narowFont text-center overflow-hidden"><strong>{{datas.activityCondition}}</strong></td>
+                                     </tr>
+                                     
+                                     {%endif%}
+                                    {%endfor%}
+                                    
+                      
+                                              
+                                  </tbody>
+                                </table>
+                                
+                              </div>
+                        </div>
+
+                 
+
+                <div class="row py-4">
+                    <div class="col-lg-12">
+                        <div class="card card-frame mx-3">
+                            <div class="card-body">
+                                <h5 class="py-2">خروجی های فرآیند    : {{pd.process.title}}  </h5> 
+                                <hr class="dark horizontal">
+                                    {%for to in processToSelected%}
+                                    <div class="row border-bottom border-light-subtle">
+                                        <div class="col-6">
+                                            <p class="text-lg">
+                                                {{to.outputProcess}}
+                                            </p>
+                                        </div>
+                                        <div class="col-6 border-right">
+                                            <p class="text-lg ">
+                                                {%if to.toProcessRelated == None%}
+                                                <strong>از ذینفع </strong> : {{to.toBeneficiary}}
+                                                {%else%}
+                                               <a style=" color: inherit; text-decoration: inherit; " href="{%url 'ViewProcessDocument' to.toProcessRelated.id %}"> <strong> از  فرآیند  </strong>: {{to.toProcessRelated}} </a>
+                                                {%endif%}
+                                                
+
+                                                
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                   {%endfor%}
+                                
+                        </div>
+                        
+                      </div>
+                          </div>
+                    </div>
+
+               
+                 
+                </div>
+
+
+
+                <div class="row py-4">
+                    <div class="col-lg-12">
+                        <div class="card card-frame mx-3">
+                            <div class="card-body">
+                                    <h5 class="py-2">  دستورالعمل ها و آیین نامه های کلی مورد استفاده در اجرای فرآیند : </h5> 
+
+                                    <p class="text-lg ">{{guidelinesProcess}}</p>
+                                    
+                            </div>
+                            
+                          </div>
+                    </div>
+
+                    
+                    
+                    
+                 
+                </div>
+
+
+                
+                
+            </div>
+
+            
+        </div>
+
+        
+        
+    </div>
+    </div>
+{% endblock content %}
+
+
+{% block scripts %}
+
+<script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.5.1/dist/js/foundation.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $(document).foundation();
+    })
+</script>
+{%endblock scripts%}

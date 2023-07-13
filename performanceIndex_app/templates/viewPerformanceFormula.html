@@ -1,0 +1,223 @@
+{% extends extend%}
+{% load static %}
+{% block style %}
+<link rel="stylesheet" href="{% static  '/css/foundation.min.css' %}">
+
+{%endblock style%}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card my-4">
+            <div class="card-header p-0 position-relative mt-4 mx-3 z-index-2">
+                <div class="bg-gradient-danger shadow-info border-radius-lg px-3 pt-4 pb-3">
+                    <h4 class="text-white text-center  ps-3">    شناسنامه شاخص عملکرد</h4>
+                </div>
+            </div>
+            <div class="card-body px-0 pb-2">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card card-frame mx-3">
+                            <div class="card-body">
+                                    <h5 class="py-2">نام شاخص عملکردی  : {{obj.performanceIndexRelated.title}}  </h5> 
+                                    <h5 class="py-2"> نوع شاخص عملکردی : {{obj.performanceIndexRelated.get_indexType_display}}  </h5>
+                                    <h5 class="py-2"> کد شاخص عملکردی : {{obj.performanceIndexRelated.codePerformanceIndex}}  </h5>
+                                    
+
+
+
+
+                                    <hr class="dark horizontal">
+                                    <h6 class="py-2">  فرآیند مرتبط : {{obj.performanceIndexRelated.processRelated}}  </h6>
+                                    <h6 class="py-2">  مرجع : {{obj.performanceIndexRelated.reference}}  </h6>
+                                    <h6 class="py-2">   استاندارد مرتبط  : {{obj.performanceIndexRelated.standardRelated}}  </h6>
+                                    <h6 class="py-2">   ذینفعان : {{obj.performanceIndexRelated.stackHolder}}  </h6>
+                                    <h6 class="py-2">   فایل : {{obj.performanceIndexRelated.document}}  </h6>
+                                    
+                            </div>
+                            
+                          </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="card card-frame mx-3">
+                            
+
+                            <div class="card-body">
+                                  
+                                    <h5 class="py-2">معیار پذیرش:  {{obj.get_acceptableCondition_display}} از {{obj.acceptableCriteria}}  </h5>
+                                   
+                                    <h6 class="py-2"> پست مسئول پایش شاخص: {{obj.responsible.jobBankPost.title}}   </h6>
+                                    <h6 class="py-2">    مسئول پایش شاخص : {{obj.responsible.profile.firstName}} - {{obj.responsible.profile.lastName}}  </h6>
+                                    
+                                    <h6 class="py-2"> واحد شاخص عملکردی  : {{obj.metric}}  </h6>
+                                    <h6 class="py-2"> فرمول شاخص عملکردی  : {{obj.PerformanceFormula}}  </h6>
+                                    
+                                    
+                            </div>
+                            
+                          </div>
+                    </div>
+                    
+                    
+                 
+                </div>
+                <div class="card-header p-0 position-relative mt-4 mx-3 z-index-2">
+                    <div class="bg-gradient-danger shadow-info border-radius-lg px-3 pt-4 pb-3">
+                        <h5 class="text-white  ps-3">اطلاعات تکمیلی فرمول:</h5>
+                    </div>
+                </div>
+                <div class="card-body px-0 pb-2">
+                    <div class="row py-4">
+                       
+                        <div class="container-fluid fulled">
+                        
+                            <div class="row border-bottom py-3">
+                              <div class="col-1 text-center">ردیف </div>
+                              <div class="col-1 text-center">نماد </div>
+                              <div class="col-3 text-center">عنوان</div>
+                              <div class="col-3 text-center">توضیحات</div>
+                              <div class="col-2 text-center">پست مرتبط</div>
+                              <div class="col-2 text-center">فرد مرتبط</div>
+                              
+                            </div>
+                            {%for variable in obj.variablesRelated.all%}
+                           
+                               
+                            
+                            
+                               
+                               
+                                  <div class="row border-bottom py-3">
+                                    
+                                        <div class="col-1 narowFont text-center">{{forloop.counter}}</div>
+                                        <div class="col-1 narowFont text-center">{{variable.code}}</div>
+                                        <div class="col-3 narowFont text-center">{{variable.title}}</div>
+                                        <div class="col-3 narowFont text-center">{{variable.description}}</div>
+                                        <div class="col-2 narowFont text-center">{{variable.responsible.jobBankPost.title}}</div>
+                                        <div class="col-2 narowFont text-center">{{variable.responsible.profile.firstName}} - {{variable.responsible.profile.lastName}}</div>
+                                        
+                                      
+                                      
+                                      
+                                        <!-- <a href="#" onclick="show_hide_row('hidden_row{{values.0}}');" class="col-2">
+                                          <div class="  ms-2 d-flex align-items-center justify-content-center">
+                                            <img style="max-width: 50px;" src="{% static 'img/svg/view.svg' %}" >
+                                          </div>
+                                        </a> -->
+                                  </div>
+                                  {% endfor %}
+                                  <!-- <div id="hidden_row{{values.0}}" class="hidden_row row moreData py-3" style="display:none">
+                                          
+                                     
+                                      
+                                      <div class="row py-3">
+                                        
+                                        
+                                          <div class="col-12">
+                                            <span class="nowrap fw-bold text-dark" >  برآورد مدت ممیزی : </span>
+                                            <span class="nowrap narowFont">{% if values.5 != 0 or values.5 != 00 %} {{values.5}} ساعت {% endif %}</span>   <span class="nowrap narowFont">{% if values.6 != 0 or values.6 != 00 %}و {{values.6}} دقیقه {% endif %}  </span> 
+                                          </div>
+                                          
+                
+                                      </div>
+                
+                                      <hr class="dark horizontal">
+                                      <div class="row py-3">
+                                        <div class="col-12">
+                                          <span class=" fw-bold text-dark" >    اعضای تیم ممیزی : </span>
+                                          {% for member in values.7 %}
+                                          <span class=" narowFont d-block" >* {{member}}</span> 
+                                          {%endfor%}
+                                        </div>
+                                      </div>
+                
+                                      
+                                         <hr class="dark horizontal">
+                                         <hr class="dark horizontal">
+                                         
+                                        
+                                          <div class="row py-3">
+                                            <div class="col-12">
+                                              <span class="nowrap fw-bold text-dark" >    سیستم مدیریتی   : </span>
+                                              <span class="nowrap narowFont"> {{values.8}}</span> 
+                                            </div>
+                                          </div>
+                
+                                          <div class="row py-3">
+                                            <div class="col-12">
+                                              <span class="nowrap fw-bold text-dark" >    بند ممیزی    : </span>
+                                              {% for band in values.9 %}
+                                                <span class=" narowFont d-block" >* {{band}}</span> 
+                                              {%endfor%}
+                                              
+                                            </div>
+                                          </div> 
+                
+                                          <hr class="dark horizontal">
+                                          <hr class="dark horizontal">
+                                        
+                                          
+                                     
+                                       
+                
+                                     
+                                      
+                
+                                      
+                                    
+                
+                                  </div> -->
+                                        
+                                
+                
+                                   
+                                    
+                                    
+                
+                                  
+                              
+                              
+                          
+                          
+                                </div>
+                      
+
+                       
+
+                       
+                        
+                        
+                    
+                    </div>
+                </div>
+
+                <div class="row justify-content-md-center">
+           
+                  <div class="col-5">
+                    <a href="{%url menuBack%}" class="btn w-100  btn-outline-danger">
+                      بازگشت </a>
+                  </div>
+                </div>
+
+               
+            </div>
+        </div>
+
+      
+        
+    </div>
+    </div>
+{% endblock content %}
+
+
+{% block scripts %}
+
+<script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.5.1/dist/js/foundation.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $(document).foundation();
+    })
+</script>
+{%endblock scripts%}

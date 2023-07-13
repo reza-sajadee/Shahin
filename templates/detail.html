@@ -1,0 +1,87 @@
+{% extends extend%}
+
+
+{% load static %}
+{% block style %}
+
+<link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/tabs.css' %}">
+{%endblock style%}
+
+{% block content %}
+<!-- {{get_jalali_date}} -->
+
+<div class="container py-6">
+    <div class="row justify-content-md-center">
+        <div class="card card-frame col-12">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="row">
+             
+              <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+                <h4 class="text-white text-capitalize ps-3">{{ header_title }}</h4>
+                <p class="text-lg font-monospace text-light mb-0">
+                    {{discribtion}}
+                    </p>
+              </div>
+            </div>
+           
+          </div>
+            <div class="card-body">
+                <div class="row justify-content-center">
+                    <div class="col-6 2">
+                        <div class="card card-frame ineer-shadow">
+                            <div class="table-responsive p-0">
+                                <table class="table table-center uk-table uk-table-hover uk-table-striped  align-items-center mb-0">
+                                    <tbody>
+                                        {% for  keys,values in list_data.items %}
+                                              
+                                            
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-lg">{{keys}} :  </h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-lg"> {{values}}  </h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                          
+                                        
+                                        </tr>
+                                        {% endfor %}
+                                     
+                                
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                    </div>
+                   
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+    
+   
+{% endblock content %}
+
+
+{% block scripts %}
+
+		<script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
+	<!-- OR -->
+	<!-- loading by form (if used AdminJalaliDateWidget) -->
+		{{ form.media }}
+
+{%endblock scripts%}

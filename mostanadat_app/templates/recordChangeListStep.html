@@ -1,0 +1,113 @@
+
+ {% extends extend %} 
+
+
+
+
+{% load static %}
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/dataTables.css' %}">
+
+
+  <script type="text/javascript" charset="utf8" src="{% static '/js/dataTables.js' %}"></script>
+
+  <script src="{% static '/js/jquery.dataTables.js' %}"  ></script>
+{%endblock style%}
+
+{% block content %}
+<div class="container py-6">
+  <div class="row justify-content-md-center">
+    <div class="card card-fram col-12">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="row">
+          
+          <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+            <h4 class="text-white text-capitalize ps-3">{{ header_title }}</h4>
+            
+          </div>
+        </div>
+      </div>
+     
+      
+    
+        <div class="table-responsive my-5">
+          
+          <table id="example" class="table uk-table uk-table-hover uk-table-striped align-items-center py-3 mb-0">
+            <br>
+            <thead>
+              
+              <tr>
+                
+                {% for header in header_table %}
+                  <th class="text-center text-lg font-weight-bolder opacity-7">{{header}}</th>
+                {% endfor %}
+                {% if request.user.is_superuser %}
+                <th class="text-center text-lg font-weight-bolder opacity-7">انجام دادن</th>
+            
+                {% endif %}
+              </tr>
+            </thead>
+            <tbody>
+              
+            
+              {%for datas in list_data%}
+                {% for key, values in datas.items %}
+                <tr>
+                    
+                    {% for v in values %}
+                    <td class="narowFont text-center overflow-hidden">{{v}}</td>
+                    {% endfor %}
+                    {% if request.user.is_superuser %}
+                    <td>
+                      <a class="nav-link text-black-80" href="{%url 'CreateViewRecordChangeStep' key %}"   >
+                        <div class="  ms-2 d-flex align-items-center justify-content-center">
+                          <img style="max-width: 50px; min-width: 30px;" src="{% static 'img/svg/edit.svg' %}" >
+                        </div>
+                      </a>
+                    </td>
+                    
+                    {%endif%}
+                </tr>
+                {% endfor %}
+              {%endfor%}
+              
+
+                        
+            </tbody>
+          </table>
+          
+        </div>
+      </div>
+       
+    
+    </div>
+  </div>
+</div>
+  {% endblock content %}
+
+
+  {% block scripts %}
+  
+  
+  <script>
+    $(document).ready( function() {
+  $('#example').dataTable( {
+    "oLanguage": {
+      "oPaginate": {
+        "sNext": "صفحه بعدی",
+        "sPrevious": "صفحه قبلی"
+      },
+      "sEmptyTable": "اطلاعاتی برای نمایش وجود ندارد",
+      "sSearch": "جستجو   :  ",
+      "sInfo": "نمایش _START_ تا_END_ از تعداد کل _TOTAL_" ,
+      "sLengthMenu": "  تعداد در صفحه  _MENU_ ",
+      "sInfoEmpty": "رکوردی برای نمایش وجود ندارد"
+    
+    }
+  } );
+} );
+  </script>
+  {%endblock scripts%}
+  
+
+

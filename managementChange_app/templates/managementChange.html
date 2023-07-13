@@ -1,0 +1,354 @@
+{% extends extend%}
+{% load static %}
+
+{% load jalali_tags %}
+{%block style%}
+<link rel="stylesheet" href="{%static '/css/select2.min.css'%}">
+<link rel="stylesheet" href="{%static '/css/select2-bootstrap-5-theme.rtl.min.css'%}">
+
+<style>
+  .causeAnswer { display:none ;}
+  .problemSolvingAnswer {display: none;}
+  .correctiveActionAnswer {display: none;}
+  .correctiveAnswer {display: none;}
+  </style>
+  <link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+{%endblock style%}
+
+
+
+
+{% block content %}
+<script>
+  $(document).ready(function() { 
+  $("select").select2({
+   theme: "bootstrap-5",
+   placeholder: "یک گزینه را انتخاب کنید",
+   allowClear: true
+  });
+  });
+
+ </script>
+<div class="container py-6">
+    <div class="row justify-content-md-center">
+        <div class="card card-frame col-12">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="row">
+           
+              <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+                <h4 class="text-white text-capitalize ps-3">{{ header_title }}</h4>
+                <p class="text-md font-monospace text-light mb-0">
+                  {{discribtion}}
+                </p>
+              </div>
+            </div>
+           
+          </div>
+          
+          <div class="card-body">
+                
+          
+            <div class="row py-3">
+             
+             
+             
+            
+              
+                  <div class="card border mb-3" >
+                    <div class="card-header">1 - اطلاعات اولیه</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title">واحد   </h5>
+                          <p class="card-text">{{changeData.VahedChange.title}}</p>
+                        </div>
+                        <div class="col">
+                          <h5 class="card-title">  شماره درخواست تغییر   </h5>
+                          <p class="card-text">CH-00{{changeData.id}} </p>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title">نوع درخواست  </h5>
+                          <p class="card-text">{{changeData.typeChange}} </p>
+                        </div>
+                       
+                    
+                     
+                        <div class="col">
+                          <h5 class="card-title">موضوع تغییر   </h5>
+                          <p class="card-text">{{changeData.subjectChange}} </p>
+                        </div>
+                       
+                       
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+               
+                  <div class="card border mb-3" >
+                    <div class="card-header">2 -محل تغییر</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title"></h5>
+                          <p class="card-text">
+                          {{changeData.locationChange}}
+                            </p>
+                        </div>
+                        
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+                
+                  <div class="card border mb-3" >
+                    <div class="card-header">3 - شرح تغییر</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title"></h5>
+                          <p class="card-text">
+                          {{changeData.discription}}
+                            </p>
+                        </div>
+                        
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+              
+                  <div class="card border mb-3" >
+                    <div class="card-header">4 - دلایل تغییر</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title"></h5>
+                          <p class="card-text">
+                          {{changeData.resonChange}}
+                            </p>
+                        </div>
+                        
+                      </div>
+
+
+                    
+                      
+                    </div>
+                  </div>
+   
+                  <div class="card border mb-3" >
+                    <div class="card-header">5 - نتیجه / هدف تغییر</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title"></h5>
+                          <p class="card-text">
+                          {{changeData.goalChange}}
+                            </p>
+                        </div>
+                        
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+              
+                  <div class="card border mb-3" >
+                    <div class="card-header">7 - اثرات تغییر</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title"></h5>
+                          <p class="card-text">
+                          {{changeData.effectChange}}
+                            </p>
+                        </div>
+                        
+                      </div>
+
+
+                    
+                      
+                    </div>
+                  </div>
+     
+                  <div class="card border mb-3" >
+                    <div class="card-header">8 -تایید مسئول</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title"></h5>
+                          <p class="card-text"> 
+                            تغییر مورد نظر مورد تایید
+                            <strong class="text-success"> {{changeData.changeProfile.firstName}} - {{changeData.changeProfile.lastName}} در تاریخ 1402/03/28 - 14:07:23  قرار گرفته است .</strong>
+                          </p>
+                           
+                           
+                            </p>
+                        </div>
+                        
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+           
+                  <div class="card border mb-3" >
+                    <div class="card-header">9 - نتیجه بررسی اولیه</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col-12">
+                          <h5 class="card-title"></h5>
+                          
+                          
+                            <p class="card-text">{{changeData.firstCheckChange}}</p>
+                            
+                            <p class="card-text"> 
+                              نتیجه بررسی اولیه مورد نظر مورد تایید
+                              <strong class="text-success"> {{changeData.firstCheckChangeProfile.firstName}} - {{changeData.firstCheckChangeProfile.lastName}} در تاریخ 1402/03/28 - 14:07:23  قرار گرفته است .</strong>
+                            </p>
+                         
+                        </div>
+                       
+                       
+                        
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+             
+                <div class="card border mb-3" >
+                  <div class="card-header">10  - ارزیابی میزان آمادگی برای تغییر</div>
+                  <div class="card-body border-top text-secondary">
+                    <div class="row">
+                      <div class="col-12">
+                        <h5 class="card-title"></h5>
+                        
+                        <p class="card-text">{{changeData.effectiveChange}}</p>
+                        <p class="card-text"> 
+                          ارزیابی میزان آمادگی برای تغییر مورد نظر مورد تایید
+                          <strong class="text-success"> {{changeData.effectiveChangeProfile.firstName}} - {{changeData.effectiveChangeProfile.lastName}} در تاریخ 1402/03/28 - 14:07:23  قرار گرفته است .</strong>
+                        </p>
+                          
+                          
+                       
+                      </div>
+                     
+                     
+                      
+                    </div>
+
+                  
+                    
+                  </div>
+                </div>
+
+
+        
+                <div class="card border mb-3" >
+                  <div class="card-header">11 - معیار های اثربخشی تغییر</div>
+                  <div class="card-body border-top text-secondary">
+                    <div class="row">
+                      <div class="col-12">
+                        <h5 class="card-title"></h5>
+                        
+                        
+                        <p class="card-text">{{changeData.criterionChange}}</p>
+                        <p class="card-text"> 
+                          معیار های اثربخشی تغییر مورد نظر مورد تایید
+                          <strong class="text-success"> {{changeData.criterionChangeProfile.firstName}} - {{changeData.criterionChangeProfile.lastName}} در تاریخ 1402/03/28 - 14:07:23  قرار گرفته است .</strong>
+                        </p>
+                          
+                        
+                       
+                      </div>
+                     
+                      
+                    </div>
+
+                  
+                    
+                  </div>
+                </div>
+            
+                  <div class="card border mb-3" >
+                    <div class="card-header">12 - نتیجه نهایی</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title"></h5>
+                          <p class="card-text">{{changeData.criterionChange}}</p>
+                        <p class="card-text"> 
+                          نتیجه نهایی تغییر مورد نظر مورد تایید 
+                          <strong class="text-success"> {{changeData.resultChnageProfile.firstName}} - {{changeData.resultChnageProfile.lastName}} در تاریخ 1402/03/28 - 14:07:23  قرار گرفته است .</strong>
+                        </p>
+                        </div>
+                        
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+           
+               
+              
+                      
+              
+              
+             
+            </div>
+          
+
+          
+          </div>
+        </div>
+      </div>
+</div>
+
+    
+    
+   
+{% endblock content %}
+
+{%block scripts%}
+<script>
+$(function() {
+  $("#cause").on("click",function() {
+    $(".causeAnswer").toggle(this.checked);
+  });
+});
+$(function() {
+  $("#problemSolving").on("click",function() {
+    $(".problemSolvingAnswer").toggle(this.checked);
+  });
+});
+$(function() {
+  $("#correctiveAction").on("click",function() {
+    $(".correctiveActionAnswer").toggle(this.checked);
+  });
+});
+$(function() {
+  $("#corrective").on("click",function() {
+    $(".correctiveAnswer").toggle(this.checked);
+  });
+});
+
+
+</script>
+<script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
+<script src="{% static 'js/picker.js' %}"></script>
+<script src="{% static '/js/select2.min.js' %}"></script>
+{%endblock scripts%}

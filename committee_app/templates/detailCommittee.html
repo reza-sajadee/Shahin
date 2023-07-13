@@ -1,0 +1,347 @@
+{% extends extend%}
+
+
+{% load static %}
+{% block style %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css">
+<!-- <link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/tabs.css' %}"> -->
+{%endblock style%}
+
+{% block content %}
+{{get_jalali_date}}
+
+<div class="container py-6">
+    <div class="row justify-content-md-center">
+
+          
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-5">
+                        <div class="card card-frame ineer-shadow">
+                            <div class="card-header bg-gradient-primary  pb-0">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h6 class="text-center text-white"> اطلاعات پایه {{form.topic}}</h6>
+                                        <hr class="dark horizontal my-2">
+                                    </div>
+                                
+                                </div>
+                            </div>
+                            <div class="table-responsive p-0">
+                                <table class="table table-center uk-table uk-table-hover uk-table-striped  align-items-center mb-0">
+                                    <tbody>
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-lg"> سرفصل :  </h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-lg"> {{form.topic}}  </h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                          
+                                        
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-lg">عنوان  :  </h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-lg"> {{form.title}} </h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            
+
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-lg">مستند قانونی تشکیل جلسه :  </h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-lg"> {{form.mostanadGhanoni}} </h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                          
+                                        
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-lg">حوزه مرتبط :  </h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-lg"> {{form.hoze}}  </h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                        
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-lg"> نوع کمیته :  </h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-lg"> {{form.typeComittee}} </h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                          
+                                        
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-lg"> رئیس جلسه:  </h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-lg"> {{form.head.profile.firstName}} {{form.head.profile.lastName}} </h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                          
+                                        
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-lg">جانشین اول  :  </h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-lg"> {{form.janeshinAval.profile.firstName}} {{form.janeshinAval.profile.lastName}} </h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                          
+                                        
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-lg">جانشین دوم  :  </h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-lg"> {{form.janeshinDovom.profile.firstName}} {{form.janeshinDovom.profile.lastName}} </h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                          
+                                        
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-lg">  دبیر جلسه  :  </h6>
+                                                    </div>
+                                                </div>
+                                            </td>                 
+                                        <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-lg"> {{form.dabir.profile.firstName}} {{form.dabir.profile.lastName}} </h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                          
+                                        
+                                        </tr>
+                                     
+                                
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                           
+                        </div>
+                        
+                    </div>
+                    <div class="col-7">
+                        <div class="card card-frame ineer-shadow">
+                            <div class="card-header bg-gradient-primary  pb-0">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <h6 class="text-center text-white">اعضا {{form.topic}}</h6>
+                                            <hr class="dark horizontal my-2">
+                                        </div>
+                                    
+                                    </div>
+                                </div>
+                            <div class="row">
+                                <div class="col-12">
+                                   
+                                        
+                                    <div class="card-body px-0 pb-2">
+                                        <div class="row mx-3">                 
+                                            <table id="playerTable" class="table table-center uk-table uk-table-hover uk-table-striped align-items-center py-3 mb-0">
+                                                <br>
+                                                <thead>
+                                                    
+                                                    <tr>
+                                                    
+                                                       
+                                                    <th class="text-secondary text-lg font-weight-bolder opacity-7">نام</th>
+                                                    <th class="text-secondary text-lg font-weight-bolder opacity-7">نام خانوادگی</th>
+                                                    <th class="text-secondary text-lg font-weight-bolder opacity-7">شماره کارمندی</th>
+                                                    <th class="text-secondary text-lg font-weight-bolder opacity-7">سمت </th>
+                                                  
+                                                    
+                                                    <!-- <th class="text-secondary text-lg font-weight-bolder opacity-7">حذف</th> -->
+                                                    
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    
+                                                 
+                                                    {%for member in object.members.all%}
+                                                    
+                                                    <tr>
+                                                        
+                                                        
+                                                        <td class="narowFont  overflow-hidden">
+                                                            
+                                                            {{member.profile.firstName}} 
+                                                        </td>
+                                                        <td class="narowFont  overflow-hidden">
+                                                            
+                                                            {{member.profile.lastName}}   
+                                                        </td>
+                                                        <td class="narowFont  overflow-hidden">
+                                                            
+                                                            {{member.profile.employeeNumber}} 
+                                                        </td>
+                                                        <td class="narowFont  overflow-hidden">
+                                                            
+                                                            {{member.jobBankPost.title}} 
+                                                        </td>
+
+                                                       
+                                                      
+                                                        
+                                                    
+                                                        
+                                                    </tr>
+                                                    
+                                                    {%endfor%}
+                                                    
+                                    
+                                                            
+                                                </tbody>
+                                                </table>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                                
+                              </div>
+                              
+                        </div>
+                       
+                    </div>
+                </div>
+                
+            </div>
+    
+    </div>
+
+</div>
+
+    
+    
+   
+{% endblock content %}
+
+
+{% block scripts %}
+<script
+src="https://code.jquery.com/jquery-3.6.0.min.js"
+integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf8" src="{% static '/js/dataTables.js' %}"></script>
+
+<script>
+  $(document).ready( function() {
+$('#example').dataTable( {
+  "oLanguage": {
+    "oPaginate": {
+      "sNext": "صفحه بعدی",
+      "sPrevious": "صفحه قبلی"
+    },
+    "sEmptyTable": "اطلاعاتی برای نمایش وجود ندارد",
+    "sSearch": "جستجو   :  ",
+    "sInfo": "نمایش _START_ تا_END_ از تعداد کل _TOTAL_" ,
+    "sLengthMenu": "  تعداد در صفحه  _MENU_ ",
+    "sInfoEmpty": "رکوردی برای نمایش وجود ندارد"
+  
+  }
+} );
+} );
+</script>
+		<!-- <script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
+	<!-- OR -->
+	<!-- loading by form (if used AdminJalaliDateWidget) -->
+		{{ form.media }} -->
+
+{%endblock scripts%}
+
+
+
+
+

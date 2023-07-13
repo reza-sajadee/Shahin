@@ -1,0 +1,555 @@
+{% extends extend%}
+{% load static %}
+{% block style %}
+{% load jalali_tags %}
+<style>
+.causeAnswer { display:none ;}
+.problemSolvingAnswer {display: none;}
+.correctiveActionAnswer {display: none;}
+.correctiveAnswer {display: none;}
+</style>
+<link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+<link rel="stylesheet" href="{%static '/css/select2.min.css'%}">
+<link rel="stylesheet" href="{%static '/css/select2-bootstrap-5-theme.rtl.min.css'%}">
+{%endblock style%}
+{% block content %}
+<script>
+  $(document).ready(function() { 
+  $("#id_postKeeper").select2({
+   theme: "bootstrap-5",
+   placeholder: "یک گزینه را انتخاب کنید",
+   allowClear: true
+  });
+  $("#id_vahedKeeper").select2({
+   theme: "bootstrap-5",
+   placeholder: "یک گزینه را انتخاب کنید",
+   allowClear: true
+  });
+  $("#id_privacy").select2({
+   theme: "bootstrap-5",
+   placeholder: "یک گزینه را انتخاب کنید",
+   allowClear: true
+  });
+  $("#id_typeKeeping").select2({
+   theme: "bootstrap-5",
+   placeholder: "یک گزینه را انتخاب کنید",
+   allowClear: true
+  });
+  });
+
+ </script>
+<div class="container py-6">
+    <div class="row justify-content-md-center">
+        <div class="card card-frame col-12">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="row">
+           
+              <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+                <h4 class="text-white text-capitalize ps-3">{{ header_title }}</h4>
+                
+              </div>
+            </div>
+           
+          </div>
+          
+            <div class="card-body">
+                
+              
+              <div class="row py-3">
+                <div class="card border mb-3" >
+                  <div class="card-header">اطلاعات اولیه سابقه</div>
+                  <div class="card-body border-top text-secondary">
+                    <div class="row mt-2">
+                      <div class="col-6">
+                        <h5 class=" card-title">عنوان سابقه :</h5>
+                        <p class=" card-text"><strong> {{recordSelected.title}} </strong></p>
+                      </div>
+                      <div class="col-6">
+                        <h5 class="card-title">  کد سابقه (شناسه): </h5>
+                        <p class="card-text"> <strong> {{recordSelected.recordCode}} </strong></p>
+                      </div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-6">
+                        <h5 class="card-title">پست مسئول نگه داری سابقه :</h5>
+                        <p class="card-text"><strong> {{recordSelected.postKeeper}} </strong></p>
+                      </div>
+                      <div class="col-6">
+                        <h5 class="card-title">محل نگه داری: </h5>
+                        <p class="card-text"><strong> {{recordSelected.vahedKeeper}} </strong> </p>
+                      </div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-6">
+                        <h5 class="card-title">سطح محرمانگی:</h5>
+                        <p class="card-text"><strong> {{recordSelected.privacy}} </strong></p>
+                      </div>
+                      <div class="col-6">
+                        <h5 class="card-title">نحوه نگه داری سابقه : </h5>
+                        <p class="card-text"> <strong> {{recordSelected.typeKeeping}} </strong></p>
+                      </div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-6">
+                        <h5 class="card-title">مدت نگه داری جاری :</h5>
+                        <p class="card-text"><strong> {{recordSelected.jari}} </strong></p>
+                      </div>
+                      <div class="col-6">
+                        <h5 class="card-title">مدت نگه داری راکد : </h5>
+                        <p class="card-text"> <strong> {{recordSelected.raked}} </strong></p>
+                      </div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-12">
+                        <h5 class="card-title">نحوه تعیین تکلیف (وا رهایی)::</h5>
+                        <p class="card-text"><strong> {{recordSelected.determine}} </strong></p>
+                      </div>
+                      
+                    </div>
+
+                  
+                    
+                  </div>
+                </div>
+                {%for data in all %}
+                  
+              
+                {% if data.nextActivity == None%}
+                  {% if data.activity == 'register'%}
+                    <div class="card border mb-3" >
+                      <div class="card-header"> {{data.get_activity_display}}</div>
+                      <div class="card-body border-top text-secondary">
+                        <div class="row">
+                          <div class="col">
+                            <h5 class="card-title"></h5>
+                            <p class="card-text">شما درخواست تغییر در سابقه <strong>{{recordSelected.title}}</strong>  را دارید ، لطفا دلایل و نظرات خود را در بخش زیر وارد نمایید.</p>
+                          </div>
+                          <form class="my-2" action="" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="input-group input-group-static mb-4 col-4">
+                            <label class="custom-control-label" for=""> توضیحات مورد نظر را  وارد کنید </label>
+                            <textarea name="description" class="mt-2"   rows="4" style="min-width: 100%" id="id_description"></textarea>
+                            </div>
+                            <div class="row justify-content-md-center py-3">
+                              <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-primary"value="yes">ثبت</button>
+                              <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-danger" value="no">حذف </button>
+                            </div>
+                          </form>
+                        </div>
+
+                      
+                        
+                      </div>
+                    </div>
+                  {%endif%}
+                  {% if data.activity == 'barresiMafogh'%}
+                    <div class="card border mb-3" >
+                      <div class="card-header"> {{data.get_activity_display}}</div>
+                      <div class="card-body border-top text-secondary">
+                        <div class="row">
+                          <div class="col">
+                            <h5 class="card-title"></h5>
+                            <p class="card-text">آیا تغییر در سند <strong>{{data.MostanadatDakheliChangeRelated.documentRelated.title}}</strong> با توجه به مطالب مطرح شده، مورد تایید جناب آقای / سرکار خانم <strong>{{data.reciver.firstName}} {{data.reciver.lastName}}</strong> مافوق سازمانی درخواست کننده  میباشد ؟</p>
+                          </div>
+                          <form class="my-2" action="" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="input-group input-group-static mb-4 col-4">
+                            <label class="custom-control-label" for=""> توضیحات مورد نظر را  وارد کنید </label>
+                            <textarea name="description" class="mt-2"   rows="4" style="min-width: 100%" id="id_description"></textarea>
+                            </div>
+                            <div class="row justify-content-md-center py-3">
+                              <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-primary"value="yes">تایید</button>
+                              <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-danger" value="no">عدم تایید</button>
+                            </div>
+                          </form>
+                        </div>
+
+                      
+                        
+                      </div>
+                    </div>
+                  {%endif%}
+                  {% if data.activity == 'barresiKarshenas'%}
+                    <div class="card border mb-3" >
+                      <div class="card-header"> {{data.get_activity_display}}</div>
+                      <div class="card-body border-top text-secondary">
+                        <div class="row">
+                          <div class="col">
+                            <h5 class="card-title"></h5>
+                            <p class="card-text">آیا تغییر در سند <strong>{{data.MostanadatDakheliChangeRelated.documentRelated.title}}</strong> با توجه به مطالب مطرح شده، مورد تایید جناب آقای / سرکار خانم <strong>{{data.reciver.firstName}} {{data.reciver.lastName}}</strong>    کارشناس دفتر توسعه مدیریت و تحقیقات  میباشد ؟</p>
+                          </div>
+                          <form class="my-2" action="" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="input-group input-group-static mb-4 col-4">
+                            <label class="custom-control-label" for=""> توضیحات مورد نظر را  وارد کنید </label>
+                            <textarea name="description" class="mt-2"   rows="4" style="min-width: 100%" id="id_description"></textarea>
+                            </div>
+                            <div class="row justify-content-md-center py-3">
+                              <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-primary"value="yes">تایید</button>
+                              <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-danger" value="no">عدم تایید</button>
+                            </div>
+                          </form>
+                        </div>
+
+                      
+                        
+                      </div>
+                    </div>
+                  {%endif%}
+                  {% if data.activity == 'barresiModir'%}
+                    <div class="card border mb-3" >
+                      <div class="card-header"> {{data.get_activity_display}}</div>
+                      <div class="card-body border-top text-secondary">
+                        <div class="row">
+                          <div class="col">
+                            <h5 class="card-title"></h5>
+                            <p class="card-text">آیا تغییر در سند <strong>{{data.MostanadatDakheliChangeRelated.documentRelated.title}}</strong> با توجه به مطالب مطرح شده، مورد تایید جناب آقای / سرکار خانم <strong>{{data.reciver.firstName}} {{data.reciver.lastName}}</strong>         مدیر دفتر توسعه مدیریت و تحقیقات  میباشد ؟</p>
+                          </div>
+                          <form class="my-2" action="" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="input-group input-group-static mb-4 col-4">
+                            <label class="custom-control-label" for=""> توضیحات مورد نظر را  وارد کنید </label>
+                            <textarea name="description" class="mt-2"   rows="4" style="min-width: 100%" id="id_description"></textarea>
+                            </div>
+                            <div class="row justify-content-md-center py-3">
+                              <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-primary"value="yes">تایید</button>
+                              <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-danger" value="no">عدم تایید</button>
+                            </div>
+                          </form>
+                        </div>
+
+                      
+                        
+                      </div>
+                    </div>
+                  {%endif%}
+                 
+                  {%if data.activity == 'editKarshenas'%}
+                  <div class="card border mb-3" >
+                    <div class="card-header"> {{data.get_activity_display}}</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        
+                        <form action="" method="POST" enctype="multipart/form-data">
+                          {%csrf_token%}
+                          
+                            
+                            <div class="row">
+                              <div class="col-6 px-4">
+                                   <div class="input-group input-group-static mb-4">
+                              <label class="" for="id_title">
+                                عنوان  را وارد کنید
+                              </label>
+                              <input type="text" name="title" value="title" maxlength="100" class="form-control" required="" id="id_title" onfocus="focused(this)" onfocusout="defocused(this)">
+                              
+                            </div>
+                              </div>
+                              <div class="col-6 px-4">
+                                  <div class="input-group input-group-static mb-4">
+                              <label class="" for="id_recordCode">
+                                 کد سابقه  <strong> (غیر قابل ویرایش) </strong>
+                              </label>
+                              <input type="text" readonly name="recordCode" value="1" maxlength="100" class="form-control" required="" id="id_recordCode" onfocus="focused(this)" onfocusout="defocused(this)">
+                              
+                            </div>
+                              </div>
+                            </div>
+                           
+                           
+                            
+        
+                            
+                            <div class="row">
+                              <div class="col-6 px-4">
+                                <div class="input-group input-group-static mb-4">
+                              <label class="" for="id_postKeeper">
+                                پست مسئول نگه داری سابقه را انتخاب کنید 
+                              </label>
+                              <select name="postKeeper" class="form-control" id="id_postKeeper">
+                                <option value="">---------</option>
+                                {%for post in allPostType%}
+                                <option value="{{post.id}}">{{post.typePostSazmaniCode}} - {{post.title}}</option>
+                                {%endfor%}
+                                
+                              
+                              </select>
+                              
+                            </div>
+                              </div>
+                              <div class="col-6 px-4">
+                                <div class="input-group input-group-static mb-4">
+                              <label class="" for="id_vahedKeeper">
+                                محل نگه داری سابقه را انتخاب کنید
+                              </label>
+                              <select name="vahedKeeper" class="form-control" id="id_vahedKeeper">
+                              <option value="">---------</option>
+                              {%for vahed in allVahed%}
+                              <option value="{{vahed.id}}">{{vahed.vahedCode}} - {{vahed.title}}</option>
+                              {%endfor%}
+                             
+                            
+                            </select>
+                              
+                            </div>
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-6 px-4">
+                                <div class="input-group input-group-static mb-4">
+                              <label class="" for="id_privacy">
+                                سطح محرمانگی را انتخاب کنید
+                              </label>
+                              <select name="privacy" class="form-control" required="" id="id_privacy">
+                                <option value="">---------</option>
+                              
+                                <option value="internal" selected="">داخلی</option>
+                              
+                                <option value="secret">محرمانه</option>
+                              
+                              </select>
+                              
+                            </div>
+                              </div>
+                              <div class="col-6 px-4">
+                                <div class="input-group input-group-static mb-4">
+                              <label class="" for="id_typeKeeping">
+                                نحوه نگه داری  را انتخاب کنید
+                              </label>
+                              <select name="typeKeeping" class="form-control" required="" id="id_typeKeeping">
+                                <option value="">---------</option>
+                              
+                                <option value="electronic" selected="">الکترونیکی</option>
+                              
+                                <option value="paper">کاغذی</option>
+                              
+                              </select>
+                                                    
+                            </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-6 px-4">
+                                <div class="input-group input-group-static mb-4">
+                              <label class="" for="id_jari">
+                                مدت نگه داری جاری  را انتخاب کنید
+                              </label>
+                              <input type="text" name="jari" value="2023-01-22 14:31:16" class="form-control" id="id_jari" onfocus="focused(this)" onfocusout="defocused(this)">
+                              
+                            </div>
+                              </div>
+                              <div class="col-6 px-4">
+                                <div class="input-group input-group-static mb-4">
+                              <label class="" for="id_raked">
+                                مدت نگه داری راکد را انتخاب کنید
+                              </label>
+                              <input type="text" name="raked" value="2023-01-22 14:31:16" class="form-control" id="id_raked" onfocus="focused(this)" onfocusout="defocused(this)">
+                              
+                            </div>
+                              </div>
+                            </div>
+
+
+        
+                            <div class="row">
+                              <div class="col-12 px-4">
+                                <div class="input-group input-group-static mb-4">
+                                  <label class="" for="id_determine">
+                                    نحوه تعیین تکلیف (وا رهایی)    را وارد کنید
+                                  </label>
+                                  <textarea name="determine" cols="40" rows="5" class="form-control" id="id_determine">determine</textarea>
+                                  
+                                </div>
+                              </div>
+                            </div>
+                            
+                            
+        
+                          
+                          
+                                <input type="submit" class="btn btn-lg bg-gradient-danger btn-lg w-100 mt-4 mb-0" value="ثبت">
+        
+                      </form>
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+                  {%endif%}
+                  
+                 
+                  
+                {%else%}
+                  {% if data.activity == 'register'%}
+                  <div class="card border mb-3" >
+                    <div class="card-header">{{ forloop.counter }} - {{data.get_activity_display}}</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title"></h5>
+                          <p class="card-text">درخواست تغییر در سابقه  <strong>{{recordSelected.title}}</strong> توسط <strong>{{data.reciver.firstName}} {{data.reciver.lastName}}</strong> در تاریخ <strong class="narowFont">{{data.created_at|to_jalali:'%Y/%m/%d - %H:%M:%S' }} </strong>  در سیستم ثبت شده است . </p>
+                            
+                          
+                            
+                      
+                            <blockquote class="blockquote">
+                              {%for text in data.texts.all%}
+                              <p>{{text}}</p>
+                              {%endfor%}
+                              <p>{{data.confirmations.text}}</p>
+                            </blockquote>
+                            </p>
+                        </div>
+                        
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+                  {%else%}
+                 
+                  {% if data.activity == 'barresiMafogh' %}
+                    <div class="card border mb-3" >
+                      <div class="card-header">{{ forloop.counter }} - {{data.get_activity_display}}</div>
+                      <div class="card-body border-top text-secondary">
+                        <div class="row">
+                          <div class="col">
+                            <h5 class="card-title"></h5>
+                            <p class="card-text">تغییر در سند  <strong>{{recordSelected.title}}</strong> با توجه به توضیحات مطرح شده توسط  <strong>{{data.reciver.firstName}} {{data.reciver.lastName}}</strong> در تاریخ <strong class="narowFont">{{data.created_at|to_jalali:'%Y/%m/%d - %H:%M:%S' }}</strong>
+                              {%if data.confirmations.confirm == 'yes'%}
+                              <strong class="text-success">به تایید مافوق رسیده است .</strong> 
+                              {%else%}
+                              <strong class="text-danger"> به تایید مافوق نرسیده است .</strong>
+                              {%endif%}
+                        
+                              <blockquote class="blockquote">
+                                {%for text in data.texts.all%}
+                                <p>{{text}}</p>
+                                {%endfor%}
+                                <p>{{data.confirmations.text}}</p>
+                              </blockquote>
+                              </p>
+                          </div>
+                          
+                        </div>
+
+                      
+                        
+                      </div>
+                    </div>
+                  {%endif%}
+                  {% if data.activity == 'barresiKarshenas' %}
+                  <div class="card border mb-3" >
+                    <div class="card-header">{{ forloop.counter }} - {{data.get_activity_display}}</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title"></h5>
+                          <p class="card-text">تغییر در سند  <strong>{{recordSelected.title}}</strong> با توجه به توضیحات مطرح شده توسط  <strong>{{data.reciver.firstName}} {{data.reciver.lastName}}</strong> در تاریخ <strong class="narowFont">{{data.created_at|to_jalali:'%Y/%m/%d - %H:%M:%S' }}</strong>
+                            {%if data.confirmations.confirm == 'yes'%}
+                            <strong class="text-success">به تایید کارشناس دفتر توسعه مدیریت و تحقیقات رسیده است .</strong> 
+                            {%else%}
+                            <strong class="text-danger"> به تایید کارشناس دفتر توسعه مدیریت و تحقیقات نرسیده است .</strong>
+                            {%endif%}
+                      
+                            <blockquote class="blockquote">
+                              {%for text in data.texts.all%}
+                              <p>{{text}}</p>
+                              {%endfor%}
+                              <p>{{data.confirmations.text}}</p>
+                            </blockquote>
+                            </p>
+                        </div>
+                        
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+                  {%endif%}
+                  {% if data.activity == 'barresiModir' %}
+                  <div class="card border mb-3" >
+                    <div class="card-header">{{ forloop.counter }} - {{data.get_activity_display}}</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title"></h5>
+                          <p class="card-text">تغییر در سند  <strong>{{recordSelected.title}}</strong> با توجه به توضیحات مطرح شده توسط  <strong>{{data.reciver.firstName}} {{data.reciver.lastName}}</strong> در تاریخ <strong class="narowFont">{{data.created_at|to_jalali:'%Y/%m/%d - %H:%M:%S' }}</strong>
+                            {%if data.confirmations.confirm == 'yes'%}
+                            <strong class="text-success">به تایید مدیر دفتر توسعه مدیریت و تحقیقات رسیده است .</strong> 
+                            {%else%}
+                            <strong class="text-danger"> به تایید مدیر دفتر توسعه مدیریت و تحقیقات نرسیده است .</strong>
+                            {%endif%}
+                      
+                            <blockquote class="blockquote">
+                              {%for text in data.texts.all%}
+                              <p>{{text}}</p>
+                              {%endfor%}
+                              <p>{{data.confirmations.text}}</p>
+                            </blockquote>
+                            </p>
+                        </div>
+                        
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+                  {%endif%}
+                  
+                 
+                {%endif%}
+                {%endif%}
+                
+                        
+                
+                
+                {%endfor%}
+              </div>
+            
+
+            
+            </div>
+        </div>
+      </div>
+</div>
+
+    
+    
+   
+{% endblock content %}
+
+{%block scripts%}
+<script>
+$(function() {
+  $("#cause").on("click",function() {
+    $(".causeAnswer").toggle(this.checked);
+  });
+});
+$(function() {
+  $("#problemSolving").on("click",function() {
+    $(".problemSolvingAnswer").toggle(this.checked);
+  });
+});
+$(function() {
+  $("#correctiveAction").on("click",function() {
+    $(".correctiveActionAnswer").toggle(this.checked);
+  });
+});
+$(function() {
+  $("#corrective").on("click",function() {
+    $(".correctiveAnswer").toggle(this.checked);
+  });
+});
+
+
+</script>
+<script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
+<script src="{% static 'js/picker.js' %}"></script>
+
+<script src="{% static '/js/select2.min.js' %}"></script>
+{%endblock scripts%}

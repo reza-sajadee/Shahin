@@ -1,0 +1,86 @@
+{% extends extend%}
+
+
+{% load static %}
+{% block style %}
+
+<link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/tabs.css' %}">
+{%endblock style%}
+
+{% block content %}
+<!-- {{get_jalali_date}} -->
+
+<div class=" py-6">
+    <div class="row justify-content-md-center">
+        <div class="card card-frame col-12">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="row">
+              
+              <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+                <h4 class="text-white text-capitalize ps-3">{{ header_title }}</h4>
+              
+              </div>
+            </div>
+           
+          </div>
+            
+                   
+                      <div class="row">
+                        {%for menu in list_menu%}
+                        
+                            <div class="col-xl-4 col-sm-6 col-12 py-4"> 
+                              <div class="card bg-{{menu.color}} text-white">
+                                <div class="card-content">
+                                  <div class="card-body">
+                                    <div class="media d-flex justify-content-center">
+                                      
+                                      <div class="media-body text-center ">
+                                        
+                                        {% if menu.link == ''%}
+                                          {% if menu.staticLink == '' %}
+                                            <a href=" # ">
+                                          {%else%}
+                                            <a href=" {%url 'ViewNews' menu.staticLink  %}  ">
+                                          {%endif%}
+                                        {% elif menu.staticLink == 'url'  %}
+                                        
+                                            
+                                              <a href="/{{menu.link}}">
+                                        {%else%}
+                                               <a href=" {% url menu.link %}   ">
+                                        {%endif%}
+                                          <h5>{{menu.title}}</h5>
+                                        </a>
+                                        
+                                        
+                                      </div>             
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          
+                        {%endfor%}
+                      </div>
+                 
+                 
+                
+        </div>
+    </div>
+</div>
+
+    
+    
+   
+{% endblock content %}
+
+
+{% block scripts %}
+
+		<script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
+	<!-- OR -->
+	<!-- loading by form (if used AdminJalaliDateWidget) -->
+		{{ form.media }}
+
+{%endblock scripts%}

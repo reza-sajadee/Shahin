@@ -1,0 +1,235 @@
+{% extends extend%}
+{% load static %}
+{% block style %}
+<link rel="stylesheet" href="{% static  '/css/foundation.min.css' %}">
+
+{%endblock style%}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card my-4">
+            <div class="card-header p-0 position-relative mt-4 mx-3 z-index-2">
+                <div class="bg-gradient-danger shadow-info border-radius-lg px-3 pt-4 pb-3">
+                    <h5 class="text-white  ps-3">بررسی ریسک فرآیند  : <strong> {{proccessSelected.title}}</strong></h5>
+                </div>
+            </div>
+            <div class="card-body px-0 pb-2">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card card-frame mx-3">
+                            <div class="card-body">{{proccessSelected}}
+                                    <h5 class="py-2">نام فرآیند  : {{proccessSelected.title}}  </h5> 
+                                    <h5 class="py-2"> کد فرآیند : {{proccessSelected.processCode}}  </h5>
+                                    
+                                    <hr class="dark horizontal">
+                                    <h6 class="py-2"> گروه فرآیند : {{proccessSelected.groupCode.title}}  </h6>
+                                    <h6 class="py-2"> حوزه فرآیند : {{proccessSelected.groupCode.hozeCode.title}}  </h6>
+                                    <h6 class="py-2"> صاحب فرآیند   : {{proccessSelected.ownerVahed.title}}  </h6>
+                                    <h6 class="py-2">  ضریب تاثیر : {{proccessSelected.impactFactor}}  </h6>
+                                    
+                            </div>
+                            
+                          </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="card card-frame mx-3">
+                            <div class="card-body">
+                                    <h5 class="py-2">میانگین شدت اثر   : {{riskProcess.avgRiskSeverity|floatformat:2}}  </h5> 
+                                    <h5 class="py-2"> میانگین احتمال وقوع   : {{riskProcess.avgRiskOccurrence|floatformat:2}}  </h5>
+                                    <h5 class="py-2"> میانگین قابلیت کشف     : {{riskProcess.avgRiskDetection|floatformat:2}}  </h5>
+                                    
+                                    <hr class="dark horizontal">
+                                    <h6 class="py-2"> اولویت ریسک (RPN)  : {{riskProcess.rpn|floatformat:2}}  </h6>
+                                    <h6 class="py-2"> اولویت ریسک تعدیل شده  (RPN Adjusted)  : {{riskProcess.rpnAdjusted|floatformat:2}}  </h6>
+                                    
+                                    
+                            </div>
+                            
+                          </div>
+                    </div>
+                    
+                    
+                 
+                </div>
+                <div class="card-header p-0 position-relative mt-4 mx-3 z-index-2">
+                    <div class="bg-gradient-danger shadow-info border-radius-lg px-3 pt-4 pb-3">
+                        <h5 class="text-white  ps-3">اطلاعات ریسک شناسایی شده برای فرآیند : <strong> {{proccessSelected.title}}</strong></h5>
+                    </div>
+                </div>
+                <div class="card-body px-0 pb-2">
+                    <div class="row py-4">
+                        <div class="col-lg-3">
+                            <div class="card card-frame mx-3">
+                                <div class="card-body">
+                                        <h5 class="card-title">نام فرآیند : </h5> 
+                                        <hr class="dark horizontal">
+                                        <span class="narowFont">
+                                            {{riskProcess.riskMeasurement.riskIdentificated.riskFailureModes}}
+                                        </span>
+                                        
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <div class="card card-frame mx-3">
+                                <div class="card-body">
+                                        <h5 > علل بروز خطا  :  </h5> 
+                                        <hr class="dark horizontal">
+                                        <span class="narowFont">
+                                            {{riskProcess.riskMeasurement.riskIdentificated.riskCauses}}
+                                        </span>
+                                        
+                                        
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <div class="card card-frame mx-3">
+                                <div class="card-body">
+                                        <h5 >  اثرات بروز خطا  :  </h5> 
+                                        <hr class="dark horizontal">
+                                        <span class="narowFont">
+                                            {{riskProcess.riskMeasurement.riskIdentificated.riskEffects}}
+                                        </span>
+                                        
+                                        
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <div class="card card-frame mx-3">
+                                <div class="card-body">
+                                        <h5 >  کنترل های فعلی   :   </h5> 
+                                        <hr class="dark horizontal">
+                                        <span class="narowFont">
+                                            {{riskProcess.riskMeasurement.riskIdentificated.currentAction}}
+                                        </span>
+                                        
+                                        
+                                </div>
+                                
+                            </div>
+                        </div>
+                        
+                        
+                    
+                    </div>
+                </div>
+
+
+
+                <div class="card-header p-0 position-relative mt-4 mx-3 z-index-2">
+                    <div class="bg-gradient-danger shadow-info border-radius-lg px-3 pt-4 pb-3">
+                        <h5 class="text-white  ps-3">  کنترل های انجام شده </h5>
+                    </div>
+                </div>
+                <div class="card-body px-0 pb-2">
+                    <div class="row py-4">
+                        <div class="col-lg-5">
+                            <div class="card card-frame mx-3">
+                       
+                                <div class="card-body">
+                                        <h5 class="card-title">نوع کنترل تعریف شده  : </h5> 
+                                        
+                                        <span class="narowFont">
+                                            {% if extraDataSelected.control == None  %} تعریف نشده {%else%}  {{extraDataSelected.control}} {%endif%}
+                                        </span>
+                                        <hr class="dark horizontal">
+                                        <h5 class="card-title">اقدام لازم برای کاهش سطح ریسک : </h5> 
+                                        
+                                        <span class="narowFont">
+                                            {% if extraDataSelected.eghdam == None  %} تعریف نشده {%else%}  {{extraDataSelected.eghdam}} {%endif%}
+                                        </span>
+                                        
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="card card-frame mx-3">
+                                <div class="card-body">
+                                        <h5 class="card-title">مسئول اقدام : </h5> 
+                                        
+                                        <span class="narowFont">
+                                            {% if extraDataSelected.masol == None  %} تعریف نشده {%else%}  {{extraDataSelected.masol}} {%endif%}
+                                        </span>
+                                        <hr class="dark horizontal">
+                                        <h5 class="card-title">تاریخ اقدام : </h5> 
+                                        
+                                        <span class="narowFont">
+                                            {% if extraDataSelected.tarikh == None  %} تعریف نشده {%else%}  {{extraDataSelected.tarikh}} {%endif%}
+                                        </span>
+                                        <hr class="dark horizontal">
+                                        <h5 class="card-title"> نتیجه اقدام : </h5> 
+                                        
+                                        <span class="narowFont">
+                                            {% if extraDataSelected.natije == None  %} تعریف نشده {%else%}  {{extraDataSelected.natije}} {%endif%}
+                                        </span>
+                                        
+                                </div>
+                                
+                            </div>
+                        </div>
+                       
+                        <div class="col-lg-4">
+                            <div class="card card-frame mx-3">
+                                <div class="card-body">
+                                        <h5 class="card-title">عدد الویت ریسک تراز شده پس از اقدام : </h5> 
+                                        
+                                        <span class="narowFont">
+                                            {% if extraDataSelected.newRisk == None  %} تعریف نشده {%else%}  {{extraDataSelected.newRisk|floatformat:2}} {%endif%}
+                                        </span>
+                                        <hr class="dark horizontal">
+                                        <h5 class="card-title">تعریف اقدامات کنترلی جدید : </h5> 
+                                        
+                                        <span class="narowFont">
+                                            {% if extraDataSelected.tarif == None  %} تعریف نشده {%else%}  {{extraDataSelected.tarif}} {%endif%}
+                                        </span>
+                                        <hr class="dark horizontal">
+                                        <h5 class="card-title"> توضیحات : </h5> 
+                                        
+                                        <span class="narowFont">
+                                            {% if extraDataSelected.dec == None  %} تعریف نشده {%else%}  {{extraDataSelected.dec}} {%endif%}
+                                        </span>
+                                        
+                                </div>
+                                
+                            </div>
+                        </div>
+                       
+
+                        
+
+                       
+                        
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+      
+        
+    </div>
+    </div>
+{% endblock content %}
+
+
+{% block scripts %}
+
+<script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.5.1/dist/js/foundation.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $(document).foundation();
+    })
+</script>
+{%endblock scripts%}

@@ -1,0 +1,585 @@
+{% load static %}
+{% load active_link_tags %}
+{{ redirect_to_login_immediately }}
+{% load jalali_tags %}
+{% load sweetify %}
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- <link rel="apple-touch-icon" sizes="76x76" href="{% static '/img/apple-icon.png' %}"> -->
+  <link rel="icon" type="image/png" href="{% static '/img/favicon.png' %}">
+
+  <title>
+    سامانه مدیریت
+  </title>
+  <link href="{% static '/fonts/nazanin/nazanin.css' %}" rel="stylesheet">
+
+  <link href="{% static '/fonts/yekan/yekan.css' %}" rel="stylesheet">
+
+  <!--     Fonts and icons     -->
+
+  <!-- Nucleo Icons -->
+  <link href="{% static '/css/nucleo-icons.css' %}" rel="stylesheet" />
+  <link href="{% static '/css/nucleo-svg.css' %}" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
+  <script src="{% static '/js/fontawesome.js' %}" crossorigin="anonymous"></script>
+  <!-- Material Icons -->
+  <link href="{% static '/fonts/material/material.css' %}" rel="stylesheet">
+  <!-- CSS Files -->
+  <link id="pagestyle" href="{% static  '/css/material-dashboard.css' %}" rel="stylesheet" />
+  <link id="pagestyle" href="{% static  '/css/style.css' %}" rel="stylesheet" />
+  <link id="pagestyle" href="{% static  '/css/calendar.css' %}" rel="stylesheet" />
+  <script src="{% static '/js/htmx.min.js' %}"></script>
+<script src="{%static '/js/multi-swap.js' %}"></script>
+  <script src="{%static '/js/hx.js'%}"></script>
+  <script src="{% static '/js/jquery.js' %}"></script>
+  
+  <link rel="stylesheet" href="{%static '/css/sweetalert2.min.css' %}">
+  
+  <script src="{%static '/js/sweetalert2.min.js'%}"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>   -->
+  <script src="{%static '/js/sweetalert2@11'%}"></script>  
+<!--SweetAlert2 JavaScript-->
+<!-- <script defer src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.28.4/sweetalert2.all.min.js" integrity="sha256-qtyU+b249rw/5PQ1KXGRtxjlgg6hfU2EK50YOlc0n50=" crossorigin="anonymous"></script> -->
+<script defer src="{%static '/js/sweetalert2.all.min.js'%}"  crossorigin="anonymous"></script>
+  {% block style %}
+
+  {%endblock style%}
+</head>
+
+<body class="g-sidenav-show rtl bg-gray-200" >
+<!-- <body class="g-sidenav-show rtl bg-gray-200" hx-ext="ws" ws-connect="ws/notifications/"> -->
+  
+  <nav class="navbar navbar-main navbar-expand-lg px-0   " id="navbarBlur" navbar-scroll="true">
+    <div class="container-fluid  px-3">
+      
+      <nav aria-label="breadcrumb " class="d-md-none d-lg-block">
+        <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 ">
+          <a href="#" class="navbar-brand">
+
+            <img height="28" src="{% static '/img/logo.png' %}" class="img-fluid mx-auto d-block " alt="main_logo">
+          </a>
+
+
+        </ol>
+
+      </nav>
+      <div class="collapse navbar-collapse mt-sm-0 mt-2 px-0" id="navbar">
+
+        <ul class="navbar-nav me-auto ms-0 justify-content-end">
+
+          <li class="nav-item mx-3 d-xl-none pe-3 d-flex align-items-center">
+            <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+              <div class="sidenav-toggler-inner">
+                <i class="sidenav-toggler-line"></i>
+                <i class="sidenav-toggler-line"></i>
+                <i class="sidenav-toggler-line"></i>
+              </div>
+            </a>
+          </li>
+          <li class="nav-item mx-3 px-3 d-flex align-items-center">
+            <a href="javascript:;" class="nav-link text-body p-0">
+              <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
+            </a>
+          </li>
+
+
+
+
+          
+          {% if user.is_superuser %}
+          <li class="nav-item mx-3 d-flex align-items-center">
+            <a href="{% url 'Dashboard'%}" class="nav-link text-body px-0">
+
+              <i class="fa fa-user me-sm-1"></i>
+              <span class="d-sm-inline d-none">ورود به بخش مدیریت سایت</span>
+
+            </a>
+          </li>
+          {% endif %}
+          <li class="nav-item mx-3 d-flex align-items-center">
+            <a href="{% url 'ProfileHome'%}" class="nav-link text-body px-0">
+
+              <i class="fa fa-user me-sm-1"></i>
+              <span class="d-sm-inline d-none">پروفایل</span>
+
+            </a>
+          </li>
+          <li class="nav-item mx-3 d-flex align-items-center">
+            <a href="{% url 'logout'%}" class="nav-link text-body px-0">
+
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#344767" class="bi bi-power"
+                viewBox="0 0 16 16">
+                <path d="M7.5 1v7h1V1h-1z" />
+                <path
+                  d="M3 8.812a4.999 4.999 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812z" />
+              </svg>
+
+
+            </a>
+          
+          </li>
+          <li class="nav-item mx-3 dropdown ps-2 d-flex align-items-center">
+            <a href="" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              <!-- <i class="fa fa-bell cursor-pointer"></i> -->
+              <img  style="max-width: 20px; min-width: 12px; opacity: 0.6;" 
+              src=" {% static 'img/svg/bell.svg'  %}">
+              <span class="badgec narowFont text-md">{{countNotif}}</span>
+            </a>
+            {% include 'partials/notification2.html' %}
+          </li>
+          <li class="nav-item mx-3 dropdown ps-2 d-flex align-items-center">
+            <a href="" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              <!-- <i class="fa fa-bell cursor-pointer"></i> -->
+              <img  style="max-width: 20px; min-width: 12px; opacity: 0.6;" 
+              src=" {% static 'img/svg/message.svg'  %}">
+              <span class="badgec narowFont text-md">{{countmsg}}</span>
+            </a>
+            {% include 'partials/message.html' %}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <aside class="sidenav  navbar navbar-vertical navbar-expand-xs  fixed-end " id="sidenav-main">
+
+
+    <div class="collapse overflow-visible navbar-collapse px-0 w-auto  max-height-vh-100" id="sidenav-collapse-main">
+      <ul class="navbar-nav">
+
+        <li class="nav-item border-top border-3">
+          <a class="nav-link text-black-80" href="{%url 'DashboardEmployee'%}">
+            <div class=" text-center ms-2 d-flex align-items-center justify-content-center">
+              <img class="icon-50" src="{% static 'img/svg/control-panel.svg' %}">
+            </div>
+            <span class="nav-link-text me-1">صفحه اصلی </span>
+          </a>
+        </li>
+
+        <li class="nav-item border-top border-3">
+          <a class="nav-link text-black-80" href="#basic" aria-expanded="false" data-bs-toggle="collapse">
+            <div class=" text-center ms-2 d-flex align-items-center justify-content-center">
+              <img class="icon-50" src="{% static 'img/svg/news.svg' %}">
+            </div>
+            <span class="nav-link-text me-1">اطلاعات پایه</span>
+          </a>
+        </li>
+
+        <div
+          class="collapse {% active_link 'ViewModelProccess||ViewStrategyPlan||ViewStockHoldersOrganization||Standard'  css_class='show'%}"
+          id="basic">
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{%url 'aboutUs' %}">
+
+              <span class="nav-link-text me-1"> شرکت شاهین مفصل </span>
+            </a>
+          </li>
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="/media/other/راهنمای سیستم مدیریت یکپارچه.pdf">
+
+              <span class="nav-link-text me-1">سیستم مدیریت یکپارچه </span>
+            </a>
+          </li>
+
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'file_not_found' %}">
+
+              <span class="nav-link-text me-1">خط مشی سیستم مدیریت یک پارچه</span>
+            </a>
+          </li>
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{%url 'modelProccess' %}">
+
+              <span class="nav-link-text me-1">مدل فرآیندی </span>
+            </a>
+          </li>
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{%url 'strategyPlan' %}">
+
+              <span class="nav-link-text me-1">برنامه راهبردی</span>
+            </a>
+          </li>
+
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{%url 'stockHolders' %}">
+
+              <span class="nav-link-text me-1">ذینفعان سازمان</span>
+            </a>
+          </li>
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{%url 'Standard' %}">
+
+              <span class="nav-link-text me-1">استاندارد های مرجع </span>
+            </a>
+          </li>
+
+        </div>
+
+        <li class="nav-item border-top border-3">
+          <a class="nav-link text-black-80" href="#organization" aria-expanded="false" data-bs-toggle="collapse">
+            <div class=" text-center ms-2 d-flex align-items-center justify-content-center">
+              <img class="icon-50" src="{% static 'img/svg/incognito.svg' %}">
+            </div>
+            <span class="nav-link-text me-1">ساختار سازمانی </span>
+          </a>
+        </li>
+
+        <div class="collapse {% active_link  'ChartMap' css_class='show'%}" id="organization">
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'ChartMap' %}">
+
+              <span class="nav-link-text me-1"> چارت سازمانی</span>
+            </a>
+          </li>
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{%url 'ListViewTypePostSazmaniClient'%}">
+
+              <span class="nav-link-text me-1">پست های سازمانی</span>
+            </a>
+          </li>
+        </div>
+        <!-- end organization -->
+
+        <li class="nav-item border-top border-3">
+          <a class="nav-link text-black-80" href="#Quality_Managem" aria-expanded="false" data-bs-toggle="collapse">
+            <div class=" text-center ms-2 d-flex align-items-center justify-content-center">
+              <img class="icon-50" src="{% static 'img/svg/journey.svg' %}">
+            </div>
+            <span class="nav-link-text me-1"> مدیریت کیفیت </span>
+          </a>
+        </li>
+        <div
+          class="collapse {% active_link  'ViewGoalAndPlan||ViewProccessManagment||ViewRiskMenu||ViewAdamEntebagh||ViewParadigmManagment||ViewMomayezi||ViewManagmentReview' css_class='show'%}"
+          id="Quality_Managem">
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{%url 'file_not_found'%}">
+
+              <span class="nav-link-text me-1"> اهداف و برنامه ها</span>
+            </a>
+          </li>
+          <!-- <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{%url 'ViewProccessManagment' %}">
+
+              <span class="nav-link-text me-1">مدیریت فرآیند ها </span>
+            </a>
+          </li> -->
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{%url 'ViewCommitteeDashboard'%}">
+
+              <span class="nav-link-text me-1"> کمیته </span>
+            </a>
+          </li>
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{%url 'ViewRiskDashboard'%}">
+
+              <span class="nav-link-text me-1"> مدیریت ریسک</span>
+            </a>
+          </li>
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{%url 'ViewCorrectiveActionDashboard' %}">
+
+              <span class="nav-link-text me-1">کنترل عدم انطباق و اقدامات اصلاحی </span>
+            </a>
+          </li>
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{%url 'ViewManagementChangeDashboard' %}">
+
+              <span class="nav-link-text me-1">مدیریت تغییر </span>
+            </a>
+          </li>
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{%url 'ListViewfileProfile'%}">
+
+              <span class="nav-link-text me-1"> مدیریت دانش</span>
+            </a>
+          </li>
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'ViewMomayeziDashboard' %}">
+
+              <span class="nav-link-text me-1">ممیزی داخلی </span>
+            </a>
+          </li>
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{%url 'ListViewMeetingReview'%}?type=بازنگری و مدیریت">
+              
+              <span class="nav-link-text me-1"> بازنگری و مدیریت </span>
+            </a>
+          </li>
+          <!-- <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'ViewPerformanceIndex' %}">
+
+              <span class="nav-link-text me-1">ارزیابی عملکرد</span>
+            </a>
+          </li> -->
+          <!-- <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'ViewManagmentReview' %}">
+
+              <span class="nav-link-text me-1">بازنگری مدیریت </span>
+            </a>
+          </li> -->
+        </div>
+        <!-- end Quality_Managem -->
+
+
+        <li class="nav-item border-top border-3">
+          <a class="nav-link text-black-80" href="#mostanadat" aria-expanded="false" data-bs-toggle="collapse">
+            <div class=" text-center ms-2 d-flex align-items-center justify-content-center">
+              <img class="icon-50" src="{% static 'img/svg/news.svg' %}">
+            </div>
+            <span class="nav-link-text me-1"> مستندات و سوابق </span>
+          </a>
+        </li>
+        <div class="collapse {% active_link  'MostanadatListViewDakheli||MostanadatListViewKhareji' css_class='show'%}"
+          id="mostanadat">
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'ViewMostanadatDakheliDashboard' %}">
+
+              <span class="nav-link-text me-1"> مدارک درون سازمانی</span>
+            </a>
+          </li>
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'ListViewMostanadatDakheliOutdated' %}">
+
+              <span class="nav-link-text me-1"> مدارک درون سازمانی منسوخ شده</span>
+            </a>
+          </li>
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'MostanadatListViewKhareji' %}">
+
+              <span class="nav-link-text me-1">مدارک برون سازمانی </span>
+            </a>
+          </li>
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{%url 'ViewRecordDataBase'%}">
+
+              <span class="nav-link-text me-1"> لیست سوابق</span>
+            </a>
+          </li>
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{%url 'ViewMostanadatChange'%}">
+
+              <span class="nav-link-text me-1"> درخواست ، تهیه و تغییر در مدرک</span>
+            </a>
+          </li>
+        </div>
+
+        <!-- end mostanadat -->
+        <li class="nav-item border-top border-3">
+          <a class="nav-link text-black-80" href="#meeting_management" aria-expanded="false" data-bs-toggle="collapse">
+            <div class=" text-center ms-2 d-flex align-items-center justify-content-center">
+              <img class="icon-50" src="{% static 'img/svg/news.svg' %}">
+            </div>
+            <span class="nav-link-text me-1">مدیریت جلسات</span>
+          </a>
+        </li>
+        <div class="collapse {% active_link  'VieweMeeting' css_class='show'%}" id="meeting_management">
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{%url 'ViewReportDashboard'%}">
+
+              <span class="nav-link-text me-1">  درخواست گزارش </span>
+            </a>
+          </li>
+          <!-- <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="#">
+
+              <span class="nav-link-text me-1"> تقویم جلسات</span>
+            </a>
+          </li> -->
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'ViewMeetingDashboard' %}">
+
+              <span class="nav-link-text me-1">پروفایل جلسات </span>
+            </a>
+          </li>
+          <!-- <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{%url 'VieweMeeting' %}">
+
+              <span class="nav-link-text me-1">برگزاری جلسات </span>
+            </a>
+          </li> -->
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{%url 'ListViewMeetingReview'%}">
+
+              <span class="nav-link-text me-1">سوابق جلسات </span>
+            </a>
+          </li>
+        </div>
+        <!-- end mostanadat -->
+
+        <li class="nav-item border-top border-3">
+          <a class="nav-link text-black-80" href="{% url 'ViewPlanDashboard' %}">
+            <div class=" text-center ms-2 d-flex align-items-center justify-content-center">
+              <img class="icon-50" src="{% static 'img/svg/news.svg' %}">
+            </div>
+            <span class="nav-link-text me-1">مدیریت پروژه</span>
+          </a>
+        </li>
+      
+        <!-- end meeting management -->
+        <li class="nav-item border-top border-3">
+          <a class="nav-link text-black-80" href="{%url 'ListViewfileProfile'%}" >
+            <div class=" text-center ms-2 d-flex align-items-center justify-content-center">
+              <img class="icon-50" src="{% static 'img/svg/zoom.svg' %}">
+            </div>
+            <span class="nav-link-text me-1"> کتابخانه</span>
+          </a>
+        </li>
+        <!-- <div class="collapse" id="library">
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'ListViewfileProfile'%}">
+
+              <span class="nav-link-text me-1"> کتابخانه</span>
+            </a>
+          </li>
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="#">
+
+              <span class="nav-link-text me-1"> مقالات</span>
+            </a>
+          </li>
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{%url 'ListViewStandard'%}">
+
+              <span class="nav-link-text me-1"> استاندارد ها</span>
+            </a>
+          </li>
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="#">
+
+              <span class="nav-link-text me-1"> جزوه های آموزشی</span>
+            </a>
+          </li>
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="#">
+
+              <span class="nav-link-text me-1"> فیلم های آموزشی</span>
+            </a>
+          </li>
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="#">
+
+              <span class="nav-link-text me-1"> پوستر و تصویر</span>
+            </a>
+          </li>
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="#">
+
+              <span class="nav-link-text me-1"> بارگزاری محتوا</span>
+            </a>
+          </li>
+        </div> -->
+        <!-- end library -->
+        <li class="nav-item border-top border-3">
+          <a class="nav-link text-black-80" href="#communication" aria-expanded="false" data-bs-toggle="collapse">
+            <div class=" text-center ms-2 d-flex align-items-center justify-content-center">
+              <img class="icon-50" src="{% static 'img/svg/contactless-card.svg' %}">
+            </div>
+            <span class="nav-link-text me-1"> ارتباطات</span>
+          </a>
+        </li>
+        <div class="collapse" id="communication">
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{%url 'ListInternalCommunications'%}">
+
+              <span class="nav-link-text me-1"> لیست ارتباطات درون سازمانی</span>
+            </a>
+          </li>
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{%url 'ListViewExternal'%}">
+
+              <span class="nav-link-text me-1"> لیست ارتباطات برون سازمانی</span>
+            </a>
+          </li>
+        </div>
+        <!-- end communication -->
+        <li class="nav-item border-top border-3">
+          <a class="nav-link text-black-80" href="#Guide" aria-expanded="false" data-bs-toggle="collapse">
+            <div class=" text-center ms-2 d-flex align-items-center justify-content-center">
+              <img class="icon-50" src="{% static 'img/svg/news.svg' %}">
+            </div>
+            <span class="nav-link-text me-1"> راهنما</span>
+          </a>
+        </li>
+        <div class="collapse" id="Guide">
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{%url 'ViewFaqDashboard'%}">
+
+              <span class="nav-link-text me-1"> سوالات متداول</span>
+            </a>
+          </li>
+          <li class="nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="#">
+
+              <span class="nav-link-text me-1"> راهنمای استفاده از سامانه</span>
+            </a>
+          </li>
+        </div>
+        <!-- end Guide -->
+
+
+      </ul>
+     
+    </div>
+
+
+
+  </aside>
+
+
+  <!-- <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg overflow-x-hidden"> -->
+  <main class="main-content max-height-vh-100 h-100 border-radius-lg overflow-x-hidden">
+    <!-- Navbar -->
+   
+    
+    <!-- End Navbar -->
+    {% load sweetify %}
+    {% sweetify %}
+    <div class="container-fluid ">
+      
+      {% block content %}
+
+      {%endblock content%}
+      
+      
+
+    </div>
+    
+  </main>
+
+
+
+
+  <!--   Core JS Files   -->
+
+  <script src="{% static '/js/orgchart.js' %}"></script>
+  <script src="{% static '/js/core/popper.min.js' %}"></script>
+  <script src="{% static '/js/bootstrap.min.js' %}"></script>
+  <!-- <script src="{% static '/js/plugins/perfect-scrollbar.min.js' %}"></script>
+  <script src="{% static '/js/plugins/smooth-scrollbar.min.js' %}"></script> -->
+
+ <!-- # <script src="{% static '/js/plugins/chartj.js' %}"></script> -->
+  <script src="{% static '/js/jquery.dataTables.js' %}"></script>
+
+
+
+  <!-- Github buttons -->
+
+  <script async defer src="{% static '/js/buttons.js'%}"></script>
+  <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="{% static '/js/material-dashboard.min.js'%}"></script>
+  
+  {% block scripts %}
+
+  {%endblock scripts%}
+
+</body>
+
+</html>

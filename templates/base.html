@@ -1,0 +1,660 @@
+{% load static %}
+{% load active_link_tags %}
+{{ redirect_to_login_immediately }}
+{% load sweetify %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- <link rel="apple-touch-icon" sizes="76x76" href="{% static '/img/apple-icon.png' %}"> -->
+  <link rel="icon" type="image/png" href="{% static '/img/favicon.png' %}">
+  
+  <title>
+    سامانه مدیریت
+  </title>
+  <link href="{% static '/fonts/nazanin/nazanin.css' %}" rel="stylesheet">
+
+  <link href="{% static '/fonts/yekan/yekan.css' %}" rel="stylesheet">
+
+  <!-- <link rel="stylesheet" href="{% static '/css/sweetalert2.css' %}"></link>
+  <script src="{% static '/js/sweetalert.min.js.js' %}"></script> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>  
+<!--SweetAlert2 JavaScript-->
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.28.4/sweetalert2.all.min.js" integrity="sha256-qtyU+b249rw/5PQ1KXGRtxjlgg6hfU2EK50YOlc0n50=" crossorigin="anonymous"></script>
+  <!-- Nucleo Icons -->
+  <link href="{% static '/css/nucleo-icons.css' %}" rel="stylesheet" />
+  <link href="{% static '/css/nucleo-svg.css' %}" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
+  <script src="{% static '/js/fontawesome.js' %}" crossorigin="anonymous"></script>
+
+  <!-- Material Icons -->
+  
+  <!-- CSS Files -->
+  <link id="pagestyle" href="{% static  '/css/material-dashboard.css' %}"  rel="stylesheet" />
+  <link id="pagestyle" href="{% static  '/css/style.css' %}"  rel="stylesheet" />
+  <link id="pagestyle" href="{% static  '/css/calendar.css' %}"  rel="stylesheet" />
+
+  
+  <script src="{% static '/js/jquery.js' %}"  ></script>
+
+
+  {% block style %}
+
+  {%endblock style%}
+</head>
+ 
+<body class="g-sidenav-show rtl bg-gray-200">
+  
+  <nav class="navbar navbar-main navbar-expand-lg px-0   " id="navbarBlur" navbar-scroll="true">
+    <div class="container-fluid  px-3">
+    
+      <nav aria-label="breadcrumb " class="d-md-none d-lg-block">
+        <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 ">
+          <a href="#" class="navbar-brand">
+ 
+            <img height="28"  src="{% static '/img/logo.png' %}" class="img-fluid mx-auto d-block " alt="main_logo">
+        </a>
+          
+          
+        </ol>
+        
+      </nav>
+      <div class="collapse navbar-collapse mt-sm-0 mt-2 px-0" id="navbar">
+        
+        <ul class="navbar-nav overflow-hidden me-auto ms-0 justify-content-end">
+          
+          <li class="nav-item mx-3 d-xl-none pe-3 d-flex align-items-center">
+            <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+              <div class="sidenav-toggler-inner">
+                <i class="sidenav-toggler-line"></i>
+                <i class="sidenav-toggler-line"></i>
+                <i class="sidenav-toggler-line"></i>
+              </div>
+            </a>
+          </li>
+          <li class="nav-item mx-3 px-3 d-flex align-items-center">
+            <a href="javascript:;" class="nav-link text-body p-0">
+              <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
+            </a>
+          </li>
+
+         
+
+
+          <li class="nav-item mx-3 dropdown ps-2 d-flex align-items-center">
+            <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa fa-bell cursor-pointer"></i>
+            </a>
+            <ul class="dropdown-menu   px-2 py-6 me-sm-n4" aria-labelledby="dropdownMenuButton">
+              <li class="mb-2">
+                <a class="dropdown-item border-radius-md" href="javascript:;">
+                  <div class="d-flex py-1">
+                    <div class="my-auto">
+                      <img src="{% static '/img/team-2.jpg' %}" class="avatar avatar-sm  ms-3 ">
+                    </div>
+                    <div class="d-flex flex-column justify-content-center">
+                      <h6 class="text-sm font-weight-normal mb-1">
+                        <span class="font-weight-bold">New message</span> from Laur
+                      </h6>
+                      <p class="text-xs text-secondary mb-0">
+                        <i class="fa fa-clock me-1"></i>
+                        13 minutes ago
+                      </p>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              <li class="mb-2">
+                <a class="dropdown-item border-radius-md" href="javascript:;">
+                  <div class="d-flex py-1">
+                    <div class="my-auto">
+                      <img src="{% static '/img/small-logos/logo-spotify.svg' %}" class="avatar avatar-sm bg-gradient-dark  ms-3 ">
+                    </div>
+                    <div class="d-flex flex-column justify-content-center">
+                      <h6 class="text-sm font-weight-normal mb-1">
+                        <span class="font-weight-bold">New album</span> by Travis Scott
+                      </h6>
+                      <p class="text-xs text-secondary mb-0">
+                        <i class="fa fa-clock me-1"></i>
+                        1 day
+                      </p>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item border-radius-md" href="javascript:;">
+                  <div class="d-flex py-1">
+                    <div class="avatar avatar-sm bg-gradient-secondary  ms-3  my-auto">
+                      <svg width="12px" height="12px" viewBox="0 0 43 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <title>credit-card</title>
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                          <g transform="translate(-2169.000000, -745.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                            <g transform="translate(1716.000000, 291.000000)">
+                              <g transform="translate(453.000000, 454.000000)">
+                                <path class="color-background" d="M43,10.7482083 L43,3.58333333 C43,1.60354167 41.3964583,0 39.4166667,0 L3.58333333,0 C1.60354167,0 0,1.60354167 0,3.58333333 L0,10.7482083 L43,10.7482083 Z" opacity="0.593633743"></path>
+                                <path class="color-background" d="M0,16.125 L0,32.25 C0,34.2297917 1.60354167,35.8333333 3.58333333,35.8333333 L39.4166667,35.8333333 C41.3964583,35.8333333 43,34.2297917 43,32.25 L43,16.125 L0,16.125 Z M19.7083333,26.875 L7.16666667,26.875 L7.16666667,23.2916667 L19.7083333,23.2916667 L19.7083333,26.875 Z M35.8333333,26.875 L28.6666667,26.875 L28.6666667,23.2916667 L35.8333333,23.2916667 L35.8333333,26.875 Z"></path>
+                              </g>
+                            </g>
+                          </g>
+                        </g>
+                      </svg>
+                    </div>
+                    <div class="d-flex flex-column justify-content-center">
+                      <h6 class="text-sm font-weight-normal mb-1">
+                        Payment successfully completed
+                      </h6>
+                      <p class="text-xs text-secondary mb-0">
+                        <i class="fa fa-clock me-1"></i>
+                        2 days
+                      </p>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </li>
+          {% if user.is_superuser %}
+            <li class="nav-item mx-3 d-flex align-items-center">
+              <a href="{% url 'DashboardEmployee'%}" class="nav-link text-body px-0">
+                
+                <i class="fa fa-user me-sm-1"></i>
+                <span class="d-sm-inline d-none">کاربر</span>
+            
+              </a>
+            </li>
+          
+          {% endif %}
+          <li class="nav-item mx-3 d-flex align-items-center">
+            <a href="{% url 'ProfileHome'%}" class="nav-link text-body px-0">
+              
+              <i class="fa fa-user me-sm-1"></i>
+              <span class="d-sm-inline d-none">پروفایل</span>
+          
+            </a>
+          </li>
+          
+          <li class="nav-item mx-3 d-flex align-items-center">
+            <a href="{% url 'logout'%}" class="nav-link text-body px-0">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#344767" class="bi bi-power" viewBox="0 0 16 16">
+                <path d="M7.5 1v7h1V1h-1z"/>
+                <path d="M3 8.812a4.999 4.999 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812z"/>
+              </svg>
+              
+              
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <aside class="sidenav  navbar navbar-vertical navbar-expand-xs  fixed-end " id="sidenav-main">
+    
+    
+    <div class="collapse overflow-visible navbar-collapse px-0 w-auto  max-height-vh-100" id="sidenav-collapse-main">
+      <ul class="navbar-nav">
+        
+        <li class="{% active_link  'Dashboard' css_class='current'%} nav-item border-top border-3 ">
+          <a class="nav-link text-black-80" href="{% url 'Dashboard'%}">
+            <div class=" text-center ms-2 d-flex align-items-center justify-content-center">
+              <img class="icon-50" src="{% static 'img/svg/control-panel.svg' %}" >
+            </div>
+            <span class="nav-link-text me-1">صفحه اصلی</span>
+          </a>
+        </li>
+
+       
+
+        
+        <li class="nav-item border-top border-3">
+          <a class="nav-link text-black-80" href="#organization" aria-expanded="false" data-bs-toggle="collapse"  >
+            <div class=" text-center ms-2 d-flex align-items-center justify-content-center">
+              <img class="icon-50" src="{% static 'img/svg/geometry.svg' %}" >
+            </div>
+            <span class="nav-link-text me-1">بخش های سازمانی</span>
+          </a>
+        </li>
+        
+        <div class="collapse {% active_link  'OrganizationListViewTypePostSazmani ||OrganizationListViewVahed || OrganizationListViewSathPost||OrganizatioIndexMahaleKhedmat || OrganizationListViewJobBank|| OrganizationListViewPost|| OrganizationListViewRade || OrganizationListViewHoze ||OrganizationListViewBakhsh ||OrganizationListViewDaste ||OrganizationListViewSatheVahed' css_class='show'%}" id="organization">
+          <li class="{% active_link  'OrganizationListViewRade' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'OrganizationListViewRade' %}">
+              
+              <span class="nav-link-text me-1">رده سازمانی</span>
+            </a>
+          </li>
+          <li class="{% active_link  'OrganizationListViewHoze' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'OrganizationListViewHoze' %}">
+              
+              <span class="nav-link-text me-1">حوزه سازمانی</span>
+            </a>
+          </li>
+          <li class="{% active_link  'OrganizationListViewBakhsh' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'OrganizationListViewBakhsh' %}">
+              
+              <span class="nav-link-text me-1">بخش سازمانی</span>
+            </a>
+          </li>
+          <li class="{% active_link  'OrganizationListViewDaste' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'OrganizationListViewDaste' %}">
+              
+              <span class="nav-link-text me-1">دسته سازمانی</span>
+            </a>
+          </li>
+          <li class="{% active_link  'OrganizationListViewSatheVahed' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'OrganizationListViewSatheVahed' %}">
+              
+              <span class="nav-link-text me-1">سطح واحد سازمان</span>
+            </a>
+          </li>
+          <li class="{% active_link  'OrganizationListViewTypePostSazmani' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'OrganizationListViewTypePostSazmani' %}">
+              
+              <span class="nav-link-text me-1"> نوع پست سازمانی </span>
+            </a>
+          </li>
+          <li class="{% active_link  'OrganizationListViewVahed' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'OrganizationListViewVahed' %}">
+              
+              <span class="nav-link-text me-1">واحد های سازمانی</span>
+            </a>
+          </li>
+          <li class="{% active_link  'OrganizationListViewSathPost' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'OrganizationListViewSathPost' %}">
+              
+              <span class="nav-link-text me-1">سطح پست سازمانی</span>
+            </a>
+          </li>
+          <li class="{% active_link  'OrganizatioIndexMahaleKhedmat' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'OrganizatioIndexMahaleKhedmat' %}">
+              
+              <span class="nav-link-text me-1"> ایندکس محل خدمت </span>
+            </a>
+          </li>
+          <li class="{% active_link  'OrganizationListViewJobBank' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'OrganizationListViewJobBank' %}">
+              
+              <span class="nav-link-text me-1">  بانک مشاغل  </span>
+            </a>
+          </li>
+          <li class="{% active_link  'OrganizationListViewPost' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'OrganizationListViewPost' %}">
+              
+              <span class="nav-link-text me-1">  لیست پست سازمانی   </span>
+            </a>
+          </li>
+        </div>
+        
+
+        
+        <li class="nav-item border-top border-3 ">
+          <a class="nav-link text-black-80" href="#process" aria-expanded="false" data-bs-toggle="collapse"  >
+            <div class=" text-center ms-2 d-flex align-items-center justify-content-center">
+              <img class="icon-50" src="{% static 'img/svg/cycle.svg' %}" >
+            </div>
+            <span class="nav-link-text me-1">فرآیند سازمانی</span>
+          </a>
+        </li>
+     
+
+        <div class="collapse {% active_link  'ProcessListViewNahiye||ProcessListViewHoze||ProcessListViewGroup||ProcessListViewProcess' css_class='show'%} " id="process">
+          <li class="{% active_link  'ProcessListViewNahiye' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'ProcessListViewNahiye' %}">
+              
+              <span class="nav-link-text me-1">ناحیه های فرآیندی</span>
+            </a>
+          </li>
+          <li class="{% active_link  'ProcessListViewHoze' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'ProcessListViewHoze' %}">
+              
+              <span class="nav-link-text me-1">حوزه های فرآیندی</span>
+            </a>
+          </li>
+          <li class="{% active_link  'ProcessListViewGroup' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'ProcessListViewGroup' %}">
+              
+              <span class="nav-link-text me-1">گروه های فرآیندی</span>
+            </a>
+          </li>
+          <li class="{% active_link  'ProcessListViewProcess' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'ListViewProcess' %}">
+              
+              <span class="nav-link-text me-1">لیست فرآیند ها</span>
+            </a>
+          </li>
+   
+        </div>
+        
+
+        
+
+        <li class="nav-item border-top border-3 ">
+          <a class="nav-link text-black-80" href="#standard" aria-expanded="false" data-bs-toggle="collapse"  >
+            <div class=" text-center ms-2 d-flex align-items-center justify-content-center">
+              <img class="icon-50" src="{% static 'img/svg/check-all.svg' %}" >
+            </div>
+            <span class="nav-link-text me-1"> استاندارد ها</span>
+          </a>
+        </li>
+     
+
+        <div class="collapse {% active_link  'StandardReferenceRelease||Standard' css_class='show'%} " id="standard">
+          <li class="{% active_link  'StandardReferenceRelease' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'StandardReferenceRelease' %}">
+              <span class="nav-link-text me-1">مراجع صدور استاندارد</span>
+            </a>
+          </li>
+          <li class="{% active_link  'Standard' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'Standard' %}">
+              
+              <span class="nav-link-text me-1"> استاندارد های مرجع</span>
+            </a>
+          </li>
+          <li class="{% active_link  'Standard' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'Standard' %}">
+              
+              <span class="nav-link-text me-1"> استاندارد های مرجع</span>
+            </a>
+          </li>
+        
+        </div>
+        
+
+
+        <li class="nav-item border-top border-3">
+          <a class="nav-link text-black-80" href="#momayeze" aria-expanded="false" data-bs-toggle="collapse"  >
+            <div class=" text-center ms-2 d-flex align-items-center justify-content-center">
+              <img class="icon-50" src="{% static 'img/svg/incognito.svg' %}" >
+            </div>
+            <span class="nav-link-text me-1">بخش ممیزی</span>
+          </a>
+        </li>
+        
+        
+        
+        
+
+        <div class="collapse {% active_link  'ListViewCalenderMomayeziType||MomayeziListViewReportMomayezi||MomayeziListViewTypeMomayezi||MomayeziListViewNoghatGhovat||MomayeziListViewForsatBehbod||MomayeziListViewAdamEntebagh' css_class='show'%} " id="momayeze">
+          <li class="{% active_link  'MomayeziListViewReportMomayezi' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'MomayeziListViewReportMomayezi' %}">
+              
+              <span class="nav-link-text me-1">گزارش ممیزی</span>
+            </a>
+          </li>
+          <li class="{% active_link  'MomayeziListViewTypeMomayezi' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'MomayeziListViewTypeMomayezi' %}">
+              
+              <span class="nav-link-text me-1">نوبت ممیزی</span>
+            </a>
+          </li>
+          <li class="{% active_link  'MomayeziListViewNoghatGhovat' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'MomayeziListViewNoghatGhovat' %}">
+              
+              <span class="nav-link-text me-1"> نقاط قوت </span>
+            </a>
+          </li>
+          <li class="{% active_link  'MomayeziListViewForsatBehbod' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'MomayeziListViewForsatBehbod' %}">
+              
+              <span class="nav-link-text me-1"> فرصت بهبود</span>
+            </a>
+          </li>
+          <li class="{% active_link  'MomayeziListViewAdamEntebagh' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'MomayeziListViewAdamEntebagh' %}">
+              
+              <span class="nav-link-text me-1"> عدم انطباق</span>
+            </a>
+          </li>
+          <li class="{% active_link  'ListViewCalenderMomayeziType' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'ListViewCalenderMomayeziType' %}">
+              
+              <span class="nav-link-text me-1"> برنامه ممیزی </span>
+            </a>
+          </li>
+
+          <li class="{% active_link  'MomayeziListViewAdamEntebagh' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'ListViewRoleMomayezi' %}">
+              
+              <span class="nav-link-text me-1"> نقش ممیزی </span>
+            </a>
+          </li>
+       
+          <li class="{% active_link  'MomayeziListViewAdamEntebagh' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'ListViewMomayeziTeam' %}">
+              
+              <span class="nav-link-text me-1"> تیم ممیزی </span>
+            </a>
+          </li>
+          <li class="{% active_link  'MomayeziListViewAdamEntebagh' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'ListViewMomayeziActivityManager' %}">
+              
+              <span class="nav-link-text me-1"> لیست فعالیت های ممیزی  </span>
+            </a>
+          </li>
+
+        </div>
+
+
+
+        <li class="nav-item border-top border-3">
+          <a class="nav-link text-black-80" href="#mostanadat" aria-expanded="false" data-bs-toggle="collapse"  >
+            <div class=" text-center ms-2 d-flex align-items-center justify-content-center">
+              <img class="icon-50" src="{% static 'img/svg/news.svg' %}" >
+            </div>
+            <span class="nav-link-text me-1">بخش مستندات</span>
+          </a>
+        </li>
+        
+        
+        
+        
+
+        <div class="collapse {% active_link  'MostanadatListViewDakheli||MostanadatListViewTypeMadrak||MostanadatListViewKhareji' css_class='show'%} " id="mostanadat">
+          <li class="{% active_link  'MostanadatListViewDakheli' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'MostanadatListViewDakheli' %}">
+              
+              <span class="nav-link-text me-1">مستندات درون سازمانی </span>
+            </a>
+          </li>
+          <li class="{% active_link  'MostanadatListViewTypeMadrak' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'MostanadatListViewTypeMadrak' %}">
+              
+              <span class="nav-link-text me-1"> نوع سند درون سازمانی</span>
+            </a>
+          </li>
+          <li class="{% active_link  'MostanadatListViewKhareji' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'MostanadatListViewKhareji' %}">
+              
+              <span class="nav-link-text me-1">  مستندات برون سازمانی </span>
+            </a>
+          </li>
+         
+
+        </div>
+        
+        <li class="nav-item border-top border-3">
+          <a class="nav-link text-black-80" href="#risk" aria-expanded="false" data-bs-toggle="collapse"  >
+            <div class=" text-center ms-2 d-flex align-items-center justify-content-center">
+              <img class="icon-50" src="{% static 'img/svg/warning-sign.svg' %}" >
+            </div>
+            <span class="nav-link-text me-1">بخش ریسک</span>
+          </a>
+        </li>
+        
+        
+        
+        
+
+        <div class="collapse {% active_link  'ListViewRiskProfile||ListViewRiskTeam||ListViewRiskIdentification||ListViewRiskActivityManager||ListViewRiskIdentificationSelecting||ListViewRiskMeasurement||ListViewRiskMeasurement||ListViewRiskProcessRelated' css_class='show'%} " id="risk">
+          
+          <li class="{% active_link  'ListViewRiskProfile' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'ListViewRiskProfile' %}">
+              
+              <span class="nav-link-text me-1">پروفایل ریسک </span>
+            </a>
+          </li>
+
+          <li class="{% active_link  'ListViewRiskTeam' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'ListViewRiskTeam' %}">
+              
+              <span class="nav-link-text me-1">تیم ریسک </span>
+            </a>
+          </li>
+          <li class="{% active_link  'ListViewRiskIdentification' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'ListViewRiskIdentification' %}">
+              
+              <span class="nav-link-text me-1">شناسایی ریسک </span>
+            </a>
+          </li>
+          <li class="{% active_link  'ListViewRiskActivityManager' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'ListViewRiskActivityManager' %}">
+              
+              <span class="nav-link-text me-1">فعالیت های ریسک </span>
+            </a>
+          </li>
+          <li class="{% active_link  'ListViewRiskIdentificationSelecting' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'ListViewRiskIdentificationSelecting' %}">
+              
+              <span class="nav-link-text me-1">  بررسی ریسک های شناسایی شده </span>
+            </a>
+          </li>
+          <li class="{% active_link  'ListViewRiskIdentificationSelecting' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'ListViewRiskProcessRelated' %}">
+              
+              <span class="nav-link-text me-1">  ارتباط ریسک با فرآیند </span>
+            </a>
+          </li>
+
+          <li class="{% active_link  'ListViewRiskMeasurement' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'ListViewRiskMeasurement' %}">
+              
+              <span class="nav-link-text me-1">  ارزیابی ریسک </span>
+            </a>
+          </li>
+          
+          
+         
+         
+
+        </div>
+
+        <li class="nav-item border-top border-3">
+          <a class="nav-link text-black-80" href="#news" aria-expanded="false" data-bs-toggle="collapse"  >
+            <div class=" text-center ms-2 d-flex align-items-center justify-content-center">
+              <img class="icon-50" src="{% static 'img/svg/warning-sign.svg' %}" >
+            </div>
+            <span class="nav-link-text me-1">بخش اخبار </span>
+          </a>
+        </li>
+
+
+        <div class="collapse {% active_link  'ListViewNews||ListViewCategoriy' css_class='show'%} " id="news">
+          <li class="{% active_link  'ListViewNews' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'ListViewNews' %}">
+              
+              <span class="nav-link-text me-1"> اخبار </span>
+            </a>
+          </li>
+          <li class="{% active_link  'ListViewCategoriy' css_class='current'%} nav-item border-top border-2 mx-3">
+            <a class="nav-link text-black-80" href="{% url 'ListViewCategoriy' %}">
+              
+              <span class="nav-link-text me-1">دسته بندی اخبار </span>
+            </a>
+          </li>
+
+        
+         
+
+        </div>
+
+
+
+        <li class="{% active_link  'ListViewEmployeeList' css_class='current'%} nav-item border-top border-3 ">
+          <a class="nav-link text-black-80" href="{% url 'ListViewEmployeeList'%}"   >
+            <div class=" text-center ms-2 d-flex align-items-center justify-content-center">
+              <img class="icon-50" src="{% static 'img/svg/menu.svg' %}" >
+            </div>
+            <span class="nav-link-text me-1">  لیست کارمندان</span>
+          </a>
+        </li>
+        
+        <li class="{% active_link  'Committee' css_class='current'%} nav-item border-top border-3 ">
+          <a class="nav-link text-black-80" href="{% url 'ViewCommitteeDashboard'%}"   >
+            <div class=" text-center ms-2 d-flex align-items-center justify-content-center">
+              <img class="icon-50" src="{% static 'img/svg/transactions.svg' %}" >
+            </div>
+            <span class="nav-link-text me-1">  لیست کمیته</span>
+          </a>
+        </li>
+        
+        
+        <li class="{% active_link  'ListViewAdminNotifications' css_class='current'%} nav-item border-top border-3 ">
+          <a class="nav-link text-black-80" href="{% url 'ListViewAdminNotifications'%}"   >
+            <div class=" text-center ms-2 d-flex align-items-center justify-content-center">
+              <img class="icon-50" src="{% static 'img/svg/alarm.svg' %}" >
+            </div>
+            <span class="nav-link-text me-1">   بخش اطلاعیه ها</span>
+          </a>
+        </li>
+        
+     
+        
+        
+      
+       
+      </ul>
+    </div>
+
+    
+    
+  </aside>
+
+
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg overflow-x-hidden">
+    <!-- Navbar -->
+    {% sweetify %}
+    <!-- End Navbar -->
+    <div class="container-fluid ">
+      <div class="row">
+        {% include 'messages.html' %}
+      </div>
+        {% block content %}
+
+        {%endblock content%}
+
+     
+    </div>
+  </main>
+
+
+  
+
+  <!--   Core JS Files   -->
+ 
+  <script src="{% static '/js/orgchart.js' %}"></script>
+  <script src="{% static '/js/core/popper.min.js' %}"></script>
+  <script src="{% static '/js/bootstrap.min.js' %}"></script>
+  <script src="{% static '/js/plugins/perfect-scrollbar.min.js' %}"></script>
+  <script src="{% static '/js/plugins/smooth-scrollbar.min.js' %}"></script>
+
+  <script src="{% static '/js/plugins/chartjs.min.js' %}"></script>
+  <script src="{% static '/js/jquery.dataTables.js' %}"></script>
+ 
+
+  <script async defer src="{% static '/js/buttons.js'%}"></script>
+
+  <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="{% static '/js/material-dashboard.min.js'%}"></script>
+  
+  {% block scripts %}material-dashboard.js
+ 
+  {%endblock scripts%}
+ 
+</body>
+
+</html>

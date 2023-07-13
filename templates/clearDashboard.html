@@ -1,0 +1,214 @@
+
+{% extends 'baseEmployee.html' %} 
+
+
+
+
+ {% load static %}
+ {% block style %}
+ <link rel="stylesheet" type="text/css" href="{% static '/css/dataTables.css' %}">
+
+
+ <script type="text/javascript" charset="utf8" src="{% static '/js/dataTables.js' %}"></script>
+ <script src="{%static '/js/chart.js' %}"></script>
+ <script src="{% static '/js/jquery.dataTables.js' %}"  ></script>
+ {%endblock style%}
+ 
+{%block content%}
+ <div class="container py-6">
+  
+   <div class="row justify-content-md-center">
+     <div class="card card-fram col-12">
+       <div class="card-header my-5 p-0 position-relative mt-n4 mx-3 z-index-2">
+         <div class="row">
+          
+           <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+             <h4 class="text-white text-capitalize ps-3">{{header_title}}</h4>
+ 
+           </div>
+         </div>
+       </div>
+       {% if allProfile != None or createNewProfile != None or  responsible_link != None or member_link != None %}
+       <div class="card py-2  card-plain border">
+        
+        <div class="row ">
+         
+          {% if allProfile != None%}
+            <div class="col-1 mx-3">
+              <span>
+              {{selectProfile}}
+              </span>
+            </div>
+            <div class="col-2">
+           
+                <select name="select" id="select" class="form-select" >
+                <!-- <select name="select" id="select" hx-get="{%url 'select_type_momayezi'  %}" hx-trigger="change myChart.update('active');" hx-target="#dashboard"
+                  class="form-select"   hx-include="[name='select']" hx-swap="outerHTML"  aria-label="Default select example"> -->
+                
+                  
+                  {%for profile in allProfile%} 
+                  <option value="{{profile.id}}" {%if profileSelected.id == profile.id %} selected {%endif%} > {{profile.title}}</option>
+                  {%endfor%}
+                  
+                </select>
+                
+          
+              
+            
+          </div>
+          {%endif%}
+          <div class="col-2">
+            {%if createNewProfile%}
+            <a href="{%url  createNewProfile %}" class="btn w-100  btn-outline-success">
+              جدید </a>
+              {%endif%}
+          </div>
+          <div class="col-2">
+            {%if visio %}
+            <a href="{% static 'visio/' %}{{visio|safe}}" class="btn w-100  btn-outline-warning">
+              گردش کار فعالیت  </a>
+              {%endif%}
+          </div>
+          <div class="col-2">
+            {%if responsible_link and profileSelected%}
+            <a href="{%url responsible_link profileSelected.id %}" class="btn w-100  btn-outline-primary">
+              دبیر <span class="badgec narowFont text-md bg-info"style="position: initial; background-color: #1c3c60 !important;">{{responsibleCount}}</span></a>
+              {%endif%}
+          </div>
+          <div class="col-2">
+            {%if member_link and profileSelected%}
+            <a href="{%url member_link  profileSelected.id   %}" class="btn w-100  btn-outline-danger">
+              اعضا <span class="badgec narowFont text-md "style="position: initial;">{{memberCount}}</span></a>
+              {%elif member_link %}
+              <a href="{%url member_link  %}" class="btn w-100  btn-outline-danger">
+                اعضا <span class="badgec narowFont text-md" style="position: initial;">{{memberCount}}</span></a>
+                {%endif%}
+          </div>
+        </div>
+       
+       
+       </div>
+       {%endif%}
+       <div class="container" id="dashboard">
+       {% include partials %}
+      </div>
+      
+     </div>
+      
+      
+     
+     
+   </div>
+         
+     
+</div>
+
+{% endblock content%}
+ 
+ 
+   {% block scripts %}
+  
+  
+  <script>
+    $(document).ready( function() {
+  $('#example').dataTable( {
+    "order": [ 3, 'dsc' ] ,
+    "pageLength": 25 ,
+    "oLanguage": {
+      "oPaginate": {
+        "sNext": "صفحه بعدی",
+        "sPrevious": "صفحه قبلی"
+      },
+      "sEmptyTable": "اطلاعاتی برای نمایش وجود ندارد",
+      "sSearch": "جستجو   :  ",
+      "sInfo": "نمایش _START_ تا_END_ از تعداد کل _TOTAL_" ,
+      "sLengthMenu": "  تعداد در صفحه  _MENU_ ",
+      "sInfoEmpty": "رکوردی برای نمایش وجود ندارد",
+      
+    
+    }
+  } );
+} );
+  </script>
+   <script type="text/javascript">
+   $(function(){
+      $("#select").change(function(){
+        
+        window.location=window.location.href.split('?')[0] + "?profileId=" + this.value
+      });
+    });
+  </script>
+  
+  <!-- <script>
+    const data = {
+  labels: [
+    'ریسک های بارز 1',
+    'ریسک های بارز 2',
+    'ریسک های متوسط',
+    'ریسک های پایین'
+  ],
+  datasets: [{
+    label: 'My First Dataset',
+    data: [{{riskBarez1Percent}}, {{riskBarez2Percent}}, {{riskMedianPercent}} , {{riskLowPercent}}],
+    backgroundColor: [
+      'rgb(255, 0, 0)',
+      'rgb(255, 139, 6)',
+      'rgb(255, 225, 56)',
+      'rgb(16, 199, 0)'
+    ],
+    hoverOffset: 4
+  }]
+};
+
+const config = {
+  type: 'pie',
+  data: data,
+};
+
+const ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'pie',
+    data: data,
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+  </script>
+  <script>
+    const ctx1 = document.getElementById('myChart2');
+
+new Chart(ctx1, {
+  type: 'pie',
+  data: data,
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+});
+  </script> -->
+
+ 
+  {%endblock scripts%}
+ 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+

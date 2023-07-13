@@ -1,0 +1,82 @@
+{% extends extend%}
+{% load static %}
+{%block style%}
+<link rel="stylesheet" href="{%static '/css/select2.min.css'%}">
+<link rel="stylesheet" href="{%static '/css/select2-bootstrap-5-theme.rtl.min.css'%}">
+{%endblock style%}
+{% block content %}
+<script>
+  $(document).ready(function() { 
+  $("select").select2({
+   theme: "bootstrap-5",
+   placeholder: "یک گزینه را انتخاب کنید",
+   allowClear: true
+  });
+  });
+
+ </script>
+<div class="container py-6">
+    <div class="row justify-content-md-center">
+        <div class="card card-frame col-12">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="row">
+           
+              <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+                <h4 class="text-white text-capitalize ps-3">{{ header_title }}</h4>
+               
+              </div>
+            </div>
+           
+          </div>
+            <div class="card-body">
+         
+              <form action="" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  {% if columns == 1%}
+                    {% for field  in form.visible_fields %}
+
+                    <div class="input-group input-group-static mb-4">
+                      <label class="" for="{{ field.auto_id }}">
+                        {{ field.label }}
+                      </label>
+                      {{field }}
+                      {% if field.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ field.errors.as_text}}
+                        </div>
+                      {% endif %}
+                    </div>
+                   
+                    {% endfor %}
+                  {% endif %}
+
+                  
+                  <div class="input-group input-group-static mb-4">
+                    <label for="id_description">
+                          توضیحات درخواست خود را وارد کنید : 
+                    </label>
+                    <textarea name="description" cols="40" rows="5" class="form-control" id="id_description"></textarea>
+                    
+                  </div>
+                  <h5 class="">بارگزاری مستندات</h5>
+                  <label>
+                    <input name="document" id="id_document" type="file" style="display: none;">
+                    <a class="text-success">در صورتی که فایلی برای آپلود دارید کلیک کنید </a>
+                  </label>
+                        <input type="submit" class="btn btn-lg bg-gradient-{{ color }} btn-lg w-100 mt-4 mb-0" value="ثبت">
+
+              </form>
+            </div>
+        </div>
+      </div>
+</div>
+
+    
+    
+   
+{% endblock content %}
+
+{%block scripts%}
+<script src="{% static '/js/select2.min.js' %}"></script>
+{%endblock scripts%}
+

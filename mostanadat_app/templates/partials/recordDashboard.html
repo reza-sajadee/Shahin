@@ -1,0 +1,212 @@
+
+ {% load static %}
+
+{%block dashboard%}
+<script type="text/javascript">
+  function show_hide_row(row)
+  {
+   $("#"+row).slideToggle();
+  }
+  </script>
+<div class="container ">
+  <div class="row justify-content-center">
+    <div class="card card-plain border">
+      {% if responsible_link %}
+      <div class="row justify-content-center">
+        <div class="col-2">
+      
+          <a href="{%url responsible_link%}" class="btn w-100 my-2  btn-outline-warning">
+            درخواست های تغییر در دست بررسی  </a>
+          
+        </div>
+        
+       
+     
+      {%endif%}
+        <div class="col-2">
+        
+          <a href="{%static 'visio/' %}{{visio}} "class="btn w-100 my-2  btn-outline-warning"> گردش کار فعالیت 
+            </a>
+          
+        </div>
+      </div>
+      </div>
+  </div>
+  
+  <div class="row py-3 justify-content-md-center">
+    <div class="card card-fram col-12">
+    
+      <div class="container-fluid fulled">
+        <div class="row border-bottom py-3">
+          
+          <div class="col-3 text-center">عنوان سابقه </div>
+          <div class="col-2 text-center">کد سابقه </div>
+          <div class="col-2 text-center">سطح محرمانگی</div>
+          <div class="col-2 text-center">نحوه نگه داری</div>
+          <div class="col-1 text-center">بیشتر</div>
+          <div class="col-2 text-center">درخواست</div>
+        </div>
+        {%for data in allRecord%}
+           
+        
+        
+            
+           
+              <div class="row border-bottom py-3">
+                
+                   
+                  
+                    <div class="col-3 narowFont text-center">{{data.title}}</div>
+                    <div class="col-2 narowFont text-center">{{data.recordCode}}</div>
+                  
+                    <div class="col-2 narowFont text-center">{{data.get_privacy_display}}</div>
+                    <div class="col-2 narowFont text-center">{{data.get_typeKeeping_display}}</div>
+                   
+                  
+                  
+                  
+                    <a href="#" onclick="show_hide_row('hidden_row{{data.id}}');" class="col-1">
+                      <div class="  ms-2 d-flex align-items-center justify-content-center">
+                        <img style="max-width: 50px;" src="{% static 'img/svg/view.svg' %}" >
+                      </div>
+                    </a>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#rocordChange{{data.id}}"  class="col-2">
+                      <div class="  ms-2 d-flex align-items-center justify-content-center">
+                        <img style="max-width: 50px;" src="{% static 'img/svg/edit.svg' %}" >
+                      </div>
+                    </a>
+              </div>
+
+              <div id="hidden_row{{data.id}}" class="hidden_row row moreData py-3" style="display:none">
+                      
+                 
+                  
+                  <div class="row py-3">
+                    
+                    
+                      <div class="col-8">
+                        <span class="nowrap fw-bold text-dark" >  عنوان سابقه   : </span>
+                        <span class="nowrap narowFont"> {{data.title}} </span> 
+                      </div>
+
+                      <div class="col-4">
+                        <span class="nowrap fw-bold text-dark" >  کد سابقه (شناسه): </span>
+                        <span class="nowrap narowFont"> {{data.recordCode}}  </span> 
+                      </div>
+                      
+
+                  </div>
+
+                  <hr class="dark horizontal">
+                  <div class="row py-3">
+                    
+                    
+                    <div class="col-6">
+                      <span class="nowrap fw-bold text-dark" >  پست مسئول نگه داری سابقه   : </span>
+                      <span class="nowrap narowFont"> {{data.postKeeper}} </span> 
+                    </div>
+
+                    <div class="col-6">
+                      <span class="nowrap fw-bold text-dark" >    محل نگه داری سابقه: </span>
+                      <span class="nowrap narowFont"> {{data.vahedKeeper}}  </span> 
+                    </div>
+                    
+
+                    <hr class="dark horizontal">
+                  <div class="row py-3">
+                    
+                    
+                    <div class="col-6">
+                      <span class="nowrap fw-bold text-dark" >سطح محرمانگی: </span>
+                      <span class="nowrap narowFont"> {{data.postKeeper}} </span> 
+                    </div>
+
+                    <div class="col-6">
+                      <span class="nowrap fw-bold text-dark" >نحوه نگه داری: </span>
+                      <span class="nowrap narowFont"> {{data.vahedKeeper}}  </span> 
+                    </div>
+
+                </div>
+
+
+                <hr class="dark horizontal">
+                  <div class="row py-3">
+                    
+                    
+                    <div class="col-6">
+                      <span class="nowrap fw-bold text-dark" >مدت نگه داری جاری : </span>
+                      <span class="nowrap narowFont"> {{data.jariY}} سال {% if data.jariM %}  -  {{jariM}} ماه {%endif%}</span> 
+                    </div>
+
+                    <div class="col-6">
+                      <span class="nowrap fw-bold text-dark" >  مدت نگه داری راکد : </span>
+                      <span class="nowrap narowFont"> {{data.rakedY}} سال {% if data.rakedM %}  -  {{rakedM}} ماه {%endif%}  </span> 
+                    </div>
+
+                </div>
+                <hr class="dark horizontal">
+                <div class="row py-3">
+                  
+                  
+                  <div class="col-12">
+                    <span class="nowrap fw-bold text-dark" >نحوه تعیین تکلیف (وا رهایی): </span>
+                    <span class="nowrap narowFont"> {{data.determine}} </span> 
+                  </div>
+
+                 
+              </div>
+              </div>
+                    
+            
+
+          
+        
+      
+            </div>
+            <div class="modal fade" id="rocordChange{{data.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  <form  action="" method="POST">
+                    {% csrf_token %}
+                  
+                    
+                    
+                    <h5 class="modal-title font-weight-normal" id="exampleModalLabel">   آیا اطمینان دارید که میخواهید تغییر در سابقه {{data.title}} را ثبت کنید ؟</h5>
+                    <div class="input-group input-group-static mb-4 col-4">
+                      <label class="custom-control-label" for=""> توضیحات مورد نظر را  وارد کنید </label>
+                      <textarea name="description" class="mt-2" rows="4" style="min-width: 100%" id="id_description"></textarea>
+                      </div>
+                      <input type="hidden" id="recordId"   name="recordId"   value={{data.id}}>
+                  
+                  </div>
+                 
+                  <div class="modal-footer">
+                    <button type="button" class="btn bg-gradient-danger" data-bs-dismiss="modal">لغو</button>
+                    <button type="submit" class="btn bg-gradient-success">ثبت کردن  </button>
+                  </div>
+                </form>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+
+  </div>
+
+
+</div>
+{% endblock dashboard %}
+ 
+
+{% block scripts %}
+
+
+{%endblock scripts%}

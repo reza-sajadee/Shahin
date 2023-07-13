@@ -1,0 +1,10 @@
+{
+    "app":"caspian",
+    "disks": [
+        {
+            "name" : "myd",
+            "mountTo":"data"
+        }
+    ]
+
+}

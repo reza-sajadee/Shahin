@@ -1,0 +1,161 @@
+{% extends extend%}
+{% load static %}
+{%block style%}
+<link rel="stylesheet" href="{%static '/css/select2.min.css'%}">
+<link rel="stylesheet" href="{%static '/css/select2-bootstrap-5-theme.rtl.min.css'%}">
+{%endblock style%}
+{%block scripts%}
+<script src="{% static '/js/select2.min.js' %}"></script>
+{%endblock scripts%}
+{% block content %}
+<script>
+ $(document).ready(function() { 
+ $("#id_problem").select2({
+  theme: "bootstrap-5",
+  allowClear: true
+ });
+ $("#id_demandantVahed").select2({
+  theme: "bootstrap-5",
+  allowClear: true
+ });
+ $("#id_standardRelated").select2({
+  theme: "bootstrap-5",
+  allowClear: true
+ });
+ $("#id_source").select2({
+  theme: "bootstrap-5",
+  allowClear: true
+ });
+});
+</script>
+<div class="container py-6">
+    <div class="row justify-content-md-center">
+        <div class="card card-frame col-12">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="row">
+           
+              <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+                <h4 class="text-white text-capitalize ps-3">{{ header_title }}</h4>
+                <p class="text-md font-monospace text-light mb-0">
+                  {{discribtion}}
+                </p>
+              </div>
+            </div>
+           
+          </div>
+            <div class="card-body">
+              
+              <form action="" method="POST" enctype="multipart/form-data">
+                {%csrf_token%}
+                
+                  
+
+                  <div class="input-group input-group-static mb-4">
+                    <label class="" for="id_problem">
+                      نوع مسئله را انتخاب کنید
+                    </label>
+                    <select name="problem" class="form-control problemS" id="id_problem">
+<option value="" selected="">---------</option>
+
+<option value="correctiveAction">اقدام اصلاحی</option>
+
+<option value="Correction">درخواست اصلاح</option>
+
+</select>
+                    
+                  </div>
+                 
+                  
+
+                  <div class="input-group input-group-static mb-4">
+                    <label class="" for="id_demandantVahed">
+                         واحد درخواست کننده را را انتخاب کنید
+                    </label>
+                    <!-- <input type="text" name="demandantVahed" class="form-control" required="" id="id_demandantVahed"> -->
+                    {{form.demandantVahed}}
+
+
+
+</input>
+                    
+                  </div>
+                 
+                  
+
+                  <div class="input-group input-group-static mb-4">
+                    <label class="" for="id_standardRelated">
+                        سیستم مربوطه را انتخاب کنید
+                    </label>
+                    <!-- <input type="text" name="standardRelated" class="form-control" id="id_standardRelated"> -->
+                    {{form.standardRelated}}
+</input>
+                    
+                  </div>
+                 
+                  
+
+                  <div class="input-group input-group-static mb-4">
+                    <label class="" for="id_source">
+                        منشا بروز را  را انتخاب کنید
+                    </label>
+                    {{form.source}}
+                    
+                  </div>
+                 
+                  
+                
+
+                
+                <div class="input-group input-group-static mb-4">
+                  <label for="id_description">
+                        شرح مسئله  (درخواست / عدم انطباق ): 
+                  </label>
+                  <textarea name="description" cols="40" rows="5" class="form-control" id="id_description"></textarea>
+                  
+                </div>
+                      <input type="submit" class="btn btn-lg bg-gradient-danger btn-lg w-100 mt-4 mb-0" value="ثبت">
+
+            </form>
+
+
+              <!-- <form action="" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  {% if columns == 1%}
+                    {% for field  in form.visible_fields %}
+
+                    <div class="input-group input-group-static mb-4">
+                      <label class="" for="{{ field.auto_id }}">
+                        {{ field.label }}
+                      </label>
+                      {{field }}
+                      {% if field.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ field.errors.as_text}}
+                        </div>
+                      {% endif %}
+                    </div>
+                   
+                    {% endfor %}
+                  {% endif %}
+
+                  
+                  <div class="input-group input-group-static mb-4">
+                    <label for="id_description">
+                          شرح مسئله  (درخواست / عدم انطباق ): 
+                    </label>
+                    <textarea name="description" cols="40" rows="5" class="form-control" id="id_description"></textarea>
+                    
+                  </div>
+                        <input type="submit" class="btn btn-lg bg-gradient-{{ color }} btn-lg w-100 mt-4 mb-0" value="ثبت">
+
+              </form> -->
+            </div>
+        </div>
+      </div>
+</div>
+
+    
+    
+   
+{% endblock content %}
+

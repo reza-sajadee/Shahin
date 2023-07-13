@@ -1,0 +1,103 @@
+
+ {% extends extend %} 
+
+
+
+
+{% load static %}
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/dataTables.css' %}">
+
+
+  <script type="text/javascript" charset="utf8" src="{% static '/js/dataTables.js' %}"></script>
+
+  <script src="{% static '/js/jquery.dataTables.js' %}"  ></script>
+{%endblock style%}
+
+{% block content %}
+<div class="container py-6">
+  
+  <div class="row">
+    <div class="col-12">
+        <div class="card my-4">
+            <div class="card-header p-0 position-relative mt-4 mx-3 z-index-2">
+                <div class="bg-gradient-danger shadow-info border-radius-lg px-3 pt-4 pb-3">
+                    <h6 class="text-white text-center ps-3">لیست تیم ها</h6>
+                </div>
+            </div>
+            <div class="card-body px-0 pb-2">
+                <div class="container-fluid fulled">
+                    <div class="row border-bottom py-3">
+                      <div class="col-1 text-center">عنوان </div>
+                      <div class="col-2 text-center">پروفایل ریسک </div>
+                      <div class="col-2 text-center">اعضا </div>
+                      <div class="col-1 text-center">سرفصل ریسک </div>
+                      <div class="col-4 text-center">حوزه ها  </div>
+                      <div class="col-1 text-center">ویرایش</div>
+                      <div class="col-1 text-center">حذف</div>
+          
+                    
+                    </div>
+                  
+                        {%for datas in list_data%}
+                          <div class="row border-bottom py-3">
+                                <div class="col-1 narowFont text-center">{{ datas.0 }}</div>
+                                <div class="col-2 narowFont text-center">{{datas.1}}</div>
+                                <div class="col-2 narowFont text-center">{{datas.2}}</div>
+                                <div class="col-1 narowFont text-center">{{datas.3}}</div>
+                                <div class="col-4 narowFont text-center">{{datas.4}}</div>
+                                <div class="col-1 narowFont text-center"> <a class="nav-link text-black-80" href="{{ key }}"   >
+                                  <div class="  ms-2 d-flex align-items-center justify-content-center">
+                                    <img style="max-width: 50px; min-width: 30px;" src="{% static 'img/svg/edit.svg' %}" >
+                                  </div>
+                                </a></div>
+                                <div class="col-1 narowFont text-center"><a href="/risk/team/delete/{{key}}" class="col-1 text-danger text-center">
+                            <img class="" aria-hidden="true" src="{% static 'img/svg/close.svg' %}" >
+                          </a></div>
+                                
+                          </div>
+                        {% endfor %}
+                  
+                  
+                        </div>
+                        <div class="row justify-content-md-center">
+                       
+                          <div class="col-5">
+                            <a href="{%url menuBack%}" class="btn w-100  btn-outline-danger">
+                              بازگشت </a>
+                          </div>
+                        </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  </div>
+</div>
+  {% endblock content %}
+
+
+  {% block scripts %}
+  
+  
+  <script>
+    $(document).ready( function() {
+  $('#example').dataTable( {
+    "oLanguage": {
+      "oPaginate": {
+        "sNext": "صفحه بعدی",
+        "sPrevious": "صفحه قبلی"
+      },
+      "sEmptyTable": "اطلاعاتی برای نمایش وجود ندارد",
+      "sSearch": "جستجو   :  ",
+      "sInfo": "نمایش _START_ تا_END_ از تعداد کل _TOTAL_" ,
+      "sLengthMenu": "  تعداد در صفحه  _MENU_ ",
+      "sInfoEmpty": "رکوردی برای نمایش وجود ندارد"
+    
+    }
+  } );
+} );
+  </script>
+  {%endblock scripts%}
+  
+
+

@@ -1,0 +1,211 @@
+
+ {% extends extend %} 
+
+
+
+
+ {% load static %}
+ {% block style %}
+ <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css">
+
+
+ <script type="text/javascript" charset="utf8" src="{% static '/js/dataTables.js' %}"></script>
+ <<script src="{%static '/js/chart.js' %}"></script>
+ <script src="{% static '/js/jquery.dataTables.js' %}"  ></script>
+ {%endblock style%}
+ 
+ {% block content %}
+ <div class="container py-6">
+  
+   <div class="row justify-content-md-center">
+     <div class="card card-fram col-12">
+       <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+         <div class="row">
+          
+           <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+             <h4 class="text-white text-capitalize ps-3">{{ header_title }}</h4>
+ 
+           </div>
+         </div>
+       </div>
+     
+      
+     
+         <div class="table-responsive my-5">
+           
+           <table id="example" class="table uk-table uk-table-hover uk-table-striped align-items-center py-3 mb-0">
+             <br>
+             <thead>
+              
+              <tr>
+                
+                
+                  <th class=" text-secondary text-center text-md font-weight-bolder opacity-7">عنوان ریسک</th>
+                  <th class=" text-secondary text-center text-md font-weight-bolder opacity-7">نام فرآیند</th>
+                  <th class=" text-secondary text-center text-md font-weight-bolder opacity-7">حوزه </th>
+                  <th class=" text-secondary text-center text-md font-weight-bolder opacity-7">RPN</th>
+                  <th class=" text-secondary text-center text-md font-weight-bolder opacity-7">Adjusted RPN</th>
+                  <th class=" text-secondary text-center text-md font-weight-bolder opacity-7"> نوع ریسک</th>
+                  <th class=" text-secondary text-center text-md font-weight-bolder opacity-7">اطلاعات بیشتر</th>
+               
+                
+                
+              </tr>
+            </thead>
+            <tbody>
+              
+             
+              {% for  risk in highRisk %}
+        
+                {% if selectedLevel != None %}
+                  {%if risk.1 == selectedLevel  %}
+                
+                    <tr>
+                  
+                        
+                        <td class="narowFont text-center  overflow-hidden">{{risk.0.riskMeasurement.riskIdentificated.riskFailureModes|truncatechars_html:45}}</td>
+                        <td class="narowFont text-center  overflow-hidden">{{risk.0.process.title|truncatechars_html:45}}</td>
+                        <td class="narowFont text-center  overflow-hidden">{{risk.0.process.ownerVahed.title|truncatechars_html:45}}</td>
+                        
+                        
+                        
+                        <td class="narowFont text-center  overflow-hidden">{{risk.0.rpn|floatformat}}</td>
+                        <td class="narowFont text-center  overflow-hidden ">{{risk.0.rpnAdjusted|floatformat}}</td>
+                        <td class="narowFont text-center  overflow-hidden risk{{risk.1}}">   {{risk.2}}</td>
+                        
+                        <td>
+                          
+                          
+                                                                        
+                          <a class="nav-link text-black-80" method="GET" href="{%url 'ViewRiskProcces' risk.0.id %}"   >
+                            <div class="  ms-2 d-flex align-items-center justify-content-center">
+                              <img style="max-width: 50px;" src="{% static 'img/svg/view.svg' %}" >
+                            </div>
+                          </a>
+                        
+                          
+                        </td>
+                      
+                    </tr>
+                  {%endif%}
+
+                {%elif selectedHoze != None%}
+                
+                {%if risk.0.process.groupCode.hozeCode.hozeCode == selectedHoze %}
+                <tr>
+                  
+                        
+                  <td class="narowFont text-center  overflow-hidden">{{risk.0.riskMeasurement.riskIdentificated.riskFailureModes|truncatechars_html:45}}</td>
+                  <td class="narowFont text-center  overflow-hidden">{{risk.0.process.title|truncatechars_html:45}}</td>
+                  <td class="narowFont text-center  overflow-hidden">{{risk.0.process.ownerVahed.title|truncatechars_html:45}}</td>
+                  
+                  
+                  <td class="narowFont text-center  overflow-hidden">{{risk.0.rpn|floatformat}}</td>
+                  <td class="narowFont text-center  overflow-hidden ">{{risk.0.rpnAdjusted|floatformat}}</td>
+                  <td class="narowFont text-center  overflow-hidden risk{{risk.1}}">   {{risk.2}}</td>
+                  
+                  <td>
+                    
+                    
+                                                                  
+                    <a class="nav-link text-black-80" method="GET" href="{%url 'ViewRiskProcces' risk.0.id %}"   >
+                      <div class="  ms-2 d-flex align-items-center justify-content-center">
+                        <img style="max-width: 50px;" src="{% static 'img/svg/view.svg' %}" >
+                      </div>
+                    </a>
+                  
+                    
+                  </td>
+                
+              </tr>
+              {%endif%}
+                {%else%}
+                <tr>
+                  
+                        
+                  <td class="narowFont text-center  overflow-hidden">{{risk.0.riskMeasurement.riskIdentificated.riskFailureModes|truncatechars_html:45}}</td>
+                  <td class="narowFont text-center  overflow-hidden">{{risk.0.process.title|truncatechars_html:45}}</td>
+                  <td class="narowFont text-center  overflow-hidden">{{risk.0.process.ownerVahed.title|truncatechars_html:45}}</td>
+                  
+                  
+                  <td class="narowFont text-center  overflow-hidden">{{risk.0.rpn|floatformat}}</td>
+                  <td class="narowFont text-center  overflow-hidden ">{{risk.0.rpnAdjusted|floatformat}}</td>
+                  <td class="narowFont text-center  overflow-hidden risk{{risk.1}}">   {{risk.2}}</td>
+                  
+                  <td>
+                    
+                    
+                                                                  
+                    <a class="nav-link text-black-80" method="GET" href="{%url 'ViewRiskProcces' risk.0.id %}"   >
+                      <div class="  ms-2 d-flex align-items-center justify-content-center">
+                        <img style="max-width: 50px;" src="{% static 'img/svg/view.svg' %}" >
+                      </div>
+                    </a>
+                  
+                    
+                  </td>
+                
+              </tr>
+                {% endif %}
+                {% endfor %}
+      
+              
+
+                        
+            </tbody>
+           </table>
+           
+     
+         </div>
+       </div>
+        
+     
+     </div>
+   </div>
+ </div>
+   {% endblock content %}
+ 
+ 
+   {% block scripts %}
+  
+  
+  <script>
+    $(document).ready( function() {
+  $('#example').dataTable( {
+    "order": [ 3, 'dsc' ] ,
+    "pageLength": 25 ,
+    "oLanguage": {
+      "oPaginate": {
+        "sNext": "صفحه بعدی",
+        "sPrevious": "صفحه قبلی"
+      },
+
+      "sEmptyTable": "اطلاعاتی برای نمایش وجود ندارد",
+      "sSearch": "جستجو   :  ",
+      "sInfo": "نمایش _START_ تا_END_ از تعداد کل _TOTAL_" ,
+      "sLengthMenu": "  تعداد در صفحه  _MENU_ ",
+      "sInfoEmpty": "رکوردی برای نمایش وجود ندارد",
+      
+    
+    }
+    
+  } );
+} );
+  </script>
+ 
+  {%endblock scripts%}
+ 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+

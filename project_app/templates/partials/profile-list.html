@@ -1,0 +1,94 @@
+
+{%load static%}
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/dataTables.css' %}">
+
+
+<script type="text/javascript" charset="utf8" src="{% static '/js/dataTables.js' %}"></script>
+
+<script src="{% static '/js/jquery.dataTables.js' %}"></script>
+{%endblock style%}
+{%if allJob %}
+<div  class="row" id="profileList"> 
+<div class="table-responsive ">
+          
+    <table id="example" class="table uk-table uk-table-hover uk-table-striped align-items-center py-3 mb-0">
+      <br>
+      <thead>
+        
+        <tr>
+            
+            
+            
+            
+       
+            <th class="text-center text-lg font-weight-bolder opacity-7">نام </th>
+            <th class="text-center text-lg font-weight-bolder opacity-7"> نام خانوادگی</th>
+            <th class="text-center text-lg font-weight-bolder opacity-7">  سمت</th>
+            
+            <th class="text-center text-lg font-weight-bolder opacity-7">افزودن</th>
+
+      
+         
+        </tr>
+      </thead>
+      <tbody>
+      
+      {%for job in allJob%}
+       
+          <tr>
+              
+         
+              <td class="narowFont text-center overflow-hidden">{{job.profile.firstName}}</td>
+              <td class="narowFont text-center overflow-hidden">{{job.profile.lastName}}</td>
+              <td class="narowFont text-center overflow-hidden">{{job.jobBankPost.title}}</td>
+              
+              <td class="narowFont text-center overflow-hidden"> 
+                <div class="form-check align-items-center">
+                  <input class="form-check-input" type="checkbox" value="{{job.id}}" name="jobSelected" id="jobSelected">
+                </div>
+
+              </td>
+              
+              
+             
+             
+
+           
+          </tr>
+         
+        {%endfor%}
+
+                  
+      </tbody>
+    </table>
+   
+  </div>
+{%else%}
+
+<p>فردی موجود نیست   است</p>
+
+{%endif%}
+</div>
+{%block scripts%}
+
+<script>
+  $(document).ready(function () {
+    $('#example').dataTable({
+
+      "oLanguage": {
+        "oPaginate": {
+          "sNext": "صفحه بعدی",
+          "sPrevious": "صفحه قبلی"
+        },
+        "sEmptyTable": "اطلاعاتی برای نمایش وجود ندارد",
+        "sSearch": "جستجو   :  ",
+        "sInfo": "نمایش _START_ تا_END_ از تعداد کل _TOTAL_",
+        "sLengthMenu": "  تعداد در صفحه  _MENU_ ",
+        "sInfoEmpty": "رکوردی برای نمایش وجود ندارد"
+
+      }
+    });
+  });
+</script>
+{%endblock scripts%}

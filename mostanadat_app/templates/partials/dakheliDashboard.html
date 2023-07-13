@@ -1,0 +1,290 @@
+
+ {% load static %}
+
+{%block dashboard%}
+
+<div class="container ">
+  <div class="row justify-content-center">
+    <div class="card card-plain border">
+      <div class="row justify-content-center">
+        <div class="col-2">
+      
+          <a href="{%static 'visio/' %}{{visio}} "class="btn w-100 my-2  btn-outline-warning"> گردش کار فعالیت 
+            </a>
+          
+        </div>
+        <div class="col-2">
+      
+          <a href="{%url 'ListViewMostanadatDakheliChangeDoing'%}" class="btn w-100 my-2  btn-outline-warning">
+            درخواست های تغییر در دست بررسی  </a>
+          
+        </div>
+        <div class="col-2">
+      
+          <a href="{%url 'ListViewMostanadatDakheliChangeDoing'%}?status=done" class="btn w-100 my-2  btn-outline-success">
+درخواست های تغییر به اتمام رسیده</a>
+          
+        </div>
+        <div class="col-2">
+        
+          <a href="{%url 'CreateViewMostanadatDakheliChange'%}" class="btn w-100 my-2  btn-outline-info">
+            ثبت درخواست تغییر در مستندات </a>
+          
+        </div>
+      </div>
+      
+  
+      </div>
+  </div>
+  
+  <div class="row justify-content-md-center">
+    <div class="card card-fram col-12">
+    
+      <div class="table-responsive my-5">
+          
+        <table id="mostanadList" class="table uk-table uk-table-hover uk-table-striped align-items-center py-3 mb-0">
+          <br>
+          <thead>
+            
+            <tr>
+             
+             
+                <th class="text-center text-lg font-weight-bolder opacity-7">نوع مدرک</th>
+                <th class="text-center text-lg font-weight-bolder opacity-7">عنوان سند</th>
+                <th class="text-center text-lg font-weight-bolder opacity-7">طبقه بندی</th>
+                <th class="text-center text-lg font-weight-bolder opacity-7">واحد متولی</th>
+                <th class="text-center text-lg font-weight-bolder opacity-7">نمایش </th>
+             
+
+        
+            </tr>
+          </thead>
+          <tbody>
+            
+        
+            {%for datas in list_data%}
+              {% for key, values in datas.items %}
+              <tr>
+                
+                  {% for v in values %}
+                  <td class="narowFont text-center overflow-hidden">{{v}}</td>
+                  {% endfor %}
+                 
+                  <td>
+                    <a class="nav-link text-black-80" href="{%url 'MostanadatViewDakheli' key%}"   >
+                      <div class="  ms-2 d-flex align-items-center justify-content-center">
+                        <img style="max-width: 50px; min-width: 30px;" src="{% static 'img/svg/view.svg' %}" >
+                      </div>
+                    </a>
+                  </td>
+              
+                 
+                  
+                   
+               
+              </tr>
+              {% endfor %}
+            {%endfor%}
+            
+
+                      
+          </tbody>
+        </table>
+       
+      </div>
+    </div>
+
+
+
+
+  </div>
+
+
+</div>
+{% endblock dashboard %}
+ 
+
+{% block scripts %}
+
+
+<script>
+  $(document).ready(function () {
+    $('#mostanadList').dataTable({
+      "order": [3, 'dsc'],
+      "pageLength": 25,
+      "oLanguage": {
+        "oPaginate": {
+          "sNext": "صفحه بعدی",
+          "sPrevious": "صفحه قبلی"
+        },
+        "sEmptyTable": "اطلاعاتی برای نمایش وجود ندارد",
+        "sSearch": "جستجو   :  ",
+        "sInfo": "نمایش _START_ تا_END_ از تعداد کل _TOTAL_",
+        "sLengthMenu": "  تعداد در صفحه  _MENU_ ",
+        "sInfoEmpty": "رکوردی برای نمایش وجود ندارد",
+
+
+      }
+    });
+  });
+</script>
+<script>
+  const data = {
+    labels: {{dictData.allSource.labels|safe}},
+    datasets: [{
+      label: 'My First Dataset',
+      data:{{dictData.allSource.data|safe}},
+      backgroundColor: [
+      '#EE8434',
+      '#c95d63',
+      '#AE8799',
+      '#717EC3',
+      '#7B9E87',
+      '#27213C',
+      '#0CF574',
+      '#A47963',
+      '#1CCAD8',
+    ],
+      hoverOffset: 8
+    }]
+  };
+
+  const config = {
+    type: 'pie',
+    data: data,
+  };
+
+  const ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'pie',
+    data: data,
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+
+
+ const dataPolar = {
+  labels: {{allHozeData.labels|safe}},
+  datasets: [{
+    label: 'تعداد بر اساس واحد',
+    data: {{allHozeData.data|safe}},
+    backgroundColor: [
+      '#EE8434',
+      '#c95d63',
+      '#AE8799',
+      '#717EC3',
+      '#7B9E87',
+      '#27213C',
+      '#0CF574',
+      '#A47963',
+      '#1CCAD8',
+    ]
+  }]
+};
+
+  
+
+  const ctxPolar = document.getElementById('myChartPolar');
+
+ var mypp = new Chart(ctxPolar, {
+    type: 'polarArea',
+    data: dataPolar,
+    options: {
+    responsive: true,
+    ticks: {
+            stepSize: 1
+        },
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      
+    }
+  },
+  });
+
+  
+</script>
+<script>
+  const dataBar = {
+    labels: [
+    'پایش و اندازه‌گیری فرآیند',
+    'ممیزی داخلی',
+    'ممیزی خارجی',
+    'بازنگری مدیریت',
+    'مدیریت ریسک',
+    'تجزیه و تحلیل داده‌ها',
+    'مدیریت تغییر',
+    'پیشنهاد',
+    'سایر',
+  ],
+    
+    datasets: [{
+      label: 'اقدامات اصلاحی جاری',
+      data: [10, 20, 30, 40, 50, 60, 70, 80, 90],
+      backgroundColor: [
+        
+        'rgb(255, 139, 6)',
+      ],
+    },
+    {
+      label: 'اقدامات اصلاحی اثر بخش',
+      data: [5, 10, 15, 20, 25, 30, 35, 40, 45],
+      backgroundColor: [
+
+      '#0CF574',
+
+      ],
+    },
+    {
+      label: 'اقدامات اصلاحی غیر اثر بخش',
+      data: [2, 5, 7, 10, 12, 15, 17, 20, 22],
+      backgroundColor: [
+
+      'rgb(255, 0, 0)',
+
+      ],
+    },]
+  };
+
+  const configBar = {
+    type: 'pie',
+    data: dataBar,
+  };
+
+  const ctxBar = document.getElementById('myChartBar');
+
+  new Chart(ctxBar, {
+    type: 'bar',
+    data: dataBar,
+    options: {
+      plugins: {
+        title: {
+          display: false,
+          text: 'Chart.js Bar Chart - Stacked'
+        },
+      },
+      responsive: true,
+      scales: {
+        x: {
+          stacked: true,
+        },
+        y: {
+          stacked: true
+        }
+      }
+    }
+  });
+</script>
+
+
+{%endblock scripts%}

@@ -1,0 +1,411 @@
+{% extends extend%}
+
+
+{% load static %}
+{% block style %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css">
+<!-- <link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/tabs.css' %}"> -->
+{%endblock style%}
+
+{% block content %}
+{{get_jalali_date}}
+
+<div class="container py-6">
+    <div class="row justify-content-md-center">
+        <div class="card card-frame col-12">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="row">
+              
+              <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+                <h4 class="text-white text-capitalize ps-3">اطلاعات {{form.topic}}</h4>
+              </div>
+            </div>
+           
+          </div>
+            <div class="card-body">
+                <form class="py-3" action="" method="POST">
+                    <div class="row">
+                    
+                            {% csrf_token %}  
+                            <div class="col-5">
+                                <div class="card card-frame ineer-shadow">
+                                    <div class="card-header bg-gradient-primary  pb-0">
+                                        <div class="row">
+                                            <div class="col-12 ">
+                                                <h6 class="text-center text-white"> اطلاعات پایه {{form.topic}}</h6>
+                                                <hr class="dark horizontal my-2">
+                                            </div>
+                                        
+                                        </div>
+                                    </div>
+                                    <div class="row p-3">
+                                        <div class="col-12">
+                                            <div class="input-group input-group-static mb-4">
+                                                <label for="exampleFormControlSelect1" class="ms-0">انتخاب سرفصل ریسک</label>
+                                                <select  class="form-control pb-4 " id="topic" name="topic">
+                                                    <option value="" selected="">---------</option>
+                                                    {% for topic in RiskTopics %}
+                                                        <option value="{{topic.id}}">{{topic}}</option>
+                                                    {% endfor %}
+                                                
+                                                
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <hr class="dark horizontal my-2">
+                                        <div class="col-12 py-3">
+                                            <div class="input-group input-group-static mb-4">
+                                                <label for="exampleFormControlSelect1" class="ms-0"> انتخاب حوزه ریسک</label>
+                                                <select multiple="" class="form-control pb-4" id="hoze" name="hoze">
+                                                   
+                                                {%for hoze in allHozes %}
+                                                <option value="{{hoze.id}}">{{hoze.title}}</option>
+                                                {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row m-2">
+                                        <div class="col-12">
+                                            <div class="input-group input-group-static mb-4">
+                                                <label > عنوان تیم</label>
+                                                <input type="text" name="teamTitle" class="form-control">
+                                            </div>
+                                        </div>
+                                        
+                                        
+                                    </div>
+                                   
+                                </div>
+                                
+                            </div>
+                            <div class="col-7">
+                                <div class="card card-frame ineer-shadow">
+                                    <div class="card-header bg-gradient-primary  pb-0">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <h6 class="text-center text-white">اعضا {{form.topic}}</h6>
+                                                    <hr class="dark horizontal my-2">
+                                                </div>
+                                            
+                                            </div>
+                                        </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                        
+                                                
+                                            <div class="card-body px-0 pb-2">
+                                                <div class="row mx-3">      
+                                                            
+                                                    <table id="playerTable" class="table table-center uk-table uk-table-hover uk-table-striped align-items-center py-3 mb-0">
+                                                        <br>
+                                                        <thead>
+                                                            
+                                                            <tr>
+                                                            
+                                                            
+                                                            <th class="text-uppercase text-secondary text-lg font-weight-bolder opacity-7">نام</th>
+                                                            <th class="text-uppercase text-secondary text-lg font-weight-bolder opacity-7">نام خانوادگی</th>
+                                                            <th class="text-uppercase text-secondary text-lg font-weight-bolder opacity-7">شماره کارمندی</th>
+                                                            <th class="text-uppercase text-secondary text-lg font-weight-bolder opacity-7"> سمت</th>
+                                                            <th class="text-uppercase text-secondary text-lg font-weight-bolder opacity-7">انتخاب </th>
+                                                            
+                                                            <!-- <th class="text-uppercase text-secondary text-lg font-weight-bolder opacity-7">حذف</th> -->
+                                                            
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                
+                                                                
+                                                                <td class="narowFont  ">
+                                                                    
+                                                                    {{committeeOfRiskProfile.head.profile.firstName}} 
+                                                                </td>
+                                                                <td class="narowFont  ">
+                                                                    
+                                                                    {{committeeOfRiskProfile.head.profile.lastName}}   
+                                                                </td>
+                                                                <td class="narowFont  ">
+                                                                    
+                                                                    {{committeeOfRiskProfile.head.profile.employeeNumber}} 
+                                                                </td>
+                                                                <td class="narowFont  ">
+                                                                    
+                                                                    رئیس کمیته
+                                                                </td>
+                                                                
+                                                                <td class="narowFont  ">
+                                                                    
+                                                                    <div class="form-check text-center">
+                                                                        <input class="form-check-input" name="member" type="checkbox" value="{{committeeOfRiskProfile.head.id}}" id="member{{committeeOfRiskProfile.head.id}}" >
+                                                                        
+                                                                    </div>
+                                                                        
+                                                                    
+                                                                    
+                                                                </td>
+                                                                
+                                                            
+                                                                
+                                                            </tr>
+                                                            <tr>
+                                                                
+                                                                
+                                                                <td class="narowFont  ">
+                                                                    
+                                                                    {{committeeOfRiskProfile.janeshinAval.profile.firstName}} 
+                                                                </td>
+                                                                <td class="narowFont  ">
+                                                                    
+                                                                    {{committeeOfRiskProfile.janeshinAval.profile.lastName}}   
+                                                                </td>
+                                                                <td class="narowFont  ">
+                                                                    
+                                                                    {{committeeOfRiskProfile.janeshinAval.profile.employeeNumber}} 
+                                                                </td>
+                                                                <td class="narowFont  ">
+                                                                    
+                                                                    جانشین اول
+                                                                </td>
+                                                                
+                                                                <td class="narowFont  ">
+                                                                    
+                                                                    <div class="form-check text-center">
+                                                                        <input class="form-check-input" name="member" type="checkbox" value="{{committeeOfRiskProfile.janeshinAval.id}}" id="member{{committeeOfRiskProfile.janeshinAval.id}}" >
+                                                                        
+                                                                    </div>
+                                                                        
+                                                                    
+                                                                    
+                                                                </td>
+                                                                
+                                                            
+                                                                
+                                                            </tr>
+                                                            <tr>
+                                                                
+                                                                
+                                                                <td class="narowFont  ">
+                                                                    
+                                                                    {{committeeOfRiskProfile.janeshinDovom.profile.firstName}} 
+                                                                </td>
+                                                                <td class="narowFont  ">
+                                                                    
+                                                                    {{committeeOfRiskProfile.janeshinDovom.profile.lastName}}   
+                                                                </td>
+                                                                <td class="narowFont  ">
+                                                                    
+                                                                    {{committeeOfRiskProfile.janeshinDovom.profile.employeeNumber}} 
+                                                                </td>
+                                                                <td class="narowFont  ">
+                                                                    
+                                                                    جانشین دوم
+                                                                </td>
+                                                                
+                                                                <td class="narowFont  ">
+                                                                    
+                                                                    <div class="form-check text-center">
+                                                                        <input class="form-check-input" name="member" type="checkbox" value="{{committeeOfRiskProfile.janeshinDovom.id}}" id="member{{committeeOfRiskProfile.janeshinDovom.id}}" >
+                                                                        
+                                                                    </div>
+                                                                        
+                                                                    
+                                                                    
+                                                                </td>
+                                                                
+                                                            
+                                                                
+                                                            </tr>
+                                                            <tr>
+                                                                
+                                                                
+                                                                <td class="narowFont  ">
+                                                                    
+                                                                    {{committeeOfRiskProfile.dabir.profile.firstName}} 
+                                                                </td>
+                                                                <td class="narowFont  ">
+                                                                    
+                                                                    {{committeeOfRiskProfile.dabir.profile.lastName}}   
+                                                                </td>
+                                                                <td class="narowFont  ">
+                                                                    
+                                                                    {{committeeOfRiskProfile.dabir.profile.employeeNumber}} 
+                                                                </td>
+                                                                <td class="narowFont  ">
+                                                                    
+                                                                    دبیر 
+                                                                </td>
+                                                                
+                                                                <td class="narowFont  ">
+                                                                    
+                                                                    <div class="form-check text-center">
+                                                                        <input class="form-check-input" name="member" type="checkbox" value="{{committeeOfRiskProfile.dabir.id}}" id="member{{committeeOfRiskProfile.dabir.id}}" >
+                                                                        
+                                                                    </div>
+                                                                        
+                                                                    
+                                                                    
+                                                                </td>
+                                                                
+                                                            
+                                                                
+                                                            </tr>
+                                                            {%for member in membersOfCommittee%}
+                                                            
+                                                            <tr>
+                                                                
+                                                                
+                                                                <td class="narowFont  ">
+                                                                    
+                                                                    {{member.profile.firstName}} 
+                                                                </td>
+                                                                <td class="narowFont  ">
+                                                                    
+                                                                    {{member.profile.lastName}}   
+                                                                </td>
+                                                                <td class="narowFont  ">
+                                                                    
+                                                                    {{member.profile.employeeNumber}} 
+                                                                </td>
+                                                                <td class="narowFont  ">
+                                                                    
+                                                                    عضو
+                                                                </td>
+                                                                
+                                                                <td class="narowFont  ">
+                                                                    
+                                                                    <div class="form-check text-center">
+                                                                        <input class="form-check-input" name="member" type="checkbox" value="{{member.profile.id}}" id="member{{member.profile.id}}" >
+                                                                        
+                                                                    </div>
+                                                                        
+                                                                    
+                                                                    
+                                                                </td>
+                                                                
+                                                            
+                                                                
+                                                            </tr>
+                                                            
+                                                            {%endfor%}
+                                                            
+                                            
+                                                                    
+                                                        </tbody>
+                                                        </table>
+                                                </div>
+                                            </div>
+                                        
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                </div>
+
+                            </div>
+                            <div class="row py-4 justify-content-md-center">
+                                <div class="col-5">
+                                  <input type="submit" class="btn w-100  btn-outline-primary" value="افزودن">
+                                     </input>
+                                </div>
+                                <div class="col-5">
+                                  <a href="{%url 'ViewRiskDashboard'%}" class="btn w-100  btn-outline-danger">
+                                    بازگشت </a>
+                                </div>
+                              </div>
+                            
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card my-4">
+                <div class="card-header p-0 position-relative mt-4 mx-3 z-index-2">
+                    <div class="bg-gradient-danger shadow-info border-radius-lg px-3 pt-4 pb-3">
+                        <h6 class="text-white text-center ps-3">لیست تیم ها</h6>
+                    </div>
+                </div>
+                <div class="card-body px-0 pb-2">
+                    <div class="container-fluid fulled">
+                        <div class="row border-bottom py-3">
+                          <div class="col-2 text-center">عنوان </div>
+                          <div class="col-2 text-center">پروفایل ریسک </div>
+                          <div class="col-2 text-center">اعضا </div>
+                          <div class="col-1 text-center">سرفصل ریسک </div>
+                          <div class="col-4 text-center">حوزه ها  </div>
+                          <div class="col-1 text-center">حذف</div>
+              
+                        
+                        </div>
+                      
+                            {%for datas in list_data%}
+                              <div class="row border-bottom py-3">
+                                    <div class="col-2 narowFont text-center">{{ datas.0 }}</div>
+                                    <div class="col-2 narowFont text-center">{{datas.1}}</div>
+                                    <div class="col-2 narowFont text-center">{{datas.2}}</div>
+                                    <div class="col-1 narowFont text-center">{{datas.3}}</div>
+                                    <div class="col-4 narowFont text-center">{{datas.4}}</div>
+                                    <div class="col-1 narowFont text-center"><a href="/risk/team/delete/{{key}}" class="col-1 text-danger text-center">
+                                <img class="" aria-hidden="true" src="{% static 'img/svg/close.svg' %}" >
+                              </a></div>
+                                    
+                              </div>
+                            {% endfor %}
+                      
+                      
+                            </div>
+                </div>
+            </div>
+        </div>
+      </div>
+</div>
+
+    
+    
+   
+{% endblock content %}
+
+
+{% block scripts %}
+<script
+src="https://code.jquery.com/jquery-3.6.0.min.js"
+integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf8" src="{% static '/js/dataTables.js' %}"></script>
+
+<script>
+  $(document).ready( function() {
+$('#example').dataTable( {
+  "oLanguage": {
+    "oPaginate": {
+      "sNext": "صفحه بعدی",
+      "sPrevious": "صفحه قبلی"
+    },
+    "sEmptyTable": "اطلاعاتی برای نمایش وجود ندارد",
+    "sSearch": "جستجو   :  ",
+    "sInfo": "نمایش _START_ تا_END_ از تعداد کل _TOTAL_" ,
+    "sLengthMenu": "  تعداد در صفحه  _MENU_ ",
+    "sInfoEmpty": "رکوردی برای نمایش وجود ندارد"
+  
+  }
+} );
+} );
+</script>
+		<!-- <script src="{% static 'admin/js/django_jalali.min.js' %}"></script> -->
+	<!-- OR -->
+	<!-- loading by form (if used AdminJalaliDateWidget) -->
+		{{ form.media }}
+
+{%endblock scripts%}
+
+
+
+
+

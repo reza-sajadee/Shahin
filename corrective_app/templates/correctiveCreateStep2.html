@@ -1,0 +1,1392 @@
+{% extends extend%}
+{% load static %}
+
+{% load jalali_tags %}
+{%block style%}
+<link rel="stylesheet" href="{%static '/css/select2.min.css'%}">
+<link rel="stylesheet" href="{%static '/css/select2-bootstrap-5-theme.rtl.min.css'%}">
+
+<style>
+  .causeAnswer { display:none ;}
+  .problemSolvingAnswer {display: none;}
+  .correctiveActionAnswer {display: none;}
+  .correctiveAnswer {display: none;}
+  </style>
+  <link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+{%endblock style%}
+
+
+
+
+{% block content %}
+<script>
+  $(document).ready(function() { 
+  $("select").select2({
+   theme: "bootstrap-5",
+   placeholder: "یک گزینه را انتخاب کنید",
+   allowClear: true
+  });
+  });
+
+ </script>
+<div class="container py-6">
+    <div class="row justify-content-md-center">
+        <div class="card card-frame col-12">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="row">
+           
+              <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+                <h4 class="text-white text-capitalize ps-3">{{ header_title }}</h4>
+                <p class="text-md font-monospace text-light mb-0">
+                  {{discribtion}}
+                </p>
+              </div>
+            </div>
+           
+          </div>
+          
+          <div class="card-body">
+                
+            {{ userProfile}}
+            <div class="row py-3">
+              {%for data in all %}
+             
+              {% if data.status == 'doing'%}
+                {% if data.activity == 'description'%}
+                  <div class="card border mb-3" >
+                    <div class="card-header"> {{data.get_activity_display}}</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title"></h5>
+                          <p class="card-text"> با توجه به مطالب عنوان شده توسط  <strong>{{data.reciver.firstName}} {{data.reciver.lastName}}</strong>  لطفا اطلاعات را اصلاح کنید </p>
+                        </div>
+                        <form class="my-2" action="" method="POST" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <div class="input-group input-group-static mb-4 col-4">
+                          <label class="custom-control-label" for=""> توضیحات مورد نظر را  وارد کنید </label>
+                          <textarea name="description" class="mt-2"   rows="4" style="min-width: 100%" id="id_description"></textarea>
+                          </div>
+                          <div class="row justify-content-md-center py-3">
+                            <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-primary"value="yes">ثبت</button>
+                            <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-danger" value="no">کنسل </button>
+                            
+                          </div>
+                        </form>
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+                {%endif%}
+                {% if data.activity == 'barresiMafogh'%}
+                  <div class="card border mb-3" >
+                    <div class="card-header"> {{data.get_activity_display}}</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title"></h5>
+                          <p class="card-text">آیا مسئله فوق    با توجه به مطالب مطرح شده، مورد تایید جناب آقای / سرکار خانم <strong>{{data.reciver.firstName}} {{data.reciver.lastName}}</strong> مافوق میباشد ؟</p>
+                        </div>
+                        <form class="my-2" action="" method="POST" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <div class="input-group input-group-static mb-4 col-4">
+                          <label class="custom-control-label" for=""> توضیحات مورد نظر را  وارد کنید </label>
+                          <textarea name="description" class="mt-2"   rows="4" style="min-width: 100%" id="id_description"></textarea>
+                          </div>
+                          <div class="row justify-content-md-center py-3">
+                            <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-primary"value="yes">تایید</button>
+                            <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-danger" value="no">عدم تایید</button>
+                            <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-info" value="edit">درخواست اصلاح </button>
+                          </div>
+                        </form>
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+                {%endif%}
+                {% if data.activity == 'barresiKarshenas'%}
+                  <div class="card border mb-3" >
+                    <div class="card-header"> {{data.get_activity_display}}</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title"></h5>
+                          <p class="card-text">آیا تغییر در سند <strong>{{data.CorrectiveActionRelated.documentRelated.title}}</strong> با توجه به مطالب مطرح شده، مورد تایید جناب آقای / سرکار خانم <strong>{{data.reciver.firstName}} {{data.reciver.lastName}}</strong> مسئول کارشناس دفتر توسعه مدیریت و تحقیقات میباشد ؟</p>
+                        </div>
+                        <form class="my-2" action="" method="POST" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <div class="input-group input-group-static mb-4 col-4">
+                          <label class="custom-control-label" for=""> توضیحات مورد نظر را  وارد کنید </label>
+                          <textarea name="description" class="mt-2"   rows="4" style="min-width: 100%" id="id_description"></textarea>
+                          </div>
+                          <div class="row justify-content-md-center py-3">
+                            <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-primary"value="yes">تایید</button>
+                            <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-danger" value="no">عدم تایید</button>
+                          </div>
+                        </form>
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+                {%endif%}
+                {% if data.activity == 'barresiModir'%}
+                  <div class="card border mb-3" >
+                    <div class="card-header"> {{data.get_activity_display}}</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title"></h5>
+                          <p class="card-text">آیا اقدام اصلاحی فوق  با توجه به مطالب مطرح شده، مورد تایید جناب آقای / سرکار خانم <strong>{{data.reciver.firstName}} {{data.reciver.lastName}}</strong>      مدیر دفتر توسعه مدیریت و تحقیقات میباشد ؟</p>
+                        </div>
+                        <form class="my-2" action="" method="POST" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <div class="input-group input-group-static mb-4 col-4">
+                          <label class="custom-control-label" for=""> توضیحات مورد نظر را  وارد کنید </label>
+                          <textarea name="description" class="mt-2"   rows="4" style="min-width: 100%" id="id_description"></textarea>
+                          </div>
+                          <div class="row justify-content-md-center py-3">
+                            <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-primary"value="yes">تایید</button>
+                            <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-danger" value="completed">عدم تایید</button>
+                          </div>
+                        </form>
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+                {%endif%}
+                {% if data.activity == 'executiveUnit'%}
+                  <div class="card border mb-3" >
+                    <div class="card-header"> {{data.get_activity_display}}</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title"></h5>
+                          <p class="card-text">واحد متولی اقدام اصلاحی را انتخاب کنید </p>
+                        </div>
+                        <form class="my-2" action="" method="POST" enctype="multipart/form-data">
+                          {% csrf_token %}
+                         
+                          <div class="input-group input-group-static mb-4">
+                            <label class="" for="id_vahedMortabetCode">
+                              واحد مرتبط را  انتخاب کنید
+                            </label>
+                            <select name="vahedMortabetCode" class="form-control" required="" id="id_vahedMortabetCode">
+                              
+                            
+                              {%for vahed in allVahed%}
+                              <option value="{{vahed.id}}" {%for vahedSelected in obj.vahedMortabetCode.all  %} {%if vahed.id == vahedSelected.id %} selected {%endif%} {%endfor%}>{{vahed.vahedCode}} - {{vahed.title}}</option>
+                              {%endfor%}
+                            
+                            </select>
+                            <!-- <input name="vahedMortabetCode" class="form-control" required="" id="id_vahedMortabetCode"> -->
+                            
+                              
+                            
+                            
+                            
+                            </input>
+                            
+                          </div>
+                          <div class="row justify-content-md-center py-3">
+                            <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-primary"value="yes">ثبت</button>
+                            <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-danger" value="no">عدم تایید</button>
+                          </div>
+                        </form>
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+                {%endif%}
+                {% if data.activity == 'barresiMoaven'%}
+                  <div class="card border mb-3" >
+                    <div class="card-header"> {{data.get_activity_display}}</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title"></h5>
+                          <p class="card-text">واحد متولی انتخاب شده توسط مدیر دفتر توسعه مدیریت و تحقیقات <strong> {{vahedSelected.title}} </strong>  میباشد در صورتی که  میخواهید میتوانید ویرایش نمایید    </p>
+                        </div>
+                        <form class="my-2" action="" method="POST" enctype="multipart/form-data">
+                          {% csrf_token %}
+                         
+                          <div class="input-group input-group-static mb-4">
+                            <label class="" for="id_vahedMortabetCode">
+                              واحد مرتبط را  انتخاب کنید
+                            </label>
+                          
+                            
+                            <select name="vahedMortabetCode" class="form-control" required="" id="id_vahedMortabetCode" >
+                              
+                              
+                              {%for vahed in allVahed%}
+                              <option value="{{vahed.id}}"  {%if vahed.id == vahedSelected.id %} selected {%endif%} >{{vahed.vahedCode}} - {{vahed.title}}</option>
+                              {%endfor%}
+                            
+                            </select>
+                            
+                          </div>
+                          <div class="row justify-content-md-center py-3">
+                            <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-primary"value="yes">ثبت</button>
+                            <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-danger" value="no">عدم تایید</button>
+                          </div>
+                        </form>
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+                {%endif%}
+                {% if data.activity == 'cause'%}
+               
+                  <div class="card border mb-3" >
+                    <div class="card-header"> {{data.get_activity_display}}</div>
+                      <div class="card-body border-top text-secondary">
+                          <form class="my-2" action="" method="POST" enctype="multipart/form-data">
+                           {% csrf_token %}
+                            <div class="row py-4 mx-3">
+                              <div class="col-12">
+                                <fieldset class="form-check causeQuestion">
+                                  <label class="custom-control-label" for="cause">آیا اقدام اصلاحی نیاز به علت یابی دارد ؟</label>
+                                  <input class="form-check-input" id="cause" type="checkbox" name="cause" value="1" />
+                                </fieldset>
+                              </div>
+                              <div class="col-12">
+                                <fieldset class="causeAnswer">
+                                  <textarea name="causeAnswer" cols="120" rows="4" class="" id="causeAnswer"></textarea>
+                                  
+                                </fieldset>
+                              </div>
+            
+                              
+                              
+                            </div>
+                        
+                            <div class="row  mx-3" >
+                              <div class="col-6">
+                                <fieldset class="form-check problemSolvingQuestion">
+                                  <label class="custom-control-label" for="problemSolving">آیا اقدام اصلاحی نیاز به  حل مسئله دارد ؟</label>
+                                  <input class="form-check-input" id="problemSolving" type="checkbox" name="problemSolving" value="1" />
+                                </fieldset>
+                              </div>
+                              <div class="col-6">
+                                <fieldset class="problemSolvingAnswer">
+                                  
+                                  <label>
+                                    <input name="document" id="id_document" type="file" style="display: none;">
+                                    <a class="text-success">جهت بارگزاری یافته های حل مسئله کلیک کنید</a>
+                                  </label>
+                                </fieldset>
+                              </div>
+                            </div>
+
+                      
+                            <div class="row justify-content-md-center py-3">
+                              <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-primary"value="yes">ثبت</button>
+                              <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-danger" value="no">عدم تایید</button>
+                            </div>
+
+                          </form>  
+                      </div>
+                    </div>
+                  </div>
+               
+
+                {%endif%}
+                  
+                {% if data.activity == 'definitionCorrectiveaAtion'%}
+                
+                  <div class="card border mb-3" >
+                    <div class="card-header"> نعریف {{data.CorrectiveActionRelated.problem}}</div>
+                      <div class="card-body border-top text-secondary">
+                        <form class="my-2" action="" method="POST" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <div class="row py-4 mx-3">
+                            <div class="col-12">
+                              <fieldset class="form-check CorrectiveActionQuestion">
+                                <label class="custom-control-label" for="correctiveAction">آیا اقدام اصلاحی نیاز است  ؟</label>
+                                <input class="form-check-input" id="correctiveAction" type="checkbox" name="correctiveAction" />
+                              </fieldset>
+                            </div>
+                            
+                            <div class="row ">
+                              <fieldset class="correctiveActionAnswer">
+                              
+                              <div class="input-group input-group-static mb-4 col-4">
+                            
+                                <input type="text" name="correctiveActionProfile" class="form-control"  id="id_correctiveActionProfile">
+                            
+                                </input>
+                                <!-- <select name="correctiveActionProfile" class="form-control"  id="id_correctiveActionProfile">
+                                  <option value="" selected="">---------</option>
+                                  {%for profile in profilesPosts%}
+                                  <option value="{{profile.id}}">{{profile.firstName}}-{{profile.lastName}}</option>
+                                  {% endfor %}
+                                </select> -->
+                                
+                              </div>
+                              <div class="input-group input-group-static mb-4 col-4" name="" id="">
+                                <label class="" for="id_correctiveActionDate">
+                                  زمان پایان اقدام اصلاحی را وارد کنید
+                                </label>
+                                <input type="text" name="correctiveActionDate" class="jalali_date-date  form-control" size="10"  id="id_correctiveActionDate">
+                                
+                              </div>
+                              <label class="custom-control-label" for="correctiveActionDescription">  اقدام اصلاحی مورد نظر را  شرح دهید </label>
+                                <textarea name="correctiveActionDescription" cols="120" rows="4" class="" id="id_correctiveActionDescription"></textarea>
+                              </fieldset>
+                            </div>
+        
+                            
+                            
+                          </div>
+                          <div class="row py-4 mx-3">
+                            <div class="col-12">
+                              <fieldset class="form-check CorrectiveQuestion">
+                                <label class="custom-control-label" for="corrective">آیا  اصلاح نیاز است  ؟</label>
+                                <input class="form-check-input" id="corrective" type="checkbox" name="corrective" />
+        
+                                
+                              </fieldset>
+                            </div>
+                            
+                            <div class="row ">
+                              <fieldset class="correctiveAnswer">
+                              
+                              <div class="input-group input-group-static mb-4 col-4">
+                            
+                                <input type="text" name="correctiveProfile" class="form-control"  id="id_correctiveProfile">
+                                
+                                </input>
+                                <!-- <select name="correctiveProfile" class="form-control"  id="id_correctiveProfile">
+                                  <option value="" selected="">---------</option>
+                                  {%for profile in profilesPosts%}
+                                  <option value="{{profile.id}}">{{profile.firstName}}-{{profile.lastName}}</option>
+                                  {% endfor %}
+                                </select> -->
+                                
+                              </div>
+                              <div class="input-group input-group-static mb-4 col-4" name="" id="">
+                                <label class="" for="id_correctiveDate">
+                                  زمان پایان  اصلاح را وارد کنید
+                                </label>
+                                <input type="text" name="correctiveDate" class="jalali_date-date  form-control" size="10" 
+                                  id="id_correctiveDate">
+                                
+                              </div>
+                              <label class="custom-control-label" for="correctiveDescription"> اصلاح مورد نظر را  شرح دهید </label>
+                                <textarea name="correctiveDescription" cols="120" rows="4" class="" id="id_correctiveDescription"></textarea>
+                              </fieldset>
+                            </div>
+        
+                            
+                            
+                          </div>
+                          <div class="row justify-content-md-center py-3">
+                            <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-primary"value="yes">ثبت</button>
+                            <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-danger" value="no">عدم تایید</button>
+                          </div>
+                       </form>  
+                      </div>
+                    </div>
+                  
+
+                {%endif%}
+                {% if data.activity == 'ejraNatije'%}
+                <div class="card border mb-3" >
+                  <div class="card-header">{{ forloop.counter }}  - تعریف {{data.CorrectiveActionRelated.get_problem_display}}</div>
+                  <div class="card-body border-top text-secondary">
+                    <div class="row">
+                      <div class="col-12">
+                        <h5 class="card-title"></h5>
+                        
+                        
+                          <p class="card-text"> توسط <strong>{{data.previousActivity.reciver.firstName}} {{data.previousActivity.reciver.lastName}}</strong> برای تدوین و انجام {{data.CorrectiveActionRelated.get_problem_display}} تا تاریخ  <strong class="narowFont">{{data.CorrectiveActionRelated.deadLine|to_jalali:'%Y/%m/%d'  }}</strong>  ثبت شده است .</p>
+                          
+                          <blockquote class="blockquote">
+                          
+                            {%for text in data.previousActivity.texts.all%}
+                            <p>{{text.text}}</p>
+                            {%endfor%}
+                            <p>{{data.previousActivity.confirmations.text}}</p>
+                          </blockquote>
+                       
+                      </div>
+                     
+                     
+                      
+                    </div>
+
+                  
+                    
+                  </div>
+                </div>
+                <div class="card border mb-3" >
+                  <div class="card-header"> {{data.get_activity_display}}</div>
+                  <div class="card-body border-top text-secondary">
+                    <div class="row">
+                      
+                      <form action="" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                       
+      
+                        
+                        <div class="input-group input-group-static mb-4">
+                          <label for="id_description">
+                                 نتیجه اقدام خود را وارد نمایید     : 
+                          </label>
+                          <textarea name="description" cols="40" rows="5" class="form-control" id="id_description"></textarea>
+                          
+                        </div>
+                        <h5 class="">بارگزاری مستندات</h5>
+                        <label>
+                          <input name="document" id="id_document" type="file" style="display: none;">
+                          <a class="text-success">در صورتی که فایلی برای آپلود دارید کلیک کنید </a>
+                        </label>
+                             
+                        <div class="row justify-content-md-center py-3">
+                          <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-primary"value="yes">ثبت</button>
+                          <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-danger" value="no">عدم تایید</button>
+                        </div>
+                    </form>
+                    </div>
+
+                  
+                    
+                  </div>
+                </div>
+              {%endif%}
+                {% if data.activity == 'confirmRiportMotevali'%}
+                  <div class="card border mb-3" >
+                    <div class="card-header"> {{data.get_activity_display}}</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title"></h5>
+                          <p class="card-text">   آیا نتیجه اقدام اصلاحی مورد تایید <strong> {{data.reciver.firstName}}-{{data.reciver.lastName}}  </strong>  میباشد ؟ </p>
+                        </div>
+                        <form class="my-2" action="" method="POST" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <div class="input-group input-group-static mb-4 col-4">
+                          <label class="custom-control-label" for=""> توضیحات مورد نظر را  وارد کنید </label>
+                          <textarea name="description" class="mt-2"   rows="4" style="min-width: 100%" id="id_description"></textarea>
+                          </div>
+                          <div class="row justify-content-md-center py-3">
+                            <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-primary"value="yes">تایید</button>
+                            <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-danger" value="no">عدم تایید</button>
+                          </div>
+                        </form>
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+                {%endif%}
+                {% if data.activity == 'confirmRiportModir'%}
+                  <div class="card border mb-3" >
+                    <div class="card-header"> {{data.get_activity_display}}</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title"></h5>
+                          <p class="card-text">    آیا نتیجه اقدام اصلاحی مورد تایید ( اثربخش )<strong> {{data.reciver.firstName}}-{{data.reciver.lastName}}  </strong>  میباشد ؟ </p>
+                        </div>
+                        <form class="my-2" action="" method="POST" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <div class="input-group input-group-static mb-4 col-4">
+                          <label class="custom-control-label" for=""> توضیحات مورد نظر را  وارد کنید </label>
+                          <textarea name="description" class="mt-2"   rows="4" style="min-width: 100%" id="id_description"></textarea>
+                          </div>
+                          <div class="row justify-content-md-center py-3">
+                            <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-primary"value="completed">تایید</button>
+                            <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-danger" value="no">عدم تایید</button>
+                          </div>
+                        </form>
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+                {%endif%}
+                
+                {% if data.activity == 'isDelete'%}
+                  <div class="card border mb-3" >
+                    <div class="card-header"> {{data.get_activity_display}}</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title"></h5>
+                          <p class="card-text">آیا سند <strong>{{data.CorrectiveActionRelated.documentRelated.title}}</strong> باید حذف گردد ؟</p>
+                        </div>
+                        <form class="my-2" action="" method="POST" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <div class="input-group input-group-static mb-4 col-4">
+                          <label class="custom-control-label" for=""> توضیحات مورد نظر را  وارد کنید </label>
+                          <textarea name="description" class="mt-2"   rows="4" style="min-width: 100%" id="id_description"></textarea>
+                          </div>
+                          <div class="row justify-content-md-center py-3">
+                            <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-primary"value="completed">بلی</button>
+                            <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-danger" value="no">خیر</button>
+                          </div>
+                        </form>
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+                {%endif%}
+                {% if data.activity == 'newDoc'%}
+                  {%if data.CorrectiveActionRelated.problem == 'create' %}
+                        <div class="card border mb-3" >
+                          <div class="card-header"> {{data.get_activity_display}}</div>
+                          <div class="card-body border-top text-secondary">
+                            <div class="row">
+                              
+                              <form class="my-2" action="" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="input-group input-group-static mb-4">
+                                  <label class="" for="id_title">
+                                    عنوان  را وارد کنید
+                                  </label>
+                                  <input type="text" name="title" maxlength="100" class="form-control" required="" id="id_title" >
+                                  
+                                </div>
+                                <div class="input-group input-group-static mb-4">
+                                  <label class="" for="id_dakheliSanadCode">
+                                     کد سند داخلی را وارد کنید
+                                  </label>
+                                  <input type="text" name="dakheliSanadCode" maxlength="100" class="form-control" required="" id="id_dakheliSanadCode" >
+                                  
+                                </div>
+                                <div class="input-group input-group-static mb-4">
+                                  <label class="" for="id_versionNumber">
+                                    شماره ورژن   را انتخاب کنید
+                                  </label>
+                                  <input type="text" name="versionNumber" maxlength="100" class="form-control" required="" id="id_versionNumber" >
+                                  
+                                </div>
+                                <div class="input-group input-group-static mb-4">
+                                  <label class="" for="id_tabaghbandi">
+                                    طبقه بندی  را انتخاب کنید
+                                  </label>
+                                  
+                                  <select name="tabaghbandi" class="form-control selectOP" required="" id="id_tabaghbandi">
+                                    <option value="" selected="">---------</option>
+                                    {%for category in category_choices%}
+                                    <option value="{{category.0}}" >{{category.1}} </option>
+                                    {%endfor%}
+                                    
+                                  
+                                  </select>
+                                  
+                                </div>
+                                <div class="input-group input-group-static mb-4">
+                                  <label class="" for="id_vahedMotevaliCode">
+                                    واحد متولی  را انتخاب کنید
+                                  </label>
+                                  <select name="vahedMotevaliCode" class="form-control" id="id_vahedMotevaliCode">
+                                    <option value="" selected="">---------</option>
+                                  
+                                    {%for vahed in allVahed%}
+                                    <option value="{{vahed.id}}" >{{vahed.vahedCode}} - {{vahed.title}}</option>
+                                    {%endfor%}
+                                  
+                                </select>
+                                  
+                                </div>
+                                <div class="input-group input-group-static mb-4">
+                                  <label class="" for="id_vahedTaeidCode">
+                                    واحد تایید کننده  را انتخاب کنید
+                                  </label>
+                                  <select name="vahedTaeidCode" class="form-control" id="id_vahedTaeidCode">
+                                    <option value="" selected="">---------</option>
+                                  
+                                    {%for post in allPostType %}
+                                    <option value="{{post.id}}" >{{post.typePostSazmaniCode}} - {{post.title}}</option>
+                                    {%endfor%}
+            
+                                  </select>
+                                  
+                                </div>
+                                <div class="input-group input-group-static mb-4">
+                                  <label class="" for="id_vahedTasvibCode">
+                                    واحد تصویب کننده  را انتخاب کنید
+                                  </label>
+                                  <select name="vahedTasvibCode" class="form-control" id="id_vahedTasvibCode">
+                                    <option value="" selected="">---------</option>
+                                  
+                                    {%for post in allPostType %}
+                                    <option value="{{post.id}}" >{{post.typePostSazmaniCode}} - {{post.title}}</option>
+                                    {%endfor%}
+                                  
+                                  </select>
+                                  
+                                </div>
+                                <div class="input-group input-group-static mb-4">
+                                  <label class="" for="id_typeMadrakCode">
+                                    نوع مدرک  را انتخاب کنید
+                                  </label>
+                                  
+                                  <select name="typeMadrakCode" class="form-control" id="id_typeMadrakCode">
+                                    <option value="" selected="">---------</option>
+                                    
+                                    {%for type in allType %}
+                                    <option value="{{type.id}}" >{{type.title}} </option>
+                                    {%endfor%}
+                                  
+                                  </select>
+                                  
+                                </div>
+                                <div class="input-group input-group-static mb-4">
+                                  <label class="" for="id_systemMortabetCode">
+                                    سیستم مرتبط را انتخاب کنید
+                                  </label>
+                                  <select name="systemMortabetCode" class="form-control" id="id_systemMortabetCode">
+                                    <option value="" selected="">---------</option>
+                                  
+                                    {%for system in allSystem%}
+                                    <option value="{{system.id}}" >{{system.standardNumber}}</option>
+                                    {%endfor%}
+                                  
+                                </select>
+                                  
+                                </div>
+                                <div class="input-group input-group-static mb-4">
+                                  <label class="" for="id_vahedMortabetCode">
+                                    واحد مرتبط را  انتخاب کنید
+                                  </label>
+                                  <input type="text" name="vahedMortabetCode" class="form-control" required="" id="id_vahedMortabetCode" multiple="">
+                                    
+                                 
+                                  </input>
+                                  <!-- <select name="vahedMortabetCode" class="form-control" required="" id="id_vahedMortabetCode" multiple="">
+                                    
+                                  
+                                    {%for vahed in allVahed%}
+                                    <option value="{{vahed.id}}" >{{vahed.vahedCode}} - {{vahed.title}}</option>
+                                    {%endfor%}
+                                  
+                                  </select> -->
+                                  
+                                </div>
+                                <div class="input-group input-group-static mb-4">
+                                  <label class="" for="id_molahezat">
+                                    ملاحظات را وارد نمایید
+                                  </label>
+                                  <textarea name="molahezat" cols="40" rows="10" maxlength="500" class="form-control" id="id_molahezat"></textarea>
+                                  
+                                </div>
+                                <label>
+                                  <input name="document" id="id_document" type="file" style="display: none;">
+                                  <a class="text-success">در صورتی که فایلی برای آپلود دارید کلیک کنید </a>
+                                </label>
+                                <div class="row justify-content-md-center py-3">
+                                  <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-primary"value="yes">ثبت</button>
+                                  <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-danger" value="no">کنسل </button>
+                                </div>
+                              </form>
+                            </div>
+
+                          
+                            
+                          </div>
+                        </div>
+                  {%endif%}
+                {%endif%}
+                {%if data.activity == 'editDoc'%}
+                <div class="card border mb-3" >
+                  <div class="card-header"> {{data.get_activity_display}}</div>
+                  <div class="card-body border-top text-secondary">
+                    <div class="row">
+                      
+                      <form class="my-2" action="" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="input-group input-group-static mb-4">
+                          <label class="" for="id_title">
+                            عنوان  را وارد کنید
+                          </label>
+                          <input type="text" name="title" maxlength="100" class="form-control" required="" id="id_title" value="{{obj.title}}" >
+                          
+                        </div>
+                        <div class="input-group input-group-static mb-4">
+                          <label class="" for="id_dakheliSanadCode">
+                             کد سند داخلی <strong> (غیر قابل ویرایش) </strong>
+                          </label>
+                          <input type="text" name="dakheliSanadCode" maxlength="100" class="form-control" required="" id="id_dakheliSanadCode" readonly value="{{obj.dakheliSanadCode}}" >
+                          
+                        </div>
+                        <div class="input-group input-group-static mb-4">
+                          <label class="" for="id_versionNumber">
+                            شماره ورژن   را انتخاب کنید
+                          </label>
+                          <input type="text" name="versionNumber" maxlength="100" class="form-control" required="" id="id_versionNumber" value="{{obj.versionNumber}}">
+                          
+                        </div>
+                        <div class="input-group input-group-static mb-4">
+                          <label class="" for="id_tabaghbandi">
+                            طبقه بندی  را انتخاب کنید
+                          </label>
+                          
+                          <select name="tabaghbandi" class="form-control" required="" id="id_tabaghbandi">
+                            <option value="" selected="">---------</option>
+                            {%for category in category_choices%}
+                            <option value="{{category.0}}" {%if category.0 == obj.tabaghbandi %} selected {%endif%} >{{category.1}} </option>
+                            {%endfor%}
+                            
+                          
+                          </select>
+                          
+                        </div>
+                        <div class="input-group input-group-static mb-4">
+                          <label class="" for="id_vahedMotevaliCode">
+                            واحد متولی  را انتخاب کنید
+                          </label>
+                          <select name="vahedMotevaliCode" class="form-control" id="id_vahedMotevaliCode">
+                            <option value="" selected="">---------</option>
+                          
+                            {%for vahed in allVahed%}
+                            <option value="{{vahed.id}}" {%if vahed.id == obj.vahedMotevaliCode.id %} selected {%endif%} >{{vahed.vahedCode}} - {{vahed.title}}</option>
+                            {%endfor%}
+                          
+                        </select>
+                          
+                        </div>
+                        <div class="input-group input-group-static mb-4">
+                          <label class="" for="id_vahedTaeidCode">
+                            واحد تایید کننده  را انتخاب کنید
+                          </label>
+                          <select name="vahedTaeidCode" class="form-control" id="id_vahedTaeidCode">
+                            <option value="" selected="">---------</option>
+                          
+                            {%for post in allPostType %}
+                            <option value="{{post.id}}" {%if post.id == obj.vahedTaeidCode.id %} selected {%endif%} >{{post.typePostSazmaniCode}} - {{post.title}}</option>
+                            {%endfor%}
+    
+                          </select>
+                          
+                        </div>
+                        <div class="input-group input-group-static mb-4">
+                          <label class="" for="id_vahedTasvibCode">
+                            واحد تصویب کننده  را انتخاب کنید
+                          </label>
+                          <select name="vahedTasvibCode" class="form-control" id="id_vahedTasvibCode">
+                            <option value="" selected="">---------</option>
+                            
+                            {%for post in allPostType %}
+                            <option value="{{post.id}}" {%if post.id == obj.vahedTasvibCode.id %} selected {%endif%}>{{post.typePostSazmaniCode}} - {{post.title}}</option>
+                            {%endfor%}
+                          
+                          </select>
+                          
+                        </div>
+                        <div class="input-group input-group-static mb-4">
+                          <label class="" for="id_typeMadrakCode">
+                            نوع مدرک  را انتخاب کنید
+                          </label>
+                          
+                          <select name="typeMadrakCode" class="form-control" id="id_typeMadrakCode">
+                            <option value="" selected="">---------</option>
+                            
+                            {%for type in allType %}
+                            <option value="{{type.id}}" {%if type.id == obj.typeMadrakCode.id %} selected {%endif%} >{{type.title}} </option>
+                            {%endfor%}
+                          
+                          </select>
+                          
+                        </div>
+                        <div class="input-group input-group-static mb-4">
+                          <label class="" for="id_systemMortabetCode">
+                            سیستم مرتبط را انتخاب کنید
+                          </label>
+                          <select name="systemMortabetCode" class="form-control" id="id_systemMortabetCode">
+                            <option value="" selected="">---------</option>
+                          
+                            {%for system in allSystem%}
+                            <option value="{{system.id}}" {%if system.id == obj.systemMortabetCode.id %} selected {%endif%} >{{system.standardNumber}}</option>
+                            {%endfor%}
+                          
+                        </select>
+                          
+                        </div>
+                        <div class="input-group input-group-static mb-4">
+                          <label class="" for="id_vahedMortabetCode">
+                            واحد مرتبط را  انتخاب کنید
+                          </label>
+                          <input type="text" name="vahedMortabetCode" class="form-control" required="" id="id_vahedMortabetCode" multiple="">
+                            
+                          
+                   
+                          
+                          </input>
+                          <!-- <select name="vahedMortabetCode" class="form-control" required="" id="id_vahedMortabetCode" multiple="">
+                            
+                          
+                            {%for vahed in allVahed%}
+                            <option value="{{vahed.id}}" {%for vahedSelected in obj.vahedMortabetCode.all  %} {%if vahed.id == vahedSelected.id %} selected {%endif%} {%endfor%}>{{vahed.vahedCode}} - {{vahed.title}}</option>
+                            {%endfor%}
+                          
+                          </select> -->
+                          
+                        </div>
+                        <div class="input-group input-group-static mb-4">
+                          <label class="" for="id_molahezat">
+                            ملاحظات را وارد نمایید
+                          </label>
+                          <textarea name="molahezat" cols="40" rows="10" maxlength="500" class="form-control" id="id_molahezat"></textarea>
+                          
+                        </div>
+                        <label>
+                          <input name="document" id="id_document" type="file" style="display: none;">
+                          <a class="text-success">در صورتی که فایلی برای آپلود دارید کلیک کنید </a>
+                        </label>
+                        <div class="row justify-content-md-center py-3">
+                          <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-primary"value="yes">ثبت</button>
+                          <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-danger" value="no">کنسل </button>
+                        </div>
+                      </form>
+                    </div>
+
+                  
+                    
+                  </div>
+                </div>
+                {%endif%}
+                {% if data.activity == 'reform'%}
+                  <div class="card border mb-3" >
+                    <div class="card-header"> {{data.get_activity_display}}</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        
+                        <form action="" method="POST" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          {% if columns == 1%}
+                            {% for field  in form.visible_fields %}
+        
+                            <div class="input-group input-group-static mb-4">
+                              <label class="" for="{{ field.auto_id }}">
+                                {{ field.label }}
+                              </label>
+                              {{field }}
+                              {% if field.errors %}
+                                <div class="alert alert-danger" role="alert">
+                                  {{ field.errors.as_text}}
+                                </div>
+                              {% endif %}
+                            </div>
+                           
+                            {% endfor %}
+                          {% endif %}
+        
+                          
+                          <div class="input-group input-group-static mb-4">
+                            <label for="id_description">
+                                  توضیحات درخواست خود را وارد کنید : 
+                            </label>
+                            <textarea name="description" cols="40" rows="5" class="form-control" id="id_description"></textarea>
+                            
+                          </div>
+                          <h5 class="">بارگزاری مستندات</h5>
+                          <label>
+                            <input name="document" id="id_document" type="file" style="display: none;">
+                            <a class="text-success">در صورتی که فایلی برای آپلود دارید کلیک کنید </a>
+                          </label>
+                                <input type="submit" class="btn btn-lg bg-gradient-{{ color }} btn-lg w-100 mt-4 mb-0" value="ثبت">
+        
+                      </form>
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+                {%endif%}
+              {%else%}
+                {% if data.activity == 'register'%}
+                  <div class="card border mb-3" >
+                    <div class="card-header">{{ forloop.counter }} - {{data.get_activity_display}}</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title">واحد درخواست کننده </h5>
+                          <p class="card-text">{{data.CorrectiveActionRelated.demandantVahed.vahedCode}} - {{data.CorrectiveActionRelated.demandantVahed.title}}</p>
+                        </div>
+                        <div class="col">
+                          <h5 class="card-title">  نوع مسئله  </h5>
+                          <p class="card-text">{{data.CorrectiveActionRelated.get_problem_display}} </p>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title">کد درخواست </h5>
+                          <p class="card-text">{{data.CorrectiveActionRelated.demandantId}} </p>
+                        </div>
+                       
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title">مرتبط با سیستم </h5>
+                          <p class="card-text">{{data.CorrectiveActionRelated.standardRelated}} </p>
+                        </div>
+                        <div class="col">
+                          <h5 class="card-title">منشا بروز   </h5>
+                          <p class="card-text">{{data.CorrectiveActionRelated.get_source_display}} </p>
+                        </div>
+                       
+                      </div>
+
+                      <div class="row mt-2">
+                        <div class="col-12">
+                          <h5 class="card-title">شرح مسئله درخواست     </h5>
+                          <p class="card-text text-justify">
+                            {%if forloop.counter == 1%}
+                            {%for text in data.texts.all%}
+                            {{text.text}}
+                            {%endfor%}
+                            {%else%}
+                            
+                            {{data.confirmations.text}}
+                      
+                            {%endif%}
+                          </p>
+                        </div>
+                      
+                      </div>
+                      
+                    </div>
+                  </div>
+                {%else%}
+               
+                {% if data.activity == 'description' %}
+                  <div class="card border mb-3" >
+                    <div class="card-header">{{ forloop.counter }} - {{data.get_activity_display}}</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title"></h5>
+                          <p class="card-text">اقدام اصلاحی فوق  <strong>{{data.CorrectiveActionRelated.documentRelated.title}}</strong> توسط <strong>{{data.reciver.firstName}} {{data.reciver.lastName}}</strong> در تاریخ <strong class="narowFont">{{data.created_at|to_jalali:'%Y/%m/%d - %H:%M:%S' }}</strong>
+                            {%if data.confirmations.confirm == 'yes'%}
+                            <strong class="text-success">به  روز شد است .</strong> 
+                            {%else%}
+                            <strong class="text-danger"> به تایید نرسیده است .</strong>
+                            {%endif%}
+                      
+                            <blockquote class="blockquote">
+                              {%for text in data.texts.all%}
+                              <p>{{text}}</p>
+                              {%endfor%}
+                              <p>{{data.confirmations.text}}</p>
+                            </blockquote>
+                            </p>
+                        </div>
+                        
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+                {%endif%}
+                {% if data.activity == 'barresiMafogh' %}
+                  <div class="card border mb-3" >
+                    <div class="card-header">{{ forloop.counter }} - {{data.get_activity_display}}</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title"></h5>
+                          <p class="card-text">سند <strong>{{data.CorrectiveActionRelated.documentRelated.title}}</strong> توسط <strong>{{data.reciver.firstName}} {{data.reciver.lastName}}</strong> در تاریخ <strong class="narowFont">{{data.created_at|to_jalali:'%Y/%m/%d - %H:%M:%S' }}</strong>
+                            {%if data.confirmations.confirm == 'yes'%}
+                            <strong class="text-success">به تایید رسیده است .</strong> 
+                            {%else%}
+                            <strong class="text-danger"> به تایید نرسیده است .</strong>
+                            {%endif%}
+                      
+                            <blockquote class="blockquote">
+                              {%for text in data.texts.all%}
+                              <p>{{text}}</p>
+                              {%endfor%}
+                              <p>{{data.confirmations.text}}</p>
+                            </blockquote>
+                            </p>
+                        </div>
+                        
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+                {%endif%}
+                {% if data.activity == 'barresiKarshenas' %}
+                  <div class="card border mb-3" >
+                    <div class="card-header">{{ forloop.counter }} - {{data.get_activity_display}}</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title"></h5>
+                          <p class="card-text">سند <strong>{{data.CorrectiveActionRelated.documentRelated.title}}</strong> توسط <strong>{{data.reciver.firstName}} {{data.reciver.lastName}}</strong> در تاریخ <strong class="narowFont">{{data.created_at|to_jalali:'%Y/%m/%d - %H:%M:%S' }}</strong> 
+                            {%if data.confirmations.confirm == 'yes'%}
+                            <strong class="text-success">به تایید رسیده است .</strong> 
+                            {%else%}
+                            <strong class="text-danger"> به تایید نرسیده است .</strong>
+                            {%endif%}
+                            <blockquote class="blockquote">
+                              {%for text in data.texts.all%}
+                              <p>{{text}}</p>
+                              {%endfor%}
+                              <p>{{data.confirmations.text}}</p>
+                            </blockquote>
+                          </p>
+                        </div>
+                        
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+                {%endif%}
+                {% if data.activity == 'barresiModir' %}
+                  <div class="card border mb-3" >
+                    <div class="card-header">{{ forloop.counter }} - {{data.get_activity_display}}</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title"></h5>
+                          <p class="card-text">سند <strong>{{data.CorrectiveActionRelated.documentRelated.title}}</strong> توسط <strong>{{data.reciver.firstName}} {{data.reciver.lastName}}</strong> در تاریخ <strong class="narowFont">{{data.created_at|to_jalali:'%Y/%m/%d - %H:%M:%S' }}</strong>
+                            {%if data.confirmations.confirm == 'yes'%}
+                            <strong class="text-success">به تایید رسیده است .</strong> 
+                            {%else%}
+                            <strong class="text-danger"> به تایید نرسیده است .</strong>
+                            {%endif%}
+                            <blockquote class="blockquote">
+                              {%for text in data.texts.all%}
+                              <p>{{text}}</p>
+                              {%endfor%}
+                              <p>{{data.confirmations.text}}</p>
+                            </blockquote>
+                            </p>
+                        </div>
+                        
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+                {%endif%}
+                
+                {% if data.activity == 'executiveUnit' %}
+                  <div class="card border mb-3" >
+                    <div class="card-header">{{ forloop.counter }} - {{data.get_activity_display}}</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title"></h5>
+                          <p class="card-text">واحد  <strong>{{data.CorrectiveActionRelated.vahed.vahedCode}}</strong> <strong>{{data.CorrectiveActionRelated.vahed.title}}</strong> مسئول انجام اقدام اصلاحی فوق انتخاب گردید . </p>
+                           
+                            <blockquote class="blockquote">
+                              {%for text in data.texts.all%}
+                              <p>{{text}}</p>
+                              {%endfor%}
+                              <p>{{data.confirmations.text}}</p>
+                            </blockquote>
+                            </p>
+                        </div>
+                        
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+                {%endif%}
+                {% if data.activity == 'barresiMoaven' %}
+                  <div class="card border mb-3" >
+                    <div class="card-header">{{ forloop.counter }} - {{data.get_activity_display}}</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title"></h5>
+                          <p class="card-text">واحد  <strong>{{data.CorrectiveActionRelated.vahed.vahedCode}}</strong> <strong>{{data.CorrectiveActionRelated.vahed.title}}</strong> مسئول انجام اقدام اصلاحی   
+                            <strong class="text-success">  مورد تایید معاون برنامه ریزی منابع انسانی قرار گرفته است  .</strong>
+                          </p>
+                           
+                            <blockquote class="blockquote">
+                              {%for text in data.texts.all%}
+                              <p>{{text}}</p>
+                              {%endfor%}
+                              <p>{{data.confirmations.text}}</p>
+                            </blockquote>
+                            </p>
+                        </div>
+                        
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+                {%endif%}
+                
+                {% if data.activity == 'cause' %}
+                  <div class="card border mb-3" >
+                    <div class="card-header">{{ forloop.counter }} - {{data.get_activity_display}}</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col-12">
+                          <h5 class="card-title"></h5>
+                          
+                          
+                            <p class="card-text">علت ریشه ای یافت شده برای اقدام فوق  توسط <strong>{{data.reciver.firstName}} {{data.reciver.lastName}}</strong> در تاریخ <strong class="narowFont">{{data.created_at|to_jalali:'%Y/%m/%d - %H:%M:%S' }}</strong>  ثبت شده است .</p>
+                            
+                            <blockquote class="blockquote">
+                            
+                              {%for text in data.texts.all%}
+                              <p>{{text.text}}</p>
+                              {%endfor%}
+                              <p>{{data.confirmations.text}}</p>
+                            </blockquote>
+                         
+                        </div>
+                        <div class="col-12">
+                          <h5 class="card-title"></h5>
+                          
+                          {%if data.file%}
+                            <p class="card-text">مستندات حل مسئله  <strong>{{data.CorrectiveActionRelated.documentRelated.title}}</strong> توسط <strong>{{data.reciver.firstName}} {{data.reciver.lastName}}</strong> در تاریخ <strong class="narowFont">{{data.created_at|to_jalali:'%Y/%m/%d - %H:%M:%S' }}</strong> تدوین شد</p>
+                            <a class="card-text" href="{{data.file.url}}">فایل پیوست</a>
+                          {%else%}
+                          <h5 class="card-title text-danger">   فایلی برای پیوست وجود ندارد    </h5>
+                          {%endif%}
+                        </div>
+                       
+                        
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+                {%endif%}
+                
+                {% if data.activity == 'definitionCorrectiveaAtion' %}
+               
+                {%endif%}
+                {% if data.activity == 'ejraNatije' %}
+
+                <div class="card border mb-3" >
+                  <div class="card-header">{{ forloop.counter }}  - تعریف {{data.CorrectiveActionRelated.get_problem_display}}</div>
+                  <div class="card-body border-top text-secondary">
+                    <div class="row">
+                      <div class="col-12">
+                        <h5 class="card-title"></h5>
+                        
+                        
+                          <p class="card-text"> توسط <strong>{{data.previousActivity.reciver.firstName}} {{data.previousActivity.reciver.lastName}}</strong> برای تدوین و انجام {{data.CorrectiveActionRelated.get_problem_display}} تا تاریخ  <strong class="narowFont">{{data.CorrectiveActionRelated.deadLine|to_jalali:'%m/%d'  }}</strong>  ثبت شده است .</p>
+                          
+                          <blockquote class="blockquote">
+                          
+                            {%for text in data.previousActivity.texts.all%}
+                            <p>{{text.text}}</p>
+                            {%endfor%}
+                            <p>{{data.previousActivity.confirmations.text}}</p>
+                          </blockquote>
+                       
+                      </div>
+                     
+                     
+                      
+                    </div>
+
+                  
+                    
+                  </div>
+                </div>
+
+
+        
+                <div class="card border mb-3" >
+                  <div class="card-header">{{ forloop.counter }} - {{data.get_activity_display}}</div>
+                  <div class="card-body border-top text-secondary">
+                    <div class="row">
+                      <div class="col-12">
+                        <h5 class="card-title"></h5>
+                        
+                        
+                          <p class="card-text">نتیجه اقدام انجام شده    توسط <strong>{{data.reciver.firstName}} {{data.reciver.lastName}}</strong> در تاریخ <strong class="narowFont">{{data.created_at|to_jalali:'%Y/%m/%d - %H:%M:%S' }}</strong>  ثبت شده است .</p>
+                          
+                          <blockquote class="blockquote">
+                          
+                            {%for text in data.texts.all%}
+                            <p>{{text.text}}</p>
+                            {%endfor%}
+                            <p>{{data.confirmations.text}}</p>
+                          </blockquote>
+                       
+                      </div>
+                      <div class="col-12">
+                        <h5 class="card-title"></h5>
+                      
+                        {%if data.file%}
+                          <p class="card-text">مستندات  اقدام انجام شده   <strong>{{data.CorrectiveActionRelated.documentRelated.title}}</strong> توسط <strong>{{data.reciver.firstName}} {{data.reciver.lastName}}</strong> در تاریخ <strong class="narowFont">{{data.created_at|to_jalali:'%Y/%m/%d - %H:%M:%S' }}</strong> تدوین شد</p>
+                          <a class="card-text" href="{{data.file.url}}">فایل پیوست</a>
+                        {%else%}
+                        <h5 class="card-title text-danger">   فایلی برای پیوست وجود ندارد    </h5>
+                        {%endif%}
+                      </div>
+                     
+                      
+                    </div>
+
+                  
+                    
+                  </div>
+                </div>
+              {%endif%}
+              {% if data.activity == 'confirmRiportMotevali' %}
+                  <div class="card border mb-3" >
+                    <div class="card-header">{{ forloop.counter }} - {{data.get_activity_display}}</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title"></h5>
+                          <p class="card-text">سند <strong>{{data.CorrectiveActionRelated.documentRelated.title}}</strong> توسط <strong>{{data.reciver.firstName}} {{data.reciver.lastName}}</strong> در تاریخ <strong class="narowFont">{{data.created_at|to_jalali:'%Y/%m/%d - %H:%M:%S' }}</strong>
+                            {%if data.confirmations.confirm == 'yes'%}
+                            <strong class="text-success">به تایید رسیده است .</strong> 
+                            {%else%}
+                            <strong class="text-danger"> به تایید نرسیده است .</strong>
+                            {%endif%}
+                            <blockquote class="blockquote">
+                              {%for text in data.texts.all%}
+                              <p>{{text}}</p>
+                              {%endfor%}
+                              <p>{{data.confirmations.text}}</p>
+                            </blockquote>
+                            </p>
+                        </div>
+                        
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+                {%endif%}
+              {% if data.activity == 'confirmRiportModir' %}
+                  <div class="card border mb-3" >
+                    <div class="card-header">{{ forloop.counter }} - {{data.get_activity_display}}</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title"></h5>
+                          <p class="card-text">سند <strong>{{data.CorrectiveActionRelated.documentRelated.title}}</strong> توسط <strong>{{data.reciver.firstName}} {{data.reciver.lastName}}</strong> در تاریخ <strong class="narowFont">{{data.created_at|to_jalali:'%Y/%m/%d - %H:%M:%S' }}</strong>
+                            {%if data.confirmations.confirm == 'yes'%}
+                            <strong class="text-success">به تایید رسیده است .</strong> 
+                            {%elif data.confirmations.confirm == 'no' %}
+                            <strong class="text-danger"> به تایید نرسیده است .</strong>
+                            {%else%}
+                            <strong class="text-success">به اتمام رسیده است</strong>
+                            {%endif%}
+                            <blockquote class="blockquote">
+                              {%for text in data.texts.all%}
+                              <p>{{text}}</p>
+                              {%endfor%}
+                              <p>{{data.confirmations.text}}</p>
+                            </blockquote>
+                            </p>
+                        </div>
+                        
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+                {%endif%}
+                {% if data.activity == 'isDelete' %}
+                  <div class="card border mb-3" >
+                    <div class="card-header">{{ forloop.counter }} - {{data.get_activity_display}}</div>
+                    <div class="card-body border-top text-secondary">
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="card-title"></h5>
+                          <p class="card-text">با توجه به بررسی های انجام شده سند  <strong>{{data.CorrectiveActionRelated.documentRelated.title}}</strong>  نیازی به حذف شدن ندارد .</p>
+                          
+                         
+                        </div>
+                        <blockquote class="blockquote">
+                          {%for text in data.texts.all%}
+                          <p>{{text}}</p>
+                          {%endfor%}
+                          <p>{{data.confirmations.text}}</p>
+                        </blockquote>
+                      </div>
+
+                    
+                      
+                    </div>
+                  </div>
+                {%endif%}
+              {%endif%}
+              {%endif%}
+              
+                      
+              
+              
+              {%endfor%}
+            </div>
+          
+
+          
+          </div>
+        </div>
+      </div>
+</div>
+
+    
+    
+   
+{% endblock content %}
+
+{%block scripts%}
+<script>
+$(function() {
+  $("#cause").on("click",function() {
+    $(".causeAnswer").toggle(this.checked);
+  });
+});
+$(function() {
+  $("#problemSolving").on("click",function() {
+    $(".problemSolvingAnswer").toggle(this.checked);
+  });
+});
+$(function() {
+  $("#correctiveAction").on("click",function() {
+    $(".correctiveActionAnswer").toggle(this.checked);
+  });
+});
+$(function() {
+  $("#corrective").on("click",function() {
+    $(".correctiveAnswer").toggle(this.checked);
+  });
+});
+
+
+</script>
+<script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
+<script src="{% static 'js/picker.js' %}"></script>
+<script src="{% static '/js/select2.min.js' %}"></script>
+{%endblock scripts%}

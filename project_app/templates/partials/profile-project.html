@@ -1,0 +1,92 @@
+{% load jalali_tags %}
+<div class="container-fluid">
+    <div class="row py-3 justify-content-md-center">
+      <div class="card py-3 bg-gradient-light-green frame col-12">
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div class="row">
+            <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+              <h4 class="text-white text-capitalize ps-3">اطلاعات پروفایل پروژه</h4>
+            </div>
+          </div>
+    
+        </div>
+  
+        <div class="card-body">
+  
+          <div class="row justify-content-evenly">
+            <div class="col-5">
+  
+              <span class=" fw-bold text-dark"> موضوع : </span>
+              <span class=" narowFont">{{profileSelected.title}} </span>
+  
+  
+            </div>
+  
+            <div class="col-5">
+              <span class=" fw-bold text-dark">  مدیر پروژه : </span>
+              <span class=" narowFont">{{profileSelected.accountable}} </span>
+            </div>
+  
+          </div>
+          <hr class="dark horizontal">
+          <div class="row justify-content-evenly">
+            <div class="col-5">
+  
+              <span class=" fw-bold text-dark"> منشا پروژه : </span>
+              <span class=" narowFont"><a href="{{source_link}}">{{profileSelected.get_sourceProject_display}}</a> </span>
+  
+  
+            </div>
+  
+            <div class="col-5">
+              <span class=" fw-bold text-dark">  وضیعیت پروژه : </span>
+              <span class=" narowFont">{{profileSelected.get_status_display}} </span>
+            </div>
+  
+          </div>
+          <hr class="dark horizontal">
+          <div class="row justify-content-evenly">
+            <div class="col-5">
+  
+              <span class=" fw-bold text-dark">  توضیحات پروژه  : </span>
+              <span class=" narowFont">{{profileSelected.description}}</span>
+  
+  
+            </div>
+            <div class="col-5">
+              <span class=" fw-bold text-dark">  هدف موردنظر پروژه  : </span>
+              <span class=" narowFont">{{profileSelected.targetRequired}}</span>
+            </div>
+           
+           
+           
+  
+          </div>
+          <hr class="dark horizontal">
+           <div class="row justify-content-evenly">
+            
+
+           <div class="col-5">
+            <span class=" fw-bold text-dark"> بودجه مورد نظر  : </span>
+            <span class=" narowFont">{{profileSelected.capitalEstimate}}</span>
+           </div>
+           <div class="col-5">
+  
+            <span class=" fw-bold text-dark">مدت زمان مورد نظر: </span>
+            <span class=" narowFont">{{profileSelected.diurationEsimate}}</span>
+  
+  
+          </div>
+  
+           
+  
+          </div>
+         
+          <hr class="dark horizontal">
+        
+
+       
+        </div>
+      </div>
+    </div>
+  </div>

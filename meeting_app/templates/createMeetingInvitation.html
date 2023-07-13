@@ -1,0 +1,108 @@
+{% extends extend%}
+{% load static %}
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/dataTables.css' %}">
+
+
+<script type="text/javascript" charset="utf8" src="{% static '/js/dataTables.js' %}"></script>
+
+<script src="{% static '/js/jquery.dataTables.js' %}"></script>
+<link href="{% static '/css/picker.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+{%endblock style%}
+{% block content %}
+{%include 'partials/profile-meeting.html'%}
+<div class="container py-6">
+
+  <div class="row justify-content-md-center">
+    <div class="card card-frame col-10">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="row">
+
+          <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+            <h4 class="text-white text-capitalize ps-3">{{ header_title }}</h4>
+
+          </div>
+        </div>
+
+      </div>
+      <div class="card-body">
+
+
+
+
+
+
+
+
+        <form action="" method="POST">
+
+          {% csrf_token %}
+          <div class="input-group input-group-static mb-4 is-filled">
+            <label class="" for="id_meetingPlace">
+            {{ form.title.label }}
+            </label>
+            {{form.title }}
+
+          </div>
+          <div class="input-group input-group-static mb-4 is-filled">
+            <label class="" for="id_meetingPlace">
+            {{ form.text.label }}
+            </label>
+            {{form.text }}
+
+          </div>
+          
+          <input type="hidden" name="meetingRelated" id="id_meetingRelated" value="{{meetingSelected.id}}">
+          <div class="row justify-content-md-center">
+            <div class="col-5">
+              <button type="submit" class="btn w-100  btn-outline-primary">
+                افزودن </button>
+            </div>
+            <div class="col-5">
+              <a href="{%url 'ViewProfileMeeting' %}" class="btn w-100  btn-outline-danger">
+                کنسل </a>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock content %}
+
+{% block scripts%}
+
+
+
+<script>
+  $(document).ready(function () {
+    $('#example').dataTable({
+
+      "oLanguage": {
+        "oPaginate": {
+          "sNext": "صفحه بعدی",
+          "sPrevious": "صفحه قبلی"
+        },
+        "sEmptyTable": "اطلاعاتی برای نمایش وجود ندارد",
+        "sSearch": "جستجو   :  ",
+        "sInfo": "نمایش _START_ تا_END_ از تعداد کل _TOTAL_",
+        "sLengthMenu": "  تعداد در صفحه  _MENU_ ",
+        "sInfoEmpty": "رکوردی برای نمایش وجود ندارد"
+
+      }
+    });
+  });
+</script>
+
+
+
+<!-- OR -->
+<!-- loading by form (if used AdminJalaliDateWidget) -->
+
+
+{%endblock scripts%}

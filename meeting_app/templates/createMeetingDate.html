@@ -1,0 +1,140 @@
+{% extends extend%}
+{% load static %}
+{% load jalali_tags %}
+{% block style %}
+<link href="{% static '/css/picker.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+{%endblock style%}
+{% block content %}
+{% include 'partials/profile-meeting.html' %}
+<div class="container py-6">
+
+  <div class="row justify-content-md-center">
+    <div class="card card-frame col-8">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="row">
+
+          <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+            <h4 class="text-white text-capitalize ps-3">{{ header_title }}</h4>
+
+          </div>
+        </div>
+
+      </div>
+      <div class="card-body">
+
+
+
+
+
+
+
+
+        <form action="" method="POST">
+
+          {% csrf_token %}
+
+
+
+          <div class="input-group input-group-static mb-4">
+            <label class="" for="id_meetingDate">
+              زمان شروع برنامه اجرایی  را انتخاب کنید
+            </label>
+            <input type="text" name="meetingDate" class="jalali_date-date  form-control" value="{{ form.meetingDate.value|default_if_none:'' }}" size="10" required=""
+              id="id_meetingDate" autocomplete="False">
+
+          </div>
+
+          <div class="input-group input-group-static mb-4">
+            <label class="" for="id_meetingTime">
+              زمان پایان برنامه اجرایی  را انتخاب کنید
+            </label>
+            <input type="text" name="meetingDate" class="jalali_date-date  form-control" value="{{ form.meetingDate.value|default_if_none:'' }}" size="10" required=""
+            id="id_meetingDate" autocomplete="False">
+
+          </div>
+          <div class="input-group input-group-static mb-4">
+            <label class="" for="id_meetingTimeDuration">
+              مدت زمان جلسه را انتخاب کنید
+            </label>
+            <input type="text" name="meetingTimeDuration" class="form-control js-time-picker"
+              id="id_meetingTimeDuration" value="{{ form.meetingTimeDuration.value|default_if_none:'' }}">
+
+          </div>
+
+
+
+          <div class="input-group input-group-static mb-4">
+            <label class="" for="id_meetingPlace">
+              محل برگزاری جلسه را وارد کنید
+            </label>
+            <input type="text" name="meetingPlace" maxlength="250" class="form-control" id="id_meetingPlace" value="{{ form.meetingPlace.value|default_if_none:'' }}">
+
+          </div>
+         
+
+
+
+          <div class="row justify-content-md-center">
+            <div class="col-5">
+              <button type="submit" class="btn w-100  btn-outline-primary">
+                افزودن </button>
+            </div>
+            <div class="col-5">
+              <a href="{%url 'ViewProfileMeeting' %}" class="btn w-100  btn-outline-danger">
+                کنسل </a>
+            </div>
+          </div>
+          <input type="hidden" name="meetingRelated" id="id_meetingRelated" value="{{meetingSelected.id}}">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock content %}
+
+{% block scripts%}
+<script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
+<script src="{% static 'js/picker.js' %}"></script>
+<script>
+  new Picker(document.querySelector('.js-time-picker'), {
+    format: 'HH:mm',
+    headers: true,
+    date: new Date(1, 0),
+    text: {
+      title: 'مدت زمان را انتخاب کنید',
+    },
+    increment: {
+      hour: 1,
+      minute: 15,
+
+    },
+  });
+
+  new Picker(document.querySelector('.js-time-picker-start'), {
+    format: 'HH:mm',
+    headers: true,
+    date: new Date(1, 0),
+    text: {
+      title: 'مدت زمان را انتخاب کنید',
+
+    },
+    increment: {
+      hour: 1,
+      minute: 15,
+
+    },
+  });
+
+
+</script>
+
+
+<!-- OR -->
+<!-- loading by form (if used AdminJalaliDateWidget) -->
+
+
+{%endblock scripts%}

@@ -1,0 +1,57 @@
+{%load static%}
+{% load jalali_tags %} {%if allEnactment %}
+<div class="row" id="enactmentList">
+  <div class="table-responsive">
+    <table
+      id="example"
+      class="table uk-table uk-table-hover uk-table-striped align-items-center py-3 mb-0"
+    >
+      <br />
+      <thead>
+        <tr>
+          <th class="text-center text-lg font-weight-bolder opacity-7">ردیف</th>
+          <th class="text-center text-lg font-weight-bolder opacity-7">
+            موضوع فعالیت / اقدام
+          </th>
+          <th class="text-center text-lg font-weight-bolder opacity-7">
+            مسئولیت اجرا
+          </th>
+
+          <th class="text-center text-lg font-weight-bolder opacity-7">
+            مسئولیت پیگیری
+          </th>
+          <th class="text-center text-lg font-weight-bolder opacity-7">
+            مهلت اجرا
+          </th>
+         
+        </tr>
+      </thead>
+      <tbody>
+        {%for minute in allEnactment%}
+
+        <tr class="bg-transparent">
+          <td class="narowFont text-center overflow-hidden">
+            {{forloop.counter}}
+          </td>
+          <td class="narowFont text-center overflow-hidden">
+            {{minute.title}}
+          </td>
+          <td class="narowFont text-center overflow-hidden">
+            {{minute.responsibleExecutive}}
+          </td>
+          <td class="narowFont text-center overflow-hidden">
+            {{minute.responsibleFollow}}
+          </td>
+          <td class="narowFont text-center overflow-hidden">
+            {{minute.deadLine|to_jalali:'%Y/%m/%d'}}
+          </td>
+
+       
+        </tr>
+
+        {%endfor%}
+      </tbody>
+    </table>
+  </div>
+</div>
+{%else%} موردی ثبت نشده است {%endif%}

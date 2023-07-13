@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+	<link href="{% static '/fonts/yekan/yekan.css' %}" rel="stylesheet">
+	<title>404 HTML Template by Colorlib</title>
+
+	<!-- Google font -->
+	<link href="https://fonts.googleapis.com/css?family=Josefin+Sans:400,700" rel="stylesheet"> 
+
+	<!-- Custom stlylesheet -->
+	<link id="pagestyle" href="{% static  '/css/error.css' %}"  rel="stylesheet" />
+	
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+</head>
+<style>
+	#server-error {
+    position: relative;
+    height: 100vh;
+    background-color: #222;
+  }
+  
+  #server-error .server-error {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+  }
+  
+  .server-error {
+    max-width: 460px;
+    width: 100%;
+    text-align: center;
+    line-height: 1.4;
+  }
+  
+  .server-error .server-error-500 {
+    height: 158px;
+    line-height: 153px;
+  }
+  
+  .server-error .server-error-500 h1 {
+    font-family: 'Josefin Sans', sans-serif;
+    color: #222;
+    font-size: 220px;
+    letter-spacing: 10px;
+    margin: 0px;
+    font-weight: 700;
+    text-shadow: 2px 2px 0px #c9c9c9, -2px -2px 0px #c9c9c9;
+  }
+  
+  .server-error .server-error-500 h1>span {
+    text-shadow: 2px 2px 0px #ff006f, -2px -2px 0px #ff006f, 0px 0px 8px #ff4596;
+  }
+  
+  .server-error p {
+    font-family: 'Yekan';
+	
+    color: #c9c9c9;
+    font-size: 22px;
+    font-weight: 400;
+    margin-top: 0px;
+    margin-bottom: 15px;
+  }
+  
+  .server-error a {
+    font-family: 'Yekan';
+    font-size: 14px;
+    text-decoration: none;
+    text-transform: uppercase;
+    background: transparent;
+    color: #c9c9c9;
+    border: 2px solid #c9c9c9;
+    display: inline-block;
+    padding: 10px 25px;
+    font-weight: 700;
+    -webkit-transition: 0.2s all;
+    transition: 0.2s all;
+  }
+  
+  .server-error a:hover {
+    color: #ff006f;
+    border-color: #ff006f;
+  }
+  
+  @media only screen and (max-width: 480px) {
+    .server-error .server-error-500 {
+      height: 122px;
+      line-height: 122px;
+    }
+  
+    .server-error .server-error-500 h1 {
+        font-size: 122px;
+    }
+  }
+  h2{
+	  font-family: 'Yekan';
+	  color: #c9c9c9;
+	  margin-top: 0px;
+    margin-bottom: 15px;
+  }
+</style>
+<body>
+
+	<div id="server-error">
+		<div class="server-error">
+			<div class="server-error-500">
+				<h1>5<span>0</span>0</h1>
+			</div>
+      <h2>متاسفانه مشکلی پیش آمده است</h2>
+			<p>مشکل پیش آمده را با تیم پشتیبانی در میان بگذارید</p>
+			<a href="{% url 'DashboardEmployee' %}">صفحه اصلی</a>
+		</div>
+	</div>
+
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+
+</html>

@@ -1,0 +1,13 @@
+@charset "UTF-8";
+
+/*
+ ********************************************
+ * Author 	: Amir Shokri					*
+ * Email 	: amirsh.nll@gmail.com 			*
+ * Website	: www.amirshnll.ir 				*
+ * Date 	: 2020, May 					*
+ * Location : Iran, Tehran 					*
+ ********************************************
+ */
+
+body{font-family:"Yekan"!important;overflow-y:hidden}.page{display:block;margin: 0px auto!important}.widget{border-radius:10px;box-shadow:0 0 20px #999;margin: 0px auto!important;min-height:450px;color:#fff}.widget-content p{margin:0;text-align:right;font-size:22px}.widget div{padding:5px 10px}.overly{background:#000;opacity:.5;max-width:450px;width:80%;min-height:450px;position:absolute;border-radius:10px;z-index:0}.container-data{z-index:1}.widget-header{font-size:38px!important}.widget #day{font-size:38px}.widget-footer .widget-footer-item{float:right}.widget-footer .widget-footer-item p{display:inline-block;font-size:20px;width:100%;margin:0;text-align:center;padding:0}.clearfix{clear:both!important}.spring{background:url("/static/img/spring.jpg") center;background-size:cover}.summer{background:url("/static/img/summer.jpg") center;background-size:cover}.fall{background:url("/static/img/fall.jpg") center;background-size:cover}.winter{background:url("/static/img/winter.jpg") center;background-size:cover}.copyright p{text-align:center;font-size:12px;letter-spacing:3px}.d-none{display:none}.d-inline{display:inline}.d-inline-block{display:inline-block}.c-pointer{cursor:pointer}

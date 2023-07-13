@@ -1,0 +1,202 @@
+
+ {% extends extend %} 
+
+
+ {% load jalali_tags %}
+
+ {% load static %}
+ {% block style %}
+ <link rel="stylesheet" type="text/css" href="{% static '/css/dataTables.css' %}">
+
+
+ <script type="text/javascript" charset="utf8" src="{% static '/js/dataTables.js' %}"></script>
+ <script src="{%static '/js/chart.js' %}"></script>
+ <script src="{% static '/js/jquery.dataTables.js' %}"  ></script>
+ 
+ <link rel="stylesheet" href="{%static 'css/progress.css'%}" />
+ {%endblock style%}
+ 
+ {% block content %}
+ <div class="container py-6">
+  
+   <div class="row justify-content-md-center">
+     <div class="card card-fram col-12">
+       <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+         <div class="row">
+          
+           <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+             <h4 class="text-white text-capitalize ps-3">{{header_title}}</h4>
+ 
+           </div>
+         </div>
+       </div>
+       <div class="card-body">
+
+       <div class="container">
+           
+            
+            <div class="card-header border card-plain border-radius-lg">لیست فعالیت های مرتبط</div>
+            <div class="table-responsive my-5">
+          
+              <table id="example" class="table uk-table uk-table-hover uk-table-striped align-items-center py-3 mb-0">
+                <br>
+                <thead>
+                  
+                  <tr>
+                    
+                    
+                      <th class="text-uppercase text-secondary text-md font-weight-bolder opacity-7">گیرنده</th>
+                    
+                      <th class="text-uppercase text-secondary text-md font-weight-bolder opacity-7">عنوان</th>
+                      
+                    
+                      <th class="text-uppercase text-secondary text-md font-weight-bolder opacity-7">تاریخ</th>
+                      <th class="text-uppercase text-secondary text-md font-weight-bolder opacity-7">وضعیت</th>
+                      
+                    
+                  
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                
+                  {%for activity in allActivity%}
+                   
+                    <tr {%if activity.1.status == 'done' %} class="table-success" {%elif activity.1.status == 'doNot' %} class="table-danger" {%else%}class="table-warning" {%endif%} >
+                      
+                       
+                        <td class="narowFont overflow-hidden">{{activity.1.reciver}}</td>
+                        <td class="narowFont overflow-hidden">{{activity.1.get_activity_display}}</td>
+                        <td class="narowFont overflow-hidden">{{activity.1.created_at|to_jalali:'%Y/%m/%d'}}</td>
+                        {%if activity.0 == '#' %} 
+                       <td class="narowFont overflow-hidden">{{activity.1.get_status_display}}</td>
+                        {% elif activity.2 == -1  %}
+                       
+                        <td class="narowFont overflow-hidden"> <a href="{%url activity.0 %}">{{activity.1.get_status_display}} </a></td>
+                       
+                        {%else%}
+                        {%if activity.3 == -1%}
+                        <td class="narowFont overflow-hidden"> <a href="{%url activity.0 activity.2 %}">{{activity.1.get_status_display}} </a></td>
+                        {%else%}
+                        <td class="narowFont overflow-hidden"> <a href="{%url activity.0 activity.2 activity.3 %}">{{activity.1.get_status_display}} </a></td>
+                        {%endif%}
+                        {%endif%}
+                        
+                       
+    
+                      
+                         
+                       
+                        
+                    </tr>
+                    {% endfor %}
+              
+                  
+    
+                            
+                </tbody>
+              </table>
+              <div class="row justify-content-md-center">
+               
+                <div class="col-5">
+                  <a href="{%url menuBack%}" class="btn w-100  btn-outline-danger">
+                    بازگشت </a>
+                </div>
+              </div>
+              
+            </div>
+            
+          
+            <script src="{%static 'js/progress.js'%}"></script>
+            <script>
+  
+              const progress = document.getElementById("progress");
+           
+              const circles = document.querySelectorAll(".circle");
+              
+              let currentActive = {{profileSelected.step}};
+              
+              
+              
+              function update() {
+                circles.forEach((circle, idx) => {
+                  if (idx < currentActive) {
+                    circle.classList.add("active");
+                  } else {
+                    circle.classList.remove("active");
+                  }
+                });
+              
+                const actives = document.querySelectorAll(".active");
+              
+                progress.style.width = ((actives.length - 1) / (circles.length - 1)) * 100  -1 + "%";
+                
+               
+              }
+              
+              
+               </script>
+            <script type="text/javascript">
+            
+              window.onload = update;
+              </script>
+
+
+<!-- Emmanuel Jose logo and favicon. Â© Emmanuel Jose. All Rights Reserved. --></div>
+       </div>
+      </div>
+      
+      
+      
+     
+      
+     
+     </div>
+   </div>
+ </div>
+   {% endblock content %}
+ 
+ 
+   {% block scripts %}
+
+  <script>
+    
+    $(document).ready( function() {
+  $('#example').dataTable( {
+    "order": [ 3, 'dsc' ] ,
+    "pageLength": 25 ,
+    "oLanguage": {
+      "oPaginate": {
+        "sNext": "صفحه بعدی",
+        "sPrevious": "صفحه قبلی"
+      },
+      "sEmptyTable": "اطلاعاتی برای نمایش وجود ندارد",
+      "sSearch": "جستجو   :  ",
+      "sInfo": "نمایش _START_ تا_END_ از تعداد کل _TOTAL_" ,
+      "sLengthMenu": "  تعداد در صفحه  _MENU_ ",
+      "sInfoEmpty": "رکوردی برای نمایش وجود ندارد",
+      
+    
+    }
+  } );
+} );
+  </script>
+
+
+  {%endblock scripts%}
+ 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+

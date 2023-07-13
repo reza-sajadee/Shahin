@@ -1,0 +1,197 @@
+{% extends extend%}
+{% load static %}
+{%block style%}
+<link rel="stylesheet" href="{%static '/css/select2.min.css'%}">
+<link rel="stylesheet" href="{%static '/css/select2-bootstrap-5-theme.rtl.min.css'%}">
+{%endblock style%}
+{%block scripts%}
+<script src="{% static '/js/select2.min.js' %}"></script>
+{%endblock scripts%}
+{% block content %}
+<script>
+ $(document).ready(function() { 
+ $("#id_problem").select2({
+  theme: "bootstrap-5",
+  allowClear: true
+ });
+ $("#id_vahed").select2({
+  theme: "bootstrap-5",
+  allowClear: true
+ });
+ $("#id_subject").select2({
+  theme: "bootstrap-5",
+  allowClear: true
+ });
+ $("#id_source").select2({
+  theme: "bootstrap-5",
+  allowClear: true
+ });
+});
+</script>
+<div class="container py-6">
+    <div class="row justify-content-md-center">
+        <div class="card card-frame col-12">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="row">
+           
+              <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+                <h4 class="text-white text-capitalize ps-3">ثبت درخواست تغییر</h4>
+               
+              </div>
+            </div>
+           
+          </div>
+            <div class="card-body">
+              
+              <form action="" method="POST" enctype="multipart/form-data">
+                {%csrf_token%}
+                
+                  
+
+                  
+                 
+                  
+
+                  <div class="input-group input-group-static mb-4">
+                    <label class="" for="id_demandantVahed">
+                         واحد درخواست کننده را را انتخاب کنید
+                    </label>
+                    <select name="vahed" class="form-control problemS" id="id_vahed">
+                      
+                      <option value="" selected="">---------</option>
+                      {%for vahed in allVahed%}
+                      <option value="{{vahed.title}}" >{{vahed.title}}</option>
+                      {%endfor%}
+                      </select>
+
+
+                    
+                  </div>
+                 
+                  <div class="input-group input-group-static mb-4">
+                    <label class="" for="id_problem">
+                      نوع تغییر را انتخاب کنید
+                    </label>
+                    <select name="problem" class="form-control problemS" id="id_problem">
+                    <option value="" selected="">---------</option>
+
+                    <option value="correctiveAction">اضطراری </option>
+
+                    <option value="Correction"> موقتی</option>
+                    <option value="Correction"> دائمی</option>
+
+                    </select>
+                    
+                  </div>
+                  <div class="input-group input-group-static mb-4">
+                    <label class="" for="id_problem">
+                      موضوع تغییر را انتخاب کنید
+                    </label>
+                    <select name="problem" class="form-control problemS" id="id_subject">
+                    <option value="" selected="">---------</option>
+
+                    <option value="correctiveAction"> استراتژی های سازمان / سیاست گذاریها</option>
+
+                    <option value="Correction">فرآیندها </option>
+                    <option value="Correction"> سیستم های مدیریتی</option>
+                    <option value="Correction">الزامات قانونی </option>
+                    <option value="Correction">ذینفعان </option>
+                    <option value="Correction">تکنولوژی و زیرساخت ها </option>
+                    <option value="Correction">سرمایه های انسانی ( ساختار سازمانی و کارکنان) </option>
+                    <option value="Correction">سایر </option>
+                    </select>
+                    
+                  </div>
+
+                  <div class="input-group input-group-static mb-4">
+                    <label class="" for="id_standardRelated">
+                        محل تغییر را وارد کنید
+                    </label>
+                    <input type="text" name="title" maxlength="200" class="form-control" required="" id="id_title">
+                    
+
+                    
+                  </div>
+                 
+                  
+
+                  <div class="input-group input-group-static mb-4">
+                    <label class="" for="id_source">
+                        شرح تغییر را وارد کنید 
+                    </label>
+                    <textarea name="description" cols="40" rows="5" class="form-control" id="id_description"></textarea>
+                    
+                  </div>
+                  <div class="input-group input-group-static mb-4">
+                    <label class="" for="id_source">
+                         دلایل تغییر را وارد کنید 
+                    </label>
+                    <textarea name="description" cols="40" rows="5" class="form-control" id="id_description"></textarea>
+                    
+                  </div>
+                  <div class="input-group input-group-static mb-4">
+                    <label class="" for="id_source">
+                         نتیجه / هدف تغییر را وارد کنید 
+                    </label>
+                    <textarea name="description" cols="40" rows="5" class="form-control" id="id_description"></textarea>
+                    
+                  </div>
+                  <div class="input-group input-group-static mb-4">
+                    <label class="" for="id_source">
+                       اثرات تغییر  را وارد کنید 
+                    </label>
+                    <textarea name="description" cols="40" rows="5" class="form-control" id="id_description"></textarea>
+                    
+                  </div>
+                 
+                  
+                
+
+                
+             
+                      <input type="submit" class="btn btn-lg bg-gradient-danger btn-lg w-100 mt-4 mb-0" value="ثبت">
+
+            </form>
+
+
+              <!-- <form action="" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  {% if columns == 1%}
+                    {% for field  in form.visible_fields %}
+
+                    <div class="input-group input-group-static mb-4">
+                      <label class="" for="{{ field.auto_id }}">
+                        {{ field.label }}
+                      </label>
+                      {{field }}
+                      {% if field.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ field.errors.as_text}}
+                        </div>
+                      {% endif %}
+                    </div>
+                   
+                    {% endfor %}
+                  {% endif %}
+
+                  
+                  <div class="input-group input-group-static mb-4">
+                    <label for="id_description">
+                          شرح مسئله  (درخواست / عدم انطباق ): 
+                    </label>
+                    <textarea name="description" cols="40" rows="5" class="form-control" id="id_description"></textarea>
+                    
+                  </div>
+                        <input type="submit" class="btn btn-lg bg-gradient-{{ color }} btn-lg w-100 mt-4 mb-0" value="ثبت">
+
+              </form> -->
+            </div>
+        </div>
+      </div>
+</div>
+
+    
+    
+   
+{% endblock content %}
+

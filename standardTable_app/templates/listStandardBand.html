@@ -1,0 +1,157 @@
+
+ {% extends extend %} 
+
+
+
+
+{% load static %}
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/dataTables.css' %}">
+
+
+  <script type="text/javascript" charset="utf8" src="{% static '/js/dataTables.js' %}"></script>
+
+  <script src="{% static '/js/jquery.dataTables.js' %}"  ></script>
+{%endblock style%}
+
+{% block content %}
+<script type="text/javascript">
+  function show_hide_row(row)
+  {
+   $("#"+row).slideToggle();
+  }
+  </script>
+<div class="container py-6">
+  <div class="row justify-content-md-center">
+    <div class="card card-fram col-12">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="row">
+          
+          <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+            <h4 class="text-white text-capitalize ps-3">{{ header_title }}</h4>
+        
+          </div>
+        </div>
+      </div>
+      <div class="card-body px-0 pb-2">
+                    
+         
+          
+        <div class="container-fluid fulled">
+          <div class="row border-bottom py-3">
+            <div class="col-2 text-center">شماره بند</div>
+            <div class="col-8 text-center">عنوان بند</div>
+        
+       
+            <div class="col-2 text-center">بیشتر</div>
+
+          </div>
+         
+             
+          
+          
+              {% for data in queryset %}
+             
+                <div class="row border-bottom py-3">
+                  
+                      <div class="col-1 narowFont text-center">{{forloop.counter}}</div>
+                      <div class="col-1 narowFont text-center">{{data.clauseNumber}}</div> 
+                      <div class="col-8 narowFont text-center">{{data.title}}</div>
+                      <a href="#" onclick="show_hide_row('hidden_row{{data.id}}');" class="col-2">
+                        <div class="  ms-2 d-flex align-items-center justify-content-center">
+                          <img style="max-width: 50px;" src="{% static 'img/svg/view.svg' %}" >
+                        </div>
+                      </a>
+                      
+                </div>
+
+                <div id="hidden_row{{data.id}}" class="hidden_row row moreData py-3" style="display:none">
+                        
+                   
+                    <div class="row justify-content-center py-3">
+                      <div class="col-4">
+                        <span class=" fw-bold text-dark" >استاندارد : </span>
+                        <span class=" narowFont"> {{data.standard}} </span>
+                      </div>
+                      <div class="col-2">
+                        <span class=" fw-bold text-dark" >عنوان : </span>
+                        <span class=" narowFont"> {{data.title}} </span>
+                      </div>
+                      <div class="col-2">
+                        <span class=" fw-bold text-dark" >شماره بند: </span>
+                        <span class=" narowFont"> {{data.clauseNumber}} </span>
+                      </div>
+                      
+                    </div>
+
+                    <div class="row justify-content-center py-3">
+                      <div class="col-8">
+                        <span class=" fw-bold text-dark" > متن: </span>
+                        <span class=" narowFont text-dark" style="justify-content: right;"> {{data.text}} </span>
+                      </div>
+                      
+                      
+                    </div>
+                    <div class="row justify-content-center py-3">
+                      <div class="col-8">
+                        <span class=" fw-bold text-dark" > توضیحات: </span>
+                        <span class=" narowFont" style="justify-content: right;">{%if data.description == None %} موجود نیست {%else%} {{data.description}} {%endif%}</span>
+                      </div>
+                      
+                      
+                    </div>
+                    <hr class="dark horizontal">
+   
+       
+                </div>
+                      
+              
+
+                 
+                  
+                  
+
+                
+              {% endfor %}
+            
+   
+        
+              </div>
+          </div>
+     
+      
+    
+      </div>
+       
+    
+    </div>
+  </div>
+</div>
+  {% endblock content %}
+
+
+  {% block scripts %}
+  
+  
+  <script>
+    $(document).ready( function() {
+  $('#example').dataTable( {
+    "oLanguage": {
+      "oPaginate": {
+        "sNext": "صفحه بعدی",
+        "sPrevious": "صفحه قبلی"
+      },
+      "sEmptyTable": "اطلاعاتی برای نمایش وجود ندارد",
+      "sSearch": "جستجو   :  ",
+      "sInfo": "نمایش _START_ تا_END_ از تعداد کل _TOTAL_" ,
+      "sLengthMenu": "  تعداد در صفحه  _MENU_ ",
+      "sInfoEmpty": "رکوردی برای نمایش وجود ندارد"
+    
+    }
+  } );
+} );
+  </script>
+  {%endblock scripts%}
+  
+
+

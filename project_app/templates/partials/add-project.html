@@ -1,0 +1,194 @@
+{%load static%}
+
+<div class="row">
+    <div class="card-body">
+      <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="profileProjectRelated" id="id_profileProjectRelated" value="{{profileId}}">
+        <input type="hidden" name="previousProject" id="id_previousProject" value="{{pp}}">
+
+       <div class="row">
+        <div class="col-6">
+          <div class="input-group input-group-static mb-4">
+            <label class="" for="{{ form.accountable.auto_id }}">
+               عنوان {{headP}} را وارد کنید 
+            </label>
+            {{form.title }} {% if form.title.errors %}
+            <div class="alert alert-danger" role="alert">
+              {{ form.title.errors.as_text}}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="input-group input-group-static mb-4">
+            <label class="" for="{{ form.accountable.auto_id }}">
+              کد {{headP}} را وارد کنید 
+            </label>
+            {{form.code }} {% if form.code.errors %}
+            <div class="alert alert-danger" role="alert">
+              {{ form.code.errors.as_text}}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+    
+       </div>
+       <div class="row justify-content-around ">
+        <div class="col-6" >
+          
+            <div class="col-12"> 
+              <div class="input-group input-group-static mb-4">
+              <label class="" for="{{ form.startTime.auto_id }}">
+                 زمان شروع {{headP}} را وارد کنید 
+              </label>
+              {{form.startTime }} {% if form.startTime.errors %}
+              <div class="alert alert-danger" role="alert">
+                {{ form.title.errors.as_text}}
+              </div>
+              {% endif %}
+              </div>
+            </div>
+         
+          
+            <div class="col-12"> 
+              <div class="input-group input-group-static mb-4">
+              <label class="" for="{{ form.accountable.auto_id }}">
+                 زمان پایان {{headP}} را وارد کنید 
+              </label>
+              {{form.deadLine }} {% if form.deadLine.errors %}
+              <div class="alert alert-danger" role="alert">
+                {{ form.deadLine.errors.as_text}}
+              </div>
+              {% endif %}
+              </div>
+            </div>
+         
+        </div>
+        <div class="col-6 " >
+         
+            <div class="col-12"> 
+              <div class="input-group input-group-static mb-4">
+              <label class="" for="{{ form.startTime.auto_id }}">
+                 مسئول  {{headP}} را انتخاب کنید 
+              </label>
+              {{form.responsible }} {% if form.responsible.errors %}
+              <div class="alert alert-danger" role="alert">
+                {{ form.responsible.errors.as_text}}
+              </div>
+              {% endif %}
+              </div>
+            </div>
+      
+       
+            <div class="col-12"> 
+              <div class="input-group input-group-static mb-4">
+              <label class="" for="{{ form.accountable.auto_id }}">
+                  کنترلگر {{headP}} را انتخاب کنید 
+              </label>
+              {{form.controller }} {% if form.controller.errors %}
+              <div class="alert alert-danger" role="alert">
+                {{ form.controller.errors.as_text}}
+              </div>
+              {% endif %}
+              </div>
+            </div>
+         
+        </div>
+       </div>
+       <hr class=" horizontal gray-light">
+       <div class="row ">
+        <div class="col-6">
+          <div class="input-group input-group-static mb-4">
+            <label class="" for="{{ form.accountable.auto_id }}">
+               وضعیت فعلی را وارد کنید 
+            </label>
+            {{form.currentSituation }} {% if form.currentSituation.errors %}
+            <div class="alert alert-danger" role="alert">
+              {{ form.currentSituation.errors.as_text}}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="input-group input-group-static mb-4">
+            <label class="" for="{{ form.accountable.auto_id }}">
+               وضیعیت مطلوب را وارد کنید 
+            </label>
+            {{form.target }} {% if form.target.errors %}
+            <div class="alert alert-danger" role="alert">
+              {{ form.target.errors.as_text}}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+    
+       </div>
+       <hr class=" horizontal gray-light">
+       <div class="row ">
+        <div class="col-6">
+          <div class="input-group input-group-static mb-4">
+            <label class="" for="{{ form.accountable.auto_id }}">
+               سنجه  را وارد کنید 
+            </label>
+            {{form.index }} {% if form.index.errors %}
+            <div class="alert alert-danger" role="alert">
+              {{ form.index.errors.as_text}}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="input-group input-group-static mb-4">
+            <label class="" for="{{ form.accountable.auto_id }}">
+               نوع وابستگی {{headP}} را انتخاب کنید 
+            </label>
+            {{form.taskDependencies }} {% if form.taskDependencies.errors %}
+            <div class="alert alert-danger" role="alert">
+              {{ form.taskDependencies.errors.as_text}}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+    
+       </div>
+       <hr class=" horizontal gray-light">
+       <div class="row ">
+        <div class="col-12">
+          <div class="input-group input-group-static mb-4">
+            <label class="" for="{{ form.accountable.auto_id }}">
+               توضیحات  را وارد کنید 
+            </label>
+            {{form.description }} {% if form.description.errors %}
+            <div class="alert alert-danger" role="alert">
+              {{ form.description.errors.as_text}}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      
+    
+       </div>
+
+      
+
+        {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}
+
+        <div class="row justify-content-md-center">
+          <div class="col-5">
+            <button type="submit" class="btn w-100 btn-outline-primary">
+              افزودن
+            </button>
+          </div>
+          <div class="col-5">
+            <a
+              href="{%url 'ViewProfileMeeting' %}"
+              class="btn w-100 btn-outline-danger"
+            >
+              کنسل
+            </a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>

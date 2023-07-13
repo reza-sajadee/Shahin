@@ -1,0 +1,62 @@
+{% extends 'clearBase.html'%}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="row  justify-content-md-center">
+        <div class="card card-frame col-10">
+            <div class="card-body">
+              <div class="row">
+                
+              <div class="col-lg-4 ">
+                <h3>سیستم مدیریت یکپارچه</h3>
+                <div class="row my-6">
+                  <form action="" method="POST">
+                    <input type="hidden" name="csrfmiddlewaretoken" value="K0N4IaVCHBtrqrfsw1ikf3AN706eXJHTt8MidoFvFKbO922dEh62diY0iXpMaIvw">
+                    
+                      
+    
+                      <div class="input-group input-group-static mb-4">
+                        <label class="" for="id_title">
+                          نام کاربری را وارد نمایید
+                        </label>
+                        <input type="text" name="title" maxlength="150" class="form-control" required="" id="id_title" onfocus="focused(this)" onfocusout="defocused(this)">
+                        
+                      </div>
+                     
+                      
+    
+                      <div class="input-group input-group-static mb-4">
+                        <label class="" for="id_nahiyeCode">
+                           رمز عبور را وارد کنید
+                        </label>
+                        <input type="text" name="nahiyeCode" maxlength="15" class="form-control" required="" id="id_nahiyeCode" onfocus="focused(this)" onfocusout="defocused(this)">
+                        
+                      </div>
+                     
+                      
+                    
+    
+           
+                          <input type="submit" class="btn btn-lg text-white btn-primary-color rounded-pill btn-lg w-100 mt-4 mb-0" value="ثبت">
+    
+                  </form>
+                </div>
+                
+              </div>
+              <div class="col-lg-8 ">
+                <h1 class="text-cente">عکس</h1>
+              </div>
+              </div>
+             
+             
+
+             
+            </div>
+          </div>
+      </div>
+</div>
+
+    
+    
+   
+{% endblock content %}

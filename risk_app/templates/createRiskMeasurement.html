@@ -1,0 +1,358 @@
+{% extends extend%}
+
+
+{% load static %}
+{% block style %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css">
+<!-- <link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}"> -->
+
+{%endblock style%}
+
+{% block content %}
+{{get_jalali_date}}
+<script type="text/javascript">
+  function show_hide_row(row)
+  {
+   $("#"+row).slideToggle();
+  }
+  </script>
+
+</script>
+<div class="container py-6">
+    <div class="row justify-content-md-center">
+        <div class="card card-frame col-12">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="row">
+              <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+                <h4 class="text-white text-capitalize ps-3">اندازه گیرى ضرایب موثر در سطح ریسک وقوع خطا</h4>
+              </div>
+            </div>
+           
+          </div>
+            <div class="card-body">
+                
+              <ul class="list-group">
+                <div class="row justify-content-center">
+                  <div class="col-4 mx-4 ">
+                    <li class="list-group-item  border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                      <div class="d-flex    flex-column">
+                        <h5 class="mb-1 text-dark font-weight-bold">سرفصل</h5> <h6>{{riskTopicSelected}}</h6>
+                      </div>
+                      <div class="d-flex align-items-center ">
+                        
+                      </div>
+                    </li>
+                  </div>
+                  <div class="col-4 mx-4 ">
+                    <li class="list-group-item  border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                      <div class="d-flex    flex-column">
+                        <h5 class="mb-1 text-dark font-weight-bold">حوزه</h5> <h6>{{hozeSelected}} </h6>
+                      </div>
+                      <div class="d-flex align-items-center ">
+                        
+                      </div>
+                    </li>
+                  </div>
+                </div>
+
+                <div class="row justify-content-center">
+                  <div class="col-4 mx-4 ">
+                    <li class="list-group-item  border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                      <div class="d-flex    flex-column">
+                        <h5 class="mb-1 text-dark font-weight-bold">تیم</h5> <h6> {{teamSelected.title}}</h6>
+                      </div>
+                      <div class="d-flex align-items-center ">
+                        
+                      </div>
+                    </li>
+                  </div>
+                  <div class="col-4 mx-4 ">
+                    <li class="list-group-item  border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                      <div class="d-flex    flex-column">
+                        <h5 class="mb-1 text-dark font-weight-bold">عنوان</h5> <h6>ارزیابی ریسک</h6>
+                      </div>
+                      <div class="d-flex align-items-center ">
+                        
+                      </div>
+                    </li>
+                  </div>
+                </div>
+                
+                
+              </ul>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card my-4">
+                
+                <div class="card-body px-0 pb-2">
+                  <div class="container-fluid fulled">
+                    <div class="row border-bottom py-3">
+                      <div class="col-7"><h6><span class="text-muted">عنوان ریسک</span></h6></div>
+                      <div class="col-1"><p class="text-muted">شدت خطا</p></div>
+                      <div class="col-1"><p class="text-muted">احتمال وقوع</p></div>
+                      <div class="col-1"><p class="text-muted">قابلیت کشف</span></div>
+                      <div class="col-1"><p class="text-muted"> بیشتر </span></div>
+                      <div class="col-1"><p class="text-muted"> ثبت </span></div>
+                       
+                    
+                    </div>
+                {%for risk in allActivityRiskMeasurement%}
+                    <div class="row border-bottom py-3">
+                    
+                     {% if risk.activity.status == 'doing' %}
+                     <form action="{% url 'ChangeViewRiskMeasurement' risk.id  %} " method="POST" >
+                      {%csrf_token%}
+                      <input type="hidden" id="riskId"   name="riskId"   value={{risk.id}}>
+                      <input type="hidden" id="hoze"   name="hoze"   value={{risk.activity.hoze.id}}>
+                      <input type="hidden" id="riskIdentificated"   name="riskIdentificated"   value={{risk.riskIdentificated.id}}>
+                      <input type="hidden" id="activity"   name="activity"   value={{risk.activity.id}}>
+                      <div class="row">
+                        <div class="col-7">{{risk.riskIdentificated.riskFailureModes}}</div>
+                          
+                            
+                          <div class="col-1">
+                            
+                            <div class="input-group input-group-outline is-filled">
+                              <input type="number" min="1" max="10" name="riskSeverity" id="id_riskSeverity"  class="form-control" value={{risk.riskSeverity}} >
+                            </div>
+                          
+                          </div>
+                          <div class="col-1">
+                            
+                            <div class="input-group input-group-outline is-filled">
+                              <input type="number" min="1" max="10" name="riskOccurrence" id="id_riskOccurrence"  class="form-control" value={{risk.riskOccurrence}} >
+                            </div>
+                          </div>
+                          <div class="col-1">
+                            <div class="input-group input-group-outline is-filled">
+                              <input type="number" min="1" max="10" name="riskDetection" id="id_riskDetection"  class="form-control" value={{risk.riskDetection}} >
+                            </div>
+                          </div>
+                         
+                          
+                          <div class="col-1">
+                            <a href="#" onclick="show_hide_row('hidden_row{{risk.id}}');" >بیشتر</a>
+                          </div>
+
+                          <div class="col-1">
+                            <button type="submit" class="btn w-100 btn-outline-success">ثبت</button>
+                          </div>
+                      </div>
+                          
+                     </form>
+                      {% endif %}
+
+
+
+                      {% if risk.activity.status == 'done' %}
+                      
+                      <form>
+                        <div class="row">
+                          <div class="col-7">{{risk.riskIdentificated.riskFailureModes}}</div>
+                          
+                            
+                          <div class="col-1">
+                            
+                            <div class="text-center">
+                              <h6> {{risk.riskSeverity}} </h6>
+                            </div>
+                          
+                          </div>
+                          <div class="col-1">
+                            
+                            <div class="text-center">
+                              <h6> {{risk.riskOccurrence}} </h6>
+                            </div>
+                          </div>
+                          <div class="col-1">
+                            <div class="text-center">
+                              <h6> {{risk.riskDetection}} </h6>
+                            </div>
+                          </div>
+                         
+                          
+                          <div class="col-1">
+                            <a href="#" onclick="show_hide_row('hidden_row{{risk.id}}');" >بیشتر</a>
+                          </div>
+
+                          <div class="col-1">
+                            
+                          </div>
+                        </div>
+                      </form>
+                        
+                          
+
+                      {% endif %}
+
+
+
+
+
+
+                    </div>   
+                  
+                    <div id="hidden_row{{risk.id}}" class="hidden_row row moreData py-3" style="display:none">
+
+                      <div class="row py-3">
+                        
+                          <div class="col-8">
+                            <span class="nowrap fw-bold text-dark" >   گروه کسب و کار : </span><span class="nowrap"> {{risk.riskIdentificated.group}}</span> 
+                          </div>
+                        
+                          <div class="col-4">
+                            <span class="nowrap fw-bold text-dark" >   کد فرآیند :</span> <span> {{risk.riskIdentificated.process.id}} </span>
+                          </div>
+                          
+                      
+                      </div>
+                      <hr class="dark horizontal">
+
+                          
+                      <div class="py-3">
+                        <span class="fw-bold text-dark" >  علل بروز : </span>
+                        <p class="py-3">{{risk.riskIdentificated.riskCauses}}</p>
+                      </div>
+                      <hr class="dark horizontal">
+                          
+
+                  
+                      <div class="py-3">
+                        <span class="fw-bold text-dark" >  اثرات بروز خطا  : </span>
+                        <p class="py-3 .text-secondary">{{risk.riskIdentificated.riskEffects}}</p>
+                      </div>
+                      <hr class="dark horizontal">
+                  
+                      <div class="py-3">
+                        <span class="fw-bold text-dark" >  کنترل های فعلی  : </span>
+                        <p class="py-3 .text-secondary">{{risk.riskIdentificated.currentAction}}</p>
+                      </div>
+                      <hr class="dark horizontal">
+                    </div>
+                        
+                      
+
+                  {% endfor %}
+                    
+                    
+
+                  <a class="btn btn btn-lg w-100 btn-outline-info" href="{%url 'ListViewRiskMeasurement' %}">
+            
+                    بازگشت به لیست ارزیابی
+                  </a>
+                </div>          
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+
+  
+
+
+{% endblock content %}
+
+
+{% block scripts %}
+<script
+src="https://code.jquery.com/jquery-3.6.0.min.js"
+integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf8" src="{% static '/js/dataTables.js' %}"></script>
+
+
+		<!-- <script src="{% static 'admin/js/django_jalali.min.js' %}"></script> -->
+	<!-- OR -->
+	<!-- loading by form (if used AdminJalaliDateWidget) -->
+		{{ form.media }}
+
+<script>
+  // json_load_process
+  const groupDataBox =document.getElementById('id_group') 
+  const groupBox = document.getElementById('id_group')
+
+  const processDataBox =document.getElementById('id_process') 
+  const processBox = document.getElementById('id_process')
+
+  $.ajax({
+    type:'GET',
+    url: '/risk/identification/json/load-prcoess/',
+    success:function(response){
+      console.log(response.data)
+      const processData = response.data
+      processData.map(item=>{
+        const option = document.createElement('div')
+        option.textContent = item.name
+        option.setAttribute('class','item')
+        option.setAttribute('data-value',item.name)
+        groupDataBox.appendChild(option)
+      }
+
+      )
+    },
+    error: function(error){
+      console.log(error)
+    },
+  })
+
+  groupBox.addEventListener('change' , e=>{
+    console.log(e.target.value)
+    const selectedGroup = e.target.value
+    processBox.innerHTML = ''
+    processBox.textContent = "---------"
+    $.ajax({
+      type:'GET',
+      url: '/risk/identification/json/get_json_group_data/' + e.target.value,
+      
+      success: function(response){
+        console.log(response.data)
+        const processData = response.data
+        
+        processData.map(item=>{
+          const option = document.createElement('option')
+          option.textContent = item.title
+          option.value = item.id
+      
+          processDataBox.appendChild(option)
+        })
+      },
+      error: function(error){
+        console.log(error)
+      }
+    })
+
+  })
+
+ 
+</script>
+<script>
+  function myFunction() {
+  var input, filter, table, tr, td, cell, i, j;
+  filter = document.getElementById("searchInput").value.toLowerCase();
+  table = document.getElementById("userTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 1; i < tr.length; i++) {
+    tr[i].style.display = "none";
+    const tdArray = tr[i].getElementsByTagName("td");
+    for (var j = 0; j < tdArray.length; j++) {
+      const cellValue = tdArray[j];
+      if (cellValue && cellValue.innerHTML.toLowerCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+        break;
+      }
+    }
+  }
+}
+</script>
+{%endblock scripts%}
+
+
+
+
+

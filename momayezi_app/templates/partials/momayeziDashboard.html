@@ -1,0 +1,367 @@
+
+ {% load static %}
+
+
+
+<div class="container" id="dashboard">
+  <div class="row  py-3">
+  
+      <div class="row">
+        <div class="col-6">
+          <div>
+            <canvas id="myChartpie"></canvas>
+          </div>
+        </div>
+        <div class="col-1"></div>
+        <div class="row py-3 col-5">
+          <div class="row py-2">
+            <div class="col-lg-12 col-sm-6 mb-lg-0 mb-1">
+              <a href="{%url 'ListViewVahedReportMomayezi' profileSelected.id %}?q=vahed">
+                <div class="card bg-info">
+                  <div class="card-header bg-info p-3 pt-2">
+                    <div class="pt-1">
+                      <p class="text-lg mb-0 text-white text-capitalize">
+                         کل گزارشات
+                      </p>
+                      <h4 class="mb-0 text-white opacity-5 narowFont">
+                        {{total}}
+                      </h4>
+                    </div>
+                  </div>
+                  <hr class="dark horizontal my-0" />
+                  <div class="card-footer"></div>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="row py-2">
+            <div class="col-lg-6 col-sm-6 mb-lg-0 mb-1">
+              <a href="{%url 'ListViewVahedReportMomayezi' profileSelected.id %}?q=adam">
+                <div class="card risk1">
+                  <div class="card-header risk1 p-3 pt-2">
+                    <div class="pt-1">
+                      <p class="text-lg mb-0 text-capitalize">
+                        عدم انطباق
+                      </p>
+                      <h4 class="mb-0 text-white opacity-5  narowFont">
+                        {{allAdamLenght}}/{{total}}
+                      </h4>
+                    </div>
+                  </div>
+                  <hr class="dark horizontal my-0" />
+                  <div class="card-footer"></div>
+                </div>
+              </a>
+            </div>
+            <div class="col-lg-6 col-sm-6 mb-lg-0 mb-1">
+              <a href="{%url 'ListViewVahedReportMomayezi' profileSelected.id %}?q=behbod">
+                <div class="card risk2">
+                  <div class="card-header risk2 p-3 pt-2">
+                    <div class="pt-1">
+                      <p class="text-lg mb-0 text-capitalize">
+                           فرصت بهبود
+                      </p>
+                      <h4 class="mb-0 text-white opacity-5  narowFont">
+                        {{allForsatLenght}}/{{total}}
+                      </h4>
+                    </div>
+                  </div>
+                  <hr class="dark horizontal my-0" />
+                  <div class="card-footer"></div>
+                </div>
+              </a>
+            </div>
+          </div>
+         <div class="row py-2">
+          <div class="col-lg-12 col-sm-12 mb-lg-0 mb-1">
+            <a href="{%url 'ListViewVahedReportMomayezi' profileSelected.id %}?q=ghovat">
+              <div class="card bg-success">
+                <div class="card-header bg-success p-3 pt-2">
+                  <div class="pt-1">
+                    <p class="text-lg mb-0 text-white text-capitalize">
+                        نقاط قوت 
+                    </p>
+                    <h4 class="mb-0 text-white opacity-5  narowFont">
+                      {{allGhovatLenght}}/{{total}}
+                    </h4>
+                  </div>
+                </div>
+  
+                <div class="card-footer"></div>
+              </div>
+            </a>
+          </div>
+         </div>
+         
+          
+        </div>
+      </div>
+
+      <div class="row py-5 justify-content-between">
+        <div class="col-5 ">
+          <ul class="list-group text-lg">
+            {%if maxAdamTitle %}
+            <li class="list-group-item d-flex                         
+                justify-content-between 
+                align-items-center bg-danger text-white">
+               واحد هایی که بیشتری عدم انطباق را دارند
+               
+            </li>
+            <li class="list-group-item d-flex                         
+                justify-content-between 
+                align-items-center">
+                {{maxAdamTitle.0}}
+                <span class="badge bg-danger 
+                        rounded-pill">
+                        {{maxAdamValue.0}}
+                </span>
+            </li>
+            {%if maxAdamTitle.1 %}
+            <li class="list-group-item d-flex 
+                justify-content-between 
+                align-items-center">
+                {{maxAdamTitle.1}}
+                <span class="badge bg-danger 
+                    rounded-pill">
+                    {{maxAdamValue.1}}
+                </span>
+            </li>
+            {%endif%}
+            {%if maxAdamTitle.2 %}
+            <li class="list-group-item d-flex 
+                justify-content-between 
+                align-items-center">
+                {{maxAdamTitle.2}}
+                <span class="badge bg-danger 
+                    rounded-pill">
+                    {{maxAdamValue.2}}
+                </span>
+            </li>
+            {%endif%}
+            {%endif%}
+            {%if maxForsatTitle %}
+            <li class="list-group-item d-flex                         
+            justify-content-between 
+            align-items-center bg-info text-white">
+           واحد هایی که بیشترین  فرصت بهبود را دارند  
+           
+            </li>
+            <li class="list-group-item d-flex                         
+                justify-content-between 
+                align-items-center">
+                {{maxForsatTitle.0}}
+                <span class="badge bg-info 
+                        rounded-pill">
+                        {{maxForsatValue.0}}
+                </span>
+            </li>
+           
+            {%if maxForsatTitle.1 %}
+            <li class="list-group-item d-flex 
+                justify-content-between 
+                align-items-center">
+                {{maxForsatTitle.1}}
+                <span class="badge bg-info 
+                    rounded-pill">
+                    {{maxForsatValue.1}}
+                </span>
+            </li>
+            {%endif%}
+            {%if maxForsatTitle.2 %}
+            <li class="list-group-item d-flex 
+                justify-content-between 
+                align-items-center">
+                {{maxForsatTitle.2}}
+                <span class="badge bg-info 
+                    rounded-pill">
+                    {{maxForsatValue.2}}
+                </span>
+            </li>
+            {%endif%}
+            {%endif%}
+            {%if maxGhovatTitle %}
+            <li class="list-group-item d-flex                         
+            justify-content-between 
+            align-items-center bg-success text-white text-lg">
+           واحد هایی که بیشترین  نقاط قوت  را دارند  
+           
+            </li>
+            <li class="list-group-item d-flex                         
+                justify-content-between 
+                align-items-center text-lg">
+                {{maxGhovatTitle.0}}
+                <span class="badge bg-success 
+                        rounded-pill">
+                        {{maxGhovatValue.0}}
+                </span>
+            </li>
+            {%if maxGhovatTitle.1 %}
+            <li class="list-group-item d-flex 
+                justify-content-between 
+                align-items-center text-lg">
+                {{maxGhovatTitle.1}}
+                <span class="badge bg-success 
+                    rounded-pill">
+                    {{maxGhovatValue.1}}
+                </span>
+            </li>
+            {%endif%}
+            {%if maxGhovatTitle.2 %}
+            <li class="list-group-item d-flex 
+                justify-content-between 
+                align-items-center text-lg">
+                {{maxGhovatTitle.2}}
+                <span class="badge bg-success 
+                    rounded-pill">
+                    {{maxGhovatValue.2}}
+                </span>
+            </li>
+            {%endif%}
+            {%endif%}
+        </ul>
+        </div>
+        <div class="col-6">
+         
+            <canvas id="myChart" width="400" height="400"></canvas> 
+        
+        
+
+        </div>
+      </div>
+    
+  </div>
+</div>
+
+
+<script type="text/javascript">
+  window.onload=function(){
+function containsObject(obj, list) {
+  var i;
+  for (i = 0; i < list.length; i++) {
+  if (list[i].label == obj.label ) {
+          return true;
+      }
+  }
+  return false;
+}
+
+
+
+var ctx = $("#myChart");
+var myChart = new Chart(ctx, {
+  type: 'doughnut',
+  data: {
+    
+    datasets: [{
+      data: {{maxAdamValue}},
+      backgroundColor: [
+        '#ff0000',
+        '#ff0000a1',
+        '#ff000063',
+        '#00205A',
+        '#747474',
+      ],
+     
+    
+    }, {
+      data: {{maxForsatValue}},
+      backgroundColor: [
+        '#1c3c60 ',
+        '#1c3c60a1',
+        '#1c3c6063',
+      ],
+      
+      
+    }, {
+      data: {{maxGhovatValue}},
+      backgroundColor: [
+        '#4caf50',
+        '#4caf50a1',
+        '#4caf5063',
+      ],
+     
+     
+    }],
+   
+  },
+  plugins:{
+      tooltip: {
+           callbacks: {
+                label: function(context) {
+                var index = context.dataIndex;
+                return context.dataset.labels[index] + ': ' + context.dataset.data[index];
+            }
+         }
+      },    
+   }
+    
+});
+
+  }
+
+    </script> 
+<script>
+  $(document).ready(function () {
+    $("#example").dataTable({
+      order: [3, "dsc"],
+      pageLength: 25,
+      oLanguage: {
+        oPaginate: {
+          sNext: "صفحه بعدی",
+          sPrevious: "صفحه قبلی",
+        },
+        sEmptyTable: "اطلاعاتی برای نمایش وجود ندارد",
+        sSearch: "جستجو   :  ",
+        sInfo: "نمایش _START_ تا_END_ از تعداد کل _TOTAL_",
+        sLengthMenu: "  تعداد در صفحه  _MENU_ ",
+        sInfoEmpty: "رکوردی برای نمایش وجود ندارد",
+      },
+    });
+  });
+</script>
+<script>
+      const data = {
+    labels: [
+      ' عدم انطباق',
+      'نقاط قوت',
+      'فرصت بهبود',
+   
+    ],
+    datasets: [{
+      label: 'درصد',
+      data: [{{allAdamPercent}}, {{allGhovatPercent}}, {{allForsatPercent}} ],
+      backgroundColor: [
+        'rgb(255, 0, 0)',
+        'rgb(76, 175,80)',
+        'rgb(255, 225, 56)',
+     
+      ],
+      hoverOffset: 4
+    }]
+  };
+
+  const config = {
+    type: 'pie',
+    data: data,
+  };
+
+  const ctx2 = document.getElementById('myChartpie');
+
+    new Chart(ctx2, {
+      type: 'pie',
+      data: data,
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+</script>
+
+
+
+ {% block scripts %}
+ 
+{%endblock scripts%}

@@ -1,0 +1,56 @@
+
+{%if memberList %}
+<div  class="row" id="profileList"> 
+<div class="table-responsive ">
+          
+    <table id="example" class="table uk-table uk-table-hover uk-table-striped align-items-center py-3 mb-0">
+      <br>
+      <thead>
+        
+        <tr>
+            
+            
+            
+            
+            <th class="text-center text-lg font-weight-bolder opacity-7">ردیف</th>
+            <th class="text-center text-lg font-weight-bolder opacity-7">نام </th>
+            <th class="text-center text-lg font-weight-bolder opacity-7"> نام خانوادگی</th>
+            
+            <th class="text-center text-lg font-weight-bolder opacity-7">افزودن</th>
+
+      
+         
+        </tr>
+      </thead>
+      <tbody>
+      
+      {%for profile in memberList%}
+       
+          <tr>
+              
+              <td class="narowFont text-center overflow-hidden">{{forloop.counter}}</td>
+              <td class="narowFont text-center overflow-hidden">{{profile.firstName}}</td>
+              <td class="narowFont text-center overflow-hidden">{{profile.lastName}}</td>
+              
+              <td class="narowFont text-center overflow-hidden"> <span style="cursor:pointer" hx-post="{%url 'add-profile' profile.id %}" hx-trigger="click" hx-target="#variable_list"
+                hx-swap="delete" class="badge bg-success badge-pill">+</span ></td>
+              
+              
+             
+             
+
+           
+          </tr>
+         
+        {%endfor%}
+
+                  
+      </tbody>
+    </table>
+   
+  </div>
+{%else%}
+
+<p>عضو ثابتی اضافه نشده است   </p>
+
+{%endif%}

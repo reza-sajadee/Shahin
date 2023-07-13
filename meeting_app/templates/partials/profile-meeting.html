@@ -1,0 +1,207 @@
+{% load jalali_tags %}
+<div class="container-fluid">
+    <div class="row py-3 justify-content-md-center">
+      <div class="card py-3 bg-gradient-light-green frame col-12">
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div class="row">
+            <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+              <h4 class="text-white text-capitalize ps-3">اطلاعات پروفایل جلسه</h4>
+            </div>
+          </div>
+         
+        </div>
+        <div class="card-body">
+  
+          <div class="row justify-content-evenly">
+            <div class="col-5">
+  
+              <span class=" fw-bold text-dark"> موضوع : </span>
+              <span class=" narowFont">{{meetingSelected.meetingProfileRelated.title}} </span>
+  
+  
+            </div>
+  
+            <div class="col-5">
+              <span class=" fw-bold text-dark"> نوع جلسه : </span>
+              <span class=" narowFont">{{meetingSelected.meetingProfileRelated.get_meetingType_display}} </span>
+            </div>
+  
+          </div>
+          <hr class="dark horizontal">
+          <div class="row justify-content-evenly">
+            <div class="col-5">
+  
+              <span class=" fw-bold text-dark"> دبیر {{meetingSelected.meetingProfileRelated.get_meetingType_display}}  : </span>
+              <span class=" narowFont">{{meetingSelected.meetingProfileRelated.responsible}}</span>
+  
+  
+            </div>
+            <div class="col-5">
+              <span class=" fw-bold text-dark">  رئیس {{meetingSelected.meetingProfileRelated.get_meetingType_display}} : </span>
+              <span class=" narowFont">{{meetingSelected.meetingProfileRelated.manager}}</span>
+            </div>
+           
+           
+           
+  
+          </div>
+           <div class="row justify-content-evenly">
+            
+           <div class="col-5"></div>
+           <div class="col-5">
+  
+            <span class=" fw-bold text-dark"> جانشین اول {{meetingSelected.meetingProfileRelated.get_meetingType_display}} : </span>
+            <span class=" narowFont">{{meetingSelected.meetingProfileRelated.firstSuccessor}}</span>
+  
+  
+          </div>
+  
+           
+  
+          </div>
+          <div class="row justify-content-evenly">
+            
+            <div class="col-5 ">
+  
+              <span class=" fw-bold text-dark">  توضیحات    {{meetingSelected.meetingProfileRelated.get_meetingType_display}} : </span>
+              <span class=" narowFont">{{meetingSelected.meetingProfileRelated.text}} -</span>
+  
+            </div>
+  
+            <div class="col-5">
+              <span class=" fw-bold text-dark">  جانشین دوم {{meetingSelected.meetingProfileRelated.get_meetingType_display}} : </span>
+              <span class=" narowFont">{{meetingSelected.meetingProfileRelated.secondSuccessor}}</span>
+            </div>
+  
+          </div>
+          <hr class="dark horizontal">
+          <div class="row justify-content-evenly">
+            <div class="col-5 ">
+  
+              <span class=" fw-bold text-dark">   اعضا اصلی  {{meetingSelected.meetingProfileRelated.get_meetingType_display}} : </span>
+            {%for member in meetingSelected.meetingProfileRelated.membersPrimary.all %}
+            <div>
+                <span class=" narowFont">{{member}} -</span>
+            </div>      
+          
+              {%endfor%}
+  
+            </div>
+            <div class="col-5">
+              {%if meetingSelectedMembers%}
+              <span class=" fw-bold text-dark">   اعضا فرعی  {{meetingSelected.meetingProfileRelated.get_meetingType_display}} : </span>
+            {%for member in meetingSelectedMembers.membersSecondary.all %}
+            <div>
+                <span class=" narowFont">{{member.JobBankRelated}} -</span>
+            </div>  
+          
+              {%endfor%}
+              {%endif%}
+            </div>
+            
+            
+  
+          </div>
+          {%if meetingSelectedMembers%}
+          <div class="row justify-content-evenly">
+            <div class="col-5 ">
+              <span class=" fw-bold text-dark">   اعضا سایر  {{meetingSelected.meetingProfileRelated.get_meetingType_display}} : </span>
+              <div>
+                <span class=" narowFont">{{meetingSelectedMembers.membersOther}} </span>
+              </div> 
+              
+            </div>
+            <div class="col-5"></div>
+            </div>
+          {%endif%}
+          <hr class="dark horizontal">
+         
+          {%if meetingSelectedDate%}
+  
+          
+          <div class="row justify-content-evenly">
+            
+            <div class="col-5 ">
+  
+              <span class=" fw-bold text-dark">  تاریخ برگزاری    {{meetingSelected.meetingProfileRelated.get_meetingType_display}} : </span>
+              <span class=" narowFont">{{meetingSelectedDate.meetingDate|to_jalali:'%Y/%m/%d'}} </span>
+  
+            </div>
+  
+            <div class="col-5">
+              <span class=" fw-bold text-dark">  ساعت برگزاری  {{meetingSelected.meetingProfileRelated.get_meetingType_display}} : </span>
+              <span class=" narowFont">{{meetingSelectedDate.meetingTime}}</span>
+            </div>
+  
+          </div>
+          <div class="row justify-content-evenly">
+            
+            <div class="col-5 ">
+  
+              <div class="col-5">
+                <span class=" fw-bold text-dark">  مکان  جلسه  {{meetingSelected.meetingProfileRelated.get_meetingType_display}} : </span>
+                <span class=" narowFont"> {{meetingSelectedDate.meetingPlace }}</span>
+              </div>
+  
+            </div>
+  
+            <div class="col-5">
+              <span class=" fw-bold text-dark">  مدت زمان جلسه  {{meetingSelected.meetingProfileRelated.get_meetingType_display}} : </span>
+              <span class=" narowFont">ساعت {{meetingSelectedDate.meetingTimeDuration }}</span>
+            </div>
+  
+          </div>
+          <hr class="dark horizontal">
+          {%endif%}
+         
+          {%if meetingSelectedAgendas%}
+          <div class="container-fluid fulled">
+        
+            <h4><string> دستورات جلسه  :  </string> </h4>
+  
+            <div class="cord-body">
+            <div class="row border-bottom py-3">
+              
+              <div class="col-1 text-center border-left-1"><strong>ردیف </strong></div>
+              <div class="col-5 text-center border-left-1"><strong> دستور </strong></div>
+              <div class="col-2 text-center border-left-1"><strong>مدت زمان  </strong></div>
+              <div class="col-2 text-center border-left-1"><strong>مسئول  </strong></div>
+           
+  
+            </div>
+            
+
+            <div class="row border-bottom py-3">
+              {%for agenda in meetingSelectedAgendas %}
+              <div class="col-1 narowFont text-center">{{forloop.counter}}</div>
+              <div class="col-5 narowFont text-center">{{agenda.title}}</div>
+              <div class="col-2 narowFont text-center">{{agenda.timeDuration}}</div>
+              <div class="col-4 narowFont text-center">{{agenda.responsible}}</div>
+              {%endfor%}
+            </div>
+        </div>
+        </div>
+          {%endif%}
+          {%if allEnactment%}
+          <div class="container-fluid fulled">
+        
+            <h4><string> صورت جلسه  :  </string> </h4>
+  
+            {% include 'partials/enactment-list.html' %}
+        </div>
+          {%endif%}
+          {%if meetingSelectedDocument%}
+          <div class="container-fluid fulled">
+        
+            <h4><string> مستندات جلسه   :  </string> </h4>
+         
+            <a class="card-text" href="{{meetingSelectedDocument.persentDocument.url}}">فایل ارائه جلسه   </a>
+            <hr class="dark horizontal py-0">
+            <a class="card-text" href="{{meetingSelectedDocument.minuteDocument.url}}">فایل صورت جلسه   </a>
+           
+        </div>
+          {%endif%}
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,24 @@
+{% if request.user.is_superuser %}
+         
+          <div class="row justify-content-md-center">
+            <div class="col-5">
+              <a href="./create" class="btn w-100  btn-outline-primary">
+                افزودن </a>
+            </div>
+            <div class="col-5">
+              <a href="{{menuBack}}" class="btn w-100  btn-outline-danger">
+                بازگشت </a>
+            </div>
+          </div>
+          {%else%}
+          <div class="row justify-content-md-center">
+           
+            <div class="col-5">
+              <a href="{%url menuBack%}" class="btn w-100  btn-outline-danger">
+                بازگشت </a>
+            </div>
+          </div>
+          {%endif%}
+
+
+          <a href="">Go back</a>

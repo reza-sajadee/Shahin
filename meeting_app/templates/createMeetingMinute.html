@@ -1,0 +1,173 @@
+{% extends extend%}
+{% load static %}
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/dataTables.css' %}">
+
+
+<script type="text/javascript" charset="utf8" src="{% static '/js/dataTables.js' %}"></script>
+
+<script src="{% static '/js/jquery.dataTables.js' %}"></script>
+<link href="{% static '/css/picker.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+{%endblock style%}
+{% block content %}
+{%include 'partials/profile-meeting.html'%}
+<div class="container py-6">
+
+  <div class="row justify-content-md-center">
+    <div class="card card-frame col-10">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="row">
+
+          <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+            <h4 class="text-white text-capitalize ps-3">{{ header_title }}</h4>
+
+          </div>
+        </div>
+
+      </div>
+      <div class="card-body">
+
+
+
+
+
+
+
+
+        <form  method="POST"  class="py-3" >
+
+          {% csrf_token %}
+          <div class="row">
+            <div class="table-responsive ">
+              <h4><string> حاضرین در جلسه :  </string> </h4>
+              <table id="example" class="table uk-table uk-table-hover uk-table-striped align-items-center py-3 mb-0">
+                <br>
+                <thead>
+                  <tr>                 
+                      <th class="text-center text-lg font-weight-bolder opacity-7">نام </th>
+                      <th class="text-center text-lg font-weight-bolder opacity-7"> نام خانوادگی</th>
+                      <th class="text-center text-lg font-weight-bolder opacity-7">  سمت</th>
+                      
+                      <th class="text-center text-lg font-weight-bolder opacity-7">حضور / غیاب</th>
+          
+                
+                   
+                  </tr>
+                </thead>
+                <tbody>
+                
+                {%for memberJob in allMember%}
+                 
+                    <tr>
+                        
+                   
+                        <td class="narowFont text-center overflow-hidden">{{memberJob.JobBankRelated.profile.firstName}}</td>
+                        <td class="narowFont text-center overflow-hidden">{{memberJob.JobBankRelated.profile.lastName}}</td>
+                        <td class="narowFont text-center overflow-hidden">{{memberJob.JobBankRelated.jobBankPost.title}}</td>
+                        
+                        <td class="narowFont text-center overflow-hidden"> 
+                          <div class="form-check text-center align-items-center">
+                            <input class="form-check-input" type="checkbox" value="{{memberJob.id}}" name="jobSelected" id="jobSelected">
+                          </div>
+          
+                        </td>
+                        
+                        
+                       
+                       
+          
+                     
+                    </tr>
+                   
+                  {%endfor%}
+          
+                            
+                </tbody>
+              </table>
+             
+            </div>
+          </div>
+         
+         
+        
+         
+         
+          <input type="hidden" name="meetingRelated" id="id_meetingRelated" value="{{meetingSelected.id}}">
+          <div class="row justify-content-md-center">
+            <div class="col-5">
+              <button type="submit"  class="btn w-100  btn-outline-primary">
+                افزودن </button>
+            </div>
+            <div class="col-5">
+              <a href="{%url 'ViewProfileMeeting' %}" class="btn w-100  btn-outline-danger">
+                کنسل </a>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+
+
+{% endblock content %}
+
+{% block scripts%}
+
+
+
+<script>
+  $(document).ready(function () {
+    $('#example').dataTable({
+
+      "oLanguage": {
+        "oPaginate": {
+          "sNext": "صفحه بعدی",
+          "sPrevious": "صفحه قبلی"
+        },
+        "sEmptyTable": "اطلاعاتی برای نمایش وجود ندارد",
+        "sSearch": "جستجو   :  ",
+        "sInfo": "نمایش _START_ تا_END_ از تعداد کل _TOTAL_",
+        "sLengthMenu": "  تعداد در صفحه  _MENU_ ",
+        "sInfoEmpty": "رکوردی برای نمایش وجود ندارد"
+
+      }
+    });
+  });
+</script>
+
+
+
+<script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
+<script src="{% static 'js/picker.js' %}"></script>
+<script>
+
+  new Picker(document.querySelector('.js-time'), {
+    format: 'HH:mm',
+    headers: true,
+    date: new Date(1, 0),
+    text: {
+      title: 'مدت زمان را انتخاب کنید',
+
+    },
+    increment: {
+      hour: 1,
+      minute: 15,
+
+    },
+  });
+
+
+</script>
+
+
+
+
+<!-- OR -->
+<!-- loading by form (if used AdminJalaliDateWidget) -->
+
+
+{%endblock scripts%}

@@ -1,0 +1,193 @@
+{% extends extend%}
+{% load static %}
+
+{% load jalali_tags %}
+{% block style %}
+<link href="{% static '/css/picker.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+{%endblock style%}
+{% block content %}
+
+<div class="container py-6">
+    <div class="row justify-content-md-center">
+        <div class="card card-frame col-8">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="row">
+            
+              <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+                <h4 class="text-white text-capitalize ps-3">{{ header_title }}</h4>
+                
+              </div>
+            </div>
+           
+          </div>
+            <div class="card-body">
+              <form action="" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                 
+                    
+
+                    <div class="input-group input-group-static mb-4">
+                      <label class="" for="{{ field.auto_id }}">
+                        اصل را وارد کنید
+                      </label>
+                      {{form.principle }}
+                      {% if form.principle.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ form.principle.errors.as_text}}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="input-group input-group-static mb-4">
+                      <label class="" for="{{ form.presppective.auto_id }}">
+                        منظر را وارد کنید
+                      </label>
+                      {{form.presppective }}
+                      {% if form.presppective.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ form.presppective.errors.as_text}}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="input-group input-group-static mb-4">
+                      <label class="" for="{{ form.goal.auto_id }}">
+                        هدف کلی را وارد کنید
+                      </label>
+                      {{form.goal }}
+                      {% if form.goal.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ form.goal.errors.as_text}}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="input-group input-group-static mb-4">
+                      <label class="" for="{{ form.title.auto_id }}">
+                        هدف خرد را وارد کنید
+                      </label>
+                      {{form.title }}
+                      {% if form.title.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ form.title.errors.as_text}}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="input-group input-group-static mb-4">
+                      <label class="" for="{{ form.index.auto_id }}">
+                         شاخص را وارد کنید
+                      </label>
+                      {{form.index }}
+                      {% if form.index.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ form.index.errors.as_text}}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="input-group input-group-static mb-4">
+                      <label class="" for="{{ form.trendIndex.auto_id }}">
+                        روند شاخص  را انتخاب کنید
+                      </label>
+                      {{form.trendIndex }}
+                      {% if form.trendIndex.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ form.trendIndex.errors.as_text}}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="input-group input-group-static mb-4">
+                      <label class="" for="{{ form.target.auto_id }}">
+                        وضعیت مطلوب  را وارد کنید
+                      </label>
+                      {{form.target }}
+                      {% if form.target.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ form.target.errors.as_text}}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="input-group input-group-static mb-4">
+                      <label class="" for="{{ form.currentSituation.auto_id }}">
+                        وضعیت فعلی  را وارد کنید
+                      </label>
+                      {{form.currentSituation }}
+                      {% if form.currentSituation.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ form.currentSituation.errors.as_text}}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="input-group input-group-static mb-4">
+                      <label class="" for="{{ form.owner.auto_id }}">
+                           مالک هدف را انتخاب کنید
+                      </label>
+                      {{form.owner }}
+                      {% if form.owner.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ form.owner.errors.as_text}}
+                        </div>
+                      {% endif %}
+                    </div>
+                    
+                   
+                    <div class="input-group input-group-static mb-4">
+                        <label class="" for="id_startLine">
+                          پایان  دوره زمانی را انتخاب کنید
+                        </label>
+                        <input type="text" name="startLine" class="jalali_date-date  form-control" value="{{ form.startLine.value|default_if_none:'' }}" size="10" required=""
+                          id="id_startLine" autocomplete="False">
+            
+                      </div>
+                    <div class="input-group input-group-static mb-4">
+                        <label class="" for="id_deadLine">
+                          پایان دوره زمانی را انتخاب کنید
+                        </label>
+                        <input type="text" name="deadLine" class="jalali_date-date  form-control" value="{{ form.deadLine.value|default_if_none:'' }}" size="10" required=""
+                          id="id_deadLine" autocomplete="False">
+            
+                      </div>
+                      <div class="input-group input-group-static mb-4">
+                        <label class="" for="{{ form.description.auto_id }}">
+                          توضیحات  را وارد کنید
+                        </label>
+                        {{form.description }}
+                        {% if form.description.errors %}
+                          <div class="alert alert-danger" role="alert">
+                            {{ form.description.errors.as_text}}
+                          </div>
+                        {% endif %}
+                      </div>
+              
+
+                  {% for hidden in form.hidden_fields %}
+                   {{ hidden }}
+                  {% endfor %}
+                  
+                  <div class="row justify-content-md-center">
+                    <div class="col-5">
+                      <button type="submit" class="btn w-100  btn-outline-primary">
+                        افزودن </button>
+                    </div>
+                    <div class="col-5">
+                      <a href="{%url 'ViewProfileMeeting' %}" class="btn w-100  btn-outline-danger">
+                        کنسل </a>
+                    </div>
+                  </div>
+
+              </form>
+            </div>
+        </div>
+      </div>
+</div>
+
+    
+    
+   
+{% endblock content %}
+
+{% block scripts%}
+<script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
+<script src="{% static 'js/picker.js' %}"></script>
+
+
+
+
+{%endblock scripts%}

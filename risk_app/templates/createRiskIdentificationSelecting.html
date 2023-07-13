@@ -1,0 +1,327 @@
+{% extends extend%}
+
+
+{% load static %}
+{% block style %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css">
+<!-- <link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}"> -->
+
+{%endblock style%}
+
+{% block content %}
+{{get_jalali_date}}
+<script type="text/javascript">
+  function show_hide_row(row)
+  {
+   $("#"+row).slideToggle();
+  }
+  </script>
+
+</script>
+<div class="container py-6">
+    <div class="row justify-content-md-center">
+        <div class="card card-frame col-12">
+          
+            <div class="card-body">
+              
+              <!-- <div class="row">
+                <div class="col-6">
+                  <label clss="text-center" >موضوع</label>
+                  <select name="process" class="form-control" id="id_process">
+                    <option value="" selected="">---------</option>
+                    
+                  </select>
+                  
+                </div>
+                <div class="col-6">
+                  <label >نام فرآیند</label>
+                  <select name="process" class="form-control" id="id_process">
+                    <option value="" selected="">---------</option>
+                    
+                  </select>
+                </div>
+              </div> -->
+              <hr class="horizontal gray-light my-4">
+              <form  method="POST">
+                {%csrf_token%}
+              <div class="row">
+                <div class="col-6">
+                  <div class="input-group input-group-static my-3">
+                <label >گروه فرآیندی</label>
+                <select name="group" class="form-control" id="id_group">
+                  
+                  <option value="" selected="">---------</option>
+                  {% for group in allGroups %}
+                  <option value="{{group.id}}">{{group.title}}</option>
+                  {% endfor %}
+
+               </select>
+              
+              </div>
+              </div>
+              <div class="col-6">
+                  <div class="input-group input-group-static my-3">
+                <label > نام فرآیند   </label>
+                <select name="process" class="form-control" id="id_process">
+                  <option value="" selected="">---------</option>
+                  
+                </select>
+              
+              </div>
+              </div>
+              </div>
+              <hr class="horizontal gray-light my-4">
+                <div class="row">
+                  <div class="col-3 py-1 px-2">
+                    <label clss="text-center" >عنوان ریسک</label>
+                    <div class="input-group input-group-dynamic ">
+                      <textarea placeholder="ریسک های مورد نظر را از لیست پایین انتخاب کرده سپس به اصلاح آن بپردازید" cols="40" rows="5" maxlength="250" class="form-control" name="riskFailureModes" id="id_riskFailureModes"></textarea>
+                    </div>
+                  </div>
+                  <div class="col-3 py-1 px-2">
+                    <label clss="text-center" >علل بروز   </label>
+                    <div class="input-group input-group-dynamic ">
+                      <textarea placeholder="ریسک های مورد نظر را از لیست پایین انتخاب کرده سپس به اصلاح آن بپردازید" cols="40" rows="5" maxlength="250" class="form-control" name ="riskCauses" id="id_riskCauses"></textarea>
+                    </div>
+                  </div>
+                  <div class="col-3 py-1 px-2">
+                    <label clss="text-center" >اثرات بروز خطا </label>
+                    <div class="input-group input-group-dynamic ">
+                      <textarea placeholder="ریسک های مورد نظر را از لیست پایین انتخاب کرده سپس به اصلاح آن بپردازید" cols="40" rows="5" maxlength="250" class="form-control" name ="riskEffects" id="id_riskEffects"></textarea>
+                    </div>
+                  </div>
+                  <div class="col-3 py-1 px-2">
+                    <label clss="text-center" > کنترل های فعلی</label>
+                    <div class="input-group border-1 input-group-dynamic ">
+                      <textarea placeholder="ریسک های مورد نظر را از لیست پایین انتخاب کرده سپس به اصلاح آن بپردازید" cols="40" rows="5" maxlength="250" class="form-control" name ="currentAction" id="id_currentAction"></textarea>
+                    </div>
+                  </div>
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                      <!-- <input type="hidden"  name="process" id="id_process" value=""></input>
+                      <input type="hidden"  name="group" id="id_group" value=""></input>
+                      <input type="hidden"  name="team" id="id_team" value=""></input>
+                      <input type="hidden"  name="recommender" id="id_recommender" value=""></input>
+                      <input type="hidden"  name="activity" id="id_activity" value=""></input> -->
+                      <input type="hidden"  name="riskIdentifications" id="id_riskIdentifications" value=""></input>
+
+                  
+                </div>
+                <hr class="horizontal gray-light my-4">
+                <div class="row py-4">
+                  <div class="col-6"></div>
+                  <div class="col ">
+                    <button type="submit" class="btn w-100 btn-outline-success">تایید</button>
+                  </div>
+                  <div class="col ">
+                    <a href="{%url 'ViewRiskDashboardMember' 1 %}" class="btn w-100 btn-outline-info"> حوزه بعد</a>
+                  </div>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card my-4">
+                <div class="card-header p-0 position-relative mt-4 mx-3 z-index-2">
+                    <div class="bg-gradient-danger shadow-info border-radius-lg px-3 pt-4 pb-3">
+                        <h6 class="text-white text-center ps-3">انتخاب ریسک هاى شناسایى شده </h6>
+                    </div>
+                </div>
+                <div class="card-body px-0 pb-2">
+                    
+                  <div id="jqcc" class="table-responsive my-5">
+          
+                    <table id="example" class="table uk-table uk-table-hover uk-table-striped align-items-center py-3 mb-0">
+                      <br>
+                      <thead>
+                        
+                        <tr>
+                          
+                          {% for header in header_table %}
+                            <th class="text-uppercase text-secondary text-center text-lg font-weight-bolder opacity-7">{{header}}</th>
+                          {% endfor %}
+                            <th class="text-uppercase text-secondary text-center text-lg font-weight-bolder opacity-7">انتخاب</th>
+                          
+                        </tr>
+                      </thead>
+                      <tbody>
+                        
+                      
+                        {%for datas in list_data%}
+                          {% for key, values in datas.items %}
+                          <tr>
+                              
+                              {% for v in values %}
+                              <td class="narowFont text-center overflow-hidden">{{v}}</td>
+                              {% endfor %}
+                              <td>
+                                
+                                <div class="form-check text-center">
+                                  <input class="form-check-input" type="checkbox" value="" id="fcustomCheck1" >
+                               
+                                </div>
+                              </td>
+                              
+                          </tr>
+                          {% endfor %}
+                        {%endfor%}
+                        
+          
+                                  
+                      </tbody>
+                    </table>
+                    
+                    
+                  </div>
+
+                  
+                </div>
+            </div>
+        </div>
+      </div>
+</div>
+
+ 
+
+
+{% endblock content %}
+
+
+{% block scripts %}
+<script
+src="https://code.jquery.com/jquery-3.6.0.min.js"
+integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf8" src="{% static '/js/dataTables.js' %}"></script>
+
+
+		<!-- <script src="{% static 'admin/js/django_jalali.min.js' %}"></script> -->
+	<!-- OR -->
+	<!-- loading by form (if used AdminJalaliDateWidget) -->
+		{{ form.media }}
+
+<script>
+  // json_load_process
+
+  var tableControl = document.getElementById('example');
+
+
+  $('#jqcc').click(function() {
+      var riskFailureModes = [];
+      var riskCauses = [];
+      var riskEffects = [];
+      var currentAction = [];
+      var riskIdentifications = [];
+      $('input:checkbox:checked', tableControl).each(function() {
+        riskFailureModes.push($(this).parent().parent().prev().prev().prev().prev().prev().prev().text());
+        riskCauses.push($(this).parent().parent().prev().prev().prev().prev().prev().text());
+        riskEffects.push($(this).parent().parent().prev().prev().prev().prev().text());
+        currentAction.push($(this).parent().parent().prev().prev().prev().text());
+        riskIdentifications.push($(this).parent().parent().prev().prev().prev().prev().prev().prev().prev().text());
+          
+      });
+      console.log(riskFailureModes);
+      console.log(riskCauses);
+      console.log(riskEffects);
+      console.log(currentAction);
+      console.log(riskIdentifications);
+      
+      $('#id_riskFailureModes').text(riskFailureModes)
+      $('#id_riskCauses').text(riskCauses)
+      $('#id_riskEffects').text(riskEffects)
+      $('#id_currentAction').text(currentAction)
+      $('#id_riskIdentifications').val(riskIdentifications)
+  });
+
+
+  const groupDataBox =document.getElementById('id_group') 
+  const groupBox = document.getElementById('id_group')
+
+  const processDataBox =document.getElementById('id_process') 
+  const processBox = document.getElementById('id_process')
+
+  $.ajax({
+    type:'GET',
+    url: '/risk/identification/json/load-prcoess/',
+    success:function(response){
+      console.log(response.data)
+      const processData = response.data
+      processData.map(item=>{
+        const option = document.createElement('div')
+        option.textContent = item.name
+        option.setAttribute('class','item')
+        option.setAttribute('data-value',item.name)
+        groupDataBox.appendChild(option)
+      }
+
+      )
+    },
+    error: function(error){
+      console.log(error)
+    },
+  })
+
+  groupBox.addEventListener('change' , e=>{
+    console.log(e.target.value)
+    const selectedGroup = e.target.value
+    processBox.innerHTML = ''
+    processBox.textContent = "---------"
+    $.ajax({
+      type:'GET',
+      url: '/risk/identification/json/get_json_group_data/' + e.target.value,
+      
+      success: function(response){
+        console.log(response.data)
+        const processData = response.data
+        
+        processData.map(item=>{
+          const option = document.createElement('option')
+          option.textContent = item.title
+          option.value = item.id
+      
+          processDataBox.appendChild(option)
+        })
+      },
+      error: function(error){
+        console.log(error)
+      }
+    })
+
+  })
+
+ 
+</script>
+
+<script>
+  $(document).ready( function() {
+$('#example').dataTable( {
+  "oLanguage": {
+    "oPaginate": {
+      "sNext": "صفحه بعدی",
+      "sPrevious": "صفحه قبلی"
+    },
+    "sEmptyTable": "اطلاعاتی برای نمایش وجود ندارد",
+    "sSearch": "جستجو   :  ",
+    "sInfo": "نمایش _START_ تا_END_ از تعداد کل _TOTAL_" ,
+    "sLengthMenu": "  تعداد در صفحه  _MENU_ ",
+    "sInfoEmpty": "رکوردی برای نمایش وجود ندارد"
+  
+  }
+} );
+} );
+</script>
+
+{%endblock scripts%}
+
+
+
+
+

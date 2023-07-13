@@ -1,0 +1,193 @@
+{% extends extend%}
+
+{% load jalali_tags %}
+{% load static %}
+{% block style %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css">
+<!-- <link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}"> -->
+
+{%endblock style%}
+
+{% block content %}
+{{get_jalali_date}}
+<script type="text/javascript">
+  function show_hide_row(row)
+  {
+   $("#"+row).slideToggle();
+  }
+  </script>
+
+</script>
+
+
+
+<div class="container py-6">
+    <div class="row justify-content-md-center">
+        <div class="card bg-gradient-light-green frame col-12">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="row">
+              <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+                <h4 class="text-white text-capitalize ps-3">ثبت گزارش ممیزی داخلی واحد های تحت ممیزی</h4>
+              </div>
+            </div>
+           
+          </div>
+            <div class="card-body">
+                
+              <ul class="list-group">
+                <div class="row justify-content-center">
+                  <div class="col-5 mx-4 ">
+                    <li class="list-group-item bg-transparent border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                      <div class="d-flex    flex-column">
+                        <h5 class="mb-1 text-dark font-weight-bold">واحد تحت ممیزی : <span class="text-danger narowFont">{{vahedSelected.title}}</span> </h5> 
+                      </div>
+                      <div class="d-flex align-items-center ">
+                        
+                      </div>
+                    </li>
+                  </div>
+                  <div class="col-5 mx-4 ">
+                    <li class="list-group-item bg-transparent border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                      <div class="d-flex    flex-column">
+                        <h5 class="mb-1 text-dark font-weight-bold">تاریخ : <span class="text-danger narowFont">{{calenderSelected.dateMomayezi|to_jalali:'%Y/%m/%d'}}</span> </h5>
+                      </div>
+                      <div class="d-flex align-items-center ">
+                        
+                      </div>
+                    </li>
+                  </div>
+                </div>
+                <div class="row justify-content-center">
+                  <div class="col-5 mx-4 ">
+                    <li class="list-group-item bg-transparent border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                      <div class="d-flex    flex-column">
+                        <h5 class="mb-1 text-dark font-weight-bold">سرپرست تیم ممیزی   : <span class="text-danger narowFont">{{calenderSelected.teamMomayezi.sarMomayez.firstName}} - {{calenderSelected.teamMomayezi.sarMomayez.lastName}}</span> </h5> 
+                      </div>
+                      <div class="d-flex align-items-center ">
+                        
+                      </div>
+                    </li>
+                  </div>
+                  <div class="col-5 mx-4 ">
+                    <li class="list-group-item bg-transparent border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                      <div class="d-flex    flex-column">
+                        <h5 class="mb-1 text-dark font-weight-bold">نوبت ممیزی : <span class="text-danger narowFont">{{calenderSelected.teamMomayezi.typeMomayezi}}</span> </h5>
+                      </div>
+                      <div class="d-flex align-items-center ">
+                        
+                      </div>
+                    </li>
+                  </div>
+                </div>
+                <div class="row justify-content-center">
+                  <div class="col-9 mx-4 ">
+                    <li class="list-group-item bg-transparent border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                      <div class="d-flex    flex-column">
+                        <h5 class="mb-1 text-dark font-weight-bold">سیستم های مدیریتی ممیزی شده      : <span class="text-danger narowFont">{{calenderSelected.teamMomayezi.standardRelated.standardTitlePersian}} - {{calenderSelected.teamMomayezi.standardRelated.standardNumber}}</span> </h5> 
+                      </div>
+                      
+                    </li>
+                  </div>
+                  <div class="col-1 mx-4 ">
+                    
+                  </div>
+                </div>
+
+                
+                
+                
+              </ul>
+              <div class="row justify-content-md-center">
+           
+                <div class="col-5">
+                  <a data-bs-toggle="modal" data-bs-target="#ModalCreate" class="btn w-100  btn-outline-success">
+                    افزودن </a>
+                 
+           
+              
+              <div class="modal fade" id="ModalCreate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title font-weight-normal" id="exampleModalLabel">ثبت گزارش جدید</h5>
+                      <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <form  hx-post="{%url 'add-report' %}" hx-target="#report-list" ">
+
+                      {% csrf_token %}
+                      <div class="modal-body">
+                        
+                        <div class="input-group input-group-static mb-4">
+                          <label for="id_title">
+                              گزارش خود را ثبت نمایید : 
+                          </label>
+                          <textarea name="report" cols="40" rows="5" class="form-control" id="id_report"></textarea>
+                          
+                        </div>
+                      
+                        <div class="input-group">
+                          <span class="nowrap fw-bold text-dark mx-3">  نتیحه   : </span>
+                          <div class="form-check mb-3">
+                            <input class="form-check-input check-input-ok" type="radio" name="result" value="ghovat" id="customRadio1">
+                            <label class="custom-control-label" for="customRadio1">نقطه قوت</label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input check-input-obs" type="radio" name="result" value="behbod" id="customRadio2">
+                            <label class="custom-control-label" for="customRadio2">فرصت بهبود</label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input check-input-min" type="radio" name="result" value="adam" id="customRadio2">
+                            <label class="custom-control-label" for="customRadio2">عدم انطباق</label>
+                          </div>
+                      
+                            
+
+                        </div>
+                        
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn bg-gradient-danger" data-bs-dismiss="modal">لغو</button>
+                        <button type="submit" class="btn bg-gradient-success">ثبت </button>
+                      </div>
+                      
+                      <input type="hidden"  name="typeMomayeziRelated" id="id_typeMomayeziRelated" value="{{type}}">
+                      <input type="hidden"  name="activityRelated"     id="id_activityRelated" value="{{activity}}">
+                    </form>
+                  </div>
+                </div>
+              </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="report-list">
+  {%include 'partials/report-list.html'%}
+</div>
+
+
+{% endblock content %}
+
+
+{% block scripts %}
+<script
+src="https://code.jquery.com/jquery-3.6.0.min.js"
+integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf8" src="{% static '/js/dataTables.js' %}"></script>
+
+
+		<!-- <script src="{% static 'admin/js/django_jalali.min.js' %}"></script> -->
+	<!-- OR -->
+	<!-- loading by form (if used AdminJalaliDateWidget) -->
+		{{ form.media }}
+  
+{%endblock scripts%}
+
+
+
+
+

@@ -1,0 +1,230 @@
+
+ {% extends extend %} 
+
+
+ {% load jalali_tags %}
+
+ {% load static %}
+ {% block style %}
+ <link rel="stylesheet" type="text/css" href="{% static '/css/dataTables.css' %}">
+
+
+ <script type="text/javascript" charset="utf8" src="{% static '/js/dataTables.js' %}"></script>
+ <script src="{%static '/js/chart.js' %}"></script>
+ <script src="{% static '/js/jquery.dataTables.js' %}"  ></script>
+ 
+ <link rel="stylesheet" href="{%static 'css/progress.css'%}" />
+ {%endblock style%}
+ 
+ {% block content %}
+ <div class="container py-6">
+  
+   <div class="row justify-content-md-center">
+     <div class="card card-fram col-12">
+       <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+         <div class="row">
+          
+           <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+             <h4 class="text-white text-capitalize ps-3">{{header_title}}</h4>
+ 
+           </div>
+         </div>
+       </div>
+       <div class="card-body">
+
+       <div class="container">
+            <div class="progress-container" onLoad="update()">
+                <div class="progress" id="progress" ></div>
+                
+            
+                {%for step in steps%}
+
+                {%if step.stepId == currentStep and lenStep != currentStep%}
+                
+                <div class="circle " data-bs-toggle="modal" data-bs-target="#Modal{{step.stepId}}" >{{step.title}}</div>
+           
+              
+              <div class="modal fade" id="Modal{{step.stepId}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title font-weight-normal" id="exampleModalLabel">آیا اطمینان دارید مرحله {{step.title}} به اطمام رسیده است ؟</h5>
+                      <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+            
+                     
+                      <div class="text-justify">
+                        در صورت اطمینان از به اتمام رسیدن مرحله {{step.title}} بر روی گزینه بسته شدن کلیک نمایید و از این پس  امکان ویرایش اطلاعات  این مرحله وجود ندارند .
+                       
+                      </div>
+                      
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn bg-gradient-danger" data-bs-dismiss="modal">ادامه</button>
+                      <a href="{%url linkChange profileId=step.profileId stepId=step.stepId %}" class="btn bg-gradient-success">اتمام </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {%else%}
+              <div class="circle "  >{{step.title}}</div>
+              {%endif%}
+              {%endfor%}
+                
+            </div>
+            
+            <div class="card-header border card-plain border-radius-lg">لیست فعالیت های مرتبط</div>
+            <div class="table-responsive my-5">
+          
+              <table id="example" class="table uk-table uk-table-hover uk-table-striped align-items-center py-3 mb-0">
+                <br>
+                <thead>
+                  
+                  <tr>
+                    
+                    
+                      <th class="text-uppercase text-secondary text-md font-weight-bolder opacity-7">گیرنده</th>
+                    
+                      <th class="text-uppercase text-secondary text-md font-weight-bolder opacity-7">عنوان</th>
+                      
+                    
+                      <th class="text-uppercase text-secondary text-md font-weight-bolder opacity-7">تاریخ</th>
+                      <th class="text-uppercase text-secondary text-md font-weight-bolder opacity-7">وضعیت</th>
+                      
+                    
+                  
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                
+                  {%for activity in allActivity%}
+                   
+                  <tr {%if activity.status == 'done' %} class="table-success" {%elif activity.status == 'doNot' %} class="table-danger" {%else%}class="table-warning" {%endif%} >
+                      
+                       
+                        <td class="narowFont overflow-hidden">{{activity.reciver}}</td>
+                        <td class="narowFont overflow-hidden">{{activity.get_activity_display}}</td>
+                        <td class="narowFont overflow-hidden">{{activity.created_at|to_jalali:'%Y/%m/%d'}}</td>
+                        <td class="narowFont overflow-hidden">{{activity.get_status_display}}</td>
+                       
+    
+                      
+                         
+                       
+                        
+                    </tr>
+                    {% endfor %}
+              
+                  
+    
+                            
+                </tbody>
+              </table>
+              <div class="row justify-content-md-center">
+               
+                <div class="col-5">
+                  <a href="{%url menuBack%}" class="btn w-100  btn-outline-danger">
+                    بازگشت </a>
+                </div>
+              </div>
+              
+            </div>
+            
+          
+            <script src="{%static 'js/progress.js'%}"></script>
+            <script>
+  
+              const progress = document.getElementById("progress");
+           
+              const circles = document.querySelectorAll(".circle");
+              
+              let currentActive = {{profileSelected.step}};
+              
+              
+              
+              function update() {
+                circles.forEach((circle, idx) => {
+                  if (idx < currentActive) {
+                    circle.classList.add("active");
+                  } else {
+                    circle.classList.remove("active");
+                  }
+                });
+              
+                const actives = document.querySelectorAll(".active");
+              
+                progress.style.width = ((actives.length - 1) / (circles.length - 1)) * 100  -1 + "%";
+                
+               
+              }
+              
+              
+               </script>
+            <script type="text/javascript">
+            
+              window.onload = update;
+              </script>
+
+
+<!-- Emmanuel Jose logo and favicon. Â© Emmanuel Jose. All Rights Reserved. --></div>
+       </div>
+      </div>
+      
+      
+      
+     
+      
+     
+     </div>
+   </div>
+ </div>
+   {% endblock content %}
+ 
+ 
+   {% block scripts %}
+
+  <script>
+    
+    $(document).ready( function() {
+  $('#example').dataTable( {
+    "order": [ 3, 'dsc' ] ,
+    "pageLength": 25 ,
+    "oLanguage": {
+      "oPaginate": {
+        "sNext": "صفحه بعدی",
+        "sPrevious": "صفحه قبلی"
+      },
+      "sEmptyTable": "اطلاعاتی برای نمایش وجود ندارد",
+      "sSearch": "جستجو   :  ",
+      "sInfo": "نمایش _START_ تا_END_ از تعداد کل _TOTAL_" ,
+      "sLengthMenu": "  تعداد در صفحه  _MENU_ ",
+      "sInfoEmpty": "رکوردی برای نمایش وجود ندارد",
+      
+    
+    }
+  } );
+} );
+  </script>
+
+
+  {%endblock scripts%}
+ 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+

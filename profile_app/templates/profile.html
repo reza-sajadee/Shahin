@@ -1,0 +1,285 @@
+{% extends 'baseEmployee.html'%}
+{% load static %}
+
+{{ redirect_to_login_immediately }}
+{% block content %}
+<div class="container-fluid px-2 px-md-4">
+    <div class="page-header min-height-300 border-radius-xl mt-4"
+        style="background-image: url('https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1920&amp;q=80');">
+        <span class="mask login-image-background   opacity-6"></span>
+    </div>
+    <div class="card card-body mx-3 mx-md-4 mt-n6">
+        <div class="row gx-4 mb-2">
+            <div class="col-auto">
+                <div class="avatar avatar-xl position-relative">
+                    <img src="https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+                </div>
+            </div>
+            <div class="col-auto my-auto">
+                <div class="h-100">
+                    <h5 class="mb-1">
+                        {{profile.firstName}} {{profile.lastName}}
+                    </h5>
+                    <p class="mb-0 font-weight-normal text-lg">
+                        {{profile.employeeNumber}}
+                    </p>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            
+
+            <div class="col-md-12 col-xl-8">
+                <div class="card card-plain h-100">
+                    <div class="card-header pb-0 p-3">
+                        <div class="row">
+                            <div class="col-md-8 d-flex align-items-center">
+                                <h4 class="mb-0">اطلاعات </h4>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card-body p-3">
+                        <p class="text-lg">
+                            اطلعات شخصی خود را در زیر میتوانید مشاهده نمایید ، در صورتی که مغایرتی وجود دارد به واحد
+                            پشتیبانی اطلاع رسانی نمایید
+                        </p>
+                        <hr class="horizontal gray-light my-4">
+                        <div class="card-body px-0 pb-2">
+                            <div class="row mx-3">
+                                <div class="tabs">
+                                    <div class="single-tabs tabs-one">
+                                        <ul class="nav nav-justified" id="myTab" role="tablist">
+                                            <li class="nav-item">
+                                                <a class="active  " id="tab-one-one-tab " data-bs-toggle="tab"
+                                                    href="#tab-one-one" role="tab" aria-controls="tab-one-one"
+                                                    aria-selected="true"> اطلاعات فردی </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a id="tab-one-two-tab " data-bs-toggle="tab" href="#tab-one-two"
+                                                    role="tab" aria-controls="tab-one-two"
+                                                    aria-selected="false">اطلاعات شغلی </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a id="tab-one-three-tab " data-bs-toggle="tab"
+                                                    href="#tab-one-three" role="tab" aria-controls="tab-one-three"
+                                                    aria-selected="false">تغییر رمز عبور</a>
+                                            </li>
+
+
+                                        </ul>
+                                        <div class="tab-content" id="myTabContent">
+                                            <div class="tab-pane fade show active" id="tab-one-one" role="tabpanel"
+                                                aria-labelledby="tab-one-one-tab">
+                                                <ul class="list-group my-4">
+                                                    <li class="list-group-item border-0 ps-0 pt-0 text-lg"><strong
+                                                            class="text-dark">
+                                                            نام:</strong> {{profile.firstName}}</li>
+                                                    <li class="list-group-item border-0 ps-0 text-lg"><strong
+                                                            class="text-dark">نام خانوادگی:</strong>
+                                                        {{profile.lastName}}</li>
+                                                    <li class="list-group-item border-0 ps-0 text-lg"><strong
+                                                            class="text-dark">شماره ملی:</strong>
+                                                        {{profile.idNumber}}</li>
+                                                    <li class="list-group-item border-0 ps-0 text-lg"><strong
+                                                            class="text-dark">شماره شناسنامه:</strong>
+                                                        {{profile.shenasnameCode}}</li>
+                                                    <li class="list-group-item border-0 ps-0 text-lg"><strong
+                                                            class="text-dark">جنسیت:</strong> {{profile.genderType}}
+                                                    </li>
+                                                    <li class="list-group-item border-0 ps-0 text-lg"><strong
+                                                            class="text-dark">تاریخ تولد:</strong>
+                                                        {{profile.birthDate}}</li>
+                                                    <li class="list-group-item border-0 ps-0 text-lg"><strong
+                                                            class="text-dark">تلفن همراه:</strong>
+                                                        {{profile.phoneNumber}}</li>
+                                                    <li class="list-group-item border-0 ps-0 text-lg"><strong
+                                                            class="text-dark">تلفن منزل :</strong>
+                                                        {{profile.tellNumber}}</li>
+
+                                                </ul>
+                                            </div>
+                                            <div class="tab-pane fade" id="tab-one-two" role="tabpanel"
+                                                aria-labelledby="tab-one-two-tab">
+                                                <ul class="list-group my-4">
+                                                    <li class="list-group-item border-0 ps-0 pt-0 text-lg"><strong
+                                                            class="text-dark">
+                                                            شماره کارمندی:</strong> {{profile.employeeNumber}}</li>
+                                                    <li class="list-group-item border-0 ps-0 pt-0 text-lg"><strong
+                                                            class="text-dark">
+                                                            بخش شغلی:</strong> {{profile.bakhshShoghliCode}}</li>
+                                                    <li class="list-group-item border-0 ps-0 text-lg"><strong
+                                                            class="text-dark">رتبه فردی :</strong>
+                                                        {{profile.rotbeFardi}}</li>
+                                                    <li class="list-group-item border-0 ps-0 text-lg"><strong
+                                                            class="text-dark">کد پست سازمانی :</strong>
+                                                        {{profile.postSazmaniCodeManual}}</li>
+
+                                                    <li class="list-group-item border-0 ps-0 text-lg"><strong
+                                                            class="text-dark">تحصیلات:</strong>
+                                                        {{profile.tahsilatType}}</li>
+                                                    <li class="list-group-item border-0 ps-0 text-lg"><strong
+                                                            class="text-dark">رشته :</strong> {{profile.reshte}}
+                                                    </li>
+                                                    <li class="list-group-item border-0 ps-0 text-lg"><strong
+                                                            class="text-dark"> سطح پست:</strong>
+                                                        {{profile.sathePost}}</li>
+                                                    <li class="list-group-item border-0 ps-0 text-lg"><strong
+                                                            class="text-dark">عنوان شغلی :</strong>
+                                                        {{profile.titleShoghlMoredTasadi}}</li>
+
+                                                </ul>
+
+                                            </div>
+
+                                            <div class="tab-pane fade" id="tab-one-three" role="tabpanel"
+                                                aria-labelledby="tab-one-three-tab">
+                                                <div class="col-6 ">
+                                                    <form action="" method="POST">
+                                                        {% csrf_token %}
+                                                        <div class=" pe-md-3 my-4 d-flex align-items-center">
+                                                            <div class="input-group input-group-outline">
+                                                                <label class="form-label"> رمز عبور فعلی</label>
+                                                                <input type="text " name="currentPassword" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                        <div class=" pe-md-3 my-4 d-flex align-items-center">
+                                                            <div class="input-group input-group-outline">
+                                                                <label class="form-label">رمز عبور جدید</label>
+                                                                <input type="text " name="newPassword" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                        <div class=" pe-md-3 my-4 d-flex align-items-center">
+                                                            <div class="input-group input-group-outline">
+                                                                <label class="form-label"> تکرار رمز عبور</label>
+                                                                <input type="text " name="ConfirmPassword" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <input type="submit"
+                                                                class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0"
+                                                                value="ثبت">
+                                                        </div>
+                                                        {% for field in form.visible_fields %}
+                                                        {% if field.errors %}
+                                                        <div class="alert alert-danger" role="alert">
+                                                            {{ field.errors.as_text}}
+                                                        </div>
+                                                        {% endif %}
+                                                        {% endfor %}
+                                                    </form>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- tabs one -->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12  col-xl-4">
+                <div class="card card-plain h-100">
+                    <div class="card-header pb-0 p-3">
+                        <h6 class="mb-0">اطلاعیه ها</h6>
+                    </div>
+                    <div class="card-body p-3">
+                        <ul class="list-group px-0">
+                            {% for notif in notifications %}
+                            <li class="list-group-item box-notif my-3 card border-{{notif.status}}   pb-0  align-items-center mx-0 px-0 pt-0">
+                                <div class="row ">
+                                    
+                                    <div class="col-2 mx-2">
+
+                                        <div class="icon h-100  w-100 icon-shape icon-lg text-center border-radius-lg mx-auto">
+                                            
+                                                
+                                                <img class="mh-100  mw-100" src="{% static 'img/svg/'|add:notif.icon|add:'.svg' %}" >
+                                        </div>
+                                    </div>
+
+                                    <div class="col-8">
+                                        <div class="d-flex align-items-start flex-column justify-content-center">
+                                            {% if notif.personalStatus == "notRead" %}
+                                            <h5 class="mb-0 text-lg">{{notif.title}}</h5>
+
+                                            <p class="mb-0 text-md ">
+                                                <strong>{{notif.description}}</strong> 
+                                            </p>
+                                            {%else%}
+                                            <h5 class="mb-0 text-lg">{{notif.title}}</h5>
+
+                                            <p class="mb-0 text-xs ">
+                                                <strong>{{notif.description}}</strong> 
+                                            </p>
+                                            {%endif%}
+                                        </div>
+                                        <div class="row no-gatter">
+                                            {%if notif.personalStatus == "notRead" %}
+                                            
+                                                <a class="btn btn-link  pe-3 ps-0 mb-0 ms-auto w-25 w-md-auto" href="/profile/{{notif.id}} ">
+                                                    مشاهده کردم 
+                                                </a>
+                                            
+                                            
+                                            {%endif%}
+                                            {% if notif.link != '#' %}
+                                            <a class="btn btn-link  pe-3 ps-0 mb-0 ms-auto w-25 w-md-auto" href="{{notif.link}} ">
+                                                لینک 
+                                            </a>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        
+                                    </div>
+                                    
+                                </div>
+
+
+                            </li>
+                            {% endfor %}
+                            
+                        </ul>
+                        <div class="row p-4 align-items-center">
+                            <div class="col-lg-12 ">
+                                <a href="{%url 'ListViewNotifications'%}">
+                                    <h5 class="font-light mx-2"><span class="narowFont" > مشاهده کل پیام ها  </span></h5>
+                                </a>
+                                
+                            </div>
+                        
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+</div>
+
+
+
+
+{%endblock%}
+
+
+{% block scripts %}
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script>
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        console.log(5 + 6);
+        return new bootstrap.Popover(popoverTriggerEl)
+    })
+</script>
+{%endblock scripts%}

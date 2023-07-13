@@ -1,0 +1,10 @@
+{
+    "app":"shm",
+    "disks": [
+        {
+            "name" : "shmd",
+            "mountTo":"data"
+        }
+    ]
+
+}

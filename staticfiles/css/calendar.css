@@ -1,0 +1,87 @@
+
+.calendar header{
+    display: flex;
+    align-items: center;
+    font-size: calc(16px + (26 - 16) * ((100vw - 300px) / (1600 - 300)));
+    justify-content: center;
+    margin-bottom: 2em;
+    background: #f3f3f3;
+  
+    min-height: 10vh;
+    text-align: center;
+
+}
+
+  
+.calendar ul, ol {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-gap: 1em;
+    margin: 0 auto;
+    max-width: 64em;
+    padding: 0;
+  }
+  
+ .calendar li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+    margin-left: 0;
+    font-size: calc(16px + (21 - 16) * ((100vw - 300px) / (1600 - 300)));
+  }
+  
+.calendar  ul.weekdays {
+    margin-bottom: 1em;
+  }
+  
+ .calendar ul.weekdays li {
+    height: 4vw;
+  }
+  
+ .calendar ol.day-grid li {
+    background-color: #fdffff;
+    border: 1px solid #eaeaea;
+    height: 12vw;
+    max-height: 90px;
+  }
+
+  .calendar ol.day-grid a li {
+    background-color: #fdffff !important;
+    border-color: rgb(255, 185, 98) !important;
+    height: 12vw;
+    max-height: 90px;
+  }
+  
+.calendar  ul.weekdays abbr[title] {
+    border: none;
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+ .calendar ol.day-grid li:nth-child(1),
+.calendar  ol.day-grid li:nth-child(2),
+ .calendar ol.day-grid li:nth-child(3),
+ .calendar ol.day-grid li:nth-child(4),
+ .calendar ol.day-grid li:nth-child(34)
+{
+    background-color: #f3f3f3;
+  }
+  
+  @media all and (max-width: 800px) {
+   .calendar ul, ol {
+      grid-gap: .25em;
+    }
+    
+   .calendar ul.weekdays li {
+      font-size: 0;
+    }
+    
+   .calendar ul.weekdays > li abbr:after {
+        content: attr(title);
+        font-size: calc(16px + (26 - 16) * ((100vw - 300px) / (1600 - 300)));
+      text-align: center;
+      }
+  }
+
+

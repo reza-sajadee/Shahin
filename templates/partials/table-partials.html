@@ -1,0 +1,54 @@
+{% load static %}
+<table id="example" class="table uk-table uk-table-hover uk-table-striped align-items-center py-3 mb-0">
+    <br>
+    <thead>
+      
+      <tr>
+        
+        {% for header in headers %}
+          <th class="text-center text-lg font-weight-bolder opacity-7">{{header}}</th>
+        {% endfor %}
+        {% if admin %}
+        <th class="text-center text-lg font-weight-bolder opacity-7">ویرایش</th>
+        <th class="text-center text-lg font-weight-bolder opacity-7">حذف</th>
+        {% endif %}
+      </tr>
+    </thead>
+    <tbody>
+      
+   
+      {%for datas in list_data%}
+
+        {% for key, values in datas.items %}
+        <tr>
+            
+            {% for v in values %}
+            <td class="narowFont text-center overflow-hidden">{{v}}</td>
+            {% endfor %}
+            {% if admin %}
+            <td>
+              <a class="nav-link text-black-80" href="{{ key }}"   >
+                <div class="  ms-2 d-flex align-items-center justify-content-center">
+                  <img style="max-width: 50px; min-width: 30px;" src="{% static 'img/svg/edit.svg' %}" >
+                </div>
+              </a>
+            </td>
+            <td>
+              {% if admin %}
+              <a class="nav-link text-black-80" href="delete/{{ key }}"   >
+                <div class="  ms-2 d-flex align-items-center justify-content-center">
+                  <img style="max-width: 50px;" src="{% static 'img/svg/close.svg' %}" >
+                </div>
+              </a>
+
+              {%endif%}
+            </td>
+            {%endif%}
+        </tr>
+        {% endfor %}
+      {%endfor%}
+      
+
+                
+    </tbody>
+  </table>

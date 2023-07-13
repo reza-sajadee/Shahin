@@ -1,0 +1,319 @@
+{% extends extend%}
+
+{% load jalali_tags %}
+{% load static %}
+{% block style %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css">
+<!-- <link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}"> -->
+
+{%endblock style%}
+
+{% block content %}
+{{get_jalali_date}}
+<script type="text/javascript">
+  function show_hide_row(row)
+  {
+   $("#"+row).slideToggle();
+  }
+  </script>
+
+</script>
+
+
+
+<div class="container py-6">
+    <div class="row justify-content-md-center">
+        <div class="card bg-gradient-light-green frame col-12">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="row">
+              <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+                <h4 class="text-white text-capitalize ps-3">گزارش ممیزی داخلی واحد های تحت ممیزی</h4>
+              </div>
+            </div>
+           
+          </div>
+            <div class="card-body">
+                
+              <ul class="list-group">
+                <div class="row justify-content-center">
+                  <div class="col-5 mx-4 ">
+                    <li class="list-group-item bg-transparent border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                      <div class="d-flex    flex-column">
+                        <h5 class="mb-1 text-dark font-weight-bold">واحد تحت ممیزی : <span class="text-danger narowFont">{{vahedSelected.title}}</span> </h5> 
+                      </div>
+                      <div class="d-flex align-items-center ">
+                        
+                      </div>
+                    </li>
+                  </div>
+                  <div class="col-5 mx-4 ">
+                    <li class="list-group-item bg-transparent border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                      <div class="d-flex    flex-column">
+                        <h5 class="mb-1 text-dark font-weight-bold">تاریخ : <span class="text-danger narowFont">{{calenderSelected.dateMomayezi|to_jalali:'%Y/%m/%d'}}</span> </h5>
+                      </div>
+                      <div class="d-flex align-items-center ">
+                        
+                      </div>
+                    </li>
+                  </div>
+                </div>
+                <div class="row justify-content-center">
+                  <div class="col-5 mx-4 ">
+                    <li class="list-group-item bg-transparent border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                      <div class="d-flex    flex-column">
+                        <h5 class="mb-1 text-dark font-weight-bold">سرپرست تیم ممیزی   : <span class="text-danger narowFont">{{calenderSelected.teamMomayezi.sarMomayez.firstName}} - {{calenderSelected.teamMomayezi.sarMomayez.lastName}}</span> </h5> 
+                      </div>
+                      <div class="d-flex align-items-center ">
+                        
+                      </div>
+                    </li>
+                  </div>
+                  <div class="col-5 mx-4 ">
+                    <li class="list-group-item bg-transparent border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                      <div class="d-flex    flex-column">
+                        <h5 class="mb-1 text-dark font-weight-bold">نوبت ممیزی : <span class="text-danger narowFont">{{calenderSelected.teamMomayezi.typeMomayeziRelated}}</span> </h5>
+                      </div>
+                      <div class="d-flex align-items-center ">
+                        
+                      </div>
+                    </li>
+                  </div>
+                </div>
+                <div class="row justify-content-center">
+                  <div class="col-9 mx-4 ">
+                    <li class="list-group-item bg-transparent border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                      <div class="d-flex    flex-column">
+                        <h5 class="mb-1 text-dark font-weight-bold">سیستم های مدیریتی ممیزی شده      : <span class="text-danger narowFont">{{calenderSelected.teamMomayezi.standardRelated.standardTitlePersian}} - {{calenderSelected.teamMomayezi.standardRelated.standardNumber}}</span> </h5> 
+                      </div>
+                      
+                    </li>
+                  </div>
+                  <div class="col-1 mx-4 ">
+                    
+                  </div>
+                </div>
+
+                
+                
+                
+              </ul>
+
+            </div>
+        </div>
+    </div>
+{%if allNoghat|length > 0%}
+<div class="row py-5">
+  <div class="col-12">
+      <div class="card my-4">
+        <div class="card-header px-5 p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div class="row">
+            <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+              <h4 class="text-white text-capitalize ps-3">نقاط قوت</h4>
+            </div>
+          </div>
+         
+        </div>
+          <div class="card-body px-0 pb-2">
+              
+   
+    
+    <div class="container-fluid fulled">
+      <div class="row border-bottom py-3">
+        <div class="col-1 text-center">ردیف </div>
+        <div class="col-9 text-center">عنوان </div>
+        <div class="col-2 text-center">استاندارد مرتبط</div>
+
+      
+      </div>
+    
+          {%for datas in allNoghat%}
+            <div class="row border-bottom py-3">
+                  <div class="col-1 narowFont text-center">{{ forloop.counter }}</div>
+                  <div class="col-9 narowFont text-center">{{datas.report}}</div>
+                  <div class="col-2 narowFont text-center">{{calenderSelected.systemMomayezi}}</div>
+            </div>
+          {% endfor %}
+    
+    
+          </div>
+      </div>
+     
+     
+  </div>
+  
+</div>
+
+</div>
+{%endif%}
+{%if allForsat|length > 0%} 
+    <div class="row py-5">
+      <div class="col-12">
+          <div class="card my-4">
+            <div class="card-header px-5 p-0 position-relative mt-n4 mx-3 z-index-2">
+              <div class="row">
+                <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+                  <h4 class="text-white text-capitalize ps-3">فرصت بهبود</h4>
+                </div>
+              </div>
+             
+            </div>
+              <div class="card-body px-0 pb-2">
+                  
+       
+        
+        <div class="container-fluid fulled">
+          <div class="row border-bottom py-3">
+            <div class="col-1 text-center">ردیف </div>
+            <div class="col-9 text-center">عنوان </div>
+            <div class="col-2 text-center">استاندارد مرتبط</div>
+
+          
+          </div>
+        
+              {%for datas in allForsat%}
+                <div class="row border-bottom py-3">
+                      <div class="col-1 narowFont text-center">{{ forloop.counter }}</div>
+                      <div class="col-9 narowFont text-center">{{datas.report}}</div>
+                      <div class="col-2 narowFont text-center">{{calenderSelected.systemMomayezi}}</div>
+                </div>
+              {% endfor %}
+        
+        
+              </div>
+          </div>
+         
+         
+      </div>
+      
+    </div>
+   
+    </div>
+  {%endif%}
+  {%if allAdam|length > 0%} 
+    <div class="row py-5">
+      <div class="col-12">
+          <div class="card my-4">
+            <div class="card-header px-5 p-0 position-relative mt-n4 mx-3 z-index-2">
+              <div class="row">
+                <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+                  <h4 class="text-white text-capitalize ps-3">عدم انطباق</h4>
+                </div>
+              </div>
+             
+            </div>
+              <div class="card-body px-0 pb-2">
+                  
+       
+        
+        <div class="container-fluid fulled">
+          <div class="row border-bottom py-3">
+            <div class="col-1 text-center">ردیف </div>
+            <div class="col-9 text-center">عنوان </div>
+            <div class="col-2 text-center">استاندارد مرتبط</div>
+
+          
+          </div>
+        
+              {%for datas in allAdam%}
+                <div class="row border-bottom py-3">
+                      <div class="col-1 narowFont text-center">{{ forloop.counter }}</div>
+                      <div class="col-9 narowFont text-center">{{datas.report}}</div>
+                      <div class="col-2 narowFont text-center">{{calenderSelected.systemMomayezi}}</div>
+                </div>
+              {% endfor %}
+        
+        
+              </div>
+          </div>
+         
+         
+      </div>
+      
+    </div>
+   
+    </div>
+    {%endif%}
+
+
+{% endblock content %}
+
+
+{% block scripts %}
+<script
+src="https://code.jquery.com/jquery-3.6.0.min.js"
+integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf8" src="{% static '/js/dataTables.js' %}"></script>
+
+
+		<!-- <script src="{% static 'admin/js/django_jalali.min.js' %}"></script> -->
+	<!-- OR -->
+	<!-- loading by form (if used AdminJalaliDateWidget) -->
+		{{ form.media }}
+
+<script>
+  // json_load_process
+  const groupDataBox =document.getElementById('id_group') 
+  const groupBox = document.getElementById('id_group')
+
+  const processDataBox =document.getElementById('id_process') 
+  const processBox = document.getElementById('id_process')
+
+  $.ajax({
+    type:'GET',
+    url: '/risk/identification/json/load-prcoess/',
+    success:function(response){
+      console.log(response.data)
+      const processData = response.data
+      processData.map(item=>{
+        const option = document.createElement('div')
+        option.textContent = item.name
+        option.setAttribute('class','item')
+        option.setAttribute('data-value',item.name)
+        groupDataBox.appendChild(option)
+      }
+
+      )
+    },
+    error: function(error){
+      console.log(error)
+    },
+  })
+
+  groupBox.addEventListener('change' , e=>{
+    console.log(e.target.value)
+    const selectedGroup = e.target.value
+    processBox.innerHTML = ''
+    processBox.textContent = "---------"
+    $.ajax({
+      type:'GET',
+      url: '/risk/identification/json/get_json_group_data/' + e.target.value,
+      
+      success: function(response){
+        console.log(response.data)
+        const processData = response.data
+        
+        processData.map(item=>{
+          const option = document.createElement('option')
+          option.textContent = item.title
+          option.value = item.id
+      
+          processDataBox.appendChild(option)
+        })
+      },
+      error: function(error){
+        console.log(error)
+      }
+    })
+
+  })
+
+ 
+</script>
+
+{%endblock scripts%}
+
+
+
+
+

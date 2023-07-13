@@ -1,0 +1,173 @@
+{% extends extend %}
+{% load static %}
+
+{% load jalali_tags %}
+{% block style %}
+
+
+
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+
+
+
+
+
+
+{%endblock%}
+
+{% block content %}
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card py-3">
+                <div class="card-body bg-primary text-white mailbox-widget pb-0">
+                    <h2 class="text-white py-3"> صندوق اطلاعیه ها</h2>
+
+                </div>
+                <div class="row">
+                    <div class="row p-4 no-gutters align-items-center">
+                        <div class="col-sm-12 col-md-6">
+                            <h3 class="font-light mb-0"><i class="ti-email mr-2"></i>  تعداد اطلاعیه های خوانده نشده <span class="narowFont" >{{unread}} </span></h3>
+                        </div>
+                    
+                    </div>
+                
+                
+                <div class="col-lg-12">
+
+                
+                    
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade active show" id="inbox" aria-labelledby="inbox-tab" role="tabpanel">
+                            <div>
+                                
+
+                                <div class="table-responsive">
+                                    <table class="table email-table no-wrap table-hover v-middle mb-0 font-14">
+                                        <thead>
+                                            <tr>
+                    
+                                            
+
+                                                <th class="text-right text-lg font-weight-bolder opacity-7">فرستنده</th>
+                                                <th class="text-right text-lg font-weight-bolder opacity-7">عنوان</th>
+                                                <th class="text-right text-lg font-weight-bolder opacity-7">خلاصه</th>
+                                                <th class="text-right text-lg font-weight-bolder opacity-7">تاریخ</th>
+                                                <th class="text-right text-lg font-weight-bolder opacity-7">وضعیت</th>
+                                        
+                                                
+                                            
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {%for data in list_data%}
+                                    
+                                            <tr>
+                                               
+                                                <!-- <td><i class="fa fa-star text-warning"></i></td> -->
+                                                <td class="text-right">
+                                                    <span class="mb-0 text-muted"> {{data.sender.firstName}} - {{data.sender.lastName}}</span>
+                                                </td>
+                                                <td class="text-right">
+                                                    <a class="link" href="javascript: void(0)">
+                                                        <!-- <span class="badge badge-pill text-white font-medium badge-danger mr-2">Work</span> -->
+                                                        <span class="text-dark">{{data.title}}</span>
+                                                    </a>
+                                                </td>
+                                                <td class="text-right">
+                                                    <a class="link" href="javascript: void(0)">
+                                                        
+                                                        <span class="text-dark">{{data.description}}</span>
+                                                    </a>
+                                                </td>
+                                                <!-- <td class="text-right"><i class="fa fa-paperclip text-muted"></i></td> -->
+                                                <td class=" text-right narowFont">{{data.created_at|to_jalali:'%Y/%m/%d'}}</td>
+                                                {%if data.personalStatus == 'pending'%}
+                                                
+                                                <td class=" text-right narowFont">
+                                                    <a href="{%url 'read_notifications' data.id%}">
+                                                    {{data.get_personalStatus_display}}
+                                                </a>
+                                                    </td>
+                                                
+                                                {%else%}
+                                                <td class=" text-right narowFont">
+                                                {{data.get_personalStatus_display}}
+                                                </td>
+                                            {%endif%}
+                                            </tr>
+                                            {%endfor%}
+                                        </tbody>
+                                        
+                                    </table>
+                                    <div class="row p-4 no-gutters align-items-center">
+                                        <div class="col-sm-12 col-md-6">
+                                            <h4 class="font-light mx-5"><span class="narowFont" > تعداد کل اطلاعیه ها {{allnotif}} </span></h4>
+                                        </div>
+                                    
+                                    </div>
+                                
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                 </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+</div>
+<style type="text/css">
+    body {
+        background: #edf1f5;
+        margin-top: 20px;
+    }
+
+    .card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 0 solid transparent;
+        border-radius: 0;
+    }
+
+    .mailbox-widget .custom-tab .nav-item .nav-link {
+        border: 0;
+        color: #fff;
+        border-bottom: 3px solid transparent;
+    }
+
+    .mailbox-widget .custom-tab .nav-item .nav-link.active {
+        background: 0 0;
+        color: #fff;
+        border-bottom: 3px solid #2cd07e;
+    }
+
+    .no-wrap td,
+    .no-wrap th {
+        white-space: nowrap;
+    }
+
+    .table td,
+    .table th {
+        padding: .9375rem .4rem;
+        vertical-align: top;
+        border-top: 1px solid rgba(120, 130, 140, .13);
+    }
+
+    .font-light {
+        font-weight: 300;
+    }
+</style>
+{% endblock content %}

@@ -1,0 +1,226 @@
+
+ {% extends extend %} 
+
+
+
+
+{% load static %}
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/dataTables.css' %}">
+
+
+  <script type="text/javascript" charset="utf8" src="{% static '/js/dataTables.js' %}"></script>
+
+  <script src="{% static '/js/jquery.dataTables.js' %}"  ></script>
+{%endblock style%}
+
+{% block content %}
+<script type="text/javascript">
+  function show_hide_row(row)
+  {
+   $("#"+row).slideToggle();
+  }
+  </script>
+<div class="container py-6">
+  <div class="row justify-content-md-center">
+    <div class="card card-fram col-12">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="row">
+          
+          <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+            <h4 class="text-white text-capitalize ps-3">{{ header_title }}</h4>
+        
+          </div>
+        </div>
+      </div>
+      <div class="card-body px-0 pb-2">
+                    
+         
+          
+        <div class="container-fluid fulled">
+          <div class="row border-bottom py-3">
+            <div class="col-2 text-center">شماره استاندارد </div>
+            <div class="col-3 text-center">عنوان</div>
+            <div class="col-2 text-center">نماد</div>
+            <div class="col-2 text-center">تاریخ رونمایی</div>
+            <div class="col-2 text-center">بیشتر</div>
+            <div class="col-1 text-center">بند ها</div>
+          </div>
+          {%for datas in list_data%}
+             
+          
+          
+              {% for key, values in datas.items %}
+             
+                <div class="row border-bottom py-3">
+                  
+                      <div class="col-2 narowFont text-center">{{values.0}}</div>
+                    
+                      <div class="col-3 narowFont text-center">{{values.1}}</div>
+                      <div class="col-2 narowFont text-center">{{values.3}}</div>
+                      <div class="col-2 narowFont text-center">{{values.5}}</div>
+                    
+          
+                    
+                    
+                    
+                      <a href="#" onclick="show_hide_row('hidden_row{{key}}');" class="col-2">
+                        <div class="  ms-2 d-flex align-items-center justify-content-center">
+                          <img style="max-width: 50px;" src="{% static 'img/svg/view.svg' %}" >
+                        </div>
+                      </a>
+                      <a href="{%url 'ListViewStandardBand' key%}"  class="col-1">
+                        <div class="  ms-2 d-flex align-items-center justify-content-center">
+                          نمایش
+                        </div>
+                      </a>
+                </div>
+
+                <div id="hidden_row{{key}}" class="hidden_row row moreData py-3" style="display:none">
+                        
+                   
+                    <div class="row py-3">
+                      <div class="col-4">
+                        <span class=" fw-bold text-dark" >شماره استاندارد: </span>
+                        <span class=" narowFont"> {{values.0}} </span>
+                      </div>
+                      <div class="col-4">
+                        <span class=" fw-bold text-dark" >نماد استاندارد: </span>
+                        <span class=" narowFont"> {{values.3}} </span>
+                      </div>
+                      <div class="col-4">
+                        <span class=" fw-bold text-dark" >وضعیت اجرا : </span>
+                        <span class=" narowFont"> {{values.4}} </span>
+                      </div>
+                    </div>
+
+                    <div class="row py-3">
+                      <div class="col-4">
+                        <span class=" fw-bold text-dark" > زبان: </span>
+                        <span class=" narowFont"> {{values.9}} </span>
+                      </div>
+                      <div class="col-4">
+                        <span class=" fw-bold text-dark" >نوع استاندارد: </span>
+                        <span class=" narowFont"> {{values.10}} </span>
+                      </div>
+                      <div class="col-4">
+                        <span class=" fw-bold text-dark" > محدوده استاندارد : </span>
+                        <span class=" narowFont"> {{values.11}} </span>
+                      </div>
+                    </div>
+                    <hr class="dark horizontal">
+                    <hr class="dark horizontal">
+                    <div class="row py-3">
+                      
+                      
+                        <div class="col-6">
+                          <span class=" fw-bold text-dark" >  عنوان فارسی استاندارد   : </span>
+                          <span class=" narowFont"> {{values.1}} </span>  
+                        </div>
+                        <div class="col-6">
+                          <span class=" fw-bold text-dark" >تاریخ انتشار شمسی: </span>
+                          <span class=" narowFont"> {{values.5}} </span>  
+                        </div>
+                        <div class="col-12">
+                          <span class=" fw-bold text-dark" >  مرجع داخلی استاندارد   : </span>
+                          <span class=" narowFont"> {{values.12}} </span>  
+                        </div>
+
+                    </div>
+                   
+                   
+                    <div class="row py-3">
+                      
+                      
+                      <div class="col-6">
+                        <span class=" fw-bold text-dark" >  عنوان انگلیسی استاندارد   : </span>
+                        <span class=" "> {{values.2}} </span>  
+                      </div>
+                      <div class="col-6">
+                        <span class=" fw-bold text-dark" >تاریخ انتشار میلادی: </span>
+                        <span class=" "> {{values.6}} </span>  
+                      </div>
+                      <div class="col-12">
+                        <span class=" fw-bold text-dark" >  مرجع بین المللی استاندارد: </span>
+                        <span class=" "> {{values.13}} </span>  
+                      </div>
+                      
+
+                  </div>
+
+                  <hr class="dark horizontal">
+                  
+                  
+                  
+                   <div class="row py-3">
+                      
+                      
+                        <div class="col-6">
+                          <span class=" fw-bold text-dark" >  واحد متولی     : </span>
+                          <span class=" narowFont"> {{values.14}} </span>  
+                        </div>
+                        <div class="col-6">
+                          <span class=" fw-bold text-dark" >واحد های مرتبط  : </span>
+                     
+                          <span class=" narowFont"> تمام واحد های سازمان  </span>  
+                    
+                        </div>
+                        
+
+                    </div>
+                  
+                  
+                  
+       
+                </div>
+                      
+              
+
+                 
+                  
+                  
+
+                
+              {% endfor %}
+            
+          {% endfor %}
+        
+              </div>
+          </div>
+     
+      
+    
+      </div>
+       
+    
+    </div>
+  </div>
+</div>
+  {% endblock content %}
+
+
+  {% block scripts %}
+  
+  
+  <script>
+    $(document).ready( function() {
+  $('#example').dataTable( {
+    "oLanguage": {
+      "oPaginate": {
+        "sNext": "صفحه بعدی",
+        "sPrevious": "صفحه قبلی"
+      },
+      "sEmptyTable": "اطلاعاتی برای نمایش وجود ندارد",
+      "sSearch": "جستجو   :  ",
+      "sInfo": "نمایش _START_ تا_END_ از تعداد کل _TOTAL_" ,
+      "sLengthMenu": "  تعداد در صفحه  _MENU_ ",
+      "sInfoEmpty": "رکوردی برای نمایش وجود ندارد"
+    
+    }
+  } );
+} );
+  </script>
+  {%endblock scripts%}
+  
+
+

@@ -1,0 +1,257 @@
+{% extends extend%}
+{% load static %}
+{% block style %}
+<script src="https://unpkg.com/htmx.org@1.8.5"
+  integrity="sha384-7aHh9lqPYGYZ7sTHvzP1t3BAfLhYSTy9ArHdP3Xsr9/3TlGurYgcPBoFmXX2TX/w" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/htmx.org/dist/ext/multi-swap.js"></script>
+<link rel="stylesheet" type="text/css" href="{% static '/css/dataTables.css' %}">
+
+<link rel="stylesheet" href="{%static '/css/select2.min.css'%}">
+<link rel="stylesheet" href="{%static '/css/select2-bootstrap-5-theme.rtl.min.css'%}">
+
+<script type="text/javascript" charset="utf8" src="{% static '/js/dataTables.js' %}"></script>
+
+<script src="{% static '/js/jquery.dataTables.js' %}"></script>
+{%endblock style%}
+
+{% block content %}
+<!-- Button trigger modal -->
+
+<script>
+  $(document).ready(function() { 
+  $("#id_responsible").select2({
+   theme: "bootstrap-5",
+   placeholder: "یک گزینه را انتخاب کنید",
+   allowClear: true
+  });
+  });
+
+ </script>
+
+
+<div class="container py-4 ">
+  
+  <div class="row justify-content-between">
+    <div class="card card-frame  col-5">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="row">
+
+          <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+            <h4 class="text-white text-capitalize ps-3">لیست اقلام تعریف شده</h4>
+
+          </div>
+        </div>
+
+      </div>
+     
+      <div class="card-body">
+        <div class="row">
+          <table id="example" class="table uk-table uk-table-hover uk-table-striped align-items-center py-3 mb-0"
+            data-page-length='3'>
+            <input type="hidden" id="PerformanceFormulaRelated" name="PerformanceFormulaRelated" value="{{performanceFormulaId}}">
+            <thead>
+
+              <tr>
+
+                {% for header in headersList %}
+                <th class="text-center text-lg font-weight-bolder opacity-7">{{header}}</th>
+                {% endfor %}
+
+                <th class="text-center text-lg font-weight-bolder opacity-7">افزودن</th>
+
+
+              </tr>
+            </thead>
+            <tbody>
+
+
+              {%for datas in list_data%}
+
+              {% for key, values in datas.items %}
+              <tr>
+
+                {% for v in values %}
+                <td class="narowFont text-center overflow-hidden">{{v}}</td>
+                {% endfor %}
+
+                <td class=" text-center">
+                  <a class="nav-link text-black-80" hx-post="{%url 'add-variable-toFormula'  performanceFormulaId key%}" hx-trigger="click" hx-target="#variable_list"
+                  hx-swap="outerHTML">
+                    <span style="cursor:pointer" class="badge bg-success badge-pill">+</span>
+                  </a>
+                </td>
+
+
+              </tr>
+              {% endfor %}
+              {%endfor%}
+
+
+
+            </tbody>
+          </table>
+        </div>
+
+        <div class="row shadow-sm border-radius-lg ">
+          <h4 class="text-center py-4">افزودن قلم جدید</h4>
+          <form action="" method="POST" enctype="multipart/form-data">
+
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-6">
+                <div class="input-group input-group-static mb-4">
+                  <label class="" for="{{ field.auto_id }}">
+                    {{ form.title.label }}
+                  </label>
+                  {{form.title }}
+
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="input-group input-group-static mb-4">
+                  <label class="" for="{{ field.auto_id }}">
+                    {{ form.code.label }}
+                  </label>
+                  {{form.code }}
+
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="input-group input-group-static mb-4">
+                  <label class="" for="{{ field.auto_id }}">
+                    {{ form.description.label }}
+                  </label>
+                  {{form.description }}
+
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="input-group input-group-static mb-4">
+                  <label class="" for="id_problem">
+                    مسئول را انتخاب کنید
+                  </label>
+                  <select name="responsible" class="form-control" id="id_responsible">
+                    <option value="" selected="">---------</option>
+
+                    {%for job in allJob%}
+                    <option value="{{job.id}}">{{job.profile.firstName}} {{job.profile.lastName}} -
+                      {{job.jobBankPost.title}}</option>
+                    {%endfor%}
+
+
+                  </select>
+
+                </div>
+
+              </div>
+            </div>
+            <div class="row justify-content-md-center">
+              <div class="col-5">
+                <button hx-post="{%url 'add-variable' performanceVariable.id %}" hx-trigger="click" hx-target="#variable_list "
+                  hx-swap="outerHTML" hx-swap="multi:#variable_list:outerHTML,#example:outerHTML" class="btn w-100  btn-outline-primary" value="yes">
+                  افزودن </button>
+              </div>
+            </div>
+            
+
+
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="card card-frame  col-6">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="row">
+
+          <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+            <h4 class="text-white text-capitalize ps-3">{{ header_title }}</h4>
+
+          </div>
+        </div>
+
+      </div>
+      <div class="container-fluid ">
+        <div class="wrapper option-1 option-1-1">
+          <ol class="c-stepper">
+            <li class="c-stepper__item  done ">
+              <h3 class="c-stepper__title">مرحله اول</h3>
+              <p class="c-stepper__desc">تعریف شناسنامه عملکردی</p>
+            </li>
+            <li class="c-stepper__item done">
+              <h3 class="c-stepper__title">مرحله دوم</h3>
+              <p class="c-stepper__desc">تعریف فرمول</p>
+            </li>
+            <li class="c-stepper__item active">
+              <h3 class="c-stepper__title">مرحله آخر</h3>
+              <p class="c-stepper__desc">تعریف متغییر ها</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div class="card-body">
+        
+        <form action="{% url 'CreateViewPerformanceVariables' performanceVariable.id %}" method="POST">
+          {%csrf_token%}
+          <div class="input-group input-group-static my-4">
+            <label class="" for="{{ field.auto_id }}">
+              فرمول محاسبه را وارد نمایید
+            </label>
+          
+            <input type="text" name="formula" maxlength="250" class="form-control"  id="id_formula" >
+  
+          </div>
+          <button type="submit" name="submit" class="btn w-100  btn-outline-primary" >
+            ثبت فرمول </button>
+        </form>
+       
+        <div class="row" id="variable_list">
+          {% include 'partials/variable-list.html' %}
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock content %}
+{%block scripts%}
+<script>
+
+  document.body.addEventListener('htmx:configRequest', (event) => {
+    // add a new parameter into the request
+    event.detail.headers['X-CSRFToken'] = '{{csrf_token}}'; // add a new header into the request
+  });
+
+</script>
+<script>
+  $(document).ready(function () {
+    $('#example').dataTable({
+
+      "oLanguage": {
+        "oPaginate": {
+          "sNext": "صفحه بعدی",
+          "sPrevious": "صفحه قبلی"
+        },
+        "sEmptyTable": "اطلاعاتی برای نمایش وجود ندارد",
+        "sSearch": "جستجو   :  ",
+        "sInfo": "نمایش _START_ تا_END_ از تعداد کل _TOTAL_",
+        "sLengthMenu": "  تعداد در صفحه  _MENU_ ",
+        "sInfoEmpty": "رکوردی برای نمایش وجود ندارد"
+
+      }
+    });
+  });
+</script>
+
+<script src="{% static '/js/select2.min.js' %}"></script>
+{%endblock scripts%}

@@ -1,0 +1,286 @@
+{% extends extend%}
+{% load static %}
+{% block style %}
+<style>
+.causeAnswer { display:none ;}
+.problemSolvingAnswer {display: none;}
+.correctiveActionAnswer {display: none;}
+.correctiveAnswer {display: none;}
+</style>
+<link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+{%endblock style%}
+
+{%block style%}
+<link rel="stylesheet" href="{%static '/css/select2.min.css'%}">
+<link rel="stylesheet" href="{%static '/css/select2-bootstrap-5-theme.rtl.min.css'%}">
+{%endblock style%}
+{%block scripts%}
+<script src="{% static '/js/select2.min.js' %}"></script>
+{%endblock scripts%}
+{% block content %}
+<script>
+  $(document).ready(function() { 
+  $("#id_field").select2({
+   theme: "bootstrap-5",
+   placeholder: "یک گزینه را انتخاب کنید",
+   allowClear: true
+  });
+  });
+
+ </script>
+<div class="container py-6">
+    <div class="row justify-content-md-center">
+        <div class="card card-frame col-12">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="row">
+           
+              <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+                <h4 class="text-white text-capitalize ps-3">{{ header_title }}</h4>
+                <p class="text-md font-monospace text-light mb-0">
+                  {{discribtion}}
+                </p>
+              </div>
+            </div>
+           
+          </div>
+          
+            <div class="card-body">
+              {%for data in dataSet %}
+
+              <div class="row py-3">
+                {% for key,value in data.items %}
+                <div class="col">
+                  <span class=" fw-bold text-dark">  {{key}} : </span>
+                  <span class=" narowFont">  {{value}}  </span>
+               
+                </div>
+                        
+                {%endfor%}
+                
+
+              </div>
+            
+            
+          <hr class=" horizontal gray-light">
+         {%endfor%}
+        
+        
+      <hr class=" horizontal gray-light">
+              <form class="my-2" action="" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <h5>{{title}}</h5>
+
+                  {%for text in texts%}
+                    {% for key, value  in text.items %}
+                    <div class="input-group input-group-static mb-4">
+                      
+                      <textarea placeholder="{{key}}" name="{{value}}" cols="40" rows="5" class="form-control" id="id_{{value}}"></textarea>
+                      
+                    </div>
+                      
+                      
+                    {%endfor%}
+                  {%endfor%}
+                  {%if fields == '' %}
+                  {%else%}
+                  {%if filedSelected != '' %} ( درصورت صلاح دید میتوانید تغییر دهید ) {%endif%}
+                  
+
+                    <div class="input-group input-group-static mb-4">
+                     
+                      <select name="field" class="form-control" required="" id="id_field">
+                        <option value=""  >---------</option>
+                        {%for field in fields%}
+                        
+                        <option value="{{field.id}}" {%if filedSelected == field.id %} selected="" {%endif%} >{{field.title}}</option>
+                        {% endfor %}
+                      </select>
+                      
+                    </div>
+                    
+                  {%endif%}
+                  
+                  {%if cause != '' %}
+                  
+                 
+                  <div class="row py-4 mx-3">
+                    <div class="col-12">
+                      <fieldset class="form-check causeQuestion">
+                        <label class="custom-control-label" for="cause">آیا اقدام اصلاحی نیاز به علت یابی دارد ؟</label>
+                        <input class="form-check-input" id="cause" type="checkbox" name="cause" value="1" />
+                      </fieldset>
+                    </div>
+                    <div class="col-12">
+                      <fieldset class="causeAnswer">
+                        <textarea name="causeAnswer" cols="120" rows="4" class="" id="causeAnswer"></textarea>
+                        
+                      </fieldset>
+                    </div>
+
+                    
+                    
+                  </div>
+                  
+                  <div class="row  mx-3" >
+                    <div class="col-6">
+                      <fieldset class="form-check problemSolvingQuestion">
+                        <label class="custom-control-label" for="problemSolving">آیا اقدام اصلاحی نیاز به  حل مسئله دارد ؟</label>
+                        <input class="form-check-input" id="problemSolving" type="checkbox" name="problemSolving" value="1" />
+                      </fieldset>
+                    </div>
+                    <div class="col-6">
+                      <fieldset class="problemSolvingAnswer">
+                        
+                        <label>
+                          <input name="document" id="id_document" type="file" style="display: none;">
+                          <a class="text-success">جهت بارگزاری یافته های حل مسئله کلیک کنید</a>
+                        </label>
+                      </fieldset>
+                    </div>
+                  </div>
+                  
+
+                 
+                  
+                  
+                  {%endif%}
+
+                  {%if definitionCorrectiveaAtion != '' %}
+                  
+                 
+                  <div class="row py-4 mx-3">
+                    <div class="col-12">
+                      <fieldset class="form-check CorrectiveActionQuestion">
+                        <label class="custom-control-label" for="correctiveAction">آیا اقدام اصلاحی نیاز است  ؟</label>
+                        <input class="form-check-input" id="correctiveAction" type="checkbox" name="correctiveAction" />
+                      </fieldset>
+                    </div>
+                    
+                    <div class="row ">
+                      <fieldset class="correctiveActionAnswer">
+                      
+                      <div class="input-group input-group-static mb-4 col-4">
+                     
+                        <select name="correctiveActionProfile" class="form-control" required="" id="id_correctiveActionProfile">
+                          <option value="" selected="">---------</option>
+                          {%for profile in profilesPosts%}
+                          <option value="{{profile.id}}">{{profile.firstName}}-{{profile.lastName}}</option>
+                          {% endfor %}
+                        </select>
+                        
+                      </div>
+                      <div class="input-group input-group-static mb-4 col-4" name="" id="">
+                        <label class="" for="id_correctiveActionDate">
+                          زمان پایان اقدام اصلاحی را وارد کنید
+                        </label>
+                        <input type="text" name="correctiveActionDate" class="jalali_date-date  form-control" size="10"  id="id_correctiveActionDate">
+                        
+                      </div>
+                      <label class="custom-control-label" for="correctiveActionDescription">  اقدام اصلاحی مورد نظر را  شرح دهید </label>
+                        <textarea name="correctiveActionDescription" cols="120" rows="4" class="" id="id_correctiveActionDescription"></textarea>
+                      </fieldset>
+                    </div>
+
+                    
+                    
+                  </div>
+                  <div class="row py-4 mx-3">
+                    <div class="col-12">
+                      <fieldset class="form-check CorrectiveQuestion">
+                        <label class="custom-control-label" for="corrective">آیا  اصلاح نیاز است  ؟</label>
+                        <input class="form-check-input" id="corrective" type="checkbox" name="corrective" />
+
+                        
+                      </fieldset>
+                    </div>
+                    
+                    <div class="row ">
+                      <fieldset class="correctiveAnswer">
+                      
+                      <div class="input-group input-group-static mb-4 col-4">
+                     
+                        <select name="correctiveProfile" class="form-control" required="" id="id_correctiveProfile">
+                          <option value="" selected="">---------</option>
+                          {%for profile in profilesPosts%}
+                          <option value="{{profile.id}}">{{profile.firstName}}-{{profile.lastName}}</option>
+                          {% endfor %}
+                        </select>
+                        
+                      </div>
+                      <div class="input-group input-group-static mb-4 col-4" name="" id="">
+                        <label class="" for="id_correctiveDate">
+                          زمان پایان  اصلاح را وارد کنید
+                        </label>
+                        <input type="text" name="correctiveDate" class="jalali_date-date  form-control" size="10" required=""
+                          id="id_correctiveDate">
+                        
+                      </div>
+                      <label class="custom-control-label" for="correctiveDescription"> اصلاح مورد نظر را  شرح دهید </label>
+                        <textarea name="correctiveDescription" cols="120" rows="4" class="" id="id_correctiveDescription"></textarea>
+                      </fieldset>
+                    </div>
+
+                    
+                    
+                  </div>
+                  
+                 
+                  
+
+                 
+                  
+                  
+                  {%endif%}
+                  {%if confirmation != ''%}
+                  <div class="row justify-content-md-center py-3">
+                    <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-primary"value="yes">تایید</button>
+                    <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-danger" value="no">عدم تایید</button>
+                  </div>
+                  
+                  
+                  {%else%}
+                    <div class="row justify-content-md-center py-3">
+                      <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-primary"value="yes">ثبت</button>
+                      <button type="submit" name="submit" class="btn w-10 mx-3 btn-outline-danger" value="no">کنسل</button>
+                    </div>
+                  {%endif%}
+              </form>
+            </div>
+        </div>
+      </div>
+</div>
+
+    
+    
+   
+{% endblock content %}
+
+{%block scripts%}
+<script>
+$(function() {
+  $("#cause").on("click",function() {
+    $(".causeAnswer").toggle(this.checked);
+  });
+});
+$(function() {
+  $("#problemSolving").on("click",function() {
+    $(".problemSolvingAnswer").toggle(this.checked);
+  });
+});
+$(function() {
+  $("#correctiveAction").on("click",function() {
+    $(".correctiveActionAnswer").toggle(this.checked);
+  });
+});
+$(function() {
+  $("#corrective").on("click",function() {
+    $(".correctiveAnswer").toggle(this.checked);
+  });
+});
+
+
+</script>
+<script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
+<script src="{% static 'js/picker.js' %}"></script>
+
+{%endblock scripts%}

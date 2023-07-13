@@ -1,0 +1,342 @@
+{% extends extend%}
+{% load jalali_tags %}
+
+{% load static %}
+{% block style %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css">
+<!-- <link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/tabs.css' %}"> -->
+{%endblock style%}
+
+{% block content %}
+{{get_jalali_date}}
+<style>
+
+
+
+
+
+.timeLine {
+  --col-gap: 2rem;
+  --row-gap: 2rem;
+  --line-w: 0.25rem;
+  --dateH: 3rem;
+  display: grid;
+  grid-template-columns: 0.25rem 1fr;
+  grid-auto-columns: max-content;
+  column-gap: 2rem;
+  list-style: none;
+  width: min(60rem, 90%);
+  margin-inline: auto;
+}
+
+/* line */
+.timeLine::before {
+  content: "";
+  grid-column: 1;
+  grid-row: 1 / span 20;
+  background: rgb(225, 225, 225);
+  border-radius: calc(0.25rem / 2);
+}
+
+/* columns*/
+
+/* row gaps */
+.timeLine li:not(:last-child) {
+  margin-bottom: 2rem;
+}
+
+/* card */
+.timeLine li {
+  grid-column: 2;
+  --inlineP: 1.5rem;
+  margin-inline: 1.5rem;
+  grid-row: span 2;
+  display: grid;
+  grid-template-rows: min-content min-content min-content;
+}
+
+/* date */
+.timeLine li .date {
+  --dateH: 3rem;
+  height: 3rem;
+  margin-inline: calc(1.5rem * -1);
+
+  text-align: center;
+  background-color: var(--accent-color);
+
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 700;
+
+  display: grid;
+  place-content: center;
+  position: relative;
+
+  border-radius: calc(3rem / 2) 0 0 calc(3rem / 2);
+}
+
+/* date flap */
+.timeLine li .date::before {
+  content: "";
+  width: 1.5rem;
+  aspect-ratio: 1;
+  background: var(--accent-color);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.2) 100%, transparent);
+  position: absolute;
+  top: 100%;
+
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  right: 0;
+}
+
+/* circle */
+.timeLine li .date::after {
+  content: "";
+  position: absolute;
+  width: 2rem;
+  aspect-ratio: 1;
+  background: var(--bgColor);
+  border: 0.3rem solid var(--accent-color);
+  border-radius: 50%;
+  top: 50%;
+  background:#fff;
+  transform: translate(50%, -50%);
+  left:100%;
+}
+
+/* title descr */
+.timeLine li .title,
+.timeLine li .descr {
+  background: var(--bgColor);
+  position: relative;
+  padding-inline: 1.5rem;
+}
+.timeLine li .title {
+  overflow: hidden;
+  padding-block-start: 1.5rem;
+  padding-block-end: 1rem;
+  font-weight: 500;
+}
+.timeLine li .descr {
+  padding-block-end: 1.5rem;
+  font-weight: 300;
+}
+
+/* shadows */
+.timeLine li .title::before,
+.timeLine li .descr::before {
+  content: "";
+  position: absolute;
+  width: 90%;
+  height: 0.5rem;
+  background: rgba(0, 0, 0, 0.5);
+  left: 50%;
+  border-radius: 50%;
+  filter: blur(4px);
+  transform: translate(-50%, 50%);
+}
+ul li .title::before {
+  bottom: calc(100% + 0.125rem);
+}
+
+ul li .descr::before {
+  z-index: -1;
+  bottom: 0.25rem;
+}
+
+@media (min-width: 40rem) {
+    .timeLine {
+    grid-template-columns: 1fr 0.25rem 1fr;
+  }
+  .timeLine::before {
+    grid-column: 2;
+  }
+  .timeLine li:nth-child(odd) {
+    grid-column: 1;
+  }
+  .timeLine li:nth-child(even) {
+    grid-column: 3;
+  }
+
+  /* start second card */
+  .timeLine li:nth-child(2) {
+    grid-row: 2/4;
+  }
+
+  .timeLine li:nth-child(odd) .date::before {
+    clip-path: polygon(0 0, 100% 0, 100% 100%);
+    right: 91%;
+  }
+
+  .timeLine li:nth-child(odd) .date::after {
+    transform: translate(-50%, -50%);
+    right: 100%;
+    background:#fff;
+  }
+  .timeLine li:nth-child(odd) .date {
+    border-radius: 0 calc(3rem / 2) calc(3rem / 2) 0;
+  }
+}
+
+.credits {
+  margin-top: 1rem;
+  text-align: right;
+}
+.credits a {
+  color: var(--color);
+}
+</style>
+<div class="container-fluid">
+    <div class="row py-3 justify-content-md-center">
+      <div class="card py-3 bg-gradient-light-green frame col-12">
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div class="row">
+            <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+              <h4 class="text-white text-capitalize ps-3">اطلاعات  پایه برنامه اجرایی</h4>
+            </div>
+          </div>
+    
+        </div>
+  
+        <div class="card-body">
+  
+          <div class="row justify-content-evenly">
+            <div class="col-5">
+  
+              <span class=" fw-bold text-dark"> موضوع : </span>
+              <span class=" narowFont">{{planProfileSelected.title}} </span>
+  
+  
+            </div>
+  
+            <div class="col-5">
+              <span class=" fw-bold text-dark">   مجری   : </span>
+              <span class=" narowFont">{{planProfileSelected.responsible.profile.firstName}} - {{planProfileSelected.responsible.profile.lastName}} </span>
+            </div>
+  
+          </div>
+          <hr class="dark horizontal">
+          <div class="row justify-content-evenly">
+            <div class="col-11">
+  
+              <span class=" fw-bold text-dark"> شرح برنامه اجرایی  : </span>
+              <span class=" narowFont">{{planProfileSelected.description}} </span>
+  
+  
+            </div>
+  
+           
+  
+          </div>
+          <hr class="dark horizontal">
+          <div class="row justify-content-evenly">
+            <div class="col-5">
+  
+              <span class=" fw-bold text-dark">  تاریخ شروع   : </span>
+              <span class=" narowFont">{{planProfileSelected.startTiem|to_jalali:'%Y/%m/%d'}}</span>
+  
+  
+            </div>
+            <div class="col-5">
+              <span class=" fw-bold text-dark">  تاریخ پایان    : </span>
+              <span class=" narowFont">{{planProfileSelected.deadLine|to_jalali:'%Y/%m/%d'}}</span>
+            </div>
+           
+           
+           
+  
+          </div>
+         
+        
+
+       
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="container py-6">
+    <div class="row justify-content-md-center">
+
+          
+            <div class="card-body">
+                <div class="row">
+                  
+                    <div class="col-12">
+                        <div class="card card-frame ineer-shadow">
+                            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                                <div class="row">
+                                  <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+                                    <h4 class="text-white text-capitalize ps-3">فعالیت های برنامه اجرایی</h4>
+                                  </div>
+                                </div>
+                          
+                              </div>
+                            <div class="row">
+                                <div class="col-12">
+                                   
+                                        
+                                    <div class="card-body px-0 pb-2">
+                                        
+                                            {%include 'partials/time-line.html'  %}
+                                            
+                                       
+                                    </div>
+                                   
+                                </div>
+                                
+                              </div>
+                              
+                        </div>
+                       
+                    </div>
+                </div>
+                
+            </div>
+    
+    </div>
+
+</div>
+
+    
+    
+   
+{% endblock content %}
+
+
+{% block scripts %}
+<script
+src="https://code.jquery.com/jquery-3.6.0.min.js"
+integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf8" src="{% static '/js/dataTables.js' %}"></script>
+
+<script>
+  $(document).ready( function() {
+$('#example').dataTable( {
+  "oLanguage": {
+    "oPaginate": {
+      "sNext": "صفحه بعدی",
+      "sPrevious": "صفحه قبلی"
+    },
+    "sEmptyTable": "اطلاعاتی برای نمایش وجود ندارد",
+    "sSearch": "جستجو   :  ",
+    "sInfo": "نمایش _START_ تا_END_ از تعداد کل _TOTAL_" ,
+    "sLengthMenu": "  تعداد در صفحه  _MENU_ ",
+    "sInfoEmpty": "رکوردی برای نمایش وجود ندارد"
+  
+  }
+} );
+} );
+</script>
+		<!-- <script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
+	<!-- OR -->
+	<!-- loading by form (if used AdminJalaliDateWidget) -->
+		{{ form.media }} -->
+
+{%endblock scripts%}
+
+
+
+
+

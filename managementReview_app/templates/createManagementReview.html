@@ -1,0 +1,255 @@
+{% extends extend%}
+{% load static %}
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/dataTables.css' %}">
+
+<link rel="stylesheet" href="{%static '/css/select2.min.css'%}">
+<link rel="stylesheet" href="{%static '/css/select2-bootstrap-5-theme.rtl.min.css'%}">
+
+
+<link href="{% static '/css/picker.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static '/css/dataTables.css' %}">
+
+
+  <script type="text/javascript" charset="utf8" src="{% static '/js/dataTables.js' %}"></script>
+
+ 
+
+
+{%endblock style%}
+{% block content %}
+<script>
+  $(document).ready(function() { 
+  $("#id_systemMomayezi").select2({
+   theme: "bootstrap-5",
+   placeholder: "یک گزینه را انتخاب کنید",
+   allowClear: true
+  });
+  });
+
+ </script>
+<div class="container py-6">
+  <div class="row justify-content-md-center">
+    <div class="card card-frame col-12">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="row">
+
+          <div class="bg-gradient-danger shadow-info text-center border-radius-lg pt-4 pb-3">
+            <h4 class="text-white text-capitalize ps-3">دعوت نامه جلسه بازنگری و مدیریت</h4>
+
+          </div>
+        </div>
+
+      </div>
+      <div class="card-body">
+        <form action="" method="POST" >
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-6 px-5">
+              <div class="input-group input-group-static mb-4">
+                <label class="" for="id_dateMomayezi">
+                  تاریخ جلسه را انتخاب کنید
+                </label>
+                <input type="text" name="dateMomayezi" autocomplete="off" class="jalali_date-date  form-control"
+                  size="10"  id="id_dateMomayezi">
+
+              </div>
+            </div>
+            <div class="col-6 px-5">
+              <div class="input-group input-group-static mb-4">
+                <label class="" for="id_timeDuration">
+                  ساعت شروع را انتخاب کنید
+                </label>
+                <input type="text" name="timeDuration" class="form-control js-time-picker" id="id_timeDuration"
+                  onfocus="focused(this)" onfocusout="defocused(this)">
+
+              </div>
+            </div>
+
+
+
+
+          </div>
+          <div class="row justify-content-md-center">
+            <div class="col-6 px-5">
+              <div class="input-group input-group-static ">
+                <label>سیستم ممیزی را انتخاب کنید </label>
+
+                <select name="systemMomayezi" class="form-control" id="id_systemMomayezi">
+                  <option value="" selected>---------</option>
+                  {% for system in allSystem %}
+                  <option value="{{system.id}}" {%if system.id == 1 %} selected {%endif%}>{{system.standardNumber}}</option>
+                  {% endfor %}
+                </select>
+
+              </div>
+            </div>
+            <div class="col-6 px-5">
+              <div class="input-group input-group-static mb-4">
+                <label class="" for="id_title">
+                  محل برگزاری را وارد کنید
+                </label>
+                <input type="text" name="title" maxlength="150" class="form-control" id="id_title"
+                  onfocus="focused(this)" onfocusout="defocused(this)">
+
+              </div>
+            </div>
+          </div>
+         
+          <div class="row py-5 justify-content-md-center">
+            <div class="col-4 px-5">
+              <div class="card " style="border: 2px dotted#747474 !important;">
+                <div class="card-header ">
+                  <strong>اعضای دعوت شده</strong>
+                </div>
+                <ul class="list-group list-group-flush " style="display: contents;">
+                  {%for member in allInvited.all %}
+                  <li class="list-group-item " >{{member.firstName}} - {{member.lastName}}</li>
+                  {%endfor%}
+                </ul>
+              </div>
+            </div>
+           
+            <div class="col-6 px-5">
+              <div class="card " style="border: 2px dotted#747474 !important;">
+                <div class="card-header ">
+                  <strong>ورودی ها  </strong>
+                </div>
+                <ul class="list-group list-group-flush " style="display: contents;">
+                  {%for input in allInput %}
+                  <li class="list-group-item " >{{forloop.counter}}- {{input.title}}</li>
+                  {%endfor%}
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+<div class="row">
+  <div class="card-header">
+    <h3>انتخاب مدعوین:  </h3>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive ">
+          
+      <table id="example" class="table uk-table uk-table-hover uk-table-striped align-items-center py-3 mb-0">
+        <br>
+        <thead>
+          
+          <tr>
+            
+            
+            <th class="text-secondary text-center text-lg font-weight-bolder opacity-7">انتخاب</th>
+            <th class="text-secondary text-center text-lg font-weight-bolder opacity-7">ردیف</th>
+            <th class="text-secondary text-center text-lg font-weight-bolder opacity-7">نام </th>
+            <th class="text-secondary text-center text-lg font-weight-bolder opacity-7">نام خانوادگی</th>
+            <th class="text-secondary text-center text-lg font-weight-bolder opacity-7">پست سازمانی</th>
+            <th class="text-secondary text-center text-lg font-weight-bolder opacity-7">واحد سازمانی</th>
+            
+          
+            
+          </tr>
+        </thead>
+        <tbody>
+          
+        
+          {%for job in allJob%}
+           
+            <tr>
+                
+             
+                <td class="narowFont overflow-hidden"> <div class="form-check text-center">
+                  <input class="form-check-input" type="checkbox" name="question" value="{{key}}" id="fcustomCheck{{key}}" >
+               
+                </div> </td>
+                <td class="narowFont overflow-hidden">{{forloop.counter}}</td>
+                <td class="narowFont overflow-hidden">{{job.profile.firstName}}</td>
+                <td class="narowFont overflow-hidden">{{job.profile.lastName}}</td>
+                <td class="narowFont overflow-hidden">{{job.jobBankPost.title}}</td>
+                <td class="narowFont overflow-hidden">{{job.jobBankPost.vahed.title}}</td>
+               
+               
+               
+            </tr>
+          
+          {%endfor%}
+          
+
+                    
+        </tbody>
+      </table>
+      
+     
+    </div>
+  </div>
+</div>
+
+         
+
+      
+          <div class="row justify-content-md-center  py-3">
+            <button type="submit" name="submit" class="btn w-25 mx-5 text-lg btn-outline-primary"
+              value="yes">ثبت</button>
+            <button type="submit" name="submit" class="btn w-25 mx-5 text-lg btn-outline-danger" value="no">
+              کنسل</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+{% endblock content %}
+{% block scripts%}
+<script>
+  $(document).ready( function() {
+$('#example').dataTable( {
+  "oLanguage": {
+    "oPaginate": {
+      "sNext": "صفحه بعدی",
+      "sPrevious": "صفحه قبلی"
+    },
+    "sEmptyTable": "اطلاعاتی برای نمایش وجود ندارد",
+    "sSearch": "جستجو   :  ",
+    "sInfo": "نمایش _START_ تا_END_ از تعداد کل _TOTAL_" ,
+    "sLengthMenu": "  تعداد در صفحه  _MENU_ ",
+    "sInfoEmpty": "رکوردی برای نمایش وجود ندارد"
+  
+  }
+} );
+} );
+</script>
+
+<!-- <script src="{% static 'admin/js/django_jalali.js' %}"></script> -->
+<!-- <script src="{% static 'js/picker.js' %}"></script> -->
+<script>
+  new Picker(document.querySelector('.js-time-picker'), {
+    format: 'HH:mm',
+    headers: true,
+    date: new Date(1, 0),
+    text: {
+      title: 'مدت زمان را انتخاب کنید',
+    },
+    increment: {
+      hour: 1,
+      minute: 15,
+
+    },
+  });
+
+   
+
+</script>
+
+
+
+<!-- OR -->
+<!-- loading by form (if used AdminJalaliDateWidget) -->
+
+<script src="{% static '/js/select2.min.js' %}"></script>
+{%endblock scripts%}
