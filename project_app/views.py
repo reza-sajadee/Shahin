@@ -599,9 +599,10 @@ class ListViewPlanProfile(ListView):
         #اسم داده های جدول
        
         #دریافت تمام داده ها
-        
-        queryset = PlanProfile.objects.all().filter(responsible = jobSelected )
-        
+        if (self.request.user.is_superuser  ):
+            queryset = PlanProfile.objects.all()
+        else:
+            queryset = PlanProfile.objects.all().filter(responsible = jobSelected )
         
         list_data = []
         #ایجاد لیست داده ها
