@@ -161,19 +161,19 @@ class JobBank(models.Model):
     def __str__(self):
         modelName = ''
         if (self.jobBankPost != None):
-            modelName = str(self.jobBankPost.title)
+            modelName = str(self.jobBankPost.title) + str(" ")
         else:
             modelName = 'عنوان پست موجود نیست'
         if(self.profile):
-            modelName = modelName + str(self.profile.firstName)
+            modelName = modelName + str(self.profile.firstName) + str(" ")
         else:
             modelName = 'فرد موجود نیست'
         if(self.profile):
-            modelName = modelName + str(self.profile.lastName)
+            modelName = modelName + str(self.profile.lastName) + str(" ")
         else:
             modelName = 'فرد موجود نیست'
         
-        return  modelName + '- ' + str(self.id)
+        return  modelName 
         
   
 

@@ -51,7 +51,7 @@
            <div class="col-5">
   
             <span class=" fw-bold text-dark"> جانشین اول {{meetingSelected.meetingProfileRelated.get_meetingType_display}} : </span>
-            <span class=" narowFont">{{meetingSelected.meetingProfileRelated.firstSuccessor}}</span>
+            <span class=" narowFont">{{meetingSelected.meetingProfileRelated.firstSuccessor|default_if_none:'موجود نیست'}}</span>
   
   
           </div>
@@ -70,7 +70,7 @@
   
             <div class="col-5">
               <span class=" fw-bold text-dark">  جانشین دوم {{meetingSelected.meetingProfileRelated.get_meetingType_display}} : </span>
-              <span class=" narowFont">{{meetingSelected.meetingProfileRelated.secondSuccessor}}</span>
+              <span class=" narowFont">{{meetingSelected.meetingProfileRelated.secondSuccessor|default_if_none:'موجود نیست'}}</span>
             </div>
   
           </div>
@@ -81,33 +81,37 @@
               <span class=" fw-bold text-dark">   اعضا اصلی  {{meetingSelected.meetingProfileRelated.get_meetingType_display}} : </span>
             {%for member in meetingSelected.meetingProfileRelated.membersPrimary.all %}
             <div>
-                <span class=" narowFont">{{member}} -</span>
+                <span class=" narowFont">* {{member.profile.firstName}} - {{member.profile.lastName}}</span>
             </div>      
           
               {%endfor%}
   
             </div>
             <div class="col-5">
-              {%if meetingSelectedMembers%}
+              
+              {%if scMember%}
               <span class=" fw-bold text-dark">   اعضا فرعی  {{meetingSelected.meetingProfileRelated.get_meetingType_display}} : </span>
-            {%for member in meetingSelectedMembers.membersSecondary.all %}
+              {%for member in scMember %}
             <div>
-                <span class=" narowFont">{{member.JobBankRelated}} -</span>
+              <span class=" narowFont">* {{member.JobBankRelated.profile.firstName}} - {{member.JobBankRelated.profile.lastName}}</span>
             </div>  
-          
-              {%endfor%}
+            {%endfor%}
+              
               {%endif%}
             </div>
             
             
   
           </div>
-          {%if meetingSelectedMembers%}
+          
+          {%if otherMember != None%}
           <div class="row justify-content-evenly">
             <div class="col-5 ">
-              <span class=" fw-bold text-dark">   اعضا سایر  {{meetingSelected.meetingProfileRelated.get_meetingType_display}} : </span>
+              <span class=" fw-bold text-dark">    سایر اعضای   {{meetingSelected.meetingProfileRelated.get_meetingType_display}} : </span>
               <div>
-                <span class=" narowFont">{{meetingSelectedMembers.membersOther}} </span>
+              {%for member in otherMember%}
+                <span class=" narowFont"> {{member.otherPerson}} , </span>
+                {%endfor%}
               </div> 
               
             </div>
@@ -193,11 +197,20 @@
           {%if meetingSelectedDocument%}
           <div class="container-fluid fulled">
         
-            <h4><string> مستندات جلسه   :  </string> </h4>
-         
+            <h4><string> فایل صورت جلسه   :  </string> </h4>
+            {%if meetingSelectedDocument.persentDocument%}
             <a class="card-text" href="{{meetingSelectedDocument.persentDocument.url}}">فایل ارائه جلسه   </a>
             <hr class="dark horizontal py-0">
+            {%else%}
+            <h5 class="card-title text-danger">   فایلی برای پیوست وجود ندارد    </h5>
+            {%endif%}
+            {%if meetingSelectedDocument.minuteDocument%}
             <a class="card-text" href="{{meetingSelectedDocument.minuteDocument.url}}">فایل صورت جلسه   </a>
+            <hr class="dark horizontal py-0">
+            {%else%}
+            <h5 class="card-title text-danger">   فایلی برای پیوست وجود ندارد    </h5>
+            {%endif%}
+            
            
         </div>
           {%endif%}

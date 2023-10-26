@@ -49,7 +49,7 @@ class stockHolders( LoginRequiredMixin,View):
         
        
         color         = "info"
-        header_title  = "ذینفعان سازمان "
+        header_title  = "ذی نفعان سازمان "
         context = {'extend':self.extend , 'menuBack':self.menuBack, 'header_title':header_title,
         'header_title':header_title,'color':color }
         return render(request,self.template_name , context)
@@ -67,6 +67,41 @@ class modelProccess( LoginRequiredMixin,View):
        
         color         = "info"
         header_title  = "مدل فرآیندی"
+        context = {'extend':self.extend , 'menuBack':self.menuBack, 'header_title':header_title,
+        'header_title':header_title,'color':color }
+        return render(request,self.template_name , context)
+    
+
+class mostanadChange( LoginRequiredMixin,View):
+    redirect_field_name = '/profile/login'
+    template_name = "mostanadChange.html"
+    extend = 'baseEmployee.html'
+    menuBack = 'ViewRiskDashboard'
+    
+    @staff_only 
+    def get(self, request,*args, **kwargs):
+        
+       
+        color         = "info"
+        header_title  = "درخواست تهیه / تغییر در مدرک "
+        context = {'extend':self.extend , 'menuBack':self.menuBack, 'header_title':header_title,
+        'header_title':header_title,'color':color }
+        return render(request,self.template_name , context)
+    
+    
+
+class performanceIndex( LoginRequiredMixin,View):
+    redirect_field_name = '/profile/login'
+    template_name = "performanceIndex.html"
+    extend = 'baseEmployee.html'
+    menuBack = 'ViewRiskDashboard'
+    
+    @staff_only 
+    def get(self, request,*args, **kwargs):
+        
+       
+        color         = "info"
+        header_title  = "شاخص عملکردی"
         context = {'extend':self.extend , 'menuBack':self.menuBack, 'header_title':header_title,
         'header_title':header_title,'color':color }
         return render(request,self.template_name , context)

@@ -23,7 +23,9 @@ from .views import (
     ViewMeetingtReview,
     add_agenda,
     add_enactment,
-    ViewMeetingDashboard
+    ViewMeetingDashboard,
+    add_other_member,
+    delete_other_member,
     # CreateViewPerformanceFormula,
     # CreateViewPerformanceVariables,
     # add_variable,
@@ -57,6 +59,9 @@ urlpatterns = [
 ]
 htmx_urlpatterns =[
     path('add-agenda/' , add_agenda , name='add-agenda'),
-    path('add-enactment/' , add_enactment , name='add-enactment')
+    path('add-enactment/' , add_enactment , name='add-enactment'),
+    path('add_other_member/<int:meetingId>' , add_other_member , name='add_other_member'),
+    path('delete_other_member/<int:memberId>/' , delete_other_member , name='delete_other_member')
+    
 ]
 urlpatterns += htmx_urlpatterns

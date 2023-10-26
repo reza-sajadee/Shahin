@@ -18,7 +18,9 @@ from .views import (
     ChangeActionStatus,
     change_status,
     UpdateViewPlanProfile,
-    DeleteViewAction
+    DeleteViewAction,
+    ViewPlanProfile2,
+    UpdateViewAction
 )
 
 urlpatterns = [
@@ -29,9 +31,11 @@ urlpatterns = [
     # path('', ListViewProject.as_view() ,name='Project'),
      path('plan/dashbaord', ViewPlanDashboard.as_view() ,name='ViewPlanDashboard'),
      path('plan/create', CreateViewPlanProfile.as_view() ,name='CreateViewPlanProfile'),
+     path('plan/update', UpdateViewAction.as_view() ,name='UpdateViewAction'),
      path('plan/update/<int:id>', UpdateViewPlanProfile.as_view() ,name='UpdateViewPlanProfile'),
      path('plan/list', ListViewPlanProfile.as_view() ,name='ListViewPlanProfile'),
      path('plan/<int:id>', ViewPlanProfile.as_view() ,name='ViewPlanProfile'),
+     path('plan2/<int:id>', ViewPlanProfile2.as_view() ,name='ViewPlanProfile2'),
      path('plan/action/status/<int:actionId>', ChangeActionStatus.as_view() ,name='ChangeActionStatus'),
      path('plan/action/delete/<int:id>', DeleteViewAction.as_view() ,name='DeleteViewAction'),
 

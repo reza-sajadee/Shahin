@@ -61,6 +61,9 @@
                     <li class="list-group-item  border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
                       <div class="d-flex    flex-column">
                         <h5 class="mb-1 text-dark font-weight-bold">تیم</h5> <h6> {{activitySlected.team.title}}</h6>
+                      {%for member in  activitySlected.team.memberProfile.all%}
+                        {{member}}
+                      {% endfor %}
                       </div>
                       <div class="d-flex align-items-center ">
                         
@@ -70,7 +73,7 @@
                   <div class="col-4 mx-4 ">
                     <li class="list-group-item  border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
                       <div class="d-flex    flex-column">
-                        <h5 class="mb-1 text-dark font-weight-bold">عنوان</h5> <h6>{{activitySlected.activity}}</h6>
+                        <h5 class="mb-1 text-dark font-weight-bold">عنوان</h5> <h6>{{activitySlected.get_activity_display}}</h6>
                       </div>
                       <div class="d-flex align-items-center ">
                         
@@ -85,6 +88,11 @@
                     <a href="{%url menuBack%}" class="btn w-100  btn-outline-danger">
                       بازگشت </a>
                   </div>
+                  <div class="col-5">
+                    <a   class="btn w-100  btn-outline-warning"  href="{% url 'ChangeViewRiskActivityChange' activitySlected.id %}" >
+                      اتمام
+                    </a>
+                  </div>
                 </div>
               </ul>
 
@@ -96,8 +104,8 @@
         <div class="col-12">
             <div class="card my-4">
                 <div class="card-header p-0 position-relative mt-4 mx-3 z-index-2">
-                    <div class="bg-gradient-danger shadow-info border-radius-lg px-3 pt-4 pb-3">
-                        <h6 class="text-white text-center ps-3">لیست تیم ها</h6>
+                    <div class="bg-gradient-info shadow-info border-radius-lg px-3 pt-4 pb-3">
+                        <h6 class="text-white text-center ps-3">لیست  ریسک های شناسایی شده</h6>
                     </div>
                 </div>
                 <div class="card-body px-0 pb-2">
@@ -111,91 +119,88 @@
               <div class="col-2 text-center">بیشتر</div>
               <div class="col-1 text-center">حذف</div>
             </div>
-            {%for datas in list_data%}
-               
-            
-            
-                {% for key, values in datas.items %}
-                  <div class="row border-bottom py-3">
-                    {% for v in values %}
-                  
-                      {% if v.0 == 0%}
-                        <div class="col-5 text-center">{{v.1}}</div>
-                      {% endif %}
-                      {% if v.0 == 1 %}
-                        <div class="col-4 text-center">{{v.1}}</div>
-                      {%endif %}
-                      {% if v.0 == 2 %}
-                      
-                        <a href="#" onclick="show_hide_row('hidden_row{{v.1}}');" class="col-2"><div class="  ms-2 d-flex align-items-center justify-content-center">
-                          <img style="max-width: 50px;" src="{% static 'img/svg/view.svg' %}" >
-                        </div></a>
-                        
 
-                        <a class="nav-link text-black-80 col-1" href="/risk/identification/delete/{{v.1}}""   >
-                          <div class="  ms-2 d-flex align-items-center justify-content-center">
-                            <img style="max-width: 50px;" src="{% static 'img/svg/close.svg' %}" >
+            {%for item in queryset%}
+            <div class="row border-bottom py-3">
+                  <div class="col-5 text-center">{{item.riskFailureModes}}</div>
+                  <div class="col-4 text-center">{{item.process.title}}</div>
+                  <a href="#" onclick="show_hide_row('hidden_row{{item.id}}');" class="col-2"><div class="  ms-2 d-flex align-items-center justify-content-center">
+                    <img style="max-width: 50px;" src="{% static 'img/svg/view.svg' %}" >
+                  </div></a>
+                  <a class="nav-link text-black-80 col-1" data-bs-toggle="modal" role="button" data-bs-target="#delete"    >
+                    <div class="  ms-2 d-flex align-items-center justify-content-center">
+                      <img style="max-width: 50px;" src="{% static 'img/svg/close.svg' %}" >
+                    </div>
+                  </a>
+                  <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="delete" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title font-weight-normal" id="exampleModalLabel"> حذف ریسک ثبت شده  </h5>
+                            <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
                           </div>
-                        </a>
-                        <div id="hidden_row{{v.1}}" class="hidden_row row moreData py-3" style="display:none">
-                          
-                      {%endif %}
-                      {% if v.0 == 3 or v.0 == 4 %}
-                      {% if v.0 == 3 %}
-                          <div class="row py-3">
-                            {% endif %}
-                            {% if v.0 == 3 %}
-                              <div class="col-8">
-                                <span class="nowrap fw-bold text-dark" >   گروه کسب و کار : </span><span class="nowrap"> {{v.1}}</span> 
-                              </div>
-                            {% endif %}
-                            {% if v.0 == 4 %}
-                              <div class="col-4">
-                                <span class="nowrap fw-bold text-dark" >   کد فرآیند :</span> <span> {{v.1}} </span>
-                              </div>
-                              
-                            {% endif %}
-                            {% if v.0 == 4 %}
-                              </div>
-                              <hr class="dark horizontal">
-                            {%endif%}
-                      {% endif %}
-
-
-                      {% if v.0 == 5 %}
-                      <div class="py-3">
-                        <span class="fw-bold text-dark" >  علل بروز : </span>
-                        <p class="py-3">{{v.1}}</p>
-                      </div>
-                      <hr class="dark horizontal">
-                      {% endif %}
-
-                      {% if v.0 == 6 %}
-                      <div class="py-3">
-                        <span class="fw-bold text-dark" >  اثرات بروز خطا  : </span>
-                        <p class="py-3 .text-secondary">{{v.1}}</p>
-                      </div>
-                      <hr class="dark horizontal">
-                      {% endif %}
-
-                      {% if v.0 == 7 %}
-                      <div class="py-3">
-                        <span class="fw-bold text-dark" >  کنترل های فعلی  : </span>
-                        <p class="py-3 .text-secondary">{{v.1}}</p>
-                      </div>
-                      <hr class="dark horizontal">
+                          <div class="modal-body">
+                            <p>آیا اطمینان دارید که می خواهید ریسک <strong> {{item.riskFailureModes}} </strong> را حذف نمایید ؟ </p>
+                            
+                          </div>
+                          <div class="modal-footer">
+                            
+                            <a type="button" class="btn btn-link  ml-auto" data-bs-dismiss="modal">کنسل</a>
+                            <a type="button" class="btn bg-danger text-white" href="{% url 'DeleteViewRiskIdentification' item.id%}">حذف </a>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                  <div id="hidden_row{{item.id}}" class="hidden_row row moreData py-3" style="display:none">
+                    
+                
+                    <div class="row py-3">
+                     
+                        <div class="col-8">
+                          <span class="nowrap fw-bold text-dark" >   گروه کسب و کار : </span><span class="nowrap"> {{item.group.title}}</span> 
+                        </div>
+                     
+                        <div class="col-4">
+                          <span class="nowrap fw-bold text-dark" >   کد فرآیند :</span> <span> {{item.process.processCode}} </span>
                         </div>
                         
-                      {% endif %}
+                     
+                        </div>
+                        <hr class="dark horizontal">
+                     
 
-                    {% endfor %}
-                    
-                    
 
-                  </div>
-                {% endfor %}
               
+                <div class="py-3">
+                  <span class="fw-bold text-dark" >  علل بروز : </span>
+                  <p class="py-3">{{item.riskCauses}}</p>
+                </div>
+                <hr class="dark horizontal">
+               
+                <div class="py-3">
+                  <span class="fw-bold text-dark" >  اثرات بروز خطا  : </span>
+                  <p class="py-3 .text-secondary">{{item.riskEffects}}</p>
+                </div>
+                <hr class="dark horizontal">
+                
+                <div class="py-3">
+                  <span class="fw-bold text-dark" >  کنترل های فعلی  : </span>
+                  <p class="py-3 .text-secondary">{{item.currentAction}}</p>
+                </div>
+                <hr class="dark horizontal">
+                  </div>
+                  
+               
+              
+              
+
+            </div>
             {%endfor%}
+
+
+           
           </div>
 
 
@@ -204,13 +209,11 @@
                     <div class="row py-3 mx-3">  
                       <form action="{% url 'ChangeViewRiskActivityChange' activitySlected.id %}"   id="iactive-form" method="get" ">               
 
-                        <a  data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        <a  onclick="changeImage()" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
                         
-                        <img style="max-width: 50px; min-width: 30px;" src="{% static 'img/svg/plus.svg' %}" >
+                        <img id="plus" style="max-width: 50px; min-width: 30px;" src="{% static 'img/svg/plus2.svg' %}" >
                         </a>
-                        <a method="POST" class="btn btn-primary" style="float:left;" href="{% url 'ChangeViewRiskActivityChange' activitySlected.id %}" role="button" aria-expanded="false" aria-controls="collapseExample">
-                          اتمام
-                        </a>
+                        
                         
                           {% csrf_token %}
                             <input type="hidden" id="sender"   name="sender"   value={{activitySlected.sender.id}}>
@@ -384,7 +387,23 @@ crossorigin="anonymous"></script>
 
  
 </script>
+<script>
+  function changeImage() {
+    var imagePlus = "{%static 'img/svg/plus2.svg' %}"
+    var imageMinus = "{%static 'img/svg/minus.png' %}"
+    var imageSrc =$('#plus').attr('src');
+    if(imageSrc == imagePlus){
+      imageSrc = imageMinus;
+      $("#plus").attr("src",imageMinus);
+    }else{
+      imageSrc = imagePlus;
+      $("#plus").attr("src",imagePlus);
+    }
 
+    
+    
+  }
+  </script>
 {%endblock scripts%}
 
 

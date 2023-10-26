@@ -46,6 +46,7 @@
                 <th class="text-center text-lg font-weight-bolder opacity-7">پایان</th>
      
                 <th class="text-center text-lg font-weight-bolder opacity-7">جزییات</th>
+                <th class="text-center text-lg font-weight-bolder opacity-7"> 2 جزییات</th>
     
             
              
@@ -64,6 +65,13 @@
                     <td class="narowFont text-center overflow-hidden">{{datas.deadLine|to_jalali:'%Y/%m/%d'}}</td>
                     <td>
                       <a class="nav-link text-black-80" href="{% url 'ViewPlanProfile' datas.id %}"   >
+                        <div class="  ms-2 d-flex align-items-center justify-content-center">
+                          <img style="max-width: 50px; min-width: 30px;" src="{% static 'img/svg/view.svg' %}" >
+                        </div>
+                      </a>
+                    </td>
+                    <td>
+                      <a class="nav-link text-black-80" href="{% url 'ViewPlanProfile2' datas.id %}"   >
                         <div class="  ms-2 d-flex align-items-center justify-content-center">
                           <img style="max-width: 50px; min-width: 30px;" src="{% static 'img/svg/view.svg' %}" >
                         </div>

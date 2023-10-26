@@ -33,21 +33,26 @@
               <form action="" method="POST" enctype="multipart/form-data">
                   {% csrf_token %}
                   {% if columns == 1%}
-                    {% for field  in form.visible_fields %}
-
+                   
+                  
                     <div class="input-group input-group-static mb-4">
+                      
                       <label class="" for="{{ field.auto_id }}">
-                        {{ field.label }}
+                        نوع مسئله را انتخاب کنید
                       </label>
-                      {{field }}
-                      {% if field.errors %}
-                        <div class="alert alert-danger" role="alert">
-                          {{ field.errors.as_text}}
-                        </div>
-                      {% endif %}
+                      {{form.problem}}
+                      
+                    </div>
+
+                    <div class="input-group input-group-static mb-4" style="display: block;" id="documentRelatedField">
+                      <label class="" for="{{ field.auto_id }}">
+                        سند مربوطه را انتخاب کنید
+                      </label>
+                      {{form.documentRelated}}
+                      
                     </div>
                    
-                    {% endfor %}
+                   
                   {% endif %}
 
                   
@@ -78,5 +83,15 @@
 
 {%block scripts%}
 <script src="{% static '/js/select2.min.js' %}"></script>
+
+<script>
+  $('#id_problem').on("select2:select", function (e) {
+    var selectedValue = $('#id_problem').select2().val();
+    if(selectedValue == 'delete')
+      document.getElementById("documentRelatedField").style.display="none";
+    else
+    document.getElementById("documentRelatedField").style.display="block";
+});
+</script>
 {%endblock scripts%}
 

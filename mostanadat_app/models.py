@@ -16,7 +16,7 @@ category_choices = (
 class TypeMadrak(models.Model):
     title                = models.CharField(max_length=100, blank=True , null=True)
     typeMadrakCode       = models.CharField(max_length=100, blank=True , null=True)
-    ekhtesat             = models.CharField(max_length=100 , blank=True , null=True) 
+    ekhtesar             = models.CharField(max_length=100 , blank=True , null=True) 
     created_at           = models.DateTimeField(auto_now_add=True)
     updated_at           = models.DateTimeField(auto_now=True)
     
@@ -132,7 +132,7 @@ class ConfirmationDataBase(models.Model):
 
 
 class MostanadatDakheliChange(models.Model):
-    PROBLEM_TYPE     = (('create','تدوین سند'),('edit','اصلاح سند') ,('delete' , 'حذف صند')  )
+    PROBLEM_TYPE     = (('create','تدوین سند'),('edit','اصلاح سند') ,('delete' , 'حذف سند')  )
     
     problem          = models.CharField(max_length=75, choices= PROBLEM_TYPE ,null=True, blank=True ) 
     documentRelated = models.ForeignKey(MostanadatDakheli , blank=True, null=True, related_name="MostanadatDakheli" , on_delete = models.CASCADE )
@@ -163,7 +163,7 @@ def user_directory_path_correctiveAction(instance, filename):
 class MostanadatDakheliChangeActivityManager(models.Model):
 
     ACTIVITY_STATUS  = (('done','done'),('doing','doing'), ('completed' , 'completed') )
-    ACTIVITY_LIST    = (('register','اطلاعات اولیه'),('barresiMafogh','تاییدیه اولیه مافوق'),('barresiKarshenas','بررسی کارشناس دفتر توسعه مدیریت و تحقیقات'), ('barresiModir','بررسی مدیر دفتر توسعه مدیریت و تحقیقات'), ('tadvinSanad','تدوین مدرک جدید') , ('isDelete' , 'آیا سند حذف میشود ؟') , ('newDoc' , 'بارگزاری و تدوین سند جدید') , ('editDoc' , 'ویرایش سند جدید') , ('reform' , 'اصلاح و تکمیل مدارک'))
+    ACTIVITY_LIST    = (('register','اطلاعات اولیه'),('barresiMafogh','تاییدیه اولیه مافوق'),('barresiKarshenas','بررسی کارشناس دفتر توسعه مدیریت و تحقیقات'), ('barresiModir','بررسی مدیر دفتر توسعه مدیریت و تحقیقات'), ('tadvinSanad','تدوین مدرک جدید') , ('isDelete' , 'آیا سند حذف می شود ؟') , ('newDoc' , 'بارگزاری و تدوین سند جدید') , ('editDoc' , 'ویرایش سند جدید') , ('reform' , 'اصلاح و تکمیل مدارک'))
     
     title            = models.CharField(max_length=250, blank=True , null=True  )
     question         = models.CharField(max_length=250, blank=True , null=True  )

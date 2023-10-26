@@ -21,7 +21,8 @@ from django.db.models import Model
 from profile_app.decorators import  staff_only
 from organization_app.models import JobBank
 from django.db.models import Q
-
+from collections import defaultdict
+from datetime import datetime
 # Create your views here.
 
 class CreateViewProjectProfile( LoginRequiredMixin,View):
@@ -75,7 +76,7 @@ class ListViewProjectProfile(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست   پروفایل پروژه ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام نوع پست سازمانی ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام نوع پست سازمانی ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -130,7 +131,7 @@ class ListViewProject(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست    پروژه ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام نوع پست سازمانی ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام نوع پست سازمانی ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -245,7 +246,7 @@ class DeleteViewProject( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "پاک کردن یک   پروژه"
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "آیا میخواهید که   پروژه   " + obj.title + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که   پروژه   " + obj.title + " "  + " را پاک کنید   ؟"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "delete_forever"
             #تعداد ستون ها            
@@ -294,7 +295,7 @@ class ViewProject( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "اطلاعات پروژه   "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "چزییات ارزیابی ریسک سوال را در این صفحه میتوانید مشاهده کنید"
+            discribtion   = "چزییات ارزیابی ریسک سوال را در این صفحه می توانید مشاهده کنید"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "person_add"
             #تعداد ستون ها            
@@ -335,6 +336,7 @@ class ViewPlanDashboard( LoginRequiredMixin,View):
  
     def get(self, request ,*args, **kwargs):
         
+        dataBars = defaultdict(list)
         
         selectedType =  request.GET.get('type') 
         createNewProfile = None
@@ -347,6 +349,11 @@ class ViewPlanDashboard( LoginRequiredMixin,View):
 
         myPlanCount = allPlan.filter(responsible__profile__user = request.user).count()
         myPlanDoneCount = allPlan.filter(responsible__profile__user = request.user , status='complate').count()
+        for plan in allPlan:
+            dataBars['label'].append(plan.title)
+            dataBars['doing'].append(len(Action.objects.filter(planProfileRelated = plan).filter(status = 'doing')))
+            dataBars['done'].append(len(Action.objects.filter(planProfileRelated = plan).filter(status = 'done')))
+            #dataBars['done'].append(len(plan.filter(status = 'done')))
         
         member_link =  None
      
@@ -368,7 +375,10 @@ class ViewPlanDashboard( LoginRequiredMixin,View):
         
         
         allPlan = PlanProfile.objects.all().filter(responsible = jobBankSelected)
-        allAction = Action.objects.all().filter(planProfileRelated = profileSelected.id)
+        if(profileSelected):
+            allAction = Action.objects.all().filter(planProfileRelated = profileSelected.id)
+        else:
+            allAction = None
         
         
        
@@ -381,7 +391,7 @@ class ViewPlanDashboard( LoginRequiredMixin,View):
      
      
         
-        context = {'extend':self.extend , 'menuBack':self.menuBack, 'header_title':header_title,'member_link':member_link,
+        context = {'extend':self.extend , 'menuBack':self.menuBack, 'header_title':header_title,'member_link':member_link,'dataBars':dataBars,
         'discribtion':discribtion,'icon_name':icon_name,'header_title':header_title,'responsible_link':responsible_link ,'profileSelected':profileSelected,
         'color':color  ,'partials':partials,'createNewProfile':createNewProfile,'allProfile':allProfile , 'allAction':allAction , 'selectProfile' :self.selectProfile,
         'allPlanCount' :allPlanCount , 'allPlanDoneCount' :allPlanDoneCount , 'myPlanCount' :myPlanCount , 'myPlanDoneCount' :myPlanDoneCount 
@@ -568,7 +578,7 @@ class ListViewPlanProfile(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست     برنامه های اجرایی"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام نوع پست سازمانی ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام نوع پست سازمانی ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -613,13 +623,13 @@ class ViewPlanProfile( LoginRequiredMixin,View):
     redirect_field_name = '/profile/login'
     template_name = "detailPlanProfile.html"
     extend = 'baseEmployee.html'
-
+    menuBack = 'ListViewPlanProfile'
     
     @staff_only 
     def get(self, request,id=None ,*args, **kwargs):
 
       
-       
+        form = CreateFormPlanProfile()
         planProfileSelected = PlanProfile.objects.get(id = id)
         
         allAction = Action.objects.all().filter(planProfileRelated = planProfileSelected)
@@ -627,7 +637,7 @@ class ViewPlanProfile( LoginRequiredMixin,View):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "اطلاعات پروژه   "
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "چزییات ارزیابی ریسک سوال را در این صفحه میتوانید مشاهده کنید"
+        discribtion   = "چزییات ارزیابی ریسک سوال را در این صفحه می توانید مشاهده کنید"
         #آیکون نمایش داده شده در بخش بالای سایت            
         icon_name     = "person_add"
         #تعداد ستون ها            
@@ -648,9 +658,9 @@ class ViewPlanProfile( LoginRequiredMixin,View):
         #جدول لیست کلاس ها
         # عنوان های جدول
         ss = "--accent-color:#41516C"
-            
-        context =  {'extend':self.extend , 'header_title':header_title,
-            'discribtion':discribtion,'icon_name':icon_name,'allAction':allAction,
+        allJobBank  =     JobBank.objects.all()
+        context =  {'extend':self.extend,'menuBack' : self.menuBack , 'form':form , 'header_title':header_title,
+            'discribtion':discribtion,'icon_name':icon_name,'allAction':allAction,'allJobBank':allJobBank,
             'color':color , 'columns':columns, 'planProfileSelected' : planProfileSelected,'ss':ss
              }
         return render(request,self.template_name,context)
@@ -659,16 +669,116 @@ class ViewPlanProfile( LoginRequiredMixin,View):
         planProfileSelected = PlanProfile.objects.get(id = id)
         form = CreateFormAction( request.POST )
         #فرم دریافت شده
+        
+        
         if form.is_valid():
             
             
             instance = form.save()
             instance.color = instance.id%5
             
-            if(len(Action.objects.all().filter(planProfileRelated = planProfileSelected)) == 1):
-                instance.status = 'doing'
+            # if(len(Action.objects.all().filter(planProfileRelated = planProfileSelected)) == 1):
+            #     instance.status = 'doing'
                 
             instance.save()
+            sweetify.toast(self.request,timer=30000 , icon="success",title =' برنامه اجرایی جدید ساخته شد!!!')
+            return redirect('ViewPlanProfile' ,  id=id)
+        else:
+            print (form.errors)
+            sweetify.toast(self.request,timer=30000 , icon="error",title =' برنامه اجرایی جدید ساخته نشد !!!')
+            return redirect('ViewPlanProfile' ,  id=id)
+ 
+
+class ViewPlanProfile2( LoginRequiredMixin,View):
+    redirect_field_name = '/profile/login'
+    template_name = "detailPlanProfile2.html"
+    extend = 'baseEmployee.html'
+    menuBack = 'ListViewPlanProfile'
+    
+    @staff_only 
+    def get(self, request,id=None ,*args, **kwargs):
+
+      
+        form = CreateFormPlanProfile()
+        planProfileSelected = PlanProfile.objects.get(id = id)
+        
+        allAction = Action.objects.all().filter(planProfileRelated = planProfileSelected)
+        progressDone = 0
+        for action in allAction:
+            progressDone = progressDone + (action.progress * (action.weight/100))
+        
+        #عنوان نمایش داده شده در بالای صفحه
+        header_title  = "اطلاعات پروژه   "
+        #توضحات نمایش داده شده در زیر عنوان
+        discribtion   = "چزییات ارزیابی ریسک سوال را در این صفحه می توانید مشاهده کنید"
+        #آیکون نمایش داده شده در بخش بالای سایت            
+        icon_name     = "person_add"
+        #تعداد ستون ها            
+        color         = "info"
+        #رنگ             
+        columns       = 1
+        projectRemainsDayes = (planProfileSelected.deadLine.date() - datetime.now().date()).days
+        
+        if (projectRemainsDayes < 0 ):
+            projectRemainsDayes = 0
+        projectPassedDayes = (datetime.now().date() - planProfileSelected.startTiem.date()).days
+        
+        if (projectPassedDayes < 0 ):
+            projectPassedDayes = 0
+        projectDays = (planProfileSelected.deadLine.date() - planProfileSelected.startTiem.date()).days
+        projectBarColor = 'success'
+        if((projectPassedDayes / projectDays) > 0.5):
+            if((projectPassedDayes / projectDays) > 0.75):
+                projectBarColor = 'danger'
+            else:
+                projectBarColor = 'warning'
+       
+        
+        
+        try:
+            
+            max_weight = allAction[0].max_weight()
+        except:
+            max_weight = 100
+        
+        ss = "--accent-color:#41516C"
+        allJobBank  =     JobBank.objects.all()
+        context =  {'extend':self.extend,'menuBack' : self.menuBack , 'form':form , 'header_title':header_title,
+            'discribtion':discribtion,'icon_name':icon_name,'allAction':allAction,'allJobBank':allJobBank,'max_weight':max_weight,
+            'color':color , 'columns':columns, 'planProfileSelected' : planProfileSelected,'ss':ss , 'progressDone':progressDone , 'projectRemainsDayes' :projectRemainsDayes , 'projectPassedDayes' :projectPassedDayes ,'projectDays' :projectDays ,'projectBarColor':projectBarColor,
+             }
+        return render(request,self.template_name,context)
+ 
+    def post(self, request , id = None  , *args, **kwargs):
+        planProfileSelected = PlanProfile.objects.get(id = id)
+        form = CreateFormAction( request.POST )
+        #فرم دریافت شده
+        
+        print(form.is_valid())
+        if form.is_valid():
+            
+            
+            instance = form.save()
+            instance.color = instance.id%5
+            print(request.POST.get('weight'))
+            instance.weight = int(request.POST.get('weight'))
+            # if(len(Action.objects.all().filter(planProfileRelated = planProfileSelected)) == 1):
+            #     instance.status = 'doing'
+                
+            instance.save()
+            sweetify.toast(self.request,timer=30000 , icon="success",title =' برنامه اجرایی جدید ساخته شد!!!')
+            return redirect('ViewPlanProfile2' ,  id=id)
+        else:
+            print (form.errors)
+            sweetify.toast(self.request,timer=30000 , icon="error",title =' برنامه اجرایی جدید ساخته نشد !!!')
+            return redirect('ViewPlanProfile2' ,  id=id)
+ 
+    def put(self, request , id = None  , *args, **kwargs):
+        
+        obj = get_object_or_404(Action,id = id)
+        form = CreateFormAction(request.POST or request.FILES,instance=obj)
+        if form.is_valid():
+            form.save()
             sweetify.toast(self.request,timer=30000 , icon="success",title =' برنامه اجرایی جدید ساخته شد!!!')
             return redirect('ViewPlanProfile' ,  id=id)
         else:
@@ -720,4 +830,37 @@ class ChangeActionStatus( LoginRequiredMixin,View):
         
         return redirect('ViewPlanProfile' ,  id=id)
         
- 
+class UpdateViewAction( LoginRequiredMixin,View): 
+    redirect_field_name = '/profile/login'
+    template_name = "create.html"
+    extend = 'baseEmployee.html'
+    menuBack ="ViewMomayeziDashboard"
+    menu_link = 'ViewCalenderMomayezi'
+    def get_obj(self):
+        
+        id = self.kwargs.get('id')
+        obj=None
+        if id is not None:
+            obj = get_object_or_404(PlanProfile,id = id)
+        return obj
+
+    
+    def post(self, request , id = None  , *args, **kwargs):
+        
+        obj = get_object_or_404(Action,id = request.POST.get('id'))
+        progress_value = request.POST.get('progress')
+        if progress_value == '100':
+            obj.progress = 100
+            
+            obj.status = 'done'
+            obj.save()
+        else:
+            obj.progress = progress_value
+            obj.status = 'doing'
+            obj.save()
+
+
+        
+        sweetify.toast(self.request,timer=30000 , icon="success",title =' برنامه اجرایی جدید ساخته شد!!!')
+        return redirect('ViewPlanProfile2' ,  id=obj.planProfileRelated.id)
+        

@@ -200,7 +200,7 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(blank=True, max_length=250, null=True)),
                 ('question', models.CharField(blank=True, max_length=250, null=True)),
                 ('status', models.CharField(choices=[('done', 'done'), ('doing', 'doing'), ('completed', 'completed')], default='doing', max_length=75)),
-                ('activity', models.CharField(choices=[('register', 'اطلاعات اولیه'), ('barresiMafogh', 'تاییدیه اولیه مافوق'), ('barresiKarshenas', 'بررسی کارشناس دفتر توسعه مدیریت و تحقیقات'), ('barresiModir', 'بررسی مدیر دفتر توسعه مدیریت و تحقیقات'), ('tadvinSanad', 'تدوین مدرک جدید'), ('isDelete', 'آیا سند حذف میشود ؟'), ('newDoc', 'بارگزاری و تدوین سند جدید'), ('editDoc', 'ویرایش سند جدید'), ('reform', 'اصلاح و تکمیل مدارک')], max_length=75)),
+                ('activity', models.CharField(choices=[('register', 'اطلاعات اولیه'), ('barresiMafogh', 'تاییدیه اولیه مافوق'), ('barresiKarshenas', 'بررسی کارشناس دفتر توسعه مدیریت و تحقیقات'), ('barresiModir', 'بررسی مدیر دفتر توسعه مدیریت و تحقیقات'), ('tadvinSanad', 'تدوین مدرک جدید'), ('isDelete', 'آیا سند حذف می شود ؟'), ('newDoc', 'بارگزاری و تدوین سند جدید'), ('editDoc', 'ویرایش سند جدید'), ('reform', 'اصلاح و تکمیل مدارک')], max_length=75)),
                 ('file', models.FileField(blank=True, null=True, upload_to=mostanadat_app.models.user_directory_path_mostanadatDakheli_change)),
                 ('startTiem', models.DateTimeField(blank=True, null=True)),
                 ('deadLine', models.DateTimeField(blank=True, null=True)),

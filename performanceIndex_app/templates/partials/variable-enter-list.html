@@ -1,0 +1,114 @@
+{% load jalali_tags %}
+<div class="table-responsive " id="variable-enter-list">
+          
+    <table id="example" class="table uk-table uk-table-hover uk-table-striped align-items-center py-3 mb-0">
+      <br>
+      <thead>
+        
+        <tr>
+            
+            
+            
+            
+            <th class="text-center text-lg font-weight-bolder opacity-7">ردیف</th>
+            <th class="text-center text-lg font-weight-bolder opacity-7">عنوان متغییر</th>
+            <th class="text-center text-lg font-weight-bolder opacity-7">کد متغییر</th>
+            <th class="text-center text-lg font-weight-bolder opacity-7"> زمان شروع</th>
+            <th class="text-center text-lg font-weight-bolder opacity-7">زمان پایان</th>
+            <th class="text-center text-lg font-weight-bolder opacity-7">وضیعیت</th>
+       
+
+      
+         
+        </tr>
+      </thead>
+      <tbody>
+      {{today}}
+      {%for activity in activityNotDone%}
+       
+          <tr>
+              
+        
+            
+            
+            
+            <td class="narowFont text-center overflow-hidden">{{forloop.counter}}</td>
+              <td class="narowFont text-center overflow-hidden">{{activity.variableRelated.title}}</td>
+              <td class="narowFont text-center overflow-hidden">{{activity.variableRelated.code}}</td>
+              <td class="narowFont text-center overflow-hidden">{{activity.startTime|to_jalali:'%Y/%m/%d'}}</td>
+              <td class="narowFont text-center overflow-hidden">{{activity.deadLine|to_jalali:'%Y/%m/%d'}}</td>
+              <td class="narowFont text-center overflow-hidden">
+                
+            {%if activity.status == 'doing' %}
+                
+              {% if activity.startTime  < today %}
+               {% if activity.deadLine > today %}
+               <span  data-bs-toggle="modal" data-bs-target="#Modaldone{{activity.id}}" style="cursor:pointer"  class="badge  bg-warning badge-pill">انجام دادن</span >
+               
+               {%else%}
+                <span   style="cursor:pointer"  class="badge  bg-danger badge-pill">زمان انجام گذشته است </span >
+               {%endif%}
+              
+              {%else%}
+              <span   style="cursor:pointer"  class="badge  bg-info badge-pill">زمان انجام نشده است </span >
+              {%endif%}
+            {%else%}
+            <span   class="badge  bg-success badge-pill"> {{activity.texts}} </span >
+            {%endif%}
+                
+                </td>
+               
+              
+             
+             
+
+           
+          </tr>
+          <div class="modal fade" id="Modaldone{{activity.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title font-weight-normal" id="exampleModalLabel">  مقدار متغییر مربوط به {{activity.variableRelated.title}} را مربوط به تاریخ {{activity.startTime|to_jalali:'%Y/%m/%d'}} وارد کنید  </h5>
+                  <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+
+                  
+                  <form  hx-post="{%url 'add_variable_value' activity.id %}" hx-target="#variable-enter-list" ">
+
+                    {% csrf_token %}
+                    <div class="modal-body">
+                      
+                      <div class="input-group input-group-static mb-4">
+                        <label for="id_title">
+                             مقدار متغییر را ثبت کنید
+                        </label>
+                        <input type="text" name="variable" class="form-control" id="id_variable"></input>
+                        
+                      </div>
+                    
+                      
+                      
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn bg-gradient-danger" data-bs-dismiss="modal">لغو</button>
+                      <button type="submit" class="btn bg-gradient-success" data-bs-dismiss="modal">ثبت </button>
+                    </div>
+                    
+                   
+                  </form>
+                  
+                </div>
+               
+              </div>
+            </div>
+          </div>
+        {%endfor%}
+
+                  
+      </tbody>
+    </table>
+   
+  </div>

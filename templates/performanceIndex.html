@@ -1,0 +1,134 @@
+
+{% extends 'baseEmployee.html' %} 
+
+
+
+
+ {% load static %}
+ {% block style %}
+ <link rel="stylesheet" type="text/css" href="{% static '/css/dataTables.css' %}">
+
+
+ <script type="text/javascript" charset="utf8" src="{% static '/js/dataTables.js' %}"></script>
+ <script src="{%static '/js/chart.js' %}"></script>
+ <script src="{% static '/js/jquery.dataTables.js' %}"  ></script>
+ {%endblock style%}
+ 
+{%block content%}
+ <div class="container py-6">
+  
+   <div class="row justify-content-md-center">
+     <div class="card card-fram col-12">
+       <div class="card-header my-5 p-0 position-relative mt-n4 mx-3 z-index-2">
+         <div class="row">
+          
+           <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+             <h4 class="text-white text-capitalize ps-3">{{header_title}}</h4>
+ 
+           </div>
+         </div>
+       </div>
+      
+       <div class="container" id="dashboard">
+        <div class="container ">
+          <div class="col-12">
+            <div class="row justify-content-center">
+              <div class="col-lg-3 col-sm-3 mb-lg-0 mb-3 py-3">
+                <a href="{%url 'ViewPerformanceIndexDashboard'%}">
+                  <div class="card bg-info">
+                    <div class="card-header bg-info p-3 pt-2">
+                      <div class="pt-1">
+                        <p class="text-lg text-white opacity-7 mb-0 text-capitalize">
+                          داشبورد شاخص عملکردی
+                        </p>
+                        <h4 class="mb-0 narowFont">
+                        {{lenDoneAct}}
+                        </h4>
+                      </div>
+                    </div>
+                    <hr class="dark horizontal my-0" />
+                    <div class="card-footer">  <p class="mb-0 text-white narowFont">
+                      در این بخش می توانید داشبورد شاخص عملکردی را  مشاهده نمایید .
+                      </p></div>
+                  </div>
+                </a>
+              </div>
+              <div class="col-lg-3 col-sm-3 mb-lg-0 mb-3 py-3">
+                <a href="{%url 'CreateViewPerformanceIndex'%}">
+                  <div class="card bg-success">
+                    <div class="card-header bg-success p-3 pt-2">
+                      <div class="pt-1">
+                        <p class="text-lg mb-0 text-white opacity-7 text-capitalize">
+                          تعریف شاخص عملکردی جدید
+                        </p>
+                      </div>
+                    </div>
+                    <hr class="dark horizontal my-0" />
+                    <div class="card-footer">  <p class="mb-0 text-white narowFont">
+                      در این بخش می توانید شاخص عملکردی جدید تدوین نمایید.
+                      </p></div>
+                  </div>
+                </a>
+              </div>
+              <div class="col-lg-3 col-sm-3 mb-lg-0 mb-3 py-3">
+                <a href="{%url 'ListViewPerformanceFormula' %}">
+                  <div class="card bg-warning">
+                    <div class="card-header bg-warning p-3 pt-2">
+                      <div class="pt-1">
+                        <p class="text-lg text-white opacity-7 mb-0 text-capitalize">
+                          لیست شاخص های عملکردی
+                        </p>
+                        <h4 class="mb-0 narowFont">
+                        {{lenDoneAct}}
+                        </h4>
+                      </div>
+                    </div>
+                    <hr class="dark horizontal my-0" />
+                    <div class="card-footer">  <p class="mb-0 text-white narowFont">
+                      در این بخش می توانید لیست شاخص های عملکردی را  مشاهده نمایید .
+                      </p></div>
+                  </div>
+                </a>
+              </div>
+              <div class="col-lg-3 col-sm-3 mb-lg-0 mb-3 py-3">
+                <a href="{%url 'ListViewPerformanceَActivity' %}">
+                  <div class="card bg-danger">
+                    <div class="card-header bg-danger p-3 pt-2">
+                      <div class="pt-1">
+                        <p class="text-lg text-white opacity-7 mb-0 text-capitalize">
+                          لیست فعالیت های شاخص های عملکردی
+                        </p>
+                        <h4 class="mb-0 narowFont">
+                        {{lenDoneAct}}
+                        </h4>
+                      </div>
+                    </div>
+                    <hr class="dark horizontal my-0" />
+                    <div class="card-footer">  <p class="mb-0 text-white narowFont">
+                      در این بخش می توانید لیست فعالیت های شاخص های عملکردی را  مشاهده نمایید .
+                      </p></div>
+                  </div>
+                </a>
+              </div>
+             
+              
+            
+            </div>
+          </div>
+      </div>   
+      </div>
+      
+     </div>
+      
+      
+     
+     
+   </div>
+         
+     
+</div>
+
+{% endblock content%}
+ 
+ 
+ 

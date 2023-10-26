@@ -38,37 +38,66 @@
               
               <tr>
                 
-                {% for header in header_table %}
-                  <th class="text-center text-lg font-weight-bolder opacity-7">{{header}}</th>
-                {% endfor %}
-                
-                <th class="text-center text-lg font-weight-bolder opacity-7">انجام دادن</th>
-            
-              
+                {% if typeList == 'doing' %}
+                  <th class="text-center text-lg font-weight-bolder opacity-7">کد اقدام</th>
+                  <th class="text-center text-lg font-weight-bolder opacity-7">عنوان اقدام اصلاحی </th>
+                  <th class="text-center text-lg font-weight-bolder opacity-7">مرحله اقدام </th>
+                  <th class="text-center text-lg font-weight-bolder opacity-7">گیرنده</th>
+                  <th class="text-center text-lg font-weight-bolder opacity-7">انجام دادن</th>
+                {% else %}
+                  <th class="text-center text-lg font-weight-bolder opacity-7">کد اقدام</th>
+                  <th class="text-center text-lg font-weight-bolder opacity-7">واحد </th>
+
+                  <th class="text-center text-lg font-weight-bolder opacity-7">عنوان اقدام اصلاحی </th>
+
+                  <th class="text-center text-lg font-weight-bolder opacity-7">اثربخش / غیر اثربخش</th>
+                  <th class="text-center text-lg font-weight-bolder opacity-7">اتمام / نا تمام</th>
+      
+                {%endif%}
               </tr>
             </thead>
             <tbody>
              
             
-              {%for datas in list_data%}
-                {% for key, values in datas.items %}
+              {%for data in queryset%}
+             
+                {%if typeList == 'doing' %}
                 <tr>
+                    <td class="narowFont text-center overflow-hidden">{{data.CorrectiveActionRelated.demandantId}}</td>
+                    <td class="narowFont text-center overflow-hidden">{{data.firstStep.texts.all.0.text}}</td>
+                    <td class="narowFont text-center overflow-hidden">{{data.get_activity_display}}</td>
+                    <td class="narowFont text-center overflow-hidden">{{data.reciver}}</td>
                     
-                    {% for v in values %}
-                    <td class="narowFont text-center overflow-hidden">{{v}}</td>
-                    {% endfor %}
-                  
                     <td>
-                      <a class="nav-link text-black-80" href="{%url 'CreateViewCorrectiveActionStep' key %}"   >
+                      <a class="nav-link text-black-80" href="{%url 'CreateViewCorrectiveActionStep' data.id %}"   >
                         <div class="  ms-2 d-flex align-items-center justify-content-center">
                           <img style="max-width: 50px; min-width: 30px;" {% if icon%} src="{% static 'img/svg/view.svg' %}" {% else %}  src="{% static 'img/svg/edit.svg' %}" {% endif %} >
                         </div>
                       </a>
                     </td>
-                    
-                 
                 </tr>
-                {% endfor %}
+                {%else%}
+                <tr>
+                  <td class="narowFont text-center overflow-hidden">{{data.CorrectiveActionRelated.demandantId}}</td>
+                  <td class="narowFont text-center overflow-hidden">{{data.CorrectiveActionRelated.vahed.title}}</td>
+                    <td class="narowFont text-center overflow-hidden">{{data.firstStep.texts.all.0.text}}</td>
+                    <td class="narowFont text-center overflow-hidden">
+                      {%if data.CorrectiveActionRelated.effective == True%}
+                      بله
+                      {%else%}
+                      خیر
+                      {%endif%}
+                    </td>
+                    <td class="narowFont text-center overflow-hidden">
+                      {%if data.status == 'doing' %}
+                      بله
+                      {%else%}
+                      خیر
+                      {%endif%}
+                    </td>
+                 
+              </tr>
+                {%endif%}
               {%endfor%}
               
 

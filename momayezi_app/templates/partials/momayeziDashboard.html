@@ -100,124 +100,68 @@
       <div class="row py-5 justify-content-between">
         <div class="col-5 ">
           <ul class="list-group text-lg">
-            {%if maxAdamTitle %}
+            
             <li class="list-group-item d-flex                         
                 justify-content-between 
                 align-items-center bg-danger text-white">
                واحد هایی که بیشتری عدم انطباق را دارند
                
             </li>
+        
+            {%for vahed in allAdamVahed%}
             <li class="list-group-item d-flex                         
                 justify-content-between 
                 align-items-center">
-                {{maxAdamTitle.0}}
+                {{vahed.vahed}}
                 <span class="badge bg-danger 
                         rounded-pill">
-                        {{maxAdamValue.0}}
+                        {{vahed.count}}
                 </span>
             </li>
-            {%if maxAdamTitle.1 %}
-            <li class="list-group-item d-flex 
-                justify-content-between 
-                align-items-center">
-                {{maxAdamTitle.1}}
-                <span class="badge bg-danger 
-                    rounded-pill">
-                    {{maxAdamValue.1}}
-                </span>
-            </li>
-            {%endif%}
-            {%if maxAdamTitle.2 %}
-            <li class="list-group-item d-flex 
-                justify-content-between 
-                align-items-center">
-                {{maxAdamTitle.2}}
-                <span class="badge bg-danger 
-                    rounded-pill">
-                    {{maxAdamValue.2}}
-                </span>
-            </li>
-            {%endif%}
-            {%endif%}
-            {%if maxForsatTitle %}
+            {%endfor%}
+           
+            
+           
+           
             <li class="list-group-item d-flex                         
             justify-content-between 
             align-items-center bg-info text-white">
            واحد هایی که بیشترین  فرصت بهبود را دارند  
            
             </li>
+            {%for vahed in allForsatVahed%}
             <li class="list-group-item d-flex                         
                 justify-content-between 
                 align-items-center">
-                {{maxForsatTitle.0}}
+                {{vahed.vahed}}
                 <span class="badge bg-info 
                         rounded-pill">
-                        {{maxForsatValue.0}}
+                        {{vahed.count}}
                 </span>
             </li>
            
-            {%if maxForsatTitle.1 %}
-            <li class="list-group-item d-flex 
-                justify-content-between 
-                align-items-center">
-                {{maxForsatTitle.1}}
-                <span class="badge bg-info 
-                    rounded-pill">
-                    {{maxForsatValue.1}}
-                </span>
-            </li>
-            {%endif%}
-            {%if maxForsatTitle.2 %}
-            <li class="list-group-item d-flex 
-                justify-content-between 
-                align-items-center">
-                {{maxForsatTitle.2}}
-                <span class="badge bg-info 
-                    rounded-pill">
-                    {{maxForsatValue.2}}
-                </span>
-            </li>
-            {%endif%}
-            {%endif%}
-            {%if maxGhovatTitle %}
+           {%endfor%}
+           
+           
             <li class="list-group-item d-flex                         
             justify-content-between 
             align-items-center bg-success text-white text-lg">
            واحد هایی که بیشترین  نقاط قوت  را دارند  
            
             </li>
+            {%for vahed in allGhovatVahed%}
             <li class="list-group-item d-flex                         
                 justify-content-between 
                 align-items-center text-lg">
-                {{maxGhovatTitle.0}}
+                {{vahed.vahed}}
                 <span class="badge bg-success 
                         rounded-pill">
-                        {{maxGhovatValue.0}}
+                        {{vahed.count}}
                 </span>
             </li>
-            {%if maxGhovatTitle.1 %}
-            <li class="list-group-item d-flex 
-                justify-content-between 
-                align-items-center text-lg">
-                {{maxGhovatTitle.1}}
-                <span class="badge bg-success 
-                    rounded-pill">
-                    {{maxGhovatValue.1}}
-                </span>
-            </li>
-            {%endif%}
-            {%if maxGhovatTitle.2 %}
-            <li class="list-group-item d-flex 
-                justify-content-between 
-                align-items-center text-lg">
-                {{maxGhovatTitle.2}}
-                <span class="badge bg-success 
-                    rounded-pill">
-                    {{maxGhovatValue.2}}
-                </span>
-            </li>
-            {%endif%}
-            {%endif%}
+            {%endfor%}
+           
+           
         </ul>
         </div>
         <div class="col-6">
@@ -253,7 +197,7 @@ var myChart = new Chart(ctx, {
   data: {
     
     datasets: [{
-      data: {{maxAdamValue}},
+      data: [{%for x in allAdamVahed%} {{x.count}}, {%endfor%}],
       backgroundColor: [
         '#ff0000',
         '#ff0000a1',
@@ -264,7 +208,7 @@ var myChart = new Chart(ctx, {
      
     
     }, {
-      data: {{maxForsatValue}},
+      data: [{%for x in allForsatVahed%} {{x.count}}, {%endfor%}],
       backgroundColor: [
         '#1c3c60 ',
         '#1c3c60a1',
@@ -273,7 +217,7 @@ var myChart = new Chart(ctx, {
       
       
     }, {
-      data: {{maxGhovatValue}},
+      data: [{%for x in allGhovatVahed%} {{x.count}}, {%endfor%}],
       backgroundColor: [
         '#4caf50',
         '#4caf50a1',

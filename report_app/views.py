@@ -7,7 +7,8 @@ from .forms import CreateFormReportActivityManager
 from organization_app.models import    JobBank  ,GetItemsMultiAutoComplete
 from django.db.models import Q
 
-
+from notifications_app.models import Notifications
+from event_app.models import Event
 from .models import Report ,ReportActivityManager
 from profile_app.decorators import  staff_only
 from profile_app.models import Profile
@@ -87,9 +88,13 @@ class CreateViewReport( LoginRequiredMixin,View):
             f.save()
             
 
+
+            Event.objects.create( user =profileReciver , title =titleSelected ,end = f.deadLine , start =f.startTime   )
+            
+            Notifications.objects.create( title = ' یک درخواست گزارش توسط '  + profileSender.firstName + ' ' + profileSender.lastName + 'برای شما ثبت شده است.' , recivers = profileReciver )
             
             sweetify.toast(self.request,timer=30000 , icon="success",title ='   درخواست گزارش ثبت شد     !!!')
-            return redirect('ListViewReport')
+            return redirect('ViewReportDashboard')
         else :
             sweetify.toast(self.request,timer=30000 , icon="error",title ='درخواست گزارش ثبت شد  !!!')
         context = {'extend':self.extend,  }
@@ -105,7 +110,7 @@ class ListViewReportRequest(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست   گزارشات درخواست شده     "
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام نوع پست سازمانی ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام نوع پست سازمانی ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -122,7 +127,7 @@ class ListViewReportRequest(ListView):
        
       
         
-        header_table   = ['عنوان' , 'بارگزاری'  , 'ارجاع' , 'فروارد']
+        header_table   = ['عنوان' , 'بارگزاری'  , 'ارجاع' , 'ارسال ']
         #اسم داده های جدول
         object_name    = ['title','responsible' , 'meetingType']
         #دریافت تمام داده ها
@@ -203,7 +208,9 @@ class CreateViewReportUpload( LoginRequiredMixin,View):
         reportActivitySelected.document = x
         reportActivitySelected.status = 'done'
         reportActivitySelected.save()
-       
+        
+            
+        Notifications.objects.create( title = ' گزارش درخواست شده از '  + reportActivitySelected.reciver.firstName + ' ' + reportActivitySelected.reciver.lastName + 'انجام شده است .'  , recivers =reportActivitySelected.sender )
         sweetify.toast(self.request,timer=30000 , icon="success",title ='   درخواست گزارش ثبت شد     !!!')
         return redirect('ListViewReportDone')
         
@@ -221,7 +228,7 @@ class ListViewReportDone(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "سوابق گزارشات "
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام سوال ممیزی  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام سوال ممیزی  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها

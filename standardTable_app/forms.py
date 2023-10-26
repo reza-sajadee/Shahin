@@ -42,7 +42,7 @@ class CreateFormStandard(forms.ModelForm):
         self.fields['standardTitlePersian'].label      ='عنوان فارسی را وارد کنید'
         self.fields['standardTitleEnglish'].label      ='عنوان انگلیسی را وارد کنید'
         self.fields['namad'].label      ='نماد را وارد کنید'
-        self.fields['vaziyatEjra'].label      ='وضعیت اجرا را انتخاب کنید'
+        self.fields['vaziyatEjra'].label      ='وضعیت اجرا انتخاب کنید'
         self.fields['shamsiReleaseDate'].label      ='تاریخ انتشار (شمسی) را وارد کنید'
         self.fields['miladiReleaseDate'].label      ='تاریخ انتشار(میلادی) را وارد کنید'
         self.fields['tajdidNazarNumber'].label      ='شماره تجدید نظر را وارد کنید'

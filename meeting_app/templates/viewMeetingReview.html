@@ -66,7 +66,7 @@
           <div class="col-10">
             <h5 class="mb-1 text-dark font-weight-bold"> دستور کار : <span class="text-secondary narowFont">
               {%for agenda in MeetingAgendaSelected%}
-              {{forloop.counter}} - {{agenda.title}}
+              {{forloop.counter}} - {{agenda.title}} ,
               {%endfor%}
               </span> </h5>
           </div>
@@ -74,8 +74,12 @@
 
         <div class="row py-3 justify-content-md-center">
           <div class="col-10">
+            {% if MeetingPlanSelected%}
             <h5 class="mb-1 text-dark font-weight-bold"> دانلود فایل ارائه :
-               <a class="text-danger" href="{{MeetingDocumentSelected.persentDocument.url}}">جهت دانلود کلیک کنید</a> </h5>
+               <a class="text-danger" href="{{MeetingPlanSelected.planDocument.url}}">جهت دانلود کلیک کنید</a> </h5>
+               {%else%}
+               <h5 class="card-title text-danger">   فایل ارائه برای پیوست وجود ندارد    </h5>
+               {%endif%}
           </div>
         </div>
         <div class="row py-3 justify-content-md-center">
@@ -96,7 +100,7 @@
             </div>
             <ul class="list-group list-group-flush " style="display: contents;">
               {%for member in peresents%}
-              <li class="list-group-item ">{{forloop.counter}} - {{member.JobBankRelated}}</li>
+              <li class="list-group-item text-success">{{forloop.counter}} - {{member.JobBankRelated.profile.firstName}} {{member.JobBankRelated.profile.lastName}}</li>
               {%endfor%}
 
             </ul>
@@ -110,7 +114,7 @@
             <ul class="list-group list-group-flush " style="display: contents;">
 
               {%for member in absents%}
-              <li class="list-group-item ">{{forloop.counter}} - {{member.JobBankRelated}}</li>
+              <li class="list-group-item text-danger">{{forloop.counter}} - {{member.JobBankRelated.profile.firstName}} {{member.JobBankRelated.profile.lastName}}</li>
               {%endfor%}
 
             </ul>
@@ -120,7 +124,7 @@
       <div class="card">
       <div class="container-fluid fulled">
         
-          <div class="card-header"> <h3><string> مصوابات جلسه  :  </string> </h3></div>
+          <div class="card-header"> <h3><string> مصوبات جلسه  :  </string> </h3></div>
 
           <div class="cord-body">
           <div class="row border-bottom py-3">
@@ -140,10 +144,10 @@
             <div class="col-1 narowFont text-center">{{forloop.counter}}</div>
 
             <div class="col-5 narowFont text-center">{{enactment.title}}</div>
-            <div class="col-2 narowFont text-center">{{enactment.responsibleExecutive}}
+            <div class="col-2 narowFont text-center">{{enactment.responsibleExecutive.profile.firstName}} {{enactment.responsibleExecutive.profile.lastName}}
             </div>
 
-            <div class="col-2 narowFont text-center">{{enactment.responsibleFollow}}
+            <div class="col-2 narowFont text-center">{{enactment.responsibleFollow.profile.firstName}} {{enactment.responsibleFollow.profile.lastName}}
             </div>
             <div class="col-2 narowFont text-center">{{enactment.deadLine|to_jalali:'%Y/%m/%d'}}</div>
 

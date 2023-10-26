@@ -81,7 +81,7 @@ class ListViewTypeMadrak(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست نوع مدرک  ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام نوع مدرک  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام نوع مدرک  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -192,7 +192,7 @@ class DeleteViewTypeMadrak( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "پاک کردن یک نوع مدرک "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "آیا میخواهید که نوع مدرک   " + obj.title + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که نوع مدرک   " + obj.title + " "  + " را پاک کنید   ؟"
             #آیکون نمایش داده شده در بخش بالای سایت
             icon_name     = "delete_forever"
             #تعداد ستون ها
@@ -273,7 +273,7 @@ class ListViewMostanadatDakheliOutdated(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "مدارک منسوخ"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام مستند داخلی   را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام مستند داخلی   را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -321,7 +321,7 @@ class ListViewMostanadatDakheli(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست مستند داخلی  "
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام مستند داخلی   را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام مستند داخلی   را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -412,6 +412,7 @@ class ViewMostanadatDakheliDashboard( LoginRequiredMixin,View):
         for query in queryset:
             data = []
             dict_temp = {}
+            data.append(query.dakheliSanadCode)
             data.append(query.typeMadrakCode.title)
             data.append(query.title)
 
@@ -548,8 +549,8 @@ class ViewMostanadatDakheli( LoginRequiredMixin,View):
             dateLastUpdate     = datetime2jalali(obj.updated_at).strftime('14%y/%m/%d')
             typeMadrakTitle    = linkAdress
             vahedMotevali      = obj.vahedMotevaliCode.title
-            vahedTaeid         = obj.vahedTaeidCode.title
-            vahedTasvib        = obj.vahedTasvibCode.title
+            vahedTaeid         = obj.vahedMotevaliCode.vahedMafogh.typePostSazmani.title
+            vahedTasvib        = obj.vahedMotevaliCode.vahedMafogh.vahedMafogh.typePostSazmani.title
             vahedMortabet =''
             for vahed in obj.vahedMortabetCode.all():
                 vahedMortabet +=vahed.title
@@ -625,15 +626,15 @@ class ViewMostanadatDakheliOutdated( LoginRequiredMixin,View):
             if(obj.vahedMotevaliCode != None):
                 vahedMotevali = obj.vahedMotevaliCode.title
             else:
-                vahedMotevali = 'نامعلوم'
+                vahedMotevali = 'موجود نیست'
             if(obj.vahedTaeidCode != None):
                 vahedTaeid = obj.vahedTaeidCode.title
             else:
-                vahedTaeid = 'نامعلوم'
+                vahedTaeid = 'موجود نیست'
             if(obj.vahedTasvibCode != None):
                 vahedTasvib = obj.vahedTasvibCode.title
             else:
-                vahedTasvib = 'نامعلوم'
+                vahedTasvib = 'موجود نیست'
 
             
             vahedMortabet =''
@@ -711,7 +712,8 @@ class CreateViewMostanadatDakheliChange( LoginRequiredMixin,View):
         if form.is_valid():
             f = form.save()
             f.save()
-
+            f.vahedRelated = JobBank.objects.get(profile__user = request.user).jobBankPost.vahed
+            f.save()
             textBox = TextDataBase.objects.create(title = 'توضیح درخواست کننده' , text = request.POST.get('description'))
             if(request.FILES.get('document', False)):
                 document = request.FILES.get('document', False)
@@ -728,7 +730,7 @@ class CreateViewMostanadatDakheliChange( LoginRequiredMixin,View):
             instanceMostanadatDakheliChangeActivityManagerRegister.save()
             #تابع نمایش پیغام
             sweetify.toast(self.request,timer=30000 , icon="success",title =' درخواست تغییر ، حذف یا تدوین مدرک  جدید با موفقیت ساخته شد !!!')
-            return redirect('ListViewMostanadatDakheliChangeDoing')
+            return redirect('mostanadChange')
         else :
             sweetify.toast(self.request,timer=30000 , icon="error",title =' درخواست تغییر ، حذف یا تدوین مدرک  مورد نظر ساخته نشد !')
         context = {'extend':self.extend,'form': form }
@@ -746,7 +748,7 @@ class ListViewMostanadatDakheliChangeDoing(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست    تغییر ، حذف یا تدوین سند"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام درخواست تغییر ، حذف یا تدوین  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام درخواست تغییر ، حذف یا تدوین  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -754,7 +756,7 @@ class ListViewMostanadatDakheliChangeDoing(ListView):
         #رنگ 
         color         = "info"
         #عنوان های جدول
-        header_table   = [  'واحد درخواست کننده' , 'مرحله اقدام' , ]
+        header_table   = [  'واحد درخواست کننده' , 'عنوان سند' , 'مرحله اقدام' , 'مسئول' ]
         #اسم داده های جدول
         status =  self.request.GET.get('status') 
         
@@ -783,6 +785,7 @@ class ListViewMostanadatDakheliChangeDoing(ListView):
             dict_temp = {}
             
             data.append(query.MostanadatDakheliChangeRelated.vahedRelated)
+            data.append(query.MostanadatDakheliChangeRelated.documentRelated.title)
             data.append(query.get_activity_display)
             data.append(query.reciver)
 
@@ -818,9 +821,11 @@ class CreateViewMostanadatDakheliChangeStep( LoginRequiredMixin,View):
     #karshenasProfile = Profile.objects.all().filter(profile = )
 
     #modirToseProfile = Profile.objects.get(id =id1 )
-    #modirToseProfile = Profile.objects.get(id =id1 )
-    karshenasProfile = 1
-    karshenasProfile = 2
+    modirToseProfile = None
+    karshenasProfile = None
+    # modirToseProfile = Profile.objects.get(id =298 )
+    # karshenasProfile = Profile.objects.get(id = 246)
+   
     def getMafogh(self ,profileSender):
         psotMafoghSelected = JobBank.objects.all().filter(profile=profileSender)[0].jobBankPost.postMafogh
         jobBankMafoghSelected = JobBank.objects.all().filter(jobBankPost = psotMafoghSelected)[0]
@@ -926,7 +931,7 @@ class CreateViewMostanadatDakheliChangeStep( LoginRequiredMixin,View):
     def post(self, request,activityId , *args, **kwargs):
         #فرم دریافت شده
         form = CreateFormMostanadatDakheliChange(request.POST,request.FILES)
-        profileReciver = Profile.objects.filter(id=321)[0]
+        profileReciver = Profile.objects.get(id=321)
         profileSender  = Profile.objects.filter(user=self.request.user)[0]
         activitySelected = MostanadatDakheliChangeActivityManager.objects.all().filter(id = activityId)[0]
         MostanadatDakheliChangeSelected = activitySelected.MostanadatDakheliChangeRelated
@@ -954,7 +959,7 @@ class CreateViewMostanadatDakheliChangeStep( LoginRequiredMixin,View):
         if(activitySelected.activity == 'barresiMafogh'):
                 
                 
-                result = self.saveing(activitySelected , text = request.POST.get('description') ,  profileSender = profileSender , profileReciver = self.karshenasProfile , confirm = request.POST.get('submit')  , titleText = 'بررسی درخواست توسط کارشناس دفتر توسعه مدیریت و تحقیقات' , nextStep = 'barresiKarshenas',nextFailStep = 'reform' ,profileReciverField=profileSender )
+                result = self.saveing(activitySelected , text = request.POST.get('description') ,  profileSender = profileSender , profileReciver =self.karshenasProfile , confirm = request.POST.get('submit')  , titleText = 'بررسی درخواست توسط کارشناس دفتر توسعه مدیریت و تحقیقات' , nextStep = 'barresiKarshenas',nextFailStep = 'reform' ,profileReciverField=profileSender )
                 if(result):
                     sweetify.toast(self.request,timer=30000 , icon="success",title ='درخواست تغییر ، حذف یا تدوین توسط کارشناس دفتر توسعه مدیریت و تحقیقات مورد تایید قرار گرفت!!!')
                 else:
@@ -1087,7 +1092,7 @@ class ListViewRecordChangeDoing(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست    تغییر ، حذف یا تدوین سند"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام درخواست تغییر ، حذف یا تدوین  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام درخواست تغییر ، حذف یا تدوین  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -1373,7 +1378,7 @@ class DeleteViewMostanadatDakheli( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "پاک کردن یک مستند داخلی "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "آیا میخواهید که مستند داخلی   " + obj.title + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که مستند داخلی   " + obj.title + " "  + " را پاک کنید   ؟"
             #آیکون نمایش داده شده در بخش بالای سایت
             icon_name     = "delete_forever"
             #تعداد ستون ها
@@ -1529,9 +1534,9 @@ class ListViewMostanadatKhareji(ListView):
     extend = 'baseEmployee.html'
     def get_context_data(self, **kwargs):
         #عنوان نمایش داده شده در بالای صفحه
-        header_title  = "لیست مستند خارجی  ها"
+        header_title  = "لیست مستندات برون سازمانی"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام مستند خارجی  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام مستند خارجی  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -1607,56 +1612,56 @@ class ViewMostanadatKhareji( LoginRequiredMixin,View):
             try:
                 sanadTitle         = obj.title
             except:
-                sanadTitle = 'نامعلوم'
+                sanadTitle = 'موجود نیست'
             try:
                 sanadCode          = obj.kharejiSanadCode
             except:
-                sanadCode = 'نامعلوم'
+                sanadCode = 'موجود نیست'
             try:
                 ProcessMortabet    = obj.processCode.title
             except:
-                ProcessMortabet = 'نامعلوم'
+                ProcessMortabet = 'موجود نیست'
             try:
                 versionNumber      = obj.versionNumber
             except:
-                versionNumber = 'نامعلوم'
+                versionNumber = 'موجود نیست'
             try:
                 refrenceName       = obj.refrenceName
             except:
-                refrenceName = 'نامعلوم'
+                refrenceName = 'موجود نیست'
             
             try:
                 expiredDate        = obj.expiredDate
             except:
-                expiredDate = 'نامعلوم'
+                expiredDate = 'موجود نیست'
             try:
                 postmasolUpdate    = obj.postmasolUpdate.title
             except:
-                postmasolUpdate = 'نامعلوم'
+                postmasolUpdate = 'موجود نیست'
             try:
                 updatePeriod       = obj.updatePeriod
             except:
-                updatePeriod = 'نامعلوم'
+                updatePeriod = 'موجود نیست'
             try:
                 tozihat            = obj.tozihat
             except:
-                tozihat = 'نامعلوم'
+                tozihat = 'موجود نیست'
             try:
                 etebarDate         = obj.etebarDate
             except:
-                etebarDate = 'نامعلوم'
+                etebarDate = 'موجود نیست'
             try:
                 expireDate         = obj.expiredDate
             except:
-                expireDate = 'نامعلوم'
+                expireDate = 'موجود نیست'
             try:
                 entesharDate = obj.entesharDate
             except:
-                entesharDate = 'نامعلوم'
+                entesharDate = 'موجود نیست'
             try:
                 govermentUpdate = obj.govermentUpdate
             except :
-                govermentUpdate = 'نامعلوم'
+                govermentUpdate = 'موجود نیست'
 
 
             #رنگ
@@ -1741,7 +1746,7 @@ class DeleteViewMostanadatKhareji( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "پاک کردن یک مستند خارجی "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "آیا میخواهید که مستند خارجی   " + obj.title + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که مستند خارجی   " + obj.title + " "  + " را پاک کنید   ؟"
             #آیکون نمایش داده شده در بخش بالای سایت
             icon_name     = "delete_forever"
             #تعداد ستون ها

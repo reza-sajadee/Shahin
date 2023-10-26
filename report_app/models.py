@@ -6,14 +6,14 @@ def user_directory_path_reoprt(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
         return 'report_document/{0}'.format( filename )    
 class Report(models.Model):
-    
+    SOURCE_STATUS  = (('personal','شخصی'),('meeting','جلسه'), ('corrective' , 'اقدام اصلاحی'), ('mostanadat' , 'مستندات') )
     title                = models.CharField(max_length=100 , blank=True , null=True)
     description          = models.TextField(null=True, blank=True ) 
     document             = models.FileField(upload_to=(user_directory_path_reoprt) ,blank=True, null=True)
     referabl             = models.BooleanField(default=True) 
-    forward             = models.BooleanField(default=True) 
+    forward              = models.BooleanField(default=True) 
     arcane               = models.BooleanField(default=False) 
-                  
+    source               = models.CharField(max_length=75, choices= SOURCE_STATUS ,default='personal' )              
     
 
     

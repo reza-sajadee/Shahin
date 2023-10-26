@@ -9,6 +9,7 @@ from .views import (
     DeleteViewNotifications,
     ListViewAdminNotifications,
     read_notifications,
+    ListNotificationsAPI,
 )
 
 
@@ -22,4 +23,7 @@ urlpatterns = [
     path('read/<int:id>', read_notifications ,name='read_notifications'),
     path('<int:id>', UpdateViewNotifications.as_view(),name='UpdateViewNotifications'),
     path('delete/<int:id>', DeleteViewNotifications.as_view(),name='DeleteViewNotifications'),
+
+
+    path('api/all', ListNotificationsAPI.as_view(),name='ListNotificationsAPI'),
 ]

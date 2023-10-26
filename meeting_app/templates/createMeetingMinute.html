@@ -48,6 +48,7 @@
                       <th class="text-center text-lg font-weight-bolder opacity-7">نام </th>
                       <th class="text-center text-lg font-weight-bolder opacity-7"> نام خانوادگی</th>
                       <th class="text-center text-lg font-weight-bolder opacity-7">  سمت</th>
+                      <th class="text-center text-lg font-weight-bolder opacity-7">  عضو</th>
                       
                       <th class="text-center text-lg font-weight-bolder opacity-7">حضور / غیاب</th>
           
@@ -57,7 +58,7 @@
                 </thead>
                 <tbody>
                 
-                {%for memberJob in allMember%}
+                {%for memberJob in prMember%}
                  
                     <tr>
                         
@@ -65,7 +66,7 @@
                         <td class="narowFont text-center overflow-hidden">{{memberJob.JobBankRelated.profile.firstName}}</td>
                         <td class="narowFont text-center overflow-hidden">{{memberJob.JobBankRelated.profile.lastName}}</td>
                         <td class="narowFont text-center overflow-hidden">{{memberJob.JobBankRelated.jobBankPost.title}}</td>
-                        
+                        <td class="narowFont text-center overflow-hidden">عضو اصلی</td>
                         <td class="narowFont text-center overflow-hidden"> 
                           <div class="form-check text-center align-items-center">
                             <input class="form-check-input" type="checkbox" value="{{memberJob.id}}" name="jobSelected" id="jobSelected">
@@ -81,7 +82,55 @@
                     </tr>
                    
                   {%endfor%}
+                    
+                  {%for memberJob in scMember%}
+                 
+                    <tr>
+                        
+                   
+                        <td class="narowFont text-center overflow-hidden">{{memberJob.JobBankRelated.profile.firstName}}</td>
+                        <td class="narowFont text-center overflow-hidden">{{memberJob.JobBankRelated.profile.lastName}}</td>
+                        <td class="narowFont text-center overflow-hidden">{{memberJob.JobBankRelated.jobBankPost.title}}</td>
+                        <td class="narowFont text-center overflow-hidden">عضو فرعی</td>
+                        <td class="narowFont text-center overflow-hidden"> 
+                          <div class="form-check text-center align-items-center">
+                            <input class="form-check-input" type="checkbox" value="{{memberJob.id}}" name="jobSelected" id="jobSelected">
+                          </div>
           
+                        </td>
+                        
+                        
+                       
+                       
+          
+                     
+                    </tr>
+                   
+                  {%endfor%}
+
+                  {%for memberJob in otherMember%}
+                 
+                    <tr>
+                        
+                   
+                     
+                        <td colspan="3" class="narowFont text-center overflow-hidden">{{memberJob.otherPerson}}</td>
+                        <td class="narowFont text-center overflow-hidden">سایر اعضا</td>
+                        <td class="narowFont text-center overflow-hidden"> 
+                          <div class="form-check text-center align-items-center">
+                            <input class="form-check-input" type="checkbox" value="{{memberJob.id}}" name="jobSelected" id="jobSelected">
+                          </div>
+          
+                        </td>
+                        
+                        
+                       
+                       
+          
+                     
+                    </tr>
+                   
+                  {%endfor%}
                             
                 </tbody>
               </table>
@@ -94,13 +143,13 @@
          
          
           <input type="hidden" name="meetingRelated" id="id_meetingRelated" value="{{meetingSelected.id}}">
-          <div class="row justify-content-md-center">
+          <div class="row justify-content-md-center py-3">
             <div class="col-5">
               <button type="submit"  class="btn w-100  btn-outline-primary">
-                افزودن </button>
+                ثبت </button>
             </div>
             <div class="col-5">
-              <a href="{%url 'ViewProfileMeeting' %}" class="btn w-100  btn-outline-danger">
+              <a href="{%url 'ListViewMeeting' %}" class="btn w-100  btn-outline-danger">
                 کنسل </a>
             </div>
           </div>

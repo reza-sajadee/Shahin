@@ -8,7 +8,7 @@ from organization_app.models import TypePostSazmani , Vahed , JobBank , Post , H
 
 from standardTable_app.models import RequirementStandards , Standard
 
-from .forms import CreateFormCorrectiveAction 
+from .forms import CreateFormCorrectiveAction ,CreateFormCorrectiveAction2
 from .models import CorrectiveAction ,CorrectiveActionActivityManager ,TextDataBase , ConfirmationDataBase
 from profile_app.decorators import  staff_only
 from profile_app.models import Profile
@@ -26,13 +26,82 @@ from datetime import timedelta
 from django.http.response import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-
-
-
-
+from project_app.models import PlanProfile
+from performanceIndex_app.utils import jalali_to_gregorian
+import datetime
+from notifications_app.models import Notifications
 #تایپ
 
 
+class test( LoginRequiredMixin,View): 
+    redirect_field_name = '/profile/login'
+    template_name = "CorrectiveAction.html"
+    def get(self, request,*args, **kwargs):
+        #CorrectiveActionActivityManager.objects.create( sender =  , reciver =  , status =  , activity =  , CorrectiveActionRelated =  , texts =  , previousActivity =  , nextActivity =  , confirmations =  )
+        import pandas as pd
+        newData = pd.read_excel("c:/666.xlsx")
+        counter = 0
+        for index, row in newData.iterrows():
+            counter = (counter +2)
+            demdVahed = Vahed.objects.get(id=21)
+            standardSelected = Standard.objects.get(id = 1)
+            profile246 = Profile.objects.get(id = 246)
+            profile298 = Profile.objects.get(id = 298)
+            profile105 = Profile.objects.get(id = 105)
+            vahEu = Vahed.objects.get(id = row['c'])
+            proEuM = Profile.objects.get(id =row['d'] )
+            proEu = Profile.objects.get(id =row['e'] )
+            firstCA = CorrectiveAction.objects.create(problem = 'correctiveAction',demandantVahed =demdVahed ,demandantId ='Ca-00' +str(index)  ,standardRelated =standardSelected ,source ='MomayeziDakheli' ,vahed =vahEu  )
+            secondCA = CorrectiveAction.objects.create(problem = 'Correction',demandantVahed =demdVahed ,demandantId ='Ca-00' +str(index + 1) ,standardRelated =standardSelected ,source ='MomayeziDakheli' , vahed =vahEu, owner = proEu , deadLine = '1401-12-29' , effective = True )
+            acRegister = CorrectiveActionActivityManager.objects.create( sender =profile246  , reciver =profile246  , status ='done'  , activity ='register'  , CorrectiveActionRelated =firstCA  ,     )
+            texts = TextDataBase.objects.create(title = 'شرح مسئله / درخواست' ,text = row['a'] ) 
+            acRegister.texts.set([texts,])
+            acRegister.save()
+           
+            acBf = CorrectiveActionActivityManager.objects.create( sender =profile246  , reciver =profile298  , status ='done'  , activity ='barresiMafogh'  , CorrectiveActionRelated =firstCA  , confirmations = ConfirmationDataBase.objects.create(title =  'بررسی درخواست توسط مافوق',profile =profile298  ,confirm ='yes' )     , previousActivity =acRegister )
+            acRegister.nextActivity = acBf
+            acRegister.save()
+
+            acBm = CorrectiveActionActivityManager.objects.create( sender =profile246  , reciver =profile298  , status ='done'  , activity ='barresiModir'  , CorrectiveActionRelated =firstCA  , confirmations = ConfirmationDataBase.objects.create(title =  'بررسی درخواست توسط مدیر',profile =profile298  ,confirm ='yes' )     , previousActivity =acBf )
+            acBf.nextActivity = acBm
+            acBf.save()
+
+            acEu = CorrectiveActionActivityManager.objects.create( sender =profile246  , reciver =profile298  , status ='done'  , activity ='executiveUnit'  , CorrectiveActionRelated =firstCA     , previousActivity =acBm )
+            acBm.nextActivity = acEu
+            acBm.save()
+
+            acBMoa = CorrectiveActionActivityManager.objects.create( sender =profile246  , reciver =profile105  , status ='done'  , activity ='barresiMoaven'  , CorrectiveActionRelated =firstCA     , previousActivity =acEu )
+            acEu.nextActivity = acBMoa
+            acEu.save()
+
+            acCa = CorrectiveActionActivityManager.objects.create( sender =profile246  , reciver =proEuM  , status ='doing'  , activity ='cause'  , CorrectiveActionRelated =firstCA     , previousActivity =acBMoa )
+            acBMoa.nextActivity = acCa
+            acBMoa.save()
+
+
+            # acDca = CorrectiveActionActivityManager.objects.create( sender =proEuM  , reciver =proEuM  , status ='done'  , activity ='definitionCorrectiveaAtion'  , CorrectiveActionRelated =firstCA     , previousActivity =acCa  )
+            # texts = TextDataBase.objects.create(title = 'علت یابی اقدام اصلاحی' ,text = row['g'] ) 
+            # acDca.texts.set([texts,])
+            # acDca.save()
+            # acCa.nextActivity = acDca
+            # acCa.save()
+
+
+            # acEjr = CorrectiveActionActivityManager.objects.create( sender =profile246  , reciver =proEu  , status ='done'  , activity ='ejraNatije'  , CorrectiveActionRelated =secondCA     , previousActivity =acDca  )
+            # texts = TextDataBase.objects.create(title = 'نتیجه نهایی ',text = row["h"] ) 
+            # acEjr.texts.set([texts,])
+            # acEjr.save()
+
+            # acCrmot = CorrectiveActionActivityManager.objects.create( sender =profile246  , reciver =proEu  , status ='done'  , activity ='confirmRiportMotevali'  , CorrectiveActionRelated =secondCA     , previousActivity =acEjr ,confirmations =  ConfirmationDataBase.objects.create(title = 'مدیر دفتر توسعه و تحقیقات' ,profile = profile298 ,confirm ="yes" )  )
+            # acDca.nextActivity = acCrmot
+            # acDca.save()
+
+
+            # acCrmodir = CorrectiveActionActivityManager.objects.create( sender =profile246  , reciver =proEu  , status ='completed'  , activity ='confirmRiportModir'  , CorrectiveActionRelated =secondCA     , previousActivity =acCrmot  )
+            # acCrmot.nextActivity = acCrmodir
+            # acCrmot.save()
+        return redirect('ViewCorrectiveActionDashboard')
+      
 class CorrectiveActionHome( LoginRequiredMixin,View): 
     redirect_field_name = '/profile/login'
     template_name = "CorrectiveAction.html"
@@ -59,7 +128,7 @@ class ViewCorrectiveActionDashboard( LoginRequiredMixin,View):
         allCorrective = CorrectiveAction.objects.all()
         allCorrectiveAction = allCorrective.filter(problem ='correctiveAction' )
         allCorrection = allCorrective.filter(problem = 'Correction')
-        print(len(allActivity))
+        
         allCreatedAction = {}
         allComplated = {}
         profileSelected = None
@@ -97,23 +166,24 @@ class ViewCorrectiveActionDashboard( LoginRequiredMixin,View):
          
             
         for activity in allActivity:
-            allCreatedAction[activity.firstStep().CorrectiveActionRelated.id] = activity.firstStep().CorrectiveActionRelated
+            allCreatedAction[activity.firstStep().CorrectiveActionRelated.id] = activity.lastStep().CorrectiveActionRelated
             
             if(activity.lastStep().status == 'completed'):
                 
                 allComplated[activity.lastStep().id] = activity.lastStep()
-        for key , value in allCreatedAction.items():
-            if(value.effective == True):
+        for key , value in allComplated.items():
+          
+            if(value.CorrectiveActionRelated.effective == True):
                 
                 summary['e'] = summary['e'] + 1
-            if(value.effective == False):
+            if(value.CorrectiveActionRelated.effective == False):
                 summary['ie'] = summary['ie'] + 1
-            if(value.problem == 'correctiveAction'):
+            if(value.CorrectiveActionRelated.problem == 'correctiveAction'):
                 summary['ca'] = summary['ca'] + 1
-            if(value.problem == 'Correction'):
+            if(value.CorrectiveActionRelated.problem == 'Correction'):
                 summary['c'] = summary['c'] + 1
             
-            if(value.source == 'MomayeziDakheli'):
+            if(value.CorrectiveActionRelated.source == 'MomayeziDakheli'):
                 #allHoze['MomayeziDakheli'] += 1
                 pass
         allHoze = Hoze.objects.all()      
@@ -226,7 +296,7 @@ class CreateViewCorrectiveAction( LoginRequiredMixin,View):
             instanceCorrectiveActionActivityManagerRegister.save()
             #تابع نمایش پیغام
             sweetify.toast(self.request,timer=30000 , icon="success",title ='اقدام اصلاحی  جدید با موفقیت ساخته شد !!!')
-            return redirect('ListViewCorrectiveActionDoing')
+            return redirect('ViewCorrectiveActionDashboard')
         else :
             sweetify.toast(self.request,timer=30000 , icon="error",title ='اقدام اصلاحی  مورد نظر ساخته نشد !')
         context = {'extend':self.extend,'form': form }
@@ -243,7 +313,7 @@ class ListViewCorrectiveActionDoing(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست اقدام اصلاحی  ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام اقدام اصلاحی  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام اقدام اصلاحی  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -251,42 +321,43 @@ class ListViewCorrectiveActionDoing(ListView):
         #رنگ 
         color         = "info"
         #عنوان های جدول
-        header_table   = [ 'کد اقدام' , 'واحد درخواست کننده' , 'مرحله اقدام' , 'گیرنده' ]
+        
         #اسم داده های جدول
 
         #دریافت تمام داده ها
-        
+        typeList = self.request.GET.get('type')
         list_data = []
         userProfile = Profile.objects.get(user=self.request.user)
         
         #queryset = CorrectiveActionActivityManager.objects.all().filter(status='doing').filter(reciver = userProfile )
-        queryset = CorrectiveActionActivityManager.objects.all().filter(Q(status='doing') )
+        if(typeList == 'all'):
+            queryset = CorrectiveActionActivityManager.objects.all().filter(Q(status='doing') | Q(status='completed'))
+            
+
+        else:
+            queryset = CorrectiveActionActivityManager.objects.all().filter(Q(status='doing') )
+            header_table   = [ 'کد اقدام' ,'عنوان' , 'مرحله اقدام' , 'گیرنده' ,  ]
+            for query in queryset:
+                if(query.reciver == userProfile or userProfile.user.is_superuser):
+                    data = []
+                    dict_temp = {}
+                    data.append(query.CorrectiveActionRelated.demandantId)
+                    data.append(query.firstStep().texts.all()[0].text)
+                    
+                
+                    data.append(query.get_activity_display)
+                    data.append(query.reciver)          
+                    dict_temp = {query.id : data}
+                    list_data.append(dict_temp)
+        
        
         
         #ایجاد لیست داده ها
-        for query in queryset:
-            if(query.reciver == userProfile or userProfile.user.is_superuser):
-                data = []
-                dict_temp = {}
-                data.append(query.CorrectiveActionRelated.demandantId)
-                
-                data.append(query.CorrectiveActionRelated.demandantVahed.title)
-                data.append(query.get_activity_display)
-                data.append(query.reciver)
-
-    
-               
-    
-
-            
-                
-            
-                dict_temp = {query.id : data}
-                list_data.append(dict_temp)
+        
         #دیکشنری داده ها
         context = { 'header_title':header_title,
-        'discribtion':discribtion,'icon_name':icon_name,
-        'columns':columns , 'color':color , 'header_table': header_table ,'done' : True
+        'discribtion':discribtion,'icon_name':icon_name,'typeList':typeList,'queryset':queryset,
+        'columns':columns , 'color':color  ,'done' : True
           ,  'list_data' : list_data ,'extend':self.extend , 'menu_link':self.menu_link , 'userProfile' : userProfile , }
         return context
 
@@ -304,7 +375,7 @@ class ListViewCorrectiveActionDone(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست اقدام اصلاحی  ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام اقدام اصلاحی  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام اقدام اصلاحی  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -312,7 +383,7 @@ class ListViewCorrectiveActionDone(ListView):
         #رنگ 
         color         = "info"
         #عنوان های جدول
-        header_table   = ['کد اقدام' , 'واحد درخواست کننده' , 'مرحله اقدام' , ]
+        header_table   = ['کد اقدام' , 'واحد مجری ' , 'عنوان' , ]
         #اسم داده های جدول
 
         #دریافت تمام داده ها
@@ -337,8 +408,8 @@ class ListViewCorrectiveActionDone(ListView):
             dict_temp = {}
             data.append(query.CorrectiveActionRelated.demandantId)
             
-            data.append(query.CorrectiveActionRelated.demandantVahed.title)
-            data.append(query.get_activity_display)
+            data.append(query.CorrectiveActionRelated.vahed.title)
+            data.append(query.firstStep().texts.all()[0].text)
          
 
    
@@ -511,7 +582,7 @@ class CreateViewCorrectiveActionStep( LoginRequiredMixin,View):
                 instanceCorrectiveActionActivityManagerRegister.save()
                 #تابع نمایش پیغام
                 sweetify.toast(self.request,timer=30000 , icon="success",title ='اقدام اصلاحی  جدید با موفقیت ساخته شد !!!')
-                return redirect('ListViewCorrectiveActionDoing')
+                return redirect('ViewCorrectiveActionDashboard')
             else :
                 sweetify.toast(self.request,timer=30000 , icon="error",title ='اقدام اصلاحی  مورد نظر ساخته نشد !')
         elif(activitySelected.activity == 'register' and activitySelected.previousActivity !=None):
@@ -521,7 +592,7 @@ class CreateViewCorrectiveActionStep( LoginRequiredMixin,View):
                 sweetify.toast(self.request,timer=30000 , icon="success",title ='اقدام اصلاحی توسط مافوق مورد تایید قرار گرفت!!!')
             else:
                 sweetify.toast(self.request,timer=30000 , icon="warning",title ='اقدام اصلاحی توسط مافوق مورد تایید قرار گرفت!!!')
-            return redirect('ListViewCorrectiveActionDoing')
+            return redirect('ViewCorrectiveActionDashboard')
         if(activitySelected.activity == 'description'):
            
             result = self.saveing(activitySelected , text = request.POST.get('description') ,  profileSender = profileSender , profileReciver = self.getMafogh(profileSender) , confirm = request.POST.get('submit')  , titleText = 'بررسی درخواست توسط مافوق' , nextStep = 'barresiMafogh',nextFailStep = 'description'  )
@@ -529,7 +600,7 @@ class CreateViewCorrectiveActionStep( LoginRequiredMixin,View):
                 sweetify.toast(self.request,timer=30000 , icon="success",title ='اقدام اصلاحی به روزشد!!!')
             else:
                 sweetify.toast(self.request,timer=30000 , icon="warning",title ='اقدام اصلاحی توسط مافوق مورد تایید قرار گرفت!!!')
-            return redirect('ListViewCorrectiveActionDoing')
+            return redirect('ViewCorrectiveActionDashboard')
         if(activitySelected.activity == 'barresiMafogh'):
            
             result = self.saveing(activitySelected , text = request.POST.get('description') ,  profileSender = profileSender , profileReciver = modirToseProfile , confirm = request.POST.get('submit')  , titleText = 'بررسی درخواست توسط مافوق' , nextStep = 'barresiModir',nextFailStep = 'description' ,profileReciverField=activitySelected.firstStep().sender )
@@ -537,7 +608,7 @@ class CreateViewCorrectiveActionStep( LoginRequiredMixin,View):
                 sweetify.toast(self.request,timer=30000 , icon="success",title ='اقدام اصلاحی توسط مافوق مورد تایید قرار گرفت!!!')
             else:
                 sweetify.toast(self.request,timer=30000 , icon="warning",title ='اقدام اصلاحی توسط مافوق مورد تایید قرار گرفت!!!')
-            return redirect('ListViewCorrectiveActionDoing')
+            return redirect('ViewCorrectiveActionDashboard')
 
          
         if(activitySelected.activity == 'barresiModir'):
@@ -546,7 +617,7 @@ class CreateViewCorrectiveActionStep( LoginRequiredMixin,View):
                 sweetify.toast(self.request,timer=30000 , icon="success",title ='اقدام اصلاحی   مورد تایید مدیر دفتر توسعه مدیریت و تحقیقات قرار گرفت!!!')
             else:
                 sweetify.toast(self.request,timer=30000 , icon="warning",title ='اقدام اصلاحی   مورد تایید مدیر دفتر توسعه مدیریت و تحقیقات قرار گرفت!!!')
-            return redirect('ListViewCorrectiveActionDoing')
+            return redirect('ViewCorrectiveActionDashboard')
         if(activitySelected.activity == 'executiveUnit'):
             if(request.POST.get('submit') =='yes'):
                 vahedId = request.POST.get('vahedMortabetCode')
@@ -563,9 +634,9 @@ class CreateViewCorrectiveActionStep( LoginRequiredMixin,View):
                 activitySelected.save()
                 instanceCorrectiveActionActivityManager.save()
                 sweetify.toast(self.request,timer=30000 , icon="success",title ='مجری اقدام اصلاحی مشخص شد!!!')
-                return redirect('ListViewCorrectiveActionDoing')
+                return redirect('ViewCorrectiveActionDashboard')
             else:
-                return redirect('ListViewCorrectiveActionDoing')
+                return redirect('ViewCorrectiveActionDashboard')
         if(activitySelected.activity == 'barresiMoaven'):
             if(request.POST.get('submit') =='yes'):
                 
@@ -585,10 +656,10 @@ class CreateViewCorrectiveActionStep( LoginRequiredMixin,View):
                 activitySelected.save()
                 instanceCorrectiveActionActivityManager.save()
                 sweetify.toast(self.request,timer=30000 , icon="success",title ='اقدام اصلاحی توسط معاون مورد تایید قرار گرفت!!!')
-                return redirect('ListViewCorrectiveActionDoing')
+                return redirect('ViewCorrectiveActionDashboard')
             else:
                
-                return redirect('ListViewCorrectiveActionDoing')        
+                return redirect('ViewCorrectiveActionDashboard')        
         if(activitySelected.activity == 'cause'):
             if(request.POST.get('submit') =='yes'):
                 if(len(request.FILES)!=0):
@@ -609,9 +680,9 @@ class CreateViewCorrectiveActionStep( LoginRequiredMixin,View):
                 activitySelected.save()
                 instanceCorrectiveActionActivityManager.save()
                 sweetify.toast(self.request,timer=30000 , icon="success",title ='نیاز به علت یابی و حل مسئله توسط واحد متولی انجام شد !!!')
-                return redirect('ListViewCorrectiveActionDoing')
+                return redirect('ViewCorrectiveActionDashboard')
             else:
-                return redirect('ListViewCorrectiveActionDoing')
+                return redirect('ViewCorrectiveActionDashboard')
         if(activitySelected.activity == 'definitionCorrectiveaAtion'):
             if(request.POST.get('submit') =='yes'):
                 try:
@@ -623,9 +694,12 @@ class CreateViewCorrectiveActionStep( LoginRequiredMixin,View):
                         ProfileSelectedEntered = Profile.objects.all().filter(id =ProfileId )[0]
                         DateEntered = request.POST.get("correctiveActionDate" )
                         DescriptionEntered = request.POST["correctiveActionDescription"]
-
+                        gor = jalali_to_gregorian(int(DateEntered.split('-')[0]) , int(DateEntered.split('-')[1]), int(DateEntered.split('-')[2]) )
+                        gorDate = datetime.date(year =gor[0]  , month =gor[1] , day =gor[2] )
+                        
+                        jobBankProfileSelectedEntered = JobBank.objects.get(profile = ProfileSelectedEntered)
                         textBox = TextDataBase.objects.create(title = 'علت یابی اقدام اصلاحی' , text = DescriptionEntered)
-                        instanceCorrectiveAction = CorrectiveAction.objects.create( problem = 'correctiveAction', demandantVahed = activitySelected.CorrectiveActionRelated.demandantVahed ,standardRelated = activitySelected.CorrectiveActionRelated.standardRelated ,source = activitySelected.CorrectiveActionRelated.source,vahed = activitySelected.CorrectiveActionRelated.vahed ,owner = ProfileSelectedEntered ,deadLine = DateEntered )
+                        instanceCorrectiveAction = CorrectiveAction.objects.create( problem = 'correctiveAction', demandantVahed = activitySelected.CorrectiveActionRelated.demandantVahed ,standardRelated = activitySelected.CorrectiveActionRelated.standardRelated ,source = activitySelected.CorrectiveActionRelated.source,vahed = activitySelected.CorrectiveActionRelated.vahed ,owner = ProfileSelectedEntered ,deadLine = gorDate )
                         instanceCorrectiveAction.problem = 'correctiveAction'
                         instanceCorrectiveAction.save()
                         instanceCorrectiveAction.demandantId = 'CA-' + str(instanceCorrectiveAction.id)
@@ -633,6 +707,15 @@ class CreateViewCorrectiveActionStep( LoginRequiredMixin,View):
                         instanceCorrectiveActionActivityManager = CorrectiveActionActivityManager.objects.create(reciver = ProfileSelectedEntered , sender  = profileSender , activity = 'ejraNatije',previousActivity = activitySelected , CorrectiveActionRelated  =instanceCorrectiveAction )
                         instanceCorrectiveActionActivityManager.texts.add(textBox)
                         instanceCorrectiveActionActivityManager.save()
+                        try:
+                            if request.POST["PlanProfileCorrectiveAction"]:
+                                instancePlanProfile = PlanProfile.objects.create(title ='برنامه اجرایی مرتبط با اقدام اصلاحی ' + instanceCorrectiveAction.demandantId  ,responsible =jobBankProfileSelectedEntered  , description = DescriptionEntered,sourcePlan = 'corrective' ,startTiem = instanceCorrectiveAction.created_at ,deadLine = gorDate)
+                                Notifications.objects.create( title = 'در اقدام اصلاحی کد ' +instanceCorrectiveAction.demandantId +' یک برنامه اجرایی مرتبط با اقدام تعریف شده درخواست شده است . لطفا بررسی نمایید.' , recivers = jobBankProfileSelectedEntered.profile )
+                        except:
+                            pass
+                       
+                            
+                        
                 except:
                     pass
                 try:
@@ -641,9 +724,12 @@ class CreateViewCorrectiveActionStep( LoginRequiredMixin,View):
                         ProfileSelectedEntered = Profile.objects.all().filter(id =ProfileId )[0]
                         DateEntered = request.POST.get("correctiveDate" )
                         DescriptionEntered = request.POST["correctiveDescription"]
+                        gor = jalali_to_gregorian(int(DateEntered.split('-')[0]) , int(DateEntered.split('-')[1]), int(DateEntered.split('-')[2]) )
+                        gorDate = datetime.date(year =gor[0]  , month =gor[1] , day =gor[2] )
 
+                        jobBankProfileSelectedEntered = JobBank.objects.get(profile = ProfileSelectedEntered)
                         textBox = TextDataBase.objects.create(title = 'علت یابی اصلاح' , text = DescriptionEntered)
-                        instanceCorrectiveAction = CorrectiveAction.objects.create( problem = 'Correction', demandantVahed = activitySelected.CorrectiveActionRelated.demandantVahed ,standardRelated = activitySelected.CorrectiveActionRelated.standardRelated ,source = activitySelected.CorrectiveActionRelated.source,vahed = activitySelected.CorrectiveActionRelated.vahed ,owner = ProfileSelectedEntered ,deadLine = DateEntered )
+                        instanceCorrectiveAction = CorrectiveAction.objects.create( problem = 'Correction', demandantVahed = activitySelected.CorrectiveActionRelated.demandantVahed ,standardRelated = activitySelected.CorrectiveActionRelated.standardRelated ,source = activitySelected.CorrectiveActionRelated.source,vahed = activitySelected.CorrectiveActionRelated.vahed ,owner = ProfileSelectedEntered ,deadLine = gorDate )
                         instanceCorrectiveAction.problem = 'Correction'
                         instanceCorrectiveAction.save()
                         instanceCorrectiveAction.demandantId = 'CA-' + str(instanceCorrectiveAction.id)
@@ -651,6 +737,13 @@ class CreateViewCorrectiveActionStep( LoginRequiredMixin,View):
                         instanceCorrectiveActionActivityManager = CorrectiveActionActivityManager.objects.create(reciver = ProfileSelectedEntered , sender  = profileSender , activity = 'ejraNatije',previousActivity = activitySelected , CorrectiveActionRelated  =instanceCorrectiveAction )
                         instanceCorrectiveActionActivityManager.texts.add(textBox)
                         instanceCorrectiveActionActivityManager.save()
+                        try:
+                            if request.POST["PlanProfileCorrective"]:
+                                instancePlanProfile = PlanProfile.objects.create(title ='برنامه اجرایی مرتبط با درخواست اصلاح ' + instanceCorrectiveAction.demandantId  ,responsible =jobBankProfileSelectedEntered  , description = DescriptionEntered,sourcePlan = 'corrective' ,startTiem = instanceCorrectiveAction.created_at ,deadLine = gorDate)
+                                Notifications.objects.create( title = 'در درخواست اصلاحی کد ' +instanceCorrectiveAction.demandantId +' یک برنامه اجرایی مرتبط با اقدام تعریف شده درخواست شده است . لطفا بررسی نمایید.' , recivers = jobBankProfileSelectedEntered.profile )
+
+                        except:
+                            pass
                 except:
                     pass
                 activitySelected.status = 'done'
@@ -660,9 +753,9 @@ class CreateViewCorrectiveActionStep( LoginRequiredMixin,View):
 
                 
                 sweetify.toast(self.request,timer=30000 , icon="success",title ='مسئول و مدت انجام اقدام مشخص گردید !!!')
-                return redirect('ListViewCorrectiveActionDoing')
+                return redirect('ViewCorrectiveActionDashboard')
             else:
-                return redirect('ListViewCorrectiveActionDoing')
+                return redirect('ViewCorrectiveActionDashboard')
         if(activitySelected.activity == 'ejraNatije'):
             if(request.POST.get('submit') =='yes'):
                 
@@ -680,9 +773,9 @@ class CreateViewCorrectiveActionStep( LoginRequiredMixin,View):
                 activitySelected.save()
                 instanceCorrectiveActionActivityManager.save()
                 sweetify.toast(self.request,timer=30000 , icon="success",title ='شرح اقدام اصلاحی / اصلاح انجام شده   توسط واحد مجری ثبت شد !!!')
-                return redirect('ListViewCorrectiveActionDoing')
+                return redirect('ViewCorrectiveActionDashboard')
             else:
-                return redirect('ListViewCorrectiveActionDoing')
+                return redirect('ViewCorrectiveActionDashboard')
         if(activitySelected.activity == 'confirmRiportMotevali'):
             if(request.POST.get('submit') =='yes'):
                 result = self.saveing(activitySelected , text = request.POST.get('description') ,  profileSender = profileSender , profileReciver = modirToseProfile , confirm = request.POST.get('submit')  , titleText = 'مدیر دفتر توسعه مدیریت و تحقیقات' , nextStep = 'confirmRiportModir',nextFailStep = 'ejraNatije' ,profileReciverField=activitySelected.previousActivity.sender )
@@ -705,7 +798,7 @@ class CreateViewCorrectiveActionStep( LoginRequiredMixin,View):
                 sweetify.toast(self.request,timer=30000 , icon="success",title ='اقدام اصلاحی توسط مافوق مورد تایید قرار گرفت!!!')
             else:
                 sweetify.toast(self.request,timer=30000 , icon="warning",title ='اقدام اصلاحی توسط مافوق مورد تایید قرار گرفت!!!')
-            return redirect('ListViewCorrectiveActionDoing')
+            return redirect('ViewCorrectiveActionDashboard')
             
         if(activitySelected.activity == 'confirmRiportModir'):
             result = self.saveing(activitySelected , text = request.POST.get('description') ,  profileSender = profileSender , profileReciver = profileReciver , confirm = request.POST.get('submit')  , titleText = 'بررسی نتیجه توسط مدیر دفتر بهبود' , nextStep = 'complate',nextFailStep = 'ejraNatije'  )
@@ -713,7 +806,7 @@ class CreateViewCorrectiveActionStep( LoginRequiredMixin,View):
                 sweetify.toast(self.request,timer=30000 , icon="success",title ='اقدام اصلاحی توسط مدیر  مورد تایید قرار گرفت!!!')
             else:
                 sweetify.toast(self.request,timer=30000 , icon="warning",title ='اقدام اصلاحی توسط مورد مورد تایید قرار گرفت!!!')
-            return redirect('ListViewCorrectiveActionDoing')
+            return redirect('ViewCorrectiveActionDashboard')
         context = {'extend':self.extend,'form': form }
         return render(request,self.template_name,context)
 
@@ -793,7 +886,7 @@ class DeleteViewCorrectiveAction( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "پاک کردن یک اقدام اصلاحی "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "آیا میخواهید که اقدام اصلاحی   " + obj.problem + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که اقدام اصلاحی   " + obj.problem + " "  + " را پاک کنید   ؟"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "delete_forever"
             #تعداد ستون ها            

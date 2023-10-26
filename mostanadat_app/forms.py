@@ -22,6 +22,7 @@ class CreateFormMostanadatDakheliChange(forms.ModelForm):
         
         
         self.fields['documentRelated'].widget.attrs.update({'class': 'form-control'})
+        self.fields['documentRelated'].widget.attrs.update({'display': 'none'})
         
         
         

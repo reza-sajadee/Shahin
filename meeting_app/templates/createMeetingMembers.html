@@ -12,6 +12,7 @@
 {%endblock style%}
 {% block content %}
 {%include 'partials/profile-meeting.html'%}
+
 <div class="container py-6">
 
   <div class="row justify-content-md-center">
@@ -30,21 +31,10 @@
 
 
 
-
-
-
-
-
         <form action="" method="POST">
 
           {% csrf_token %}
-          <div class="input-group input-group-static mb-4 is-filled">
-            <label class="" for="id_meetingPlace">
-              سایر اعضا را وارد کنید
-            </label>
-            <input type="text" name="membersOther" maxlength="250" class="form-control" id="id_membersOther" value="{{membersOther}}" >
-
-          </div>
+         
           <div  class="row" id="profileList"> 
             <div class="table-responsive ">
                       
@@ -75,13 +65,13 @@
                       <tr>
                           
                      
-                          <td class="narowFont text-center overflow-hidden">{{job.1}} {{job.0.profile.firstName}}</td>
-                          <td class="narowFont text-center overflow-hidden">{{job.0.profile.lastName}}</td>
-                          <td class="narowFont text-center overflow-hidden">{{job.0.jobBankPost.title}}</td>
+                          <td class="narowFont text-center overflow-hidden">{{job.profile.firstName}}</td>
+                          <td class="narowFont text-center overflow-hidden">{{job.profile.lastName}}</td>
+                          <td class="narowFont text-center overflow-hidden">{{job.jobBankPost.title}}</td>
                           
                           <td class="narowFont text-center overflow-hidden">   
                             <div class="form-check align-items-center ">
-                              <input class="form-check-input" type="checkbox" value="{{job.0.id}}" {%if job.1  %} checked {%endif%}  name="jobSelected" id="jobSelected">
+                              <input class="form-check-input" type="checkbox" value="{{job.id}}" {%if job.1  %} checked {%endif%}  name="jobSelected" id="jobSelected">
                             </div>
             
                           </td>
@@ -107,17 +97,55 @@
           
           <input type="hidden" name="meetingRelated" id="id_meetingRelated" value="{{meetingSelected.id}}">
           <div class="row justify-content-md-center">
-            <div class="col-5">
+            <div class="col-4">
               <button type="submit" class="btn w-100  btn-outline-primary">
                 افزودن </button>
             </div>
-            <div class="col-5">
-              <a href="{%url 'ViewProfileMeeting' %}" class="btn w-100  btn-outline-danger">
+            <div class="col-4">
+              <a href="{%url 'CreateViewMeetingAgenda' meetingSelected.id %}" class="btn w-100  btn-outline-info">
+                پایان </a>
+            </div>
+            <div class="col-4">
+              <a href="{%url 'ListViewMeeting' %}" class="btn w-100  btn-outline-danger">
                 کنسل </a>
             </div>
           </div>
 
         </form>
+
+
+        <form  hx-post="{%url 'add_other_member' meetingSelected.id %}" hx-target="#memberOtherList"  class="py-3" >
+          {% csrf_token %}
+         
+          <div class="row">
+            <div class="col-12">
+              <div class="input-group input-group-static mb-4 is-filled">
+                <label class="" for="id_memberName">
+                  نام اعضا را وارد کنید
+                </label>
+                <input type="text" name="memberName" maxlength="250" class="form-control" id="id_memberName"  >
+    
+                
+                
+              </div>
+
+            </div>
+          </div>
+          <div class="row justify-content-md-center">
+            <div class="col-5">
+              <button type="submit"  class="btn w-100  btn-outline-primary" >
+                افزودن </button>
+            </div>
+          </div>
+          
+
+
+
+        </form>
+
+        <div class="row" id="memberOtherList">
+          {% include 'partials/member-other-list.html' %}
+        </div>
       </div>
     </div>
   </div>
@@ -134,6 +162,25 @@
 <script>
   $(document).ready(function () {
     $('#example').dataTable({
+
+      "oLanguage": {
+        "oPaginate": {
+          "sNext": "صفحه بعدی",
+          "sPrevious": "صفحه قبلی"
+        },
+        "sEmptyTable": "اطلاعاتی برای نمایش وجود ندارد",
+        "sSearch": "جستجو   :  ",
+        "sInfo": "نمایش _START_ تا_END_ از تعداد کل _TOTAL_",
+        "sLengthMenu": "  تعداد در صفحه  _MENU_ ",
+        "sInfoEmpty": "رکوردی برای نمایش وجود ندارد"
+
+      }
+    });
+  });
+</script>
+<script>
+  $(document).ready(function () {
+    $('#memberOtherListTable').dataTable({
 
       "oLanguage": {
         "oPaginate": {

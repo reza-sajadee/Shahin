@@ -1,0 +1,458 @@
+{% extends extend%}
+{% load jalali_tags %}
+
+{% load static %}
+{% block style %}
+
+<!-- <link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/tabs.css' %}"> -->
+<link href="{% static '/css/picker.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+
+{%endblock style%}
+
+{% block content %}
+
+{{get_jalali_date}}
+
+<div class="container-fluid">
+    <div class="row py-3 justify-content-md-center">
+      <div class="card py-3 bg-gradient-light-green frame col-12">
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div class="row">
+            <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+              <h4 class="text-white text-capitalize ps-3">اطلاعات  پایه برنامه اجرایی</h4>
+            </div>
+          </div>
+    
+        </div>
+  
+        <div class="card-body">
+  
+          <div class="row justify-content-evenly">
+            <div class="col-5">
+  
+              <span class=" fw-bold text-dark"> موضوع : </span>
+              <span class=" narowFont">{{planProfileSelected.title}} </span>
+  
+  
+            </div>
+  
+            <div class="col-5">
+              <span class=" fw-bold text-dark">   مجری   : </span>
+              <span class=" narowFont">{{planProfileSelected.responsible.profile.firstName}} - {{planProfileSelected.responsible.profile.lastName}} </span>
+            </div>
+  
+          </div>
+          <hr class="dark horizontal">
+          <div class="row justify-content-evenly">
+            <div class="col-11">
+  
+              <span class=" fw-bold text-dark"> شرح برنامه اجرایی  : </span>
+              <span class=" narowFont">{{planProfileSelected.description}} </span>
+  
+  
+            </div>
+  
+           
+  
+          </div>
+          <hr class="dark horizontal">
+          <div class="row py-3 justify-content-evenly">
+            <div class="col-5">
+  
+              <span class=" fw-bold text-dark">  تاریخ شروع   : </span>
+              <span class=" narowFont">{{planProfileSelected.startTiem|to_jalali:'%Y/%m/%d'}}</span>
+  
+  
+            </div>
+            <div class="col-5">
+              <span class=" fw-bold text-dark">  تاریخ پایان    : </span>
+              <span class=" narowFont">{{planProfileSelected.deadLine|to_jalali:'%Y/%m/%d'}}</span>
+            </div>
+           
+           
+           
+  
+          </div>
+          <h5>پیشرفت زمانی پروژه :</h5>
+          <div class="progress  my-5" style="height: 15px;">
+            
+            <div class="progress-bar bg-info" role="progressbar" style="width: {{projectPassedDayes}}%; height: 15px;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="{{projectDays}}">
+              <span class="narowFont text-lg text-info" style="padding-bottom: 3rem;position: absolute;">{{projectPassedDayes}} روز سپری شده</span>
+              
+            </div>
+            
+            <div class="progress-bar bg-{{projectBarColor}}" role="progressbar" style="width: 100% ;  height: 15px;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="{{projectDays}}">
+              
+              <span class="narowFont text-lg text-{{projectBarColor}}" style="padding-bottom: 3rem;position: absolute;">{{projectRemainsDayes}} روز باقی مانده </span>
+            </div>
+          </div>
+          <hr class="dark horizontal">
+         <div class="row">
+          <div class="text-center ">
+            <h5>درصد پیشرفت وزنی پروژه</h5>
+          </div>
+          <div class="progress-wrapper">
+            
+            <div class="progress" style=" height: 15px;">
+              <div class="progress-bar bg-info" role="progressbar" aria-valuenow="{{progressDone}}" aria-valuemin="0" aria-valuemax="100" style="width: {{progressDone}}%;     height: 15px;">% {{progressDone}}</div>
+              
+            </div>
+            
+          </div>
+         </div>
+        
+
+       
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="container py-6">
+    <div class="row justify-content-md-center">
+
+          
+            <div class="card-body">
+                <div class="row">
+                  
+                    <div class="col-12">
+                        <div class="card card-frame ineer-shadow">
+                            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                                <div class="row">
+                                  <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+                                    <h4 class="text-white text-capitalize ps-3">فعالیت های برنامه اجرایی</h4>
+                                  </div>
+                                </div>
+                          
+                              </div>
+                            <div class="row">
+                                <div class="col-12">
+                                   
+                                        
+                                    <div class="card-body px-0 pb-2">
+                                        
+                                         
+                                      <div class="table-responsive my-5">
+          
+                                        <table id="example" class="table uk-table uk-table-hover uk-table-striped align-items-center py-3 mb-0">
+                                          <br>
+                                          <thead>
+                                            
+                                            <tr>
+                                              <th class="text-center text-lg font-weight-bolder opacity-7">ردیف</th>
+                                             
+                                              <th class="text-center text-lg font-weight-bolder opacity-7">عنوان</th>
+                                              
+                                    
+                                              <th class="text-center text-lg font-weight-bolder opacity-7">شروع</th>
+                                              <th class="text-center text-lg font-weight-bolder opacity-7">پایان</th>
+                                   
+                                              <th class="text-center text-lg font-weight-bolder opacity-7">میزان یشرفت</th>
+                                              <th class="text-center text-lg font-weight-bolder opacity-7">وزن </th>
+                                              <th class="text-center text-lg font-weight-bolder opacity-7">تغییر</th>
+                                              
+                                  
+                                          
+                                           
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            
+                                          
+                                            {%for datas in allAction%}
+                                             
+                                              <tr class="table-{{datas.get_status_today}}">
+                                                <td class="narowFont text-center overflow-hidden">{{forloop.counter}}</td>
+                                                  
+                                                  <td class="narowFont text-center overflow-hidden">{{datas.title}}</td>
+                                                  <td class="narowFont text-center overflow-hidden">{{datas.startTiem|to_jalali:'%Y/%m/%d'}}</td>
+                                                  <td class="narowFont text-center overflow-hidden">{{datas.deadLine|to_jalali:'%Y/%m/%d'}}</td>
+                                              
+                                                  
+                                                  <td class="narowFont text-center overflow-hidden">
+                                                    <div class="progress-wrapper">
+                                                      <div class="progress-{{datas.get_status_today}}">
+                                                        <div class="progress-percentage">
+                                                          <span class="text-lg font-weight-normal">{{datas.progress}}% شده</span>
+                                                        </div>
+                                                      </div>
+                                                      <div class="progress" style=" height: 6px;">
+                                                        <div class="progress-bar bg-{{datas.get_status_today}}" role="progressbar" aria-valuenow="{{datas.progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{datas.progress}}%;     height: 6px;"></div>
+                                                      </div>
+                                                    </div>
+                                                    <div class="progress-wrapper">
+                                                      <div class="progress-info">
+                                                        <div class="progress-percentage">
+                                                          <span class="text-lg font-weight-normal">{{datas.planed_progress}}% باید</span>
+                                                        </div>
+                                                      </div>
+                                                      <div class="progress" style=" height: 6px;">
+                                                        <div class="progress-bar bg-info" role="progressbar" aria-valuenow="{{datas.progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{datas.planed_progress}}%;     height: 6px;"></div>
+                                                      </div>
+                                                    </div>
+                                                  </td>
+                                                  <td class="narowFont text-center overflow-hidden">0.{{datas.weight}}</td>
+                                                  <td class="narowFont text-center overflow-hidden"><a class="btn text-lg btn-lg  justify-content-center " style="border: None;"  data-bs-toggle="modal" data-bs-target="#changeModal{{datas.id}}" >
+                                                    
+                                                      <div class="  ms-2 d-flex align-items-center justify-content-center">
+                                                        <img style="max-width: 50px; min-width: 30px;" src="{% static 'img/svg/edit.svg' %}" >
+                                                      </div>
+                                                 
+                                                 </a></td>
+                                               
+                                            
+                                                 
+                                                 
+                                                 
+                                                 
+                                                 
+                                              </tr>
+                                              <div class="modal fade" id="changeModal{{datas.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                  <div class="modal-content">
+                                                    <div class="modal-header">
+                                                      <h5 class="modal-title font-weight-normal" id="exampleModalLabel"> ویرایش اکشن  </h5>
+                                                      <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                      </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                            
+                                                        
+                                                            <form  method="post" action="{%url 'UpdateViewAction' %}" enctype="multipart/form-data">
+                                                              <input type="hidden" id="id"   name="id"   value={{datas.id}}>
+                                                            {% csrf_token %}
+                                                            <div class="row justify-content-evenly">
+                                                              <div class="col">
+                                                                <span class=" fw-bold text-dark"> موضوع : </span>
+                                                                <span class=" narowFont">{{datas.title}} </span>
+                                                              </div>
+                                                            </div>
+                                                            <hr class="dark horizontal">
+                                                            <div class="row justify-content-evenly">
+                                                              <div class="col">
+                                                                <span class=" fw-bold text-dark"> شرح : </span>
+                                                                <span class=" narowFont">{{datas.description}} </span>
+                                                              </div>
+                                                            </div>
+                                                            <hr class="dark horizontal">
+                                                            <div class="row justify-content-evenly">
+                                                              <div class="col-6">
+                                                                <span class=" fw-bold text-dark"> شروع فعالیت : </span>
+                                                                <span class=" narowFont text-success">{{datas.deadLine|to_jalali:'%Y/%m/%d'}} </span>
+                                                              </div>
+                                                              <div class="col-6">
+                                                                <span class=" fw-bold text-dark"> پایان فعالیت : </span>
+                                                                <span class=" narowFont text-danger">{{datas.deadLine|to_jalali:'%Y/%m/%d'}} </span>
+                                                              </div>
+                                                            </div>
+                                                            <hr class="dark horizontal">
+                                                            <hr class="dark horizontal">
+                                                            <div class="row justify-content-evenly">
+                                                              <div class="col">
+                                                                <div class="form-group mt-4 ">
+                                                                  <span class=" fw-bold text-dark"> درصد پیشرفت : <span class="progressValue_{{datas.id}} narowFont" > {{datas.progress}}% </span></span>
+                                                       
+                                                                  
+                                                                  <input type="range" class="form-range range_{{datas.id}}" min="0" max="100" step="10" id="id_progress" name="progress" value="{{datas.progress}}" style="width: 100%">
+                                                              </div>
+                                                            </div>
+                                                    </div>
+                                                    <div class="modal-footer text-center">
+                                                      <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">بستن</button>
+                                                      <a href="" class="btn bg-gradient-danger">حذف </a>
+                                                      <button type="submit" class="btn bg-gradient-success">ثبت </a>
+                                                    </div>
+                                                            </form>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <script>
+                                                $( document ).ready(function() {
+                                                    $('.range_{{datas.id}}').on('input', function(){
+                                                         v = $('.range_{{datas.id}}').val();
+                                                         console.log(v);
+                                                         $('.progressValue_{{datas.id}}').text(v + '%') ;
+                                                    });
+                                                });
+                                                </script>
+                                            {%endfor%}
+                                            
+                              
+                                                      
+                                          </tbody>
+                                        </table>
+                              
+                                       
+                                      </div>
+
+                                            <div class="row justify-content-md-center">
+                                              <div class="col-5">
+                                                <a class="btn w-100  btn-outline-primary" data-bs-toggle="modal" data-bs-target="#createModal">
+                                                  افزودن فعالیت جدید </a>
+                                              </div>
+                                              <div class="col-5">
+                                                <a href="{%url menuBack %}" class="btn w-100  btn-outline-danger">
+                                                  بازگشت </a>
+                                              </div>
+                                            </div>
+
+                                            <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                              <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                  <div class="modal-header">
+                                                    <h5 class="modal-title font-weight-normal" id="exampleModalLabel"> افزودن فعالیت جدید</h5>
+                                                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                                                      <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                  </div>
+                                                  <div class="modal-body">
+
+                                                      <form action="" method="POST" enctype="multipart/form-data">
+                                                          <input type="hidden" id="planProfileRelated"   name="planProfileRelated"   value={{planProfileSelected.id}}>
+                                                          {% csrf_token %}
+                                                        
+                                                          <div class="input-group input-group-static mb-4">
+                                                              <label class="" for="id_title">
+                                                                  عنوان  فعالیت را وارد کنید
+                                                              </label>
+                                                              <input type="text" name="title" maxlength="250" class="form-control" id="id_title" >
+                                                  
+                                                              </div>
+
+                                                              <div class="input-group input-group-static mb-4">
+                                                                <label class="" for="id_responsible">
+                                                                    مسئول اجرا انتخاب کنید
+                                                                </label>
+                                                                {{form.responsible}}
+
+                                                                </div>
+                                                          
+                                                          
+                                                          <div class="input-group input-group-static mb-4">
+                                                              <label for="id_description">
+                                                                  توضیحات فعالیت  را وارد کنید : 
+                                                              </label>
+                                                              <textarea name="description" cols="40" rows="5" class="form-control" id="id_description"></textarea>
+                                                              
+                                                              </div>
+                                                            
+                                                            
+                                                              <div class="input-group input-group-static mb-4">
+                                                                <label class="" for="startTiem">
+                                                                  تاریخ شروع  اکشن را انتخاب نمایید
+                                                                </label>
+                                                                {{form.startTiem}}
+                                                                
+                                                              </div>
+                                                              <div class="input-group input-group-static mb-4">
+                                                                <label class="" for="id_deadLine">
+                                                                  تاریخ پایان  اکشن را انتخاب نمایید
+                                                                </label>
+                                                                {{form.deadLine}}
+                                                                
+                                                              </div>
+                                                              <div class="input-group input-group-static mb-4">
+                                                                <label class="" for="id_weight">
+                                                                  وزن
+                                                                </label>
+                                                                <input type="number" name="weight" maxlength="2"  min="0" max="{{max_weight}}" class="form-control" id="id_weight" >
+                                                                
+                                                              </div>
+                                                      
+                                                              
+                                                          
+                                                      
+                                                  
+                                                    
+                                                  </div>
+                                                  <div class="modal-footer">
+                                                    <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">بستن</button>
+                                                    <button type="submit" class="btn bg-gradient-primary">ثبت </button>
+                                                  </div>
+                                              </form>
+                                                </div>
+                                              </div>
+                                            </div>
+
+
+                                       
+                                    </div>
+                                   
+                                </div>
+                                
+                              </div>
+                              
+                        </div>
+                       
+                    </div>
+                </div>
+                
+            </div>
+    
+    </div>
+
+</div>
+
+    
+    
+   
+{% endblock content %}
+
+
+{% block scripts %}
+
+<script
+src="https://code.jquery.com/jquery-3.6.0.min.js"
+integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+crossorigin="anonymous"></script>
+
+<script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
+<script src="{% static 'js/picker.js' %}"></script>
+<script>
+  new Picker(document.querySelector('.js-time-picker'), {
+    format: 'HH:mm',
+    headers: true,
+    date: new Date(1, 0),
+    text: {
+      title: 'مدت زمان را انتخاب کنید',
+    },
+    increment: {
+      hour: 1,
+      minute: 15,
+
+    },
+  });
+
+  new Picker(document.querySelector('.js-time-picker-start'), {
+    format: 'HH:mm',
+    headers: true,
+    date: new Date(1, 0),
+    text: {
+      title: 'مدت زمان را انتخاب کنید',
+
+    },
+    increment: {
+      hour: 1,
+      minute: 15,
+
+    },
+  });
+
+
+</script>
+
+
+
+		<!-- <script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
+	<!-- OR -->
+	<!-- loading by form (if used AdminJalaliDateWidget) -->
+		{{ form.media }} 
+
+{%endblock scripts%}
+
+
+
+
+

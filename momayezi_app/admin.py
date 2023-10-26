@@ -11,9 +11,9 @@ from .resources import TypeMomayeziResource , ReportMomayeziResource , ForsatBeh
 
 @admin.register(TypeMomayezi)
 class TypeMomayeziAdmin(ImportExportModelAdmin):
-     list_display = ('title','typeMomayeziCode' )
-     list_filter = ('title','typeMomayeziCode' )
-     search_fields = ('title','typeMomayeziCode')
+     list_display = ('title',)
+     list_filter = ('title',)
+     search_fields = ('title',)
      resource_class  = TypeMomayeziResource
      
      
@@ -50,7 +50,7 @@ class AdamEntebaghAdmin(ImportExportModelAdmin):
 @admin.register(CalenderMomayezi)
 class CalenderMomayeziAdmin(ImportExportModelAdmin):
      list_display = ('dateMomayezi','vahedMomayezi' ,'timeDuration','teamMomayezi' )
-     list_filter = ('dateMomayezi','vahedMomayezi' ,'timeDuration','teamMomayezi' )
+     list_filter = ('dateMomayezi','vahedMomayezi' ,'timeDuration','teamMomayezi', 'systemMomayezi' )
      search_fields = ('dateMomayezi','vahedMomayezi' ,'timeDuration','teamMomayezi' )
      resource_class  = CalenderMomayeziResource    
 

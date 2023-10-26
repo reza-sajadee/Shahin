@@ -9,15 +9,19 @@ from .models import Notifications
 
 from django.views.generic import ListView
 import json
-
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework import permissions
+from rest_framework import permissions , status
+
+
+
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from risk_app.utils import is_dabir
 
-
+from .serializers import NotificationstSerializer
 
 
 class NotificationsHome( LoginRequiredMixin,View): 
@@ -76,7 +80,7 @@ class ListViewNotifications(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست نوبت ممیزی  ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام نوبت ممیزی  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام نوبت ممیزی  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -138,7 +142,7 @@ class ListViewAdminNotifications(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست نوبت ممیزی  ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام نوبت ممیزی  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام نوبت ممیزی  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -265,7 +269,7 @@ class DeleteViewNotifications( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "پاک کردن یک نوبت ممیزی "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "آیا میخواهید که نوبت ممیزی   " + obj.title + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که نوبت ممیزی   " + obj.title + " "  + " را پاک کنید   ؟"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "delete_forever"
             #تعداد ستون ها            
@@ -286,5 +290,11 @@ class DeleteViewNotifications( LoginRequiredMixin,View):
             context={'extend':self.extend,'riskDabir':is_dabir(self),}
             return redirect('ListViewAdminNotifications')
         return render(request,self.template_name,context)
-    
-    
+@permission_classes([IsAuthenticated])    
+class ListNotificationsAPI(APIView):
+    def get(self, request,id=None ,*args, **kwargs):
+        profileSelected = Profile.objects.get(user = request.user)
+      
+        query = Notifications.objects.all().filter(recivers = profileSelected).filter(personalStatus='pending')
+        serializers = NotificationstSerializer(query , many=True)
+        return Response(serializers.data , status = status.HTTP_200_OK)

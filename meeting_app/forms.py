@@ -20,8 +20,8 @@ class CreateFormMeetingProfile(forms.ModelForm):
         #فیلد های نمایش داده شده در فرم
         
         fields  = '__all__'
-   
-
+  
+        
      
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -65,8 +65,8 @@ class CreateFormMeeting(forms.ModelForm):
         #فیلد های نمایش داده شده در فرم
         
      
-        fields = '__all__'
-
+      
+        exclude = ('complate',)
      
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

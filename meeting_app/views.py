@@ -24,12 +24,13 @@ from jalali_date import datetime2jalali, date2jalali
 from notifications_app.models import Notifications
 from messages_app.models import Messages
 from datetime import timedelta
-
+from project_app.models import PlanProfile
 from django.http.response import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse
 from formtools.wizard.views import SessionWizardView
 from .serializers import MeetingProfileSerializer
+from report_app.models import Report , ReportActivityManager
 # Create your views here.
 def load_events(request):
     qs_val = list(MeetingProfile.objects.all())
@@ -49,7 +50,7 @@ class CreateViewMeetingProfile( LoginRequiredMixin,View):
         form = CreateFormMeetingProfile()
        
         #عنوان نمایش داده شده در بالای صفحه
-        header_title  = "انتخاب اعضا اعضاء ثابت  "
+        header_title  = "انتخاب اعضاء ثابت  "
         #توضحات نمایش داده شده در زیر عنوان
         discribtion   = "جهت ایجاد یک نوع ممیزی  جدید ، موارد خواسته شده را تکمیل نمایید"
         #آیکون نمایش داده شده در بخش بالای سایت
@@ -80,22 +81,22 @@ class CreateViewMeetingProfile( LoginRequiredMixin,View):
         firstSuccessorId = request.POST.get('firstSuccessor' or None)
         secondSuccessorId = request.POST.get('secondSuccessor' or None)
         if(responsibleId == ''):
-            pass
+            responsible = None
         else:
             responsible = JobBank.get_Job(self , id = responsibleId)
         
         if(managerId == ''):
-            pass
+            managerSelected = None
         else:
             managerSelected = JobBank.get_Job(self , id = managerId)
         
         if(firstSuccessorId == ''):
-            pass
+            firstSuccessorSelected = None
         else:
             firstSuccessorSelected = JobBank.get_Job(self , id = firstSuccessorId)
         
         if(secondSuccessorId == ''):
-            pass
+            secondSuccessorSelected = None
         else:
             secondSuccessorSelected = JobBank.get_Job(self , id = secondSuccessorId)
         
@@ -105,7 +106,7 @@ class CreateViewMeetingProfile( LoginRequiredMixin,View):
         instanceProfile.membersPrimary.set(jobSelected)
       
         sweetify.toast(self.request,timer=30000 , icon="success",title ='پروفایل جلسه با موفقیت ساخته شد!!!')
-        return redirect('ViewProfileMeeting')
+        return redirect('ViewMeetingDashboard')
         
         
         #بررسی صحت  ورودی
@@ -122,7 +123,7 @@ class ListViewMeetingProfile(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست   پروفایل جلسات"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام نوع پست سازمانی ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام نوع پست سازمانی ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -134,7 +135,7 @@ class ListViewMeetingProfile(ListView):
         link_list =[]
         admin_link_list = []
         profileSelected =  Profile.objects.get(user = self.request.user)
-        if(MeetingProfile.objects.all().filter(responsible__profile =profileSelected ).exists()):
+        if(MeetingProfile.objects.all().filter(responsible__profile =profileSelected ).exists() or self.request.user.is_superuser):
             link_dict = {'title' : ' تعریف جلسه جدید' , 'icon' : 'edit' , 'link' : 'CreateViewMeeting' , 'type':'key' }
             link_list.append(link_dict)
 
@@ -151,7 +152,7 @@ class ListViewMeetingProfile(ListView):
             data = []
             dict_temp = {}
             data.append(query.title)
-            data.append(query.responsible)
+            data.append(str(query.responsible.profile.firstName) + " " + str(query.responsible.profile.lastName))
             data.append(query.get_meetingType_display)
             
             dict_temp = {query.id : data}
@@ -208,9 +209,10 @@ class CreateViewMeeting( LoginRequiredMixin,View):
             #تابع نمایش پیغام
             meetingProfileSlected = MeetingProfile.objects.get(id = id)
             for member in meetingProfileSlected.membersPrimary.all():
-                instanceMember = Member.objects.create( JobBankRelated =member ,meetingRelated =f  )  
+                instanceMember = Member.objects.create( JobBankRelated =member ,meetingRelated =f )  
+                
             sweetify.toast(self.request,timer=30000 , icon="success",title ='جلسه جدید با موفقیت ساخته شد !!!')
-            return redirect('ListViewMeeting')
+            return redirect('ViewMeetingDashboard')
         else :
             sweetify.toast(self.request,timer=30000 , icon="error",title ='جلسه مورد نظر ساخته نشد !')
         context = {'extend':self.extend,'form': form}
@@ -243,7 +245,7 @@ class DeleteViewMeetingProfile( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "پاک کردن یک   پروفایل جلسه"
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "آیا میخواهید که   پروفایل جلسه  " + obj.title + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که   پروفایل جلسه  " + obj.title + " "  + " را پاک کنید   ؟"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "delete_forever"
             #تعداد ستون ها            
@@ -276,7 +278,7 @@ class ListViewMeeting(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست   جلسات     "
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام نوع پست سازمانی ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام نوع پست سازمانی ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -294,24 +296,25 @@ class ListViewMeeting(ListView):
             # admin_link_dict = {'title' : 'ویرایش' , 'icon' : "edit" , 'link' : '#' , 'type': 'key' }
             # admin_link_list.append(admin_link_dict)
             pass
-        if(Meeting.objects.all().filter(meetingProfileRelated__responsible =jobSelected ).exists()):
+        if(Meeting.objects.all().filter(meetingProfileRelated__responsible =jobSelected ).exists() or self.request.user.is_superuser):
             link_dict = {'title' : 'تاریخ و زمان' , 'icon' : 'edit' , 'link' : 'CreateViewMeetingDate' , 'type':'key' }
             link_list.append(link_dict)
             link_dict = {'title' : 'افزودن اعضا' , 'icon' : 'edit' , 'link' : 'CreateViewMeetingMembers' , 'type':'key' }
             link_list.append(link_dict)
-            link_dict = {'title' : 'دعوت نامه' , 'icon' : 'edit' , 'link' : 'CreateViewMeetingInvitation' , 'type':'key' }
-            link_list.append(link_dict)
+            
             link_dict = {'title' : ' دستور جلسه' , 'icon' : 'edit' , 'link' : 'CreateViewMeetingDate' , 'type':'key' }
+            link_list.append(link_dict)
+            link_dict = {'title' : 'دعوت به جلسه' , 'icon' : 'edit' , 'link' : 'CreateViewMeetingInvitation' , 'type':'key' }
             link_list.append(link_dict)
             link_dict = {'title' : 'درخواست گزارش' , 'icon' : 'edit' , 'link' : 'CreateViewReport' , 'type':'key' }
             link_list.append(link_dict)
-            link_dict = {'title' : 'طرح جلسه' , 'icon' : 'edit' , 'link' : 'CreateViewReport' , 'type':'key' }
+            link_dict = {'title' : 'فایل ارائه جلسه' , 'icon' : 'edit' , 'link' : 'CreateViewReport' , 'type':'key' }
             link_list.append(link_dict)
             link_dict = {'title' : 'صورت جلسه' , 'icon' : 'edit' , 'link' : 'CreateViewMeetingDate' , 'type':'key' }
             link_list.append(link_dict)
             link_dict = {'title' : ' حاضرین در جلسه' , 'icon' : 'edit' , 'link' : 'CreateViewMeetingDate' , 'type':'key' }
             link_list.append(link_dict)
-            link_dict = {'title' : '  مستندات جلسه' , 'icon' : 'edit' , 'link' : 'CreateViewMeetingDate' , 'type':'key' }
+            link_dict = {'title' : '  فایل صورت جلسه' , 'icon' : 'edit' , 'link' : 'CreateViewMeetingDate' , 'type':'key' }
             link_list.append(link_dict)
             link_dict = {'title' : '   بایگانی' , 'icon' : 'edit' , 'link' : 'CreateViewMeetingDate' , 'type':'key' }
             link_list.append(link_dict)
@@ -321,7 +324,10 @@ class ListViewMeeting(ListView):
         #اسم داده های جدول
         object_name    = ['title','responsible' , 'meetingType']
         #دریافت تمام داده ها
-        queryset = Meeting.objects.all().filter(meetingProfileRelated__responsible = jobSelected).filter(complate = False)
+        if(self.request.user.is_superuser):
+            queryset = Meeting.objects.all().filter(complate = False)
+        else:
+            queryset = Meeting.objects.all().filter(meetingProfileRelated__responsible = jobSelected).filter(complate = False)
         doing_string =  '<a class="nav-link text-black-80" href="{0}" ><span class=" fw-bold text-dark">انجام دادن</span></a>'
         done_string =  '<a class="nav-link text-black-80" href="{0}" ><span class=" fw-bold text-success">ویرایش کردن </span></a>'
         not_responsible =  '<a class="nav-link text-black-80" href="#" ><span class=" fw-bold text-danger">دسترسی ندارید</span></a>'
@@ -345,19 +351,20 @@ class ListViewMeeting(ListView):
                 data.append(done_string.format(reverse('CreateViewMeetingMembers' , kwargs={'meetingId':query.id})) )
             else:
                 data.append(doing_string.format(reverse('CreateViewMeetingMembers' , kwargs={'meetingId':query.id})) )
-            #دعوت نامه
-            if(MeetingInvitation.objects.all().filter(meetingRelated = query ).exists()):
-                data.append(done_string.format(reverse('CreateViewMeetingInvitation' , kwargs={'meetingId':query.id})) )
-            else:
-                data.append(doing_string.format(reverse('CreateViewMeetingInvitation' , kwargs={'meetingId':query.id})) )
+            #دعوت به جلسه
+            
             #دستور جلسه
             if(MeetingAgenda.objects.all().filter(meetingRelated = query ).exists()):
                 data.append(done_string.format(reverse('CreateViewMeetingAgenda' , kwargs={'meetingId':query.id})) )
             else:
                 data.append(doing_string.format(reverse('CreateViewMeetingAgenda' , kwargs={'meetingId':query.id})) )
+            if(MeetingInvitation.objects.all().filter(meetingRelated = query ).exists()):
+                data.append(done_string.format(reverse('CreateViewMeetingInvitation' , kwargs={'meetingId':query.id})) )
+            else:
+                data.append(doing_string.format(reverse('CreateViewMeetingInvitation' , kwargs={'meetingId':query.id})) )
             #درخواست گزارش
             data.append(doing_string.format(reverse('CreateViewReport') ))
-            #طرح جلسه
+            #فایل ارائه جلسه
             if(MeetingPlan.objects.all().filter(meetingRelated = query ).exists()):
                 data.append(done_string.format(reverse('CreateViewMeetingPlan' , kwargs={'meetingId':query.id})) )
             else:
@@ -370,7 +377,7 @@ class ListViewMeeting(ListView):
             #حاضرین در جلسه                
             if(MeetingMember.objects.all().filter(meetingRelated = query ).exists()):
         
-                if(MeetingMember.objects.all().filter(meetingRelated = query )[0].compated):
+                if(MeetingMember.objects.all().filter(meetingRelated = query )[0].complated):
                     data.append(done_string.format(reverse('CreateViewMeetingMinute' , kwargs={'meetingId':query.id})) )
                 else:
                     data.append(doing_string.format(reverse('CreateViewMeetingMinute' , kwargs={'meetingId':query.id})) )                
@@ -442,7 +449,14 @@ class CreateViewMeetingDate( LoginRequiredMixin,View):
         #رنگ 
         color         = "primary"
         meetingSelected = Meeting.objects.all().filter(id =meetingId )[0]
-     
+        scMember = None
+        otherMember = None
+        allMember = Member.objects.all().filter(meetingRelated__id = meetingId)
+        prMember = allMember.filter(memberType = 'pr')
+        if(len(allMember.filter(memberType = 'sc')) > 0):
+            scMember = allMember.filter(memberType = 'sc')
+        if(len(allMember.filter(memberType = 'other')) > 0):
+            otherMember =  allMember.filter(memberType = 'other')
         try:
             meetingSelectedDate = MeetingDate.objects.get(meetingRelated = meetingSelected )
         except:
@@ -461,7 +475,7 @@ class CreateViewMeetingDate( LoginRequiredMixin,View):
             allEnactment = None
         #دیکشنری داده هاperformanceVariable
         contex = {'extend':self.extend , 'header_title':header_title,
-        'discribtion':discribtion,'icon_name':icon_name ,
+        'discribtion':discribtion,'icon_name':icon_name , 'scMember':scMember , 'otherMember':otherMember,
         'columns' : columns , 'color' : color , 'meetingSelected':meetingSelected  , 'form':form , 'meetingSelectedDate':meetingSelectedDate , 'meetingSelectedDate' :meetingSelectedDate ,'meetingSelectedMembers' :meetingSelectedMembers , 'meetingSelectedAgendas' :meetingSelectedAgendas  , 'allEnactment':allEnactment}
         return render(request,self.template_name,contex)
 
@@ -478,11 +492,44 @@ class CreateViewMeetingDate( LoginRequiredMixin,View):
             instance = form.save(commit=False)
             instance.meetingRelated = Meeting.objects.get(id =meetingId )
             instance.save()
+            for member in instance.meetingRelated.meetingProfileRelated.membersPrimary.all():
+                Event.objects.create( user = member.profile , description = instance.meetingRelated.description , title =instance.meetingRelated.title ,end = instance.meetingDate  , start = instance.meetingDate   )
+                Notifications.objects.create( title = 'شما به جلسه ' +instance.meetingRelated.title +' که در تاریخ  ' + str(instance.meetingDate) +' برگزار می شود دعوت شده اید.' , recivers = member.profile )
             sweetify.toast(self.request,timer=30000 , icon="success",title =' تاریخ و زمان جلسه با موفقیت ثبت شد    !!!')
-            return redirect('ListViewMeeting')
+            return redirect('CreateViewMeetingMembers' ,instance.meetingRelated.id )
         else:
             sweetify.toast(self.request,timer=30000 , icon="error",title =' تاریخ و زمان جلسه   ثبت نشد    !!!')
-            return redirect('ListViewMeeting')
+            return redirect('ViewMeetingDashboard')
+
+
+
+
+def add_other_member(request , meetingId ):
+    if request.method =="POST":
+        memberName = request.POST.get('memberName')
+        meetingSelected = Meeting.objects.get(id =meetingId )
+        instanceMember = Member.objects.create(meetingRelated = meetingSelected ,otherPerson = memberName ,memberType ='other')
+        instanceMember.save()
+        memberOtherList = Member.objects.all().filter(meetingRelated = meetingSelected).filter(memberType = 'other')
+        
+        
+        return render(request , 'partials/member-other-list.html' ,{'memberOtherList' : memberOtherList , } )
+    else:
+        pass
+def delete_other_member(request , memberId ):
+   
+    
+    
+    instanceMember = Member.objects.get(id = memberId)
+    meetingSelected = instanceMember.meetingRelated
+    instanceMember.delete()
+    memberOtherList = Member.objects.all().filter(meetingRelated = meetingSelected).filter(memberType = 'other')
+    
+    
+    return render(request , 'partials/member-other-list.html' ,{'memberOtherList' : memberOtherList , } )
+    
+
+
 
 
 class CreateViewMeetingMembers( LoginRequiredMixin,View): 
@@ -501,28 +548,21 @@ class CreateViewMeetingMembers( LoginRequiredMixin,View):
 
     def get(self, request , meetingId ,  *args, **kwargs):
         
-        membersSecondary = []
-        membersOther = ''
-        allJob = []
-        if(len(MeetingMember.objects.all().filter(meetingRelated__id = meetingId)) >0):
-            obj = MeetingMember.objects.all().filter(meetingRelated__id = meetingId)[0]
-            membersSecondary = obj.membersSecondary
-            membersOther = obj.membersOther
-            for job in JobBank.objects.all().filter(~Q(profile = None) ):
-                if(job in membersSecondary.all()):
-                    allJob.append((job , 1))
-                else:
-                    allJob.append((job , 0))
-        else:
-            for job in JobBank.objects.all().filter(~Q(profile = None) ):
-                
-                allJob.append((job , 0))
-            
         
+        allJob = JobBank.objects.all().filter(~Q(profile = None) )
+        scMember = None
+        otherMember = None
+        allMember = Member.objects.all().filter(meetingRelated__id = meetingId)
+        prMember = allMember.filter(memberType = 'pr')
+        if(len(allMember.filter(memberType = 'sc')) > 0):
+            scMember = allMember.filter(memberType = 'sc')
+        if(len(allMember.filter(memberType = 'other')) > 0):
+            otherMember =  allMember.filter(memberType = 'other')
         
+
        
         #عنوان نمایش داده شده در بالای صفحه
-        header_title  = "اغضای  جلسه"
+        header_title  = "اعضا  جلسه"
         #توضحات نمایش داده شده در زیر عنوان
         discribtion   = "جهت ایجاد یک نوع ممیزی  جدید ، موارد خواسته شده را تکمیل نمایید"
         #آیکون نمایش داده شده در بخش بالای سایت
@@ -532,17 +572,18 @@ class CreateViewMeetingMembers( LoginRequiredMixin,View):
         #رنگ 
         color         = "primary"
         meetingSelected = Meeting.objects.all().filter(id =meetingId )[0]
+        memberOtherList = Member.objects.all().filter(meetingRelated = meetingSelected).filter(memberType = 'other')
         try:
             meetingSelectedDate = MeetingDate.objects.get(meetingRelated = meetingSelected )
         except:
             meetingSelectedDate = None
         try:
             meetingSelectedMembers = MeetingMember.objects.get(meetingRelated = meetingSelected )
-            otherMember  = MeetingMember.objects.get(meetingRelated = meetingSelected )
+           
             
         except:
             meetingSelectedMembers = None
-            otherMember = None
+            
         
         try:
             meetingSelectedAgendas = MeetingAgenda.objects.all().filter(meetingRelated = meetingSelected)
@@ -553,37 +594,27 @@ class CreateViewMeetingMembers( LoginRequiredMixin,View):
         except:
             allEnactment = None
         #دیکشنری داده هاperformanceVariable
-        contex = {'extend':self.extend , 'header_title':header_title,
-        'discribtion':discribtion,'icon_name':icon_name ,
-        'columns' : columns , 'color' : color , 'meetingSelected':meetingSelected   , 'meetingSelectedDate':meetingSelectedDate ,'allJob' : allJob , 'membersOther':membersOther , 'meetingSelectedMembers' : meetingSelectedMembers , 'meetingSelectedAgendas' : meetingSelectedAgendas , 'otherMember':otherMember , 'allEnactment' :allEnactment }
+        contex = {'extend':self.extend , 'header_title':header_title,'prMember':prMember ,'scMember':scMember ,'otherMember':otherMember ,
+        'discribtion':discribtion,'icon_name':icon_name ,'memberOtherList':memberOtherList,
+        'columns' : columns , 'color' : color , 'meetingSelected':meetingSelected   , 'meetingSelectedDate':meetingSelectedDate ,'allJob' : allJob ,  'meetingSelectedMembers' : meetingSelectedMembers , 'meetingSelectedAgendas' : meetingSelectedAgendas , 'otherMember':otherMember , 'allEnactment' :allEnactment }
         return render(request,self.template_name,contex)
 
 
     def post(self, request , meetingId , *args, **kwargs):
         meetingSelected = Meeting.objects.all().filter(id =meetingId )[0]
-        if(len(MeetingMember.objects.all().filter(meetingRelated__id = meetingId)) >0):
-            obj = MeetingMember.objects.all().filter(meetingRelated__id = meetingId)[0]
-            jobId = request.POST.getlist('jobSelected')
-            jobSelected = JobBank.objects.all().filter(~Q(profile = None) ).filter(id__in = jobId)
-            membersOther = request.POST.get('membersOther')
-            obj.membersOther = membersOther
-            obj.membersSecondary.set(jobSelected)
-            obj.save()
-            sweetify.toast(self.request,timer=30000 , icon="success",title =' اعضا فرعی و سایر اعضا   جلسه با موفقیت ثبت شد    !!!')
-            return redirect('ListViewMeeting')
-        else:
-            jobId = request.POST.getlist('jobSelected')
-            jobSelected = JobBank.objects.all().filter(~Q(profile = None) ).filter(id__in = jobId)
-            membersOther = request.POST.get('membersOther')
-            instance = MeetingMember.objects.create(meetingRelated = meetingSelected ,membersOther =membersOther  )
-            for member in jobSelected.all():
-                instanceMember = Member.objects.create(meetingRelated = meetingSelected ,JobBankRelated =member  )
-                instanceMember.save()
-            allMember = Member.objects.all().filter(meetingRelated = meetingSelected)
-            instance.membersSecondary.set(allMember)
-            instance.save()
-            sweetify.toast(self.request,timer=30000 , icon="success",title =' اعضا فرعی و سایر اعضا   جلسه با موفقیت ثبت شد    !!!')
-            return redirect('ListViewMeeting')
+        
+        jobId = request.POST.getlist('jobSelected')
+        allJobSelected = JobBank.objects.all().filter(~Q(profile = None) ).filter(id__in = jobId)
+        for job in allJobSelected:
+            instanceMember = Member.objects.create(meetingRelated = meetingSelected ,JobBankRelated = job ,memberType ='sc')
+            instanceMember.save()
+        try:
+            MeetingMember.objects.get( meetingRelated =meetingSelected  )
+        except:
+            MeetingMember.objects.create( meetingRelated =meetingSelected ,complated = True )
+        sweetify.toast(self.request,timer=30000 , icon="success",title =' اعضا فرعی و سایر اعضا   جلسه با موفقیت ثبت شد    !!!')
+        return redirect('CreateViewMeetingAgenda' , meetingId =meetingSelected.id )
+        
         #فرم دریافت شده
       
            
@@ -599,7 +630,15 @@ class CreateViewMeetingInvitation( LoginRequiredMixin,View):
 
     def get(self, request , meetingId ,  *args, **kwargs):
         
-      
+        scMember = None
+        otherMember = None
+        allMember = Member.objects.all().filter(meetingRelated__id = meetingId)
+        prMember = allMember.filter(memberType = 'pr')
+        if(len(allMember.filter(memberType = 'sc')) > 0):
+            scMember = allMember.filter(memberType = 'sc')
+        if(len(allMember.filter(memberType = 'other')) > 0):
+            otherMember =  allMember.filter(memberType = 'other')
+        
         if(len(MeetingInvitation.objects.all().filter(meetingRelated__id = meetingId)) >0):
             obj = MeetingInvitation.objects.all().filter(meetingRelated__id = meetingId)[0]
             form = CreateFormMeetingInvitation(instance=obj)
@@ -624,7 +663,7 @@ class CreateViewMeetingInvitation( LoginRequiredMixin,View):
         except:
             allEnactment = None    
         #عنوان نمایش داده شده در بالای صفحه
-        header_title  = "ارسال دعوت نامه جلسه"
+        header_title  = "ارسال دعوت به جلسه جلسه"
         #توضحات نمایش داده شده در زیر عنوان
         discribtion   = "جهت ایجاد یک نوع ممیزی  جدید ، موارد خواسته شده را تکمیل نمایید"
         #آیکون نمایش داده شده در بخش بالای سایت
@@ -636,7 +675,7 @@ class CreateViewMeetingInvitation( LoginRequiredMixin,View):
         meetingSelected = Meeting.objects.all().filter(id =meetingId )[0]
         #دیکشنری داده هاperformanceVariable
         contex = {'extend':self.extend , 'header_title':header_title,
-        'discribtion':discribtion,'icon_name':icon_name ,
+        'discribtion':discribtion,'icon_name':icon_name ,'scMember':scMember , 'otherMember':otherMember,
         'columns' : columns , 'color' : color , 'meetingSelected':meetingSelected  , 'form':form , 'meetingSelectedDate' :meetingSelectedDate , 'meetingSelectedMembers' :meetingSelectedMembers , 'meetingSelectedAgendas' :meetingSelectedAgendas , 'allEnactment': allEnactment}
         return render(request,self.template_name,contex)
 
@@ -667,8 +706,8 @@ class CreateViewMeetingInvitation( LoginRequiredMixin,View):
                 instanceMsg = Messages.objects.create(title = instance.title ,description =instance.text  ,reciver = member.JobBankRelated.profile ,sender = profileSender , link = '#',)
                 instanceMsg.save()
             #asd
-            sweetify.toast(self.request,timer=30000 , icon="success",title ='    دعوت نامه جلسه با موفقیت ثبت شد    !!!')
-            return redirect('ViewProfileMeeting')
+            sweetify.toast(self.request,timer=30000 , icon="success",title ='    دعوت به جلسه جلسه با موفقیت ثبت شد    !!!')
+            return redirect('ListViewMeeting')
            
 
 class CreateViewMeetingAgenda( LoginRequiredMixin,View): 
@@ -677,18 +716,18 @@ class CreateViewMeetingAgenda( LoginRequiredMixin,View):
     template_name = "createMeetingAgenda.html"
     extend = 'baseEmployee.html'
     menu_link = 'ViewProfileMeeting'
-    def get_obj(self):
-        
-        id = self.kwargs.get('id')
-        obj=None
-        if id is not None:
-            obj = get_object_or_404(MeetingInvation,id = id)
-        return obj
-
+  
     def get(self, request , meetingId ,  *args, **kwargs):
         
       
-        
+        scMember = None
+        otherMember = None
+        allMember = Member.objects.all().filter(meetingRelated__id = meetingId)
+        prMember = allMember.filter(memberType = 'pr')
+        if(len(allMember.filter(memberType = 'sc')) > 0):
+            scMember = allMember.filter(memberType = 'sc')
+        if(len(allMember.filter(memberType = 'other')) > 0):
+            otherMember =  allMember.filter(memberType = 'other')
             
         meetingSelected = Meeting.objects.all().filter(id =meetingId )[0]
         try:
@@ -722,7 +761,7 @@ class CreateViewMeetingAgenda( LoginRequiredMixin,View):
         
         #دیکشنری داده هاperformanceVariable
         contex = {'extend':self.extend , 'header_title':header_title,
-        'discribtion':discribtion,'icon_name':icon_name ,
+        'discribtion':discribtion,'icon_name':icon_name ,'scMember':scMember , 'otherMember':otherMember ,
         'columns' : columns , 'color' : color , 'meetingSelected':meetingSelected  , 'meetingSelectedDate' :meetingSelectedDate , 'meetingSelectedMembers' :meetingSelectedMembers , 'allAgenda':allAgenda , 'form':form , 'meetingSelectedAgendas':meetingSelectedAgendas , 'allEnactment' : allEnactment}
         return render(request,self.template_name,contex)
 
@@ -739,7 +778,7 @@ class CreateViewMeetingAgenda( LoginRequiredMixin,View):
             instance = form.save(commit=False)
             instance.meetingRelated = Meeting.objects.get(id =meetingId )
             instance.save()
-            sweetify.toast(self.request,timer=30000 , icon="success",title ='    دعوت نامه جلسه با موفقیت ثبت شد    !!!')
+            sweetify.toast(self.request,timer=30000 , icon="success",title ='    دعوت به جلسه جلسه با موفقیت ثبت شد    !!!')
             return redirect('ViewProfileMeeting')
            
 def add_enactment(request):
@@ -756,11 +795,16 @@ def add_enactment(request):
     if(form.is_valid()):
         f = form.save(commit=False)
         deadLine =f.deadLine
-        print(daedLine , 'daedLine')
+        
         instance =  MeetingEnactment.objects.create( meetingRelated = meetingRelatedSelected , title = titleSelected, responsibleExecutive =responsibleExecutive , responsibleFollow= responsibleFollow ,  deadLine= deadLine )
         instance.save()
+        crDate = str(date2jalali(instance.created_at).day) + '-' + str(date2jalali(instance.created_at).month) + '-' + str(date2jalali(instance.created_at).year)
+        deadDate = str(date2jalali(deadLine).day) + '-' + str(date2jalali(deadLine).month) + '-' + str(date2jalali(deadLine).year)
+        instanceReport = Report.objects.create(title = 'درخواست گزارش مطابق مصوبه جلسه  ' + meetingRelatedSelected.title + ' . ' , description = 'با عرض سلام و خسته نباشید خدمت همکار محترم طبق مصوبه جلسه ' + meetingRelatedSelected.title + 'که در تاریخ ' + crDate + ' برگذار شد، مصوب گشت شما ' + titleSelected +  ' را تا تاریخ ' + deadDate + ' به انجام برسانید ، لطفا نتیجه را از طریق همین گزارش ارسال نمایید.' + 'همچنین می توانید متن کامل مصوبه را از طریق مدیریت جلسات -> سوابق جلسات به صورت کامل مشاهده نمایید .' , source = 'meeting')
+        ReportActivityManager.objects.create( sender =meetingRelatedSelected.meetingProfileRelated.manager.profile , reciver =responsibleExecutive.profile  ,ReportRelated = instanceReport ,startTime =instanceReport.created_at  , deadLine = deadLine)
+        Notifications.objects.create( title = ' برای شما یک درخواست گزارش مرتبط با مصوبه جلسه ' + meetingRelatedSelected.title + ' ثبت شده است .', recivers =  responsibleExecutive.profile)
     else:
-        asdasdasd
+        pass
     
    
     
@@ -780,7 +824,14 @@ class CreateViewMeetingMinute( LoginRequiredMixin,View):
     def get(self, request , meetingId ,  *args, **kwargs):
         
       
-        
+        scMember = None
+        otherMember = None
+        allMember = Member.objects.all().filter(meetingRelated__id = meetingId)
+        prMember = allMember.filter(memberType = 'pr')
+        if(len(allMember.filter(memberType = 'sc')) > 0):
+            scMember = allMember.filter(memberType = 'sc')
+        if(len(allMember.filter(memberType = 'other')) > 0):
+            otherMember =  allMember.filter(memberType = 'other')
             
         meetingSelected = Meeting.objects.all().filter(id =meetingId )[0]
         try:
@@ -795,13 +846,13 @@ class CreateViewMeetingMinute( LoginRequiredMixin,View):
             meetingSelectedAgendas = MeetingAgenda.objects.all().filter(meetingRelated = meetingSelected)
         except:
             meetingSelectedAgendas = None
-        allMember = []
+        allMemberP = []
         for memberJob in meetingSelected.meetingProfileRelated.membersPrimary.all():
-            allMember.append(memberJob)
-        allMember = []
+            allMemberP.append(memberJob)
+        allMemberS = []
         for memberJob in Member.objects.all().filter(meetingRelated =meetingSelected ):
             
-            allMember.append(memberJob)
+            allMemberS.append(memberJob)
         
         allAgenda = MeetingAgenda.objects.all().filter(meetingRelated  = meetingSelected)
         allEnactment = MeetingEnactment.objects.all().filter(meetingRelated  = meetingSelected)
@@ -818,9 +869,9 @@ class CreateViewMeetingMinute( LoginRequiredMixin,View):
         color         = "primary"
         
         #دیکشنری داده هاperformanceVariable
-        contex = {'extend':self.extend , 'header_title':header_title,
-        'discribtion':discribtion,'icon_name':icon_name ,
-        'columns' : columns , 'color' : color , 'meetingSelected':meetingSelected  , 'meetingSelectedDate' :meetingSelectedDate , 'meetingSelectedMembers' :meetingSelectedMembers , 'allAgenda':allAgenda , 'form':form , 'meetingSelectedAgendas':meetingSelectedAgendas , 'allMember':allMember , 'allEnactment':allEnactment}
+        contex = {'extend':self.extend , 'header_title':header_title,'prMember' :prMember ,
+        'discribtion':discribtion,'icon_name':icon_name ,'scMember' :scMember , 'otherMember':otherMember ,
+        'columns' : columns , 'color' : color , 'meetingSelected':meetingSelected  , 'meetingSelectedDate' :meetingSelectedDate , 'meetingSelectedMembers' :meetingSelectedMembers , 'allAgenda':allAgenda , 'form':form , 'meetingSelectedAgendas':meetingSelectedAgendas , 'allMemberP':allMemberP ,'allMemberS':allMemberS  , 'allEnactment':allEnactment}
         return render(request,self.template_name,contex)
 
 
@@ -830,17 +881,17 @@ class CreateViewMeetingMinute( LoginRequiredMixin,View):
         #     form = CreateFormMeetingInvitation(request.POST or request.FILES,instance=obj)
         # else:
         #     form = CreateFormMeetingInvitation( request.POST )
-        jobId = request.POST.getlist('jobSelected')
-        jobSelected = JobBank.objects.all().filter(~Q(profile = None) ).filter(id__in = jobId)
+        MemberId = request.POST.getlist('jobSelected')
+        MemberSelected = Member.objects.all().filter(id__in = MemberId)
         
-        meetingMembers = Member.objects.all().filter(meetingRelated=meetingId)
+       
         
-        for member in meetingMembers:
-            if(member.JobBankRelated.id in jobId):
-                member.present = True
-                member.save()
+        for member in MemberSelected:
+            
+            member.present = True
+            member.save()
         meetingSelected = MeetingMember.objects.all().filter(meetingRelated=meetingId)[0]
-        meetingSelected.compated = True
+        meetingSelected.complated = True
         meetingSelected.save()
         #فرم دریافت شده
         # if form.is_valid():
@@ -848,8 +899,8 @@ class CreateViewMeetingMinute( LoginRequiredMixin,View):
         #     instance = form.save(commit=False)
         #     instance.meetingRelated = Meeting.objects.get(id =meetingId )
         #     instance.save()
-        sweetify.toast(self.request,timer=30000 , icon="success",title ='    دعوت نامه جلسه با موفقیت ثبت شد    !!!')
-        return redirect('ViewProfileMeeting')
+        sweetify.toast(self.request,timer=30000 , icon="success",title ='    حاضرین جلسه با موفقیت ثبت شد    !!!')
+        return redirect('CreateViewMeetingDocument' , meetingId=meetingId )
            
 
 class CreateViewMeetingEnactment( LoginRequiredMixin,View): 
@@ -862,7 +913,14 @@ class CreateViewMeetingEnactment( LoginRequiredMixin,View):
 
     def get(self, request , meetingId ,  *args, **kwargs):
         
-      
+        scMember = None
+        otherMember = None
+        allMember = Member.objects.all().filter(meetingRelated__id = meetingId)
+        prMember = allMember.filter(memberType = 'pr')
+        if(len(allMember.filter(memberType = 'sc')) > 0):
+            scMember = allMember.filter(memberType = 'sc')
+        if(len(allMember.filter(memberType = 'other')) > 0):
+            otherMember =  allMember.filter(memberType = 'other')
         allJob = JobBank.objects.all().filter(~Q(profile = None) )
             
         meetingSelected = Meeting.objects.all().filter(id =meetingId )[0]
@@ -904,7 +962,7 @@ class CreateViewMeetingEnactment( LoginRequiredMixin,View):
         
         #دیکشنری داده هاperformanceVariable
         contex = {'extend':self.extend , 'header_title':header_title,
-        'discribtion':discribtion,'icon_name':icon_name ,
+        'discribtion':discribtion,'icon_name':icon_name , 'scMember':scMember , 'otherMember':otherMember ,
         'columns' : columns , 'color' : color , 'meetingSelected':meetingSelected  , 'meetingSelectedDate' :meetingSelectedDate , 'meetingSelectedMembers' :meetingSelectedMembers , 'allAgenda':allAgenda , 'form':form , 'meetingSelectedAgendas':meetingSelectedAgendas , 'allMember':allMember , 'allEnactment':allEnactment , 'allJob':allJob}
         return render(request,self.template_name,contex)
 
@@ -921,7 +979,7 @@ class CreateViewMeetingEnactment( LoginRequiredMixin,View):
             instance = form.save(commit=False)
             instance.meetingRelated = Meeting.objects.get(id =meetingId )
             instance.save()
-            sweetify.toast(self.request,timer=30000 , icon="success",title ='    دعوت نامه جلسه با موفقیت ثبت شد    !!!')
+            sweetify.toast(self.request,timer=30000 , icon="success",title ='    دعوت به جلسه جلسه با موفقیت ثبت شد    !!!')
             return redirect('ViewProfileMeeting')
            
 
@@ -935,7 +993,14 @@ class CreateViewMeetingDocument( LoginRequiredMixin,View):
 
     def get(self, request , meetingId ,  *args, **kwargs):
         
-      
+        scMember = None
+        otherMember = None
+        allMember = Member.objects.all().filter(meetingRelated__id = meetingId)
+        prMember = allMember.filter(memberType = 'pr')
+        if(len(allMember.filter(memberType = 'sc')) > 0):
+            scMember = allMember.filter(memberType = 'sc')
+        if(len(allMember.filter(memberType = 'other')) > 0):
+            otherMember =  allMember.filter(memberType = 'other')
         allJob = JobBank.objects.all().filter(~Q(profile = None) )
             
         meetingSelected = Meeting.objects.all().filter(id =meetingId )[0]
@@ -979,7 +1044,7 @@ class CreateViewMeetingDocument( LoginRequiredMixin,View):
         
         #دیکشنری داده هاperformanceVariable
         contex = {'extend':self.extend , 'header_title':header_title,
-        'discribtion':discribtion,'icon_name':icon_name ,
+        'discribtion':discribtion,'icon_name':icon_name ,'scMember': scMember, 'otherMember' :otherMember ,
         'columns' : columns , 'color' : color , 'meetingSelected':meetingSelected  , 'meetingSelectedDate' :meetingSelectedDate , 'meetingSelectedMembers' :meetingSelectedMembers , 'allAgenda':allAgenda , 'form':form , 'meetingSelectedAgendas':meetingSelectedAgendas , 'allMember':allMember , 'allEnactment':allEnactment , 'allJob':allJob , 'meetingSelectedDocument':meetingSelectedDocument}
         return render(request,self.template_name,contex)
 
@@ -991,23 +1056,28 @@ class CreateViewMeetingDocument( LoginRequiredMixin,View):
             
             if(MeetingDocument.objects.all().filter(meetingRelated = meetingSelected).exists()):
             # if(MeetingMinute.objects.all().filter(meetingRelated = meetingSelected).exists()):
-                MeetingDocumentSelected = MeetingDocument.objects.all().filter(meetingRelated = meetingSelected)[0]
-                persentDocumentUploaded = request.FILES['persentDocument']
+                MeetingDocumentSelected = MeetingDocument.objects.get(meetingRelated = meetingSelected)
+              
                 minuteDocumentUploaded = request.FILES['minuteDocument']
-                MeetingDocumentSelected.persentDocument = persentDocumentUploaded
+         
                 MeetingDocumentSelected.minuteDocument = minuteDocumentUploaded
                 MeetingDocumentSelected.save()
             else:
-                instanceDocument = MeetingDocument.objects.create(meetingRelated = meetingSelected, persentDocument = request.FILES['persentDocument'] , minuteDocument = request.FILES['minuteDocument'] )
+               
+              
+                minuteDocumentUploaded = None
+               
+                minuteDocumentUploaded = request.FILES['minuteDocument']
+                instanceDocument = MeetingDocument.objects.create(meetingRelated = meetingSelected , minuteDocument = minuteDocumentUploaded)
                 instanceDocument.save()
 
                
             sweetify.toast(self.request,timer=30000 , icon="success",title ='      فایل های جلسه با موفقیت بارگزاری شد !!!')
-            return redirect('ViewProfileMeeting')
+            return redirect('ListViewMeeting')
         #فرم دریافت شده
         else:
             sweetify.toast(self.request,timer=30000 , icon="warning",title ='          فایلی یافت نشد    !!!')
-            return redirect('ViewProfileMeeting')
+            return redirect('ListViewMeeting')
            
 
 class CreateViewMeetingPlan( LoginRequiredMixin,View): 
@@ -1020,7 +1090,14 @@ class CreateViewMeetingPlan( LoginRequiredMixin,View):
 
     def get(self, request , meetingId ,  *args, **kwargs):
         
-      
+        scMember = None
+        otherMember = None
+        allMember = Member.objects.all().filter(meetingRelated__id = meetingId)
+        prMember = allMember.filter(memberType = 'pr')
+        if(len(allMember.filter(memberType = 'sc')) > 0):
+            scMember = allMember.filter(memberType = 'sc')
+        if(len(allMember.filter(memberType = 'other')) > 0):
+            otherMember =  allMember.filter(memberType = 'other')
         allJob = JobBank.objects.all().filter(~Q(profile = None) )
             
         meetingSelected = Meeting.objects.all().filter(id =meetingId )[0]
@@ -1043,16 +1120,19 @@ class CreateViewMeetingPlan( LoginRequiredMixin,View):
         allMember = []
         for memberJob in meetingSelected.meetingProfileRelated.membersPrimary.all():
             allMember.append(memberJob)
-        for memberJob in meetingSelectedMembers.membersSecondary.all():
-            if(memberJob in allMember):
-                continue
-            allMember.append(memberJob)
+        if(meetingSelectedMembers == None):
+            pass
+        else:
+            for memberJob in meetingSelectedMembers.membersSecondary.all():
+                if(memberJob in allMember):
+                    continue
+                allMember.append(memberJob)
         
         allAgenda = MeetingAgenda.objects.all().filter(meetingRelated  = meetingSelected)
         allEnactment = MeetingEnactment.objects.all().filter(meetingRelated  = meetingSelected)
         form = CreateFormMeetingEnactment()
         #عنوان نمایش داده شده در بالای صفحه
-        header_title  = "بارگزاری طرح  جلسه"
+        header_title  = "بارگزاری فایل ارائه جلسه"
         #توضحات نمایش داده شده در زیر عنوان
         discribtion   = "جهت ایجاد یک نوع ممیزی  جدید ، موارد خواسته شده را تکمیل نمایید"
         #آیکون نمایش داده شده در بخش بالای سایت
@@ -1064,7 +1144,7 @@ class CreateViewMeetingPlan( LoginRequiredMixin,View):
         
         #دیکشنری داده هاperformanceVariable
         contex = {'extend':self.extend , 'header_title':header_title,
-        'discribtion':discribtion,'icon_name':icon_name ,
+        'discribtion':discribtion,'icon_name':icon_name ,'scMember' :scMember , 'otherMember':otherMember ,
         'columns' : columns , 'color' : color , 'meetingSelected':meetingSelected  , 'meetingSelectedDate' :meetingSelectedDate , 'meetingSelectedMembers' :meetingSelectedMembers , 'allAgenda':allAgenda , 'form':form , 'meetingSelectedAgendas':meetingSelectedAgendas , 'allMember':allMember , 'allEnactment':allEnactment , 'allJob':allJob , 'meetingSelectedDocument':meetingSelectedDocument}
         return render(request,self.template_name,contex)
 
@@ -1076,7 +1156,7 @@ class CreateViewMeetingPlan( LoginRequiredMixin,View):
             
             if(MeetingPlan.objects.all().filter(meetingRelated = meetingSelected).exists()):
             
-                MeetingPlanSelected = MeetingDocument.objects.all().filter(meetingRelated = meetingSelected)[0]
+                MeetingPlanSelected = MeetingPlan.objects.get(meetingRelated = meetingSelected)
                 planDocumentUploaded = request.FILES['planDocument']
            
                 MeetingPlanSelected.planDocument = planDocumentUploaded
@@ -1088,11 +1168,11 @@ class CreateViewMeetingPlan( LoginRequiredMixin,View):
 
                
             sweetify.toast(self.request,timer=30000 , icon="success",title ='      فایل های جلسه با موفقیت بارگزاری شد !!!')
-            return redirect('ViewProfileMeeting')
+            return redirect('CreateViewMeetingEnactment' , meetingId = meetingId)
         #فرم دریافت شده
         else:
             sweetify.toast(self.request,timer=30000 , icon="warning",title ='          فایلی یافت نشد    !!!')
-            return redirect('ViewProfileMeeting')
+            return redirect('ListViewMeeting')
            
 
 class CreateViewMeetingComplate( LoginRequiredMixin,View): 
@@ -1109,11 +1189,27 @@ class CreateViewMeetingComplate( LoginRequiredMixin,View):
         meetingSelected = Meeting.objects.all().filter(id =meetingId )[0]
         meetingSelected.complate = True
         meetingSelected.save()
+        allEnactments = MeetingEnactment.objects.all().filter(meetingRelated=meetingSelected)
+  
+
+
+
+
+
+
+
+
+
+
+        for en in allEnactments:
+            Event.objects.create( user =en.responsibleExecutive.profile , title =en.title ,end = en.deadLine , start =en.deadLine   )
+            PlanProfile.objects.create( title =en.title  , accountable =en.responsibleFollow  ,  responsible =en.responsibleExecutive ,  sourcePlan ='meeting'  ,  startTiem =datetime.datetime.now().date() , deadLine =en.deadLine )
+            Notifications.objects.create( title = 'یک برنامه اجرایی جدید مرتبط با مصوبه جلسه '  + en.meetingRelated.title + en.title + ' برای شما ایجاد شد . ', recivers = en.responsibleExecutive.profile )
         sweetify.toast(self.request,timer=30000 , icon="success",title ='    جلسه با موفقیت بایگانی شد !!!')
         #دیکشنری داده هاperformanceVariable
         contex = {'extend':self.extend , 
         }
-        return redirect('ViewProfileMeeting')
+        return redirect('ListViewMeetingReview')
 
 
         
@@ -1123,7 +1219,7 @@ def add_agenda(request):
     title = request.POST.get('title')
     text = request.POST.get('text')
     timeDuration = request.POST.get('timeDuration')
-    print(request.POST)
+   
     responsibleId = request.POST.get('responsible')
     responsibleSelected = JobBank.objects.get(id = responsibleId)
     instance =  MeetingAgenda.objects.create( meetingRelated = meetingRelatedSelected , title = title, text = text,timeDuration = timeDuration , responsible = responsibleSelected )
@@ -1176,7 +1272,7 @@ class UpdateViewMeetingDate( LoginRequiredMixin,View):
             if form.is_valid():
                 form.save()
                 sweetify.toast(self.request,timer=30000 , icon="success",title ='نقطه قوت  جدید با موفقیت ساخته شد !!!')
-                return redirect('MomayeziListViewMeeting')
+                return redirect('MomayeziViewMeetingDashboard')
             else:
                 sweetify.toast(self.request,timer=30000 , icon="error",title ='نقطه قوت  مورد نظر ساخته نشد !')           
             context = {'form': form,'object':obj ,'extend':self.extend ,}
@@ -1191,9 +1287,9 @@ class ListViewMeetingReview(ListView):
     
     def get_context_data(self, **kwargs):
         #عنوان نمایش داده شده در بالای صفحه
-        header_title  = "لیست جلسات  "
+        header_title  = "لیست جلسات بازنگری"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام سوال ممیزی  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام سوال ممیزی  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -1282,8 +1378,11 @@ class ViewMeetingtReview( LoginRequiredMixin,View):
         MeetingAgendaSelected = MeetingAgenda.objects.all().filter(meetingRelated = meetingId)
         MeetingEnactmentSelected = MeetingEnactment.objects.all().filter(meetingRelated = meetingId)
         MeetingDocumentSelected = MeetingDocument.objects.all().filter(meetingRelated = meetingId)[0]
-        MeetingPlanSelected = MeetingPlan.objects.all().filter(meetingRelated = meetingId)[0]
         
+        try:
+            MeetingPlanSelected =  MeetingPlan.objects.get(meetingRelated = meetingId)
+        except:
+            MeetingPlanSelected = None
         
         
         context =  {'header_title':header_title,'discribtion':discribtion,'icon_name':icon_name,

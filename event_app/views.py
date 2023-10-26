@@ -19,12 +19,13 @@ from django.http.response import HttpResponseRedirect
 from django.http import JsonResponse
 from django.db.models import Model
 from profile_app.decorators import  staff_only
+from profile_app.models import Profile
 # Create your views here.
 from .serializers import EventSerializer
-
+from django.db.models import Q
 def load_events(request):
-    qs_val = list(Event.objects.all())
-    
+    #qs_val = list(Event.objects.all().filter(user = Profile.objects.get(user = request.user)))
+    qs_val = list(Event.objects.all().filter(Q(allUser = True) | Q(user = Profile.objects.get(user = request.user))))
     serializer = EventSerializer(qs_val , many=True)
     return JsonResponse( serializer.data,safe=False)
 
@@ -88,7 +89,7 @@ class ListViewEvent(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست رویداد ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام رویداد ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام رویداد ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -208,7 +209,7 @@ class DeleteViewEvent( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "پاک کردن یک رویداد"
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "آیا میخواهید که رویداد  " + obj.title + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که رویداد  " + obj.title + " "  + " را پاک کنید   ؟"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "delete_forever"
             #تعداد ستون ها            

@@ -4,9 +4,20 @@
 {% block style %}
 <link href="{% static '/css/picker.css' %}" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+<link rel="stylesheet" href="{%static '/css/select2.min.css'%}">
+<link rel="stylesheet" href="{%static '/css/select2-bootstrap-5-theme.rtl.min.css'%}">
 {%endblock style%}
 {% block content %}
+<script>
+  $(document).ready(function() { 
+  $("select").select2({
+   theme: "bootstrap-5",
+   placeholder: "یک گزینه را انتخاب کنید",
+   allowClear: true
+  });
+  });
 
+ </script>
 <div class="container py-6">
 
   <div class="row justify-content-md-center">
@@ -59,14 +70,14 @@
 
           <div class="input-group input-group-static mb-4">
             <label class="" for="id_startTiem">
-              تاریخ شروع  فعالیت را انتحاب نمایید
+              تاریخ شروع  فعالیت را انتخاب نمایید
             </label>
             <input type="text" name="startTiem" class="jalali_date-date  form-control"   id="id_startTiem" autocomplete="False">
 
           </div>
           <div class="input-group input-group-static mb-4">
             <label class="" for="id_deadLine">
-              تاریخ پایان  فعالیت را انتحاب نمایید
+              تاریخ پایان  فعالیت را انتخاب نمایید
             </label>
             <input type="text" name="deadLine" class="jalali_date-date  form-control"   id="id_deadLine" autocomplete="False">
 
@@ -162,7 +173,7 @@
 
 
 </script>
-
+<script src="{% static '/js/select2.min.js' %}"></script>
 
 <!-- OR -->
 <!-- loading by form (if used AdminJalaliDateWidget) -->

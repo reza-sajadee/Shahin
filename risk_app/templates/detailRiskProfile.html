@@ -6,11 +6,27 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css">
 <!-- <link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
 <link rel="stylesheet" href="{% static 'css/tabs.css' %}"> -->
+<link rel="stylesheet" href="{%static '/css/select2.min.css'%}">
+<link rel="stylesheet" href="{%static '/css/select2-bootstrap-5-theme.rtl.min.css'%}">
 {%endblock style%}
 
 {% block content %}
 {{get_jalali_date}}
+<script>
+  $(document).ready(function() { 
+  $("#hoze").select2({
+   theme: "bootstrap-5",
+   placeholder: "یک گزینه را انتخاب کنید",
+   allowClear: true
+  });
+  $("#topic").select2({
+   theme: "bootstrap-5",
+   placeholder: "یک گزینه را انتخاب کنید",
+   allowClear: true
+  });
+  });
 
+ </script>
 <div class="container py-6">
     <div class="row justify-content-md-center">
         <div class="card card-frame col-12">
@@ -137,20 +153,21 @@
                                                                     رئیس کمیته
                                                                 </td>
                                                                 
-                                                                <td class="narowFont  ">
+                                                                <!-- <td class="narowFont  ">
                                                                     
                                                                     <div class="form-check text-center">
-                                                                        <input class="form-check-input" name="member" type="checkbox" value="{{committeeOfRiskProfile.head.id}}" id="member{{committeeOfRiskProfile.head.id}}" >
+                                                                        <input class="form-check-input" name="member" type="checkbox" value="{{committeeOfRiskProfile.head.profile.id}}" id="member{{committeeOfRiskProfile.head.profile.id}}" >
                                                                         
                                                                     </div>
                                                                         
                                                                     
                                                                     
-                                                                </td>
+                                                                </td> -->
                                                                 
                                                             
                                                                 
                                                             </tr>
+                                                        {%if committeeOfRiskProfile.janeshinAval%}
                                                             <tr>
                                                                 
                                                                 
@@ -173,10 +190,10 @@
                                                                 
                                                                 <td class="narowFont  ">
                                                                     
-                                                                    <div class="form-check text-center">
-                                                                        <input class="form-check-input" name="member" type="checkbox" value="{{committeeOfRiskProfile.janeshinAval.id}}" id="member{{committeeOfRiskProfile.janeshinAval.id}}" >
+                                                                    <!-- <div class="form-check text-center">
+                                                                        <input class="form-check-input" name="member" type="checkbox" value="{{committeeOfRiskProfile.janeshinAval.profile.id}}" id="member{{committeeOfRiskProfile.janeshinAval.profile.id}}" >
                                                                         
-                                                                    </div>
+                                                                    </div> -->
                                                                         
                                                                     
                                                                     
@@ -185,6 +202,8 @@
                                                             
                                                                 
                                                             </tr>
+                                                            {%endif%}
+                                                            {%if committeeOfRiskProfile.janeshinDovom%}
                                                             <tr>
                                                                 
                                                                 
@@ -207,10 +226,10 @@
                                                                 
                                                                 <td class="narowFont  ">
                                                                     
-                                                                    <div class="form-check text-center">
-                                                                        <input class="form-check-input" name="member" type="checkbox" value="{{committeeOfRiskProfile.janeshinDovom.id}}" id="member{{committeeOfRiskProfile.janeshinDovom.id}}" >
+                                                                    <!-- <div class="form-check text-center">
+                                                                        <input class="form-check-input" name="member" type="checkbox" value="{{committeeOfRiskProfile.janeshinDovom.profile.id}}" id="member{{committeeOfRiskProfile.janeshinDovom.profile.id}}" >
                                                                         
-                                                                    </div>
+                                                                    </div> -->
                                                                         
                                                                     
                                                                     
@@ -219,6 +238,7 @@
                                                             
                                                                 
                                                             </tr>
+                                                            {%endif%}
                                                             <tr>
                                                                 
                                                                 
@@ -239,16 +259,16 @@
                                                                     دبیر 
                                                                 </td>
                                                                 
-                                                                <td class="narowFont  ">
+                                                                <!-- <td class="narowFont  ">
                                                                     
                                                                     <div class="form-check text-center">
-                                                                        <input class="form-check-input" name="member" type="checkbox" value="{{committeeOfRiskProfile.dabir.id}}" id="member{{committeeOfRiskProfile.dabir.id}}" >
+                                                                        <input class="form-check-input" name="member" type="checkbox" value="{{committeeOfRiskProfile.dabir.profile.id}}" id="member{{committeeOfRiskProfile.dabir.profile.id}}" >
                                                                         
                                                                     </div>
                                                                         
                                                                     
                                                                     
-                                                                </td>
+                                                                </td> -->
                                                                 
                                                             
                                                                 
@@ -306,16 +326,23 @@
                                 </div>
 
                             </div>
+                            
                             <div class="row py-4 justify-content-md-center">
-                                <div class="col-5">
+                                <div class="col-4">
                                   <input type="submit" class="btn w-100  btn-outline-primary" value="افزودن">
                                      </input>
                                 </div>
-                                <div class="col-5">
+                                <div class="col-4">
+                                  <a  href="{%url 'ComplateViewRiskProfile' profileSelected %}" class="btn w-100  btn-outline-warning">
+                                    اتمام
+                                  </a>
+                                </div>
+                                <div class="col-4">
                                   <a href="{%url 'ViewRiskDashboard'%}" class="btn w-100  btn-outline-danger">
                                     بازگشت </a>
                                 </div>
                               </div>
+                              
                             
                     </div>
                 </form>
@@ -328,7 +355,7 @@
         <div class="col-12">
             <div class="card my-4">
                 <div class="card-header p-0 position-relative mt-4 mx-3 z-index-2">
-                    <div class="bg-gradient-danger shadow-info border-radius-lg px-3 pt-4 pb-3">
+                    <div class="bg-gradient-info shadow-info border-radius-lg px-3 pt-4 pb-3">
                         <h6 class="text-white text-center ps-3">لیست تیم ها</h6>
                     </div>
                 </div>
@@ -402,7 +429,7 @@ $('#example').dataTable( {
 	<!-- OR -->
 	<!-- loading by form (if used AdminJalaliDateWidget) -->
 		{{ form.media }}
-
+        <script src="{% static '/js/select2.min.js' %}"></script>
 {%endblock scripts%}
 
 

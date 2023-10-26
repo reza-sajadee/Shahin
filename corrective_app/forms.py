@@ -9,7 +9,7 @@ from jalali_date.widgets import AdminJalaliDateWidget, AdminSplitJalaliDateTime
 
 
 
-class CreateFormCorrectiveAction(forms.ModelForm):
+class CreateFormCorrectiveAction2(forms.ModelForm):
 
     
 
@@ -18,9 +18,10 @@ class CreateFormCorrectiveAction(forms.ModelForm):
         model = CorrectiveAction
         #فیلد های نمایش داده شده در فرم
         
-        exclude  = ('demandantId' , 'vahed' , 'owner','deadLine' , 'effective')
+        exclude  = ('demandantId' , 'vahed' , 'owner', 'effective')
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['deadLine'] = JalaliDateField(label=('deadLine'), widget=AdminJalaliDateWidget )
         #کلاس های css
         self.fields['problem'].widget.attrs.update({'class': 'form-control '})
         self.fields['demandantVahed'].widget.attrs.update({'class': 'form-control '})
@@ -32,10 +33,41 @@ class CreateFormCorrectiveAction(forms.ModelForm):
 
         #لیبل توضیح 
         self.fields['problem'].label              ='نوع مسئله را انتخاب کنید'
-        self.fields['demandantVahed'].label       ='   واحد درخواست کننده را را انتخاب کنید'
+        self.fields['demandantVahed'].label       ='   واحد درخواست کننده را انتخاب کنید'
         #self.fields['demandantId'].label          ='  شماره درخواست را وارد کنید'
         self.fields['standardRelated'].label      ='  سیستم مربوطه را انتخاب کنید'
-        self.fields['source'].label               ='  منشا بروز را  را انتخاب کنید'
+        self.fields['source'].label               ='  منشا بروز را انتخاب کنید'
 
         
    
+
+class CreateFormCorrectiveAction(forms.ModelForm):
+
+    
+
+    class Meta:
+        #نام مدل
+        model = CorrectiveAction
+        #فیلد های نمایش داده شده در فرم
+        
+        exclude  = ('demandantId' , 'vahed' , 'owner' ,'deadLine' , 'effective')
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        #کلاس های css
+        self.fields['problem'].widget.attrs.update({'class': 'form-control '})
+        self.fields['demandantVahed'].widget.attrs.update({'class': 'form-control '})
+        #self.fields['demandantId'].widget.attrs.update({'class': 'form-control'})
+        self.fields['standardRelated'].widget.attrs.update({'class': 'form-control '})
+        self.fields['source'].widget.attrs.update({'class': 'form-control '})
+  
+        
+
+        #لیبل توضیح 
+        self.fields['problem'].label              ='نوع مسئله را انتخاب کنید'
+        self.fields['demandantVahed'].label       ='   واحد درخواست کننده را انتخاب کنید'
+        #self.fields['demandantId'].label          ='  شماره درخواست را وارد کنید'
+        self.fields['standardRelated'].label      ='  سیستم مربوطه را انتخاب کنید'
+        self.fields['source'].label               ='  منشا بروز را انتخاب کنید'
+
+        

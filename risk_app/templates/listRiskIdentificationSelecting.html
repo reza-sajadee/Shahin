@@ -63,7 +63,7 @@
                       
                      
 
-                      <a class="nav-link text-black-80"  method="GET" href="{% url  'CreateViewRiskIdentificationSelecting' key  %}"   >
+                      <a class="nav-link text-black-80"  method="GET" href="{% url  'CreateViewRiskIdentificationSelecting' key profileId %}"   >
                         <div class="  ms-2 d-flex align-items-center justify-content-center">
                           <img style="max-width: 50px;" src="{% static 'img/svg/view.svg' %}" >
                         </div>
@@ -83,14 +83,20 @@
             </tbody>
           </table>
           <div class="row justify-content-md-center">
-           <div class="col-5">
+           <div class="col-4">
             <a class="btn btn btn-lg w-100 btn-outline-info"  href="./create">
             
               افزودن
             </a>
            </div>
-            <div class="col-5">
-              <a href="{%url menuBack%}" class="btn w-100  btn-outline-danger">
+           <div class="col-4">
+            <a class="btn btn btn-lg w-100 btn-outline-warning"  href="{%url 'ComplateViewRiskProfile' profileId %}">
+            
+              پایان
+            </a>
+           </div>
+            <div class="col-4">
+              <a href="{%url menuBack%}" class="btn btn btn-lg w-100 btn-outline-danger">
                 بازگشت </a>
 
             </div>

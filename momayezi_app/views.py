@@ -26,11 +26,13 @@ from risk_app.utils import is_dabir
 from django.http.response import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-
+from event_app.models import Event
 from django.db.models import Avg, F, Window
 from django.db.models.functions import  Rank, DenseRank, CumeDist , window
 from django.db.models import Count
 from django.urls import resolve
+from corrective_app.models import CorrectiveAction ,TextDataBase  , CorrectiveActionActivityManager
+from organization_app.models import JobBank
 
 def get_json_bands_data(request,system ):
     selected_system = system
@@ -108,7 +110,7 @@ class ListViewTypeMomayezi(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست نوبت ممیزی  ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام نوبت ممیزی  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام نوبت ممیزی  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -224,7 +226,7 @@ class DeleteViewTypeMomayezi( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "پاک کردن یک نوبت ممیزی "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "آیا میخواهید که نوبت ممیزی   " + obj.title + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که نوبت ممیزی   " + obj.title + " "  + " را پاک کنید   ؟"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "delete_forever"
             #تعداد ستون ها            
@@ -308,7 +310,7 @@ class ListViewReportMomayezi(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست گزارش ممیزی  ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام گزارش ممیزی  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام گزارش ممیزی  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -361,7 +363,7 @@ class ListViewReportType(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست گزارش های نوبت ممیزی"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام نوبت ممیزی  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام نوبت ممیزی  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -484,7 +486,7 @@ class DeleteViewReportMomayezi( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "پاک کردن یک گزارش ممیزی "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "آیا میخواهید که گزارش ممیزی   " + obj.reportMomayeziCode + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که گزارش ممیزی   " + obj.reportMomayeziCode + " "  + " را پاک کنید   ؟"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "delete_forever"
             #تعداد ستون ها            
@@ -523,7 +525,7 @@ class ListViewVahedReportMomayezi(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست گزارش ممیزی  ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام گزارش ممیزی  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام گزارش ممیزی  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -543,7 +545,8 @@ class ListViewVahedReportMomayezi(ListView):
         
         if(q == 'vahed'):
             for report in allReport:
-                    if(report.vahedRelated not in listVahed):
+                    
+                    if(report.activityRelated.calender.vahedMomayezi not in listVahed):
                         listVahed.append(report.vahedRelated)
                         header_table   = ['عنوان واحد' ,]
         if(q == 'ghovat'):
@@ -615,7 +618,7 @@ class ViewReportMomayezi( LoginRequiredMixin,View):
     def get(self, request,typeId = None,vahedId=None   ,*args, **kwargs):
 
         vahedSelected = Vahed.objects.all().filter(id = vahedId)[0]
-        allReport = ReportMomayezi.objects.all().filter(typeMomayeziRelated__id = typeId)
+        allReport = ReportMomayezi.objects.all().filter(typeMomayeziRelated__id = typeId).filter(vahedRelated = vahedId)
         allNoghat  = allReport.filter(result = 'ghovat') 
         allForsat = allReport.filter(result = 'behbod') 
         allAdam = allReport.filter(result = 'adam') 
@@ -702,7 +705,7 @@ class ListViewForsatBehbod(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست فرصت بهبود  ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام فرصت بهبود  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام فرصت بهبود  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -810,7 +813,7 @@ class DeleteViewForsatBehbod( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "پاک کردن یک فرصت بهبود "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "آیا میخواهید که فرصت بهبود   " + obj.title + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که فرصت بهبود   " + obj.title + " "  + " را پاک کنید   ؟"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "delete_forever"
             #تعداد ستون ها            
@@ -892,7 +895,7 @@ class ListViewNoghatGhovat(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست نقطه قوت  ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام نقطه قوت  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام نقطه قوت  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -1000,7 +1003,7 @@ class DeleteViewNoghatGhovat( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "پاک کردن یک نقطه قوت "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "آیا میخواهید که نقطه قوت   " + obj.title + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که نقطه قوت   " + obj.title + " "  + " را پاک کنید   ؟"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "delete_forever"
             #تعداد ستون ها            
@@ -1083,7 +1086,7 @@ class ListViewAdamEntebagh(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست عدم انطباق  ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام عدم انطباق  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام عدم انطباق  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -1199,7 +1202,7 @@ class DeleteViewAdamEntebagh( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "پاک کردن یک عدم انطباق "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "آیا میخواهید که عدم انطباق   " + obj.title + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که عدم انطباق   " + obj.title + " "  + " را پاک کنید   ؟"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "delete_forever"
             #تعداد ستون ها            
@@ -1291,6 +1294,7 @@ class CreateViewCalenderMomayezi( LoginRequiredMixin,View):
             instanceMomayeziActivityManagerSarMomayez = MomayeziActivityManager.objects.create( typeMomayeziRelated = profileSelected,sender=profileSender, reciver=sarMomayezSelected ,status='doing' ,activity='cheakListQuestion' , calender = instance )    
             
             instanceMomayeziActivityManagerSarMomayez.save()
+            Event.objects.create(  title ='ممیزی واحد ' + instance.vahedMomayezi.title + ' ' + 'در ساعت ' + str(instance.timeStart) ,end = (instance.dateMomayezi) , start =(instance.dateMomayezi)  ,allUser = True , color='red' )
             #instanceMomayeziActivityManagerSarMomayez = MomayeziActivityManager.objects.create( typeMomayeziRelated = profileSelected ,sender=profileSender, reciver=sarMomayezSelected ,status='doing' ,activity='report' , calender = instance )    
             #instanceMomayeziActivityManagerSarMomayez.save()
             #تابع نمایش پیغام
@@ -1300,7 +1304,29 @@ class CreateViewCalenderMomayezi( LoginRequiredMixin,View):
             sweetify.toast(self.request,timer=30000 , icon="error",title ='برنامه ممیزی  مورد نظر ساخته نشد !')
         context = {'extend':self.extend , 'menuBack':self.menuBack ,'riskDabir':is_dabir(self),'form': form}
         return render(request,self.template_name,context)
+    
 
+class ComplateViewCalenderMomayezi( LoginRequiredMixin,View): 
+    redirect_field_name = '/profile/login'
+    #قالب کلی ایجاد 
+    template_name = "createCalenderMomayezi.html"
+    extend = 'baseEmployee.html'
+    menuBack ="ViewMomayeziDashboard"
+    menu_link = 'ViewCalenderMomayezi'
+    def get(self, request,typeMomayezi, *args, **kwargs):
+        
+      
+        typeMomayeziSelected = TypeMomayezi.objects.get(id = typeMomayezi)
+        activitySelected = MomayeziActivityManager.objects.get(typeMomayeziRelated = typeMomayeziSelected ,activity = 'calender' )
+        activitySelected.status = 'done'
+        activitySelected.save()
+        sweetify.toast(self.request,timer=30000 , icon="success",title ='ثبت برنامه زمانی به اتمام رسید        !!!')
+        #دیکشنری داده ها
+        contex = {'extend':self.extend , 'menuBack':self.menuBack ,'riskDabir':is_dabir(self),}
+        return redirect('ViewMomayeziDashboardMember' ,typeMomayezi )
+
+
+   
 
 
 
@@ -1316,7 +1342,7 @@ class CreateViewCalenderMomayeziListType(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "    لیست ممیزی ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام نوبت ممیزی  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام نوبت ممیزی  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -1377,7 +1403,7 @@ class ListViewCalenderMomayezi(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست نوبت ممیزی  ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام نوبت ممیزی  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام نوبت ممیزی  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -1441,7 +1467,7 @@ class ListViewCalenderMomayeziType(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست نوبت ممیزی  ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام نوبت ممیزی  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام نوبت ممیزی  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -1676,7 +1702,7 @@ class DeleteViewCalenderMomayezi( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "پاک کردن یک نوبت ممیزی "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "آیا میخواهید که نوبت ممیزی   " + str(obj.dateMomayezi) + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که نوبت ممیزی   " + str(obj.dateMomayezi) + " "  + " را پاک کنید   ؟"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "delete_forever"
             #تعداد ستون ها            
@@ -1750,7 +1776,7 @@ class ListViewRoleMomayezi(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست نقش ممیزی  ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام نقش ممیزی  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام نقش ممیزی  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -1812,7 +1838,7 @@ class ViewRoleMomayezi( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "اطلاعات نقش ممیزی   "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "چزییات نقش ممیزی را در این صفحه میتوانید مشاهده کنید"
+            discribtion   = "چزییات نقش ممیزی را در این صفحه می توانید مشاهده کنید"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "person_add"
             #تعداد ستون ها            
@@ -1918,7 +1944,7 @@ class DeleteViewRoleMomayezi( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "پاک کردن یک نقش ممیزی "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "آیا میخواهید که نقش ممیزی   " + obj.title + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که نقش ممیزی   " + obj.title + " "  + " را پاک کنید   ؟"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "delete_forever"
             #تعداد ستون ها            
@@ -1964,8 +1990,8 @@ class CreateViewMomayeziTeam( LoginRequiredMixin,View):
     menuBack ="ViewMomayeziDashboard"
     menu_link = 'ViewCalenderMomayezi'
     @staff_only 
-    def get(self, request, *args, **kwargs):
-        form = CreateFormMomayeziTeam(initial={'typeMomayezi' : request.GET.get('profileId' , None)})
+    def get(self, request , typeId, *args, **kwargs):
+        form = CreateFormMomayeziTeam(initial={'typeMomayeziRelated' : typeId})
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "ساخت یک تیم ممیزی  جدید "
         #توضحات نمایش داده شده در زیر عنوان
@@ -2000,7 +2026,8 @@ class CreateViewMomayeziTeam( LoginRequiredMixin,View):
             #instanceMomayeziActivityManager.save()
             #تابع نمایش پیغام
             sweetify.toast(self.request,timer=30000 , icon="success",title ='تیم ممیزی  جدید با موفقیت ساخته شد !!!')
-            return redirect('ViewMomayeziDashboard')
+           
+            return redirect(reverse('ListViewMomayeziTeam')+"?typeId=" +str(f.typeMomayeziRelated.id) )
         else :
             sweetify.toast(self.request,timer=30000 , icon="error",title ='تیم ممیزی  مورد نظر ساخته نشد !')
         context= {'extend':self.extend , 'menuBack':self.menuBack ,'riskDabir':is_dabir(self),'form': form}
@@ -2011,13 +2038,13 @@ class ListViewMomayeziTeam(ListView):
   
     extend='baseEmployee.html'
     menu_link = 'ViewCalenderMomayezi'
-    menuBack =  'ViewMomayezi'
+    menuBack =  'ViewMomayeziDashboard'
     @staff_only
     def get_context_data(self, **kwargs):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست تیم ممیزی  ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام تیم ممیزی  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام تیم ممیزی  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -2027,9 +2054,16 @@ class ListViewMomayeziTeam(ListView):
         #عنوان های جدول
         header_table   = ['عنوان' ,'اعضا ',' عنوان استاندارد','شماره استاندارد' ,'نوبت ممیزی']
         #اسم داده های جدول
-
+        finish = ''
         #دریافت تمام داده ها
-        queryset = MomayeziTeam.objects.all()
+        if(self.request.GET.get('typeId') != None):
+            queryset = MomayeziTeam.objects.all().filter(typeMomayeziRelated = self.request.GET.get('typeId'))
+            finish = self.request.GET.get('typeId')
+            
+        else:
+            queryset = MomayeziTeam.objects.all()
+            
+        
         list_data = []
         #ایجاد لیست داده ها
         for query in queryset:
@@ -2044,7 +2078,7 @@ class ListViewMomayeziTeam(ListView):
             data.append(allMember[:-1])
             data.append(query.standardRelated.standardTitlePersian)
             data.append(query.standardRelated.standardNumber)
-            data.append(query.typeMomayezi.title)
+            data.append(query.typeMomayeziRelated.title)
            
             dict_temp = {query.id : data}
             list_data.append(dict_temp)
@@ -2052,12 +2086,36 @@ class ListViewMomayeziTeam(ListView):
         context= {'extend':self.extend , 'menuBack':self.menuBack ,'riskDabir':is_dabir(self), 'header_title':header_title,
         'discribtion':discribtion,'icon_name':icon_name,
         'columns':columns , 'color':color , 'header_table': header_table 
-          ,  'list_data' : list_data}
+          ,  'list_data' : list_data , 'finish':finish}
         return context
 
     model = MomayeziTeam
     ordering = '-created_at' 
-    template_name ='list.html'
+    template_name ='listTeam.html'
+
+
+
+class ListViewMomayeziTeamComplate( LoginRequiredMixin,View): 
+    redirect_field_name = '/profile/login'
+    #قالب کلی ایجاد 
+    template_name = "createCalenderMomayezi.html"
+    extend = 'baseEmployee.html'
+    menuBack ="ViewMomayeziDashboard"
+    menu_link = 'ViewCalenderMomayezi'
+    def get(self, request,typeMomayezi, *args, **kwargs):
+        
+      
+        typeMomayeziSelected = TypeMomayezi.objects.get(id = typeMomayezi)
+        activitySelected = MomayeziActivityManager.objects.get(typeMomayeziRelated = typeMomayeziSelected ,activity = 'team' )
+        activitySelected.status = 'done'
+        activitySelected.save()
+        sweetify.toast(self.request,timer=30000 , icon="success",title ='  تعریف تیم های ممیزی به اتمام رسید        !!!')
+        #دیکشنری داده ها
+        contex = {'extend':self.extend , 'menuBack':self.menuBack ,'riskDabir':is_dabir(self),}
+        return redirect('ViewMomayeziDashboardMember' ,typeMomayezi )
+
+
+   
 
 
 
@@ -2087,7 +2145,7 @@ class ViewMomayeziTeam( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "اطلاعات تیم ممیزی   "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "چزییات تیم ممیزی را در این صفحه میتوانید مشاهده کنید"
+            discribtion   = "چزییات تیم ممیزی را در این صفحه می توانید مشاهده کنید"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "person_add"
             #تعداد ستون ها            
@@ -2197,7 +2255,7 @@ class DeleteViewMomayeziTeam( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "پاک کردن یک تیم ممیزی "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "آیا میخواهید که تیم ممیزی   " + obj.title + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که تیم ممیزی   " + obj.title + " "  + " را پاک کنید   ؟"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "delete_forever"
             #تعداد ستون ها            
@@ -2335,7 +2393,7 @@ class ListViewMomayeziActivityManager(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست فعالیت ممیزی  ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام فعالیت ممیزی  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام فعالیت ممیزی  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -2403,7 +2461,7 @@ class ViewMomayeziActivityManager( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "اطلاعات فعالیت ممیزی   "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "چزییات فعالیت ممیزی را در این صفحه میتوانید مشاهده کنید"
+            discribtion   = "چزییات فعالیت ممیزی را در این صفحه می توانید مشاهده کنید"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "person_add"
             #تعداد ستون ها            
@@ -2511,7 +2569,7 @@ class DeleteViewMomayeziActivityManager( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "پاک کردن یک فعالیت ممیزی "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "آیا میخواهید که فعالیت ممیزی   " + obj.sender.lastName + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که فعالیت ممیزی   " + obj.sender.lastName + " "  + " را پاک کنید   ؟"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "delete_forever"
             #تعداد ستون ها            
@@ -2606,7 +2664,7 @@ class ViewCheckListMomayeziList( LoginRequiredMixin,View):
         calenderSelected = CalenderMomayezi.objects.get(id = calenderId)
         
         teamSelected = MomayeziTeam.objects.get(id = calenderSelected.teamMomayezi.id)
-        profileSelected = teamSelected.typeMomayezi
+        profileSelected = teamSelected.typeMomayeziRelated
         profileSender  = Profile.objects.all().filter(user=self.request.user)[0]
         sarMomayezSelected =teamSelected.sarMomayez
         activitySelected = MomayeziActivityManager.objects.get(calender = calenderId)
@@ -2634,7 +2692,7 @@ class ListViewCheckListMomayezi(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست چک لیست ممیزی ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام چک لیست ممیزی ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام چک لیست ممیزی ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -2686,7 +2744,7 @@ class ListViewCheckListMomayeziSelecting(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست چک لیست ممیزی ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام چک لیست ممیزی ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام چک لیست ممیزی ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -2754,7 +2812,7 @@ class ListViewCheckListMomayeziEntering(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست چک لیست ممیزی ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام چک لیست ممیزی ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام چک لیست ممیزی ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -2953,7 +3011,7 @@ class ViewCheckListMomayezi( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "اطلاعات چک لیست ممیزی  "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "چزییات چک لیست ممیزیرا در این صفحه میتوانید مشاهده کنید"
+            discribtion   = "چزییات چک لیست ممیزیرا در این صفحه می توانید مشاهده کنید"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "person_add"
             #تعداد ستون ها            
@@ -3053,32 +3111,38 @@ class UpdateViewCheckListMomayezi( LoginRequiredMixin,View):
             activity = MomayeziActivityManager.objects.all().filter(id= activityId)[0]
             result   = request.POST.get('result')
             profileSender  = Profile.objects.all().filter(user=self.request.user)[0]
-            if(len(request.FILES)>0):
-                document = request.FILES['document']
-                checkListSelected.document = document
+            try:
+                if(len(request.FILES)>0):
+                    document = request.FILES['document']
+                    checkListSelected.document = document
 
 
-            updated_data = request.POST.copy()
-            updated_data.update({'title': title ,'observed':observed ,'activity' : activity , 'result' :result }) 
-            form = CreateFormCheckListMomayezi(data=updated_data) 
-            
-            checkListSelected.result = result
-            checkListSelected.observed = observed
-            
-            checkListSelected.save()
-            activity.status = 'done'
-            activity.save()
-            instanceActivity  = MomayeziActivityManager.objects.create(typeMomayeziRelated = profileSelected , sender=profileSender, reciver=sarMomayezSelected ,status='doing' ,activity='report' ,  calender = calenderSelected )    
-            if form.is_valid():
+                updated_data = request.POST.copy()
+                updated_data.update({'title': title ,'observed':observed ,'activity' : activity , 'result' :result }) 
+                form = CreateFormCheckListMomayezi(data=updated_data) 
                 
+                checkListSelected.result = result
+                checkListSelected.observed = observed
                 
-                #form.save(commite=False)
+                checkListSelected.save()
+                activity.status = 'done'
+                activity.save()
+                instanceActivity  = MomayeziActivityManager.objects.create(typeMomayeziRelated = profileSelected , sender=profileSender, reciver=sarMomayezSelected ,status='doing' ,activity='report' ,  calender = calenderSelected )    
                 sweetify.toast(self.request,timer=30000 , icon="success",title ='چک لیست ممیزی جدید با موفقیت ساخته شد !!!')
-                #return redirect('ListViewCheckListMomayezi')
                 return HttpResponseRedirect(reverse('ViewCheckListMomayeziList' , kwargs={'calenderId':calenderId}) )
-            else:
-                sweetify.toast(self.request,timer=30000 , icon="error",title ='چک لیست ممیزی مورد نظر ساخته نشد !')           
-            context= {'extend':self.extend , 'menuBack':self.menuBack ,'riskDabir':is_dabir(self),'form': form,'object':obj}
+            except:
+                sweetify.toast(self.request,timer=30000 , icon="error",title ='چک لیست ممیزی مورد نظر ساخته نشد  !!!')
+                return HttpResponseRedirect(reverse('ViewCheckListMomayeziList' , kwargs={'calenderId':calenderId}) )
+            # if form.is_valid():
+                
+                
+            #     #form.save(commite=False)
+            #     sweetify.toast(self.request,timer=30000 , icon="success",title ='چک لیست ممیزی جدید با موفقیت ساخته شد !!!')
+            #     #return redirect('ListViewCheckListMomayezi')
+            #     return HttpResponseRedirect(reverse('ViewCheckListMomayeziList' , kwargs={'calenderId':calenderId}) )
+            # else:
+            #     sweetify.toast(self.request,timer=30000 , icon="error",title ='چک لیست ممیزی مورد نظر ساخته نشد !')           
+            #context= {'extend':self.extend , 'menuBack':self.menuBack ,'riskDabir':is_dabir(self),'form': form,'object':obj}
         
         
         return render(request,self.template_name,context)
@@ -3106,7 +3170,7 @@ class DeleteViewCheckListMomayezi( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "پاک کردن یک چک لیست ممیزی"
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "آیا میخواهید که چک لیست ممیزی  " + obj.title + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که چک لیست ممیزی  " + obj.title + " "  + " را پاک کنید   ؟"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "delete_forever"
             #تعداد ستون ها            
@@ -3176,7 +3240,7 @@ class DeleteViewCheckListMomayeziCalender( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "پاک کردن یک چک لیست ممیزی"
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "آیا میخواهید که چک لیست ممیزی  " + obj.title + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که چک لیست ممیزی  " + obj.title + " "  + " را پاک کنید   ؟"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "delete_forever"
             #تعداد ستون ها            
@@ -3261,7 +3325,7 @@ class ListViewQuestionMomayeziList(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست سوال ممیزی  ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام سوال ممیزی  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام سوال ممیزی  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -3320,7 +3384,7 @@ class ListViewQuestionMomayeziListVahed(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = " واحد های تحت ممیزی"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام شناسایی ریسک  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام شناسایی ریسک  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -3393,7 +3457,7 @@ class ViewQuestionMomayeziList( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "اطلاعات سوال ممیزی   "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "چزییات سوال ممیزی را در این صفحه میتوانید مشاهده کنید"
+            discribtion   = "چزییات سوال ممیزی را در این صفحه می توانید مشاهده کنید"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "person_add"
             #تعداد ستون ها            
@@ -3680,7 +3744,7 @@ class DeleteViewQuestionMomayeziList( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "پاک کردن یک سوال ممیزی "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "آیا میخواهید که سوال ممیزی   " + obj.question + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که سوال ممیزی   " + obj.question + " "  + " را پاک کنید   ؟"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "delete_forever"
             #تعداد ستون ها            
@@ -3718,7 +3782,7 @@ class ListViewReportEntering(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "  لیست نوبت های ممیزی  "
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام نوبت ممیزی  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام نوبت ممیزی  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -3783,7 +3847,7 @@ class ListViewVahedReportEnteringVahed(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست واحد ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام گزارش ممیزی  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام گزارش ممیزی  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -3877,11 +3941,67 @@ class CreateViewReportEntering( LoginRequiredMixin,View):
         typeSelected = TypeMomayezi.objects.get(id = typeId)
         activitySelected = MomayeziActivityManager.objects.get(id = actId)
         
-        instanceReport = ReportMomayezi.objects.create(report = report ,typeMomayeziRelated = typeSelected , activityRelated =activitySelected , result = result  )
+        instanceReport = ReportMomayezi.objects.create(report = report ,typeMomayeziRelated = typeSelected , activityRelated =activitySelected , result = result  , vahedRelated = activitySelected.calender.vahedMomayezi)
+        
+
+
+
+
+
+
+        profileSender  = Profile.objects.get(id=246)
+        profileReciver = self.getMafogh(profileSender)
+
+        instanceCorrective = CorrectiveAction.objects.create(problem = 'correctiveAction' , demandantVahed = 21 ,
+                                        standardRelated =activitySelected.calender.systemMomayezi , source = 'MomayeziDakheli' )
+      
+        instanceCorrective.demandantId = 'CA-' + str(instanceCorrective.id)
+        instanceCorrective.save()
+
+        textBox = TextDataBase.objects.create(title = 'شرح مسئله / درخواست' , text = instanceReport.report)
+
+
+        instanceCorrectiveActionActivityManagerRegister = CorrectiveActionActivityManager.objects.create(reciver = profileSender , sender  = profileSender ,status='done', activity = 'register' , CorrectiveActionRelated  =instanceCorrective ,)
+        instanceCorrectiveActionActivityManagerRegister.texts.add(textBox)
+        
+        instanceCorrectiveActionActivityManagerRegister.save()
+        instanceCorrectiveActionActivityManager = CorrectiveActionActivityManager.objects.create(reciver = profileReciver , sender  = profileSender , activity = 'barresiMafogh',previousActivity = instanceCorrectiveActionActivityManagerRegister , CorrectiveActionRelated  =f)
+        
+        instanceCorrectiveActionActivityManager.save()
+        instanceCorrectiveActionActivityManagerRegister.nextActivity = instanceCorrectiveActionActivityManager
+        instanceCorrectiveActionActivityManagerRegister.save()
+
         sweetify.toast(self.request,timer=30000 , icon="success",title ='   گزارش مورد نظر ثبت شد  !!!')
         return HttpResponseRedirect(reverse('CreateViewReportEntering' , kwargs={'typeId':typeId , 'actId':actId }) )
         #     #تابع نمایش پیغام
+
+
+
+class ComplateViewReportEntering( LoginRequiredMixin,View): 
+    redirect_field_name = '/profile/login'
+    #قالب کلی ایجاد 
+    template_name = "createCalenderMomayezi.html"
+    extend = 'baseEmployee.html'
+    menuBack ="ViewMomayeziDashboard"
+    menu_link = 'ViewCalenderMomayezi'
+    def get(self, request,actId, *args, **kwargs):
         
+      
+     
+        activitySelected = MomayeziActivityManager.objects.get(id =actId )
+        activitySelected.status = 'done'
+        activitySelected.save()
+        sweetify.toast(self.request,timer=30000 , icon="success",title ='ثبت برنامه زمانی به اتمام رسید        !!!')
+        #دیکشنری داده ها
+        contex = {'extend':self.extend , 'menuBack':self.menuBack ,'riskDabir':is_dabir(self),}
+        return redirect('ViewMomayeziDashboardMember' ,activitySelected.typeMomayeziRelated.id )
+
+def getMafogh(profileSender):
+        psotMafoghSelected = JobBank.objects.all().filter(profile=profileSender)[0].jobBankPost.postMafogh
+        jobBankMafoghSelected = JobBank.objects.all().filter(jobBankPost = psotMafoghSelected)[0]
+
+        profileReciver = jobBankMafoghSelected.profile
+        return profileReciver
       
 def add_report(request):
     report = request.POST.get('report')
@@ -3896,15 +4016,40 @@ def add_report(request):
     if(result == None):
         sweetify.toast(request,timer=30000 , icon="error",title ='باید نوع نتیجه را انتخاب کنید!!!')
         return HttpResponseRedirect(reverse('CreateViewReportEntering' , kwargs={'typeId':typeId , 'actId':actId }) )
-    print(typeId , 'type : ')
+    
     typeSelected = TypeMomayezi.objects.get(id = typeId)
     
     activitySelected = MomayeziActivityManager.objects.get(id = actId)
     
-    instanceReport = ReportMomayezi.objects.create(report = report ,typeMomayeziRelated = typeSelected , activityRelated =activitySelected , result = result  )
+    instanceReport = ReportMomayezi.objects.create(report = report ,typeMomayeziRelated = typeSelected , activityRelated =activitySelected , result = result ,vahedRelated = activitySelected.calender.vahedMomayezi )
+    if (instanceReport.result == 'behbod' or instanceReport.result == 'adam'):
+        profileSender  = Profile.objects.get(id=246)
+        profileReciver = getMafogh(profileSender)
+        vahedSelected = Vahed.objects.get(id = 21)
+        instanceCorrective = CorrectiveAction.objects.create(problem = 'correctiveAction' , demandantVahed = vahedSelected ,
+                                        standardRelated =activitySelected.calender.systemMomayezi , source = 'MomayeziDakheli' )
+        
+        instanceCorrective.demandantId = 'CA-' + str(instanceCorrective.id)
+        instanceCorrective.save()
+
+        textBox = TextDataBase.objects.create(title = 'شرح مسئله / درخواست' , text = instanceReport.report)
+
+
+        instanceCorrectiveActionActivityManagerRegister = CorrectiveActionActivityManager.objects.create(reciver = profileSender , sender  = profileSender ,status='done', activity = 'register' , CorrectiveActionRelated  =instanceCorrective ,)
+        instanceCorrectiveActionActivityManagerRegister.texts.add(textBox)
+        
+        instanceCorrectiveActionActivityManagerRegister.save()
+        instanceCorrectiveActionActivityManager = CorrectiveActionActivityManager.objects.create(reciver = profileReciver , sender  = profileSender , activity = 'barresiMafogh',previousActivity = instanceCorrectiveActionActivityManagerRegister , CorrectiveActionRelated  =instanceCorrective)
+        
+        instanceCorrectiveActionActivityManager.save()
+        instanceCorrectiveActionActivityManagerRegister.nextActivity = instanceCorrectiveActionActivityManager
+        instanceCorrectiveActionActivityManagerRegister.save()
+
+
+
     sweetify.toast(request,timer=30000 , icon="success",title ='   گزارش مورد نظر ثبت شد  !!!')
     allReportGhovat = ReportMomayezi.objects.all().filter(Q(typeMomayeziRelated = typeSelected) & Q(result ='ghovat'))
-    allReportForsat = ReportMomayezi.objects.all().filter(Q(typeMomayeziRelated = typeSelected) & Q(result ='forsat'))
+    allReportForsat = ReportMomayezi.objects.all().filter(Q(typeMomayeziRelated = typeSelected) & Q(result ='behbod'))
     allReportAdam = ReportMomayezi.objects.all().filter(Q(typeMomayeziRelated = typeSelected) & Q(result ='adam'))
     
     return render(request , 'partials/report-list.html' ,{ 'allReportGhovat' : allReportGhovat ,
@@ -4080,38 +4225,67 @@ class ViewMomayeziDashboard( LoginRequiredMixin,View):
         maxGhovatTitle = []
         maxForsatValue = []
         maxForsatVahed = []
-        maxForsatTitle = []
-      
-        for forsat in allForsat:
+        maxForsatTitle = [] 
+        allVahed = Vahed.objects.all()
+        allGhovatVahed = []
+        allForsatVahed = []
+        allAdamVahed = []
+        #categories = allGhovat.objects.all().filter('vahedRelated').order_by('vahedRelated').values('vahedRelated__title').annotate(count=Count('vahedRelated__title'))
+        
+        for vahed in allVahed:
+            dictData ={'vahed' :vahed.title  ,'count': allGhovat.filter(vahedRelated__id =vahed.id).count()}
+            if(dictData['count']==0):
+                pass
+            else:
+                allGhovatVahed.append(dictData)
+            dictData ={'vahed' :vahed.title  ,'count': allForsat.filter(vahedRelated__id =vahed.id).count()}
+            if(dictData['count']==0):
+                pass
+            else:
+                allForsatVahed.append(dictData)
+            dictData ={'vahed' :vahed.title  ,'count': allAdam.filter(vahedRelated__id =vahed.id).count()}
+            if(dictData['count']==0):
+                pass
+            else:
+                allAdamVahed.append(dictData)
+
+        sorted_list = sorted(allAdamVahed, key=lambda x: x['count'] , reverse=True)
+        allGhovatVahed = sorted (allGhovatVahed , key = lambda x: x['count'] , reverse=True)[:3]
+        allForsatVahed = sorted (allForsatVahed , key = lambda x: x['count'] , reverse=True)[:3]
+        allAdamVahed = sorted (allAdamVahed , key = lambda x: x['count'] , reverse=True)[:3]
+
+        
+        # for forsat in allForsat:
           
-            listMaxForsat[forsat.activityRelated.calender.vahedMomayezi] =  ReportMomayezi.objects.all().filter(activityRelated__calender__vahedMomayezi =forsat.activityRelated.calender.vahedMomayezi).count()
-        listMaxForsat = sorted(listMaxForsat.items(), key=lambda x:x[1] , reverse=True)
-        listMaxForsat = listMaxForsat[:3]
-        for forsat in listMaxForsat:
-            maxForsatVahed.append(forsat[0])
-            maxForsatValue.append(forsat[1])
-            maxForsatTitle.append(forsat[0].title)
-        for ghovat in allGhovat:
+        #     listMaxForsat[forsat.activityRelated.calender.vahedMomayezi] =  ReportMomayezi.objects.all().filter(activityRelated__calender__vahedMomayezi =forsat.activityRelated.calender.vahedMomayezi).count()
+        # listMaxForsat = sorted(listMaxForsat.items(), key=lambda x:x[1] , reverse=True)
+        # listMaxForsat = listMaxForsat[:3]
+        # for forsat in listMaxForsat:
+        #     maxForsatVahed.append(forsat[0])
+        #     maxForsatValue.append(forsat[1])
+        #     maxForsatTitle.append(forsat[0].title)
+        # for ghovat in allGhovat:
            
-            listMaxGhovat[ghovat.activityRelated.calender.vahedMomayezi] =  ReportMomayezi.objects.all().filter(activityRelated__calender__vahedMomayezi =ghovat.activityRelated.calender.vahedMomayezi).count()
+        #     listMaxGhovat[ghovat.activityRelated.calender.vahedMomayezi] =  ReportMomayezi.objects.all().filter(activityRelated__calender__vahedMomayezi =ghovat.activityRelated.calender.vahedMomayezi).count()
         
-        listMaxGhovat = sorted(listMaxGhovat.items(), key=lambda x:x[1] , reverse=True)
-        listMaxGhovat = listMaxGhovat[:3]
-        for ghovat in listMaxGhovat:
-            maxGhovatVahed.append(ghovat[0])
-            maxGhovatValue.append(ghovat[1])
-            maxGhovatTitle.append(ghovat[0].title)
-        for adam in allAdam:
+        # listMaxGhovat = sorted(listMaxGhovat.items(), key=lambda x:x[1] , reverse=True)
+        # listMaxGhovat = listMaxGhovat[:3]
+        # for ghovat in listMaxGhovat:
+        #     maxGhovatVahed.append(ghovat[0])
+        #     maxGhovatValue.append(ghovat[1])
+        #     maxGhovatTitle.append(ghovat[0].title)
+        # for adam in allAdam:
             
-            listMaxAdam[adam.activityRelated.calender.vahedMomayezi] =  ReportMomayezi.objects.all().filter(activityRelated__calender__vahedMomayezi =adam.activityRelated.calender.vahedMomayezi).count()
+        #     listMaxAdam[adam.activityRelated.calender.vahedMomayezi] =  ReportMomayezi.objects.all().filter(activityRelated__calender__vahedMomayezi =adam.activityRelated.calender.vahedMomayezi).count()
             
-        listMaxAdam = sorted(listMaxAdam.items(), key=lambda x:x[1] , reverse=True)
-        listMaxAdam = listMaxAdam[:3]
-        for adam in listMaxAdam:
-            maxAdamVahed.append(adam[0])
-            maxAdamValue.append(adam[1])
-            maxAdamTitle.append(adam[0].title)
+        # listMaxAdam = sorted(listMaxAdam.items(), key=lambda x:x[1] , reverse=True)
+        # listMaxAdam = listMaxAdam[:3]
+        # for adam in listMaxAdam:
+        #     maxAdamVahed.append(adam[0])
+        #     maxAdamValue.append(adam[1])
+        #     maxAdamTitle.append(adam[0].title)
         
+
         total =  allAdamLenght+allGhovatLenght +allForsatLenght
         
         
@@ -4138,7 +4312,8 @@ class ViewMomayeziDashboard( LoginRequiredMixin,View):
         'allAdamPercent' :allAdamPercent ,'allGhovatPercent' : allGhovatPercent,'allForsatPercent' :allForsatPercent
         ,'maxAdamValue' :maxAdamValue , 'maxAdamVahed' :maxAdamVahed , 'maxGhovatValue' :maxGhovatValue , 'maxGhovatVahed' :maxGhovatVahed , 'maxForsatValue' :maxForsatValue , 'maxForsatVahed' :maxForsatVahed , 'maxForsatTitle' :maxForsatTitle ,
         'maxGhovatTitle' :maxGhovatTitle , 'maxAdamTitle' :maxAdamTitle,
-        'memberCount':memberCount , 'responsibleCount': responsibleCount , 'visio':visio}
+        'memberCount':memberCount , 'responsibleCount': responsibleCount , 'visio':visio
+         ,'allGhovatVahed' : allGhovatVahed , 'allForsatVahed' : allForsatVahed,'allAdamVahed' : allAdamVahed }
 
         return render(request,self.template_name,context)
     
@@ -4244,7 +4419,7 @@ class ViewMomayeziDashboardMember( LoginRequiredMixin,View):
                 
             elif(item.activity == 'team' and item.status =='doing'):
                 
-                allActivity.append(('CreateViewMomayeziTeam',item , -1 , -1))  
+                allActivity.append(('CreateViewMomayeziTeam',item ,profileSelected.id , -1))  
                   
                
             elif(item.activity == 'cheakListQuestion' and item.status =='doing'):

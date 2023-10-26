@@ -3,7 +3,8 @@
 {% block style %}
 <link rel="stylesheet" type="text/css" href="{% static '/css/dataTables.css' %}">
 
-
+<link rel="stylesheet" href="{%static '/css/select2.min.css'%}">
+<link rel="stylesheet" href="{%static '/css/select2-bootstrap-5-theme.rtl.min.css'%}">
 <script type="text/javascript" charset="utf8" src="{% static '/js/dataTables.js' %}"></script>
 
 <script src="{% static '/js/jquery.dataTables.js' %}"></script>
@@ -11,7 +12,18 @@
 <link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
 {%endblock style%}
 {% block content %}
+<script>
+  $(document).ready(function() { 
+  $("select").select2({
+   theme: "bootstrap-5",
+   placeholder: "یک گزینه را انتخاب کنید",
+   allowClear: true
+  });
+  });
+
+ </script>
 {%include 'partials/profile-meeting.html'%}
+
 <div class="container py-6">
 
   <div class="row justify-content-md-center">
@@ -86,12 +98,16 @@
           
           <input type="hidden" name="meetingRelated" id="id_meetingRelated" value="{{meetingSelected.id}}">
           <div class="row justify-content-md-center">
-            <div class="col-5">
+            <div class="col-4">
               <button type="submit"  class="btn w-100  btn-outline-primary">
                 افزودن </button>
             </div>
-            <div class="col-5">
-              <a href="{%url 'ViewProfileMeeting' %}" class="btn w-100  btn-outline-danger">
+            <div class="col-4">
+              <a href="{%url 'CreateViewMeetingInvitation' meetingSelected.id %}"  class="btn w-100  btn-outline-info">
+                اتمام </a>
+            </div>
+            <div class="col-4">
+              <a href="{%url 'ListViewMeeting' %}" class="btn w-100  btn-outline-danger">
                 کنسل </a>
             </div>
           </div>
@@ -109,30 +125,12 @@
 {% block scripts%}
 
 
-
-<script>
-  $(document).ready(function () {
-    $('#example').dataTable({
-
-      "oLanguage": {
-        "oPaginate": {
-          "sNext": "صفحه بعدی",
-          "sPrevious": "صفحه قبلی"
-        },
-        "sEmptyTable": "اطلاعاتی برای نمایش وجود ندارد",
-        "sSearch": "جستجو   :  ",
-        "sInfo": "نمایش _START_ تا_END_ از تعداد کل _TOTAL_",
-        "sLengthMenu": "  تعداد در صفحه  _MENU_ ",
-        "sInfoEmpty": "رکوردی برای نمایش وجود ندارد"
-
-      }
-    });
-  });
-</script>
+<script src="{% static '/js/select2.min.js' %}"></script>
 
 
 
-<script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
+
+
 <script src="{% static 'js/picker.js' %}"></script>
 <script>
 

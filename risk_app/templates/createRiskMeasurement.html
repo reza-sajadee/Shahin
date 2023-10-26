@@ -53,30 +53,10 @@
                       </div>
                     </li>
                   </div>
+                 
                 </div>
 
-                <div class="row justify-content-center">
-                  <div class="col-4 mx-4 ">
-                    <li class="list-group-item  border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                      <div class="d-flex    flex-column">
-                        <h5 class="mb-1 text-dark font-weight-bold">تیم</h5> <h6> {{teamSelected.title}}</h6>
-                      </div>
-                      <div class="d-flex align-items-center ">
-                        
-                      </div>
-                    </li>
-                  </div>
-                  <div class="col-4 mx-4 ">
-                    <li class="list-group-item  border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                      <div class="d-flex    flex-column">
-                        <h5 class="mb-1 text-dark font-weight-bold">عنوان</h5> <h6>ارزیابی ریسک</h6>
-                      </div>
-                      <div class="d-flex align-items-center ">
-                        
-                      </div>
-                    </li>
-                  </div>
-                </div>
+               
                 
                 
               </ul>
@@ -92,12 +72,12 @@
                 <div class="card-body px-0 pb-2">
                   <div class="container-fluid fulled">
                     <div class="row border-bottom py-3">
-                      <div class="col-7"><h6><span class="text-muted">عنوان ریسک</span></h6></div>
-                      <div class="col-1"><p class="text-muted">شدت خطا</p></div>
-                      <div class="col-1"><p class="text-muted">احتمال وقوع</p></div>
-                      <div class="col-1"><p class="text-muted">قابلیت کشف</span></div>
-                      <div class="col-1"><p class="text-muted"> بیشتر </span></div>
-                      <div class="col-1"><p class="text-muted"> ثبت </span></div>
+                      <div class="col-7 "><h6 class="text-center"><span class="text-muted ">عنوان ریسک</span></h6></div>
+                      <div class="col-1 "><p class="text-muted text-center">شدت خطا</p></div>
+                      <div class="col-1 "><p class="text-muted text-center">احتمال وقوع</p></div>
+                      <div class="col-1 "><p class="text-muted text-center">قابلیت کشف</span></div>
+                      <div class="col-1 "><p class="text-muted text-center"> بیشتر </span></div>
+                      <div class="col-1 "><p class="text-muted text-center"> ثبت </span></div>
                        
                     
                     </div>
@@ -112,7 +92,7 @@
                       <input type="hidden" id="riskIdentificated"   name="riskIdentificated"   value={{risk.riskIdentificated.id}}>
                       <input type="hidden" id="activity"   name="activity"   value={{risk.activity.id}}>
                       <div class="row">
-                        <div class="col-7">{{risk.riskIdentificated.riskFailureModes}}</div>
+                        <div class="col-7"><h5 class="text-center  narowFont"> {{risk.riskIdentificated.riskFailureModes}}</h5></div>
                           
                             
                           <div class="col-1">
@@ -136,7 +116,12 @@
                          
                           
                           <div class="col-1">
-                            <a href="#" onclick="show_hide_row('hidden_row{{risk.id}}');" >بیشتر</a>
+                            <a class="nav-link text-black-80" href="#" onclick="show_hide_row('hidden_row{{risk.id}}');"  >
+                              <div class="  ms-2 d-flex align-items-center justify-content-center">
+                                <img style="max-width: 50px;" src="{% static 'img/svg/view.svg' %}" >
+                              </div>
+                            </a>
+                           
                           </div>
 
                           <div class="col-1">
@@ -153,31 +138,36 @@
                       
                       <form>
                         <div class="row">
-                          <div class="col-7">{{risk.riskIdentificated.riskFailureModes}}</div>
+                          <div class="col-7"><h5 class="text-center  narowFont">{{risk.riskIdentificated.riskFailureModes}}</h5></div>
                           
                             
                           <div class="col-1">
                             
                             <div class="text-center">
-                              <h6> {{risk.riskSeverity}} </h6>
+                              <h4 class="text-center narowFont"> {{risk.riskSeverity}} </h6>
                             </div>
                           
                           </div>
                           <div class="col-1">
                             
                             <div class="text-center">
-                              <h6> {{risk.riskOccurrence}} </h6>
+                              <h4 class="text-center narowFont"> {{risk.riskOccurrence}} </h6>
                             </div>
                           </div>
                           <div class="col-1">
                             <div class="text-center">
-                              <h6> {{risk.riskDetection}} </h6>
+                              <h4 class="text-center narowFont"> {{risk.riskDetection}} </h6>
                             </div>
                           </div>
                          
                           
                           <div class="col-1">
-                            <a href="#" onclick="show_hide_row('hidden_row{{risk.id}}');" >بیشتر</a>
+                            <a class="nav-link text-black-80" href="#" onclick="show_hide_row('hidden_row{{risk.id}}');"  >
+                              <div class="  ms-2 d-flex align-items-center justify-content-center">
+                                <img style="max-width: 50px;" src="{% static 'img/svg/view.svg' %}" >
+                              </div>
+                            </a>
+                           
                           </div>
 
                           <div class="col-1">
@@ -241,7 +231,7 @@
                     
                     
 
-                  <a class="btn btn btn-lg w-100 btn-outline-info" href="{%url 'ListViewRiskMeasurement' %}">
+                  <a class="btn btn btn-lg w-100 btn-outline-info" href="{%url 'ListViewRiskMeasurement' 9 %}">
             
                     بازگشت به لیست ارزیابی
                   </a>

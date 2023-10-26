@@ -2,6 +2,7 @@ from django.db import models
 from organization_app.models import JobBank
 from goal_app.models import Objective
 from profile_app.models import Profile
+from datetime import datetime
 # Create your models here.
 class ProjectProfile(models.Model):
     RESOURCE_STATUS  = (('Objective','هدف خرد'),('Other' , 'سایر'))
@@ -114,16 +115,45 @@ class PlanProfile(models.Model):
     updated_at          = models.DateTimeField(auto_now=True)
 
 class Action(models.Model):
-    STATUS_STATUS = (('complate','اتمام شده'),('pending' , 'در انتظار انجام'),('doing' , 'در حال انجام'),('done' , 'انجام شد'))
+    STATUS_STATUS = (('complate','اتمام شده'),('doing' , 'در حال انجام'),('done' , 'انجام شد'))
     COLOR_STATUS = (('0','--accent-color:#41516C'),('1' , '--accent-color:#FBCA3E'),('2' , '--accent-color:#E24A68'),('3' , '--accent-color:#1B5F8C'),('4' , '--accent-color:#4CADAD'))
     planProfileRelated = models.ForeignKey(PlanProfile, blank=True, null=True, related_name='planProfileRelated' , on_delete=models.CASCADE)
-    
+    responsible = models.ForeignKey(JobBank , blank=True, null=True, related_name="responsibleAction" , on_delete = models.CASCADE )
     title = models.CharField(max_length=250, verbose_name='عنوان برنامه اجرایی', blank=True , null=True) 
     
     description      = models.TextField(blank=True, null=True, verbose_name='توضیحات')
-    
+    startTiem        = models.DateTimeField( null=True, blank=True)
     deadLine         = models.DateTimeField( null=True, blank=True)
-    status  = models.CharField(max_length=250,choices=STATUS_STATUS , default='pending', verbose_name='وضعیت', blank=True , null=True)  
+    status  = models.CharField(max_length=250,choices=STATUS_STATUS , default='doing', verbose_name='وضعیت', blank=True , null=True)  
     color =  models.CharField(max_length=250,choices=COLOR_STATUS , default='1', verbose_name='رنگ', blank=True , null=True)  
+    progress = models.IntegerField(default=0 )
+    weight =  models.IntegerField( null=True, blank=True, default=0 )
+
     created_at          = models.DateTimeField(auto_now_add=True)
     updated_at          = models.DateTimeField(auto_now=True)
+
+    def get_status_today(self):
+        x = self.deadLine.date()
+        y = datetime.now().date()
+        if self.status == 'done':
+            return 'success'
+        if x < y:
+
+            return 'danger'
+        else:
+            return 'warning'
+    def max_weight(self):
+        allAction = Action.objects.filter(planProfileRelated = self.planProfileRelated)
+        maxWeight = 100
+        for action in allAction:
+            maxWeight = maxWeight - action.weight
+        return maxWeight
+    def planed_progress(self):
+        allDayes = self.deadLine.date() - self.startTiem.date()
+        passedDays = datetime.now().date() - self.startTiem.date()
+        x = int((passedDays / allDayes) * 100)
+        if(x < 0):
+            x = 0
+        if(x > 100):
+            x = 100
+        return x

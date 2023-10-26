@@ -87,7 +87,7 @@
                       <div class="row">
                         <div class="col">
                           <h5 class="card-title"></h5>
-                          <p class="card-text">آیا مسئله فوق    با توجه به مطالب مطرح شده، مورد تایید جناب آقای / سرکار خانم <strong>{{data.reciver.firstName}} {{data.reciver.lastName}}</strong> مافوق میباشد ؟</p>
+                          <p class="card-text">آیا مسئله فوق    با توجه به مطالب مطرح شده، مورد تایید جناب آقای / سرکار خانم <strong>{{data.reciver.firstName}} {{data.reciver.lastName}}</strong> مافوق می باشد ؟</p>
                         </div>
                         <form class="my-2" action="" method="POST" enctype="multipart/form-data">
                           {% csrf_token %}
@@ -115,7 +115,7 @@
                       <div class="row">
                         <div class="col">
                           <h5 class="card-title"></h5>
-                          <p class="card-text">آیا تغییر در سند <strong>{{data.CorrectiveActionRelated.documentRelated.title}}</strong> با توجه به مطالب مطرح شده، مورد تایید جناب آقای / سرکار خانم <strong>{{data.reciver.firstName}} {{data.reciver.lastName}}</strong> مسئول کارشناس دفتر توسعه مدیریت و تحقیقات میباشد ؟</p>
+                          <p class="card-text">آیا تغییر در سند <strong>{{data.CorrectiveActionRelated.documentRelated.title}}</strong> با توجه به مطالب مطرح شده، مورد تایید جناب آقای / سرکار خانم <strong>{{data.reciver.firstName}} {{data.reciver.lastName}}</strong> مسئول کارشناس دفتر توسعه مدیریت و تحقیقات می باشد ؟</p>
                         </div>
                         <form class="my-2" action="" method="POST" enctype="multipart/form-data">
                           {% csrf_token %}
@@ -142,7 +142,7 @@
                       <div class="row">
                         <div class="col">
                           <h5 class="card-title"></h5>
-                          <p class="card-text">آیا اقدام اصلاحی فوق  با توجه به مطالب مطرح شده، مورد تایید جناب آقای / سرکار خانم <strong>{{data.reciver.firstName}} {{data.reciver.lastName}}</strong>      مدیر دفتر توسعه مدیریت و تحقیقات میباشد ؟</p>
+                          <p class="card-text">آیا اقدام اصلاحی فوق  با توجه به مطالب مطرح شده، مورد تایید جناب آقای / سرکار خانم <strong>{{data.reciver.firstName}} {{data.reciver.lastName}}</strong>      مدیر دفتر توسعه مدیریت و تحقیقات می باشد ؟</p>
                         </div>
                         <form class="my-2" action="" method="POST" enctype="multipart/form-data">
                           {% csrf_token %}
@@ -214,7 +214,7 @@
                       <div class="row">
                         <div class="col">
                           <h5 class="card-title"></h5>
-                          <p class="card-text">واحد متولی انتخاب شده توسط مدیر دفتر توسعه مدیریت و تحقیقات <strong> {{vahedSelected.title}} </strong>  میباشد در صورتی که  میخواهید میتوانید ویرایش نمایید    </p>
+                          <p class="card-text">واحد متولی انتخاب شده توسط مدیر دفتر توسعه مدیریت و تحقیقات <strong> {{vahedSelected.title}} </strong>  می باشد در صورتی که  می خواهید می توانید ویرایش نمایید    </p>
                         </div>
                         <form class="my-2" action="" method="POST" enctype="multipart/form-data">
                           {% csrf_token %}
@@ -307,7 +307,7 @@
                 {% if data.activity == 'definitionCorrectiveaAtion'%}
                 
                   <div class="card border mb-3" >
-                    <div class="card-header"> نعریف {{data.CorrectiveActionRelated.problem}}</div>
+                    <div class="card-header">   {{data.get_activity_display}}</div>
                       <div class="card-body border-top text-secondary">
                         <form class="my-2" action="" method="POST" enctype="multipart/form-data">
                           {% csrf_token %}
@@ -319,35 +319,48 @@
                               </fieldset>
                             </div>
                             
+                            
                             <div class="row ">
-                              <fieldset class="correctiveActionAnswer">
+                                <fieldset class="correctiveActionAnswer">
+                                  <hr class="dark horizontal my-4">
+                                <div class="input-group input-group-static mb-4 col-4">
                               
-                              <div class="input-group input-group-static mb-4 col-4">
-                            
-                                <input type="text" name="correctiveActionProfile" class="form-control"  id="id_correctiveActionProfile">
-                            
-                                </input>
-                                <!-- <select name="correctiveActionProfile" class="form-control"  id="id_correctiveActionProfile">
-                                  <option value="" selected="">---------</option>
-                                  {%for profile in profilesPosts%}
-                                  <option value="{{profile.id}}">{{profile.firstName}}-{{profile.lastName}}</option>
-                                  {% endfor %}
-                                </select> -->
-                                
-                              </div>
-                              <div class="input-group input-group-static mb-4 col-4" name="" id="">
-                                <label class="" for="id_correctiveActionDate">
-                                  زمان پایان اقدام اصلاحی را وارد کنید
-                                </label>
-                                <input type="text" name="correctiveActionDate" class="jalali_date-date  form-control" size="10"  id="id_correctiveActionDate">
-                                
-                              </div>
-                              <label class="custom-control-label" for="correctiveActionDescription">  اقدام اصلاحی مورد نظر را  شرح دهید </label>
-                                <textarea name="correctiveActionDescription" cols="120" rows="4" class="" id="id_correctiveActionDescription"></textarea>
+                                  <!-- <input type="text" name="correctiveActionProfile" class="form-control"  id="id_correctiveActionProfile">
+                              
+                                  </input> -->
+                                  <label class="mx-3" for="id_correctiveActionDate">
+                                    فرد مسئول را انتخاب کنید
+                                  </label>
+                                  <select name="correctiveActionProfile" class="form-control"  id="id_correctiveActionProfile">
+                                    <option value="" selected="">---------</option>
+                                    {%for profile in profilesPosts%}
+                                    <option value="{{profile.id}}">{{profile.firstName}}-{{profile.lastName}}</option>
+                                    {% endfor %}
+                                  </select>
+                                  
+                                  
+                                </div>
+                                <div class="input-group input-group-static mb-4 col-4" name="" id="">
+                                  <label class="" for="id_correctiveActionDate">
+                                    زمان پایان اقدام اصلاحی را وارد کنید
+                                  </label>
+                                  <input type="text" name="correctiveActionDate" class="jalali_date-date  form-control" size="10"  id="id_correctiveActionDate">
+                                  
+                                </div>
+                                <div class="input-group input-group-static mb-4 col-4" name="" id="">
+                                  <label class="custom-control-label" for="correctiveActionDescription">  اقدام اصلاحی مورد نظر را  شرح دهید </label>
+                                    <textarea name="correctiveActionDescription" cols="100" rows="4" class="" id="id_correctiveActionDescription"></textarea>
+                                  </div>
+                                <fieldset class="form-check ">
+                                  <div class="input-group input-group-static mb-4 col-4" name="" id="">
+                                    <label class="custom-control-label" for="PlanProfileCorrectiveAction">آیا نیاز به برنامه اجرایی می باشد ؟</label>
+                                    <input class="form-check-input" id="PlanProfileCorrectiveAction" type="checkbox" name="PlanProfileCorrectiveAction" />
+                                  </div>
+                                </fieldset>
                               </fieldset>
                             </div>
         
-                            
+                          
                             
                           </div>
                           <div class="row py-4 mx-3">
@@ -361,32 +374,45 @@
                             </div>
                             
                             <div class="row ">
-                              <fieldset class="correctiveAnswer">
-                              
-                              <div class="input-group input-group-static mb-4 col-4">
-                            
-                                <input type="text" name="correctiveProfile" class="form-control"  id="id_correctiveProfile">
+                                <hr class="dark horizontal my-4">
+                                <fieldset class="correctiveAnswer">
                                 
-                                </input>
-                                <!-- <select name="correctiveProfile" class="form-control"  id="id_correctiveProfile">
-                                  <option value="" selected="">---------</option>
-                                  {%for profile in profilesPosts%}
-                                  <option value="{{profile.id}}">{{profile.firstName}}-{{profile.lastName}}</option>
-                                  {% endfor %}
-                                </select> -->
+                                  <div class="input-group input-group-static mb-4 col-4">
                                 
+                                    <!-- <input type="text" name="correctiveProfile" class="form-control"  id="id_correctiveProfile">
+                                    
+                                    </input> -->
+                                    <label class="mx-3" for="id_correctiveActionDate">
+                                      فرد مسئول را انتخاب کنید
+                                    </label>
+                                    <select name="correctiveProfile" class="form-control"  id="id_correctiveProfile">
+                                      <option value="" selected="">---------</option>
+                                      {%for profile in profilesPosts%}
+                                      <option value="{{profile.id}}">{{profile.firstName}}-{{profile.lastName}}</option>
+                                      {% endfor %}
+                                    </select>
+                                    
+                                  </div>
+                                  <div class="input-group input-group-static mb-4 col-4" name="" id="">
+                                    <label class="" for="id_correctiveDate">
+                                      زمان پایان  اصلاح را وارد کنید
+                                    </label>
+                                    <input type="text" name="correctiveDate" class="jalali_date-date  form-control" size="10" 
+                                      id="id_correctiveDate">
+                                    
+                                  </div>
+                                  <div class="input-group input-group-static mb-4 col-4" name="" id="">
+                                    <label class="custom-control-label" for="correctiveDescription"> اصلاح مورد نظر را  شرح دهید </label>
+                                      <textarea name="correctiveDescription" cols="120" rows="4" class="" id="id_correctiveDescription"></textarea>
+                                  </div>
+                                  <fieldset class="form-check ">
+                                    <div class="input-group input-group-static mb-4 col-4" name="" id="">
+                                      <label class="custom-control-label" for="PlanProfileCorrective">آیا نیاز به برنامه اجرایی می باشد ؟</label>
+                                      <input class="form-check-input" id="PlanProfileCorrective" type="checkbox" name="PlanProfileCorrective" />
+                                    </div>
+                                  </fieldset>
+                                </fieldset>
                               </div>
-                              <div class="input-group input-group-static mb-4 col-4" name="" id="">
-                                <label class="" for="id_correctiveDate">
-                                  زمان پایان  اصلاح را وارد کنید
-                                </label>
-                                <input type="text" name="correctiveDate" class="jalali_date-date  form-control" size="10" 
-                                  id="id_correctiveDate">
-                                
-                              </div>
-                              <label class="custom-control-label" for="correctiveDescription"> اصلاح مورد نظر را  شرح دهید </label>
-                                <textarea name="correctiveDescription" cols="120" rows="4" class="" id="id_correctiveDescription"></textarea>
-                              </fieldset>
                             </div>
         
                             
@@ -473,7 +499,7 @@
                       <div class="row">
                         <div class="col">
                           <h5 class="card-title"></h5>
-                          <p class="card-text">   آیا نتیجه اقدام اصلاحی مورد تایید <strong> {{data.reciver.firstName}}-{{data.reciver.lastName}}  </strong>  میباشد ؟ </p>
+                          <p class="card-text">   آیا نتیجه اقدام اصلاحی مورد تایید <strong> {{data.reciver.firstName}}-{{data.reciver.lastName}}  </strong>  می باشد ؟ </p>
                         </div>
                         <form class="my-2" action="" method="POST" enctype="multipart/form-data">
                           {% csrf_token %}
@@ -500,7 +526,7 @@
                       <div class="row">
                         <div class="col">
                           <h5 class="card-title"></h5>
-                          <p class="card-text">    آیا نتیجه اقدام اصلاحی مورد تایید ( اثربخش )<strong> {{data.reciver.firstName}}-{{data.reciver.lastName}}  </strong>  میباشد ؟ </p>
+                          <p class="card-text">    آیا نتیجه اقدام اصلاحی مورد تایید ( اثربخش )<strong> {{data.reciver.firstName}}-{{data.reciver.lastName}}  </strong>  می باشد ؟ </p>
                         </div>
                         <form class="my-2" action="" method="POST" enctype="multipart/form-data">
                           {% csrf_token %}
@@ -1195,7 +1221,7 @@
                         <h5 class="card-title"></h5>
                         
                         
-                          <p class="card-text"> توسط <strong>{{data.previousActivity.reciver.firstName}} {{data.previousActivity.reciver.lastName}}</strong> برای تدوین و انجام {{data.CorrectiveActionRelated.get_problem_display}} تا تاریخ  <strong class="narowFont">{{data.CorrectiveActionRelated.deadLine|to_jalali:'%m/%d'  }}</strong>  ثبت شده است .</p>
+                          <p class="card-text"> توسط <strong>{{data.previousActivity.reciver.firstName}} {{data.previousActivity.reciver.lastName}}</strong> برای تدوین و انجام {{data.CorrectiveActionRelated.get_problem_display}} تا تاریخ  <strong class="narowFont">{{data.CorrectiveActionRelated.deadLine|to_jalali:'%Y/%m/%d - %H:%M:%S'  }}</strong>  ثبت شده است .</p>
                           
                           <blockquote class="blockquote">
                           

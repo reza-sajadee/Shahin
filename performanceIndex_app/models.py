@@ -6,7 +6,21 @@ from profile_app.models import Profile
 from process_app.models import Process
 from jalali_date import date2jalali 
 # Create your models here.
+from performanceIndex_app.utils import gregorian_to_jalali
+from datetime import datetime
+class PerformanceSettings(models.Model):
+    startPeriod = models.IntegerField(default=1)
+    endPeriod   = models.IntegerField(default=5)
 
+    
+     
+    class Meta:
+        verbose_name = "نمظیمات شاخص"
+        verbose_name_plural = "نمظیمات شاخص"
+    
+    def __str__(self):
+        return str(self.id) 
+ 
 
 class TextDataBase(models.Model):
     title = models.CharField(max_length=100)
@@ -114,18 +128,19 @@ class VariableDataBase(models.Model):
 
 
 class PerformanceFormula(models.Model):
-    CYCLE_TYPE              = (('monthly','ماهانه'),('seasonal','سه ماهه'),('semiAnnualy','شش ماهه') , ('annualy','سالانه')    )
-    CONDITION_TYPE              = (('smaller','کوچکتر'),('bigger','بزرگتر'),('equal','برابر') ,   )
-    performanceIndexRelated = models.ForeignKey(PerformanceIndex , related_name='performanceRelatedFormula' ,blank=True , null=True , on_delete = models.CASCADE )
-    acceptableCondition     = models.CharField(max_length=75, choices= CONDITION_TYPE ,null=True, blank=True ) 
-    acceptableCriteria      = models.FloatField(blank=True , null=True)
-    cycle                   = models.CharField(max_length=75, choices= CYCLE_TYPE ,null=True, blank=True ) 
-    responsible             = models.ForeignKey(JobBank , related_name='responsibleProfilePerformanceFormula' ,blank=True , null=True , on_delete = models.CASCADE ,verbose_name='مسئول پایش شاخص')
-    metric                  = models.CharField(max_length=100)
-    PerformanceFormula      = models.CharField(max_length=100 ,blank=True , null=True)
-    variablesRelated        = models.ManyToManyField(VariableDataBase)
-    created_at              = models.DateTimeField(auto_now_add=True)
-    updated_at              = models.DateTimeField(auto_now=True)
+    CYCLE_TYPE               = (('monthly','ماهانه'),('seasonal','سه ماهه'),('semiAnnualy','شش ماهه') , ('annualy','سالانه')    )
+    CONDITION_TYPE              = (('smaller','کوچکتر'),('bigger','بزرگتر'),('equal','برابر') ,  ('beetween' , 'بین') )
+    performanceIndexRelated  = models.ForeignKey(PerformanceIndex , related_name='performanceRelatedFormula' ,blank=True , null=True , on_delete = models.CASCADE )
+    acceptableCondition      = models.CharField(max_length=75, choices= CONDITION_TYPE ,null=True, blank=True ) 
+    acceptableCriteria       = models.FloatField(blank=True , null=True)
+    acceptableCriteriaSecond = models.FloatField(blank=True , null=True)
+    cycle                    = models.CharField(max_length=75, choices= CYCLE_TYPE ,null=True, blank=True ) 
+    responsible              = models.ForeignKey(JobBank , related_name='responsibleProfilePerformanceFormula' ,blank=True , null=True , on_delete = models.CASCADE ,verbose_name='مسئول پایش شاخص')
+    metric                   = models.CharField(max_length=100)
+    PerformanceFormula       = models.CharField(max_length=100 ,blank=True , null=True)
+    variablesRelated         = models.ManyToManyField(VariableDataBase)
+    created_at               = models.DateTimeField(auto_now_add=True)
+    updated_at               = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return str(self.id)
@@ -140,17 +155,18 @@ class PerformanceFormula(models.Model):
 
 class PerformanceIndexActivityManager(models.Model):
     ACTIVITY_STATUS  = (('done','done'),('doing','doing'), ('completed' , 'completed') )
-    ACTIVITY_LIST    = ()
-    sender           = models.ForeignKey(Profile, null=True,  blank=True , related_name='SenderProfilePErformanceIndex' , on_delete = models.CASCADE)
+    ACTIVITY_LIST    = (('insert' , 'ورود اطلاعات'),)
+    
     reciver          = models.ForeignKey(Profile, null=True,  blank=True , related_name='ReciverProfilePErformanceIndex' , on_delete = models.CASCADE)
     status           = models.CharField(max_length=75, choices= ACTIVITY_STATUS ,default='doing' )
-    activity         = models.CharField(max_length=75, choices= ACTIVITY_LIST  )
+    activity         = models.CharField(max_length=75, choices= ACTIVITY_LIST  ,default='insert' )
     
-    texts            = models.ManyToManyField(TextDataBase ,related_name="textDataPerformanceIndex"   )
-    bools            = models.ManyToManyField(BoolDataBase ,related_name="BoolDataPerformanceIndex"  )
+    texts            = models.TextField(blank=True , null=True)
+
    # file             = models.FileField(upload_to=(user_directory_path_correctiveAction) ,blank=True, null=True)
     startTime        = models.DateField( null=True, blank=True)
     deadLine         = models.DateField( null=True, blank=True)
+    variableRelated  = models.ForeignKey(VariableDataBase , blank=True , null=True , related_name='variableRelatedPerformanceIndexActivityManager' , on_delete = models.CASCADE)
     previousActivity = models.ForeignKey('self' , null=True,  blank=True , related_name='PrActivityPerformanceIndex' , on_delete = models.CASCADE)
     nextActivity     = models.ForeignKey('self' , null=True,  blank=True , related_name='NeActivityPerformanceIndex' , on_delete = models.CASCADE)
    
@@ -160,9 +176,17 @@ class PerformanceIndexActivityManager(models.Model):
     class Meta:
         verbose_name = "مدیریت فعالیت های شاخص عملکردی    "
         verbose_name_plural = "مدیریت فعالیت های شاخص عملکردی    "
+    def getResidual(self):
+      
+        r = self.deadLine - datetime.today().date()
+      
+        return r.days
     
+    def getMonth(self):
+       
+        return gregorian_to_jalali(self.startTime.year , self.startTime.month , self.startTime.day)[1]
     def __str__(self):
-        return str(self.id)  + " " + str(self.sender)
+        return str(self.id)  
     
     def lastStep(self):
         last = self

@@ -15,6 +15,7 @@ from .views import (
     DeleteViewCorrectiveAction,
     CreateViewCorrectiveActionStep,
     ListViewCorrectiveActionDone,
+    test
    
     
 )
@@ -23,6 +24,7 @@ urlpatterns = [
 
     
 
+    path('test', test.as_view() ,name='test'),
     path('CorrectiveAction/dashboard', ViewCorrectiveActionDashboard.as_view() ,name='ViewCorrectiveActionDashboard'),
     path('CorrectiveAction/create', CreateViewCorrectiveAction.as_view() ,name='createViewCorrectiveAction'),
     path('CorrectiveAction/step/<int:activityId>', CreateViewCorrectiveActionStep.as_view() ,name='CreateViewCorrectiveActionStep'),

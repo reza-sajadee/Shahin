@@ -11,7 +11,7 @@
     <div class="col-12">
         <div class="card my-4">
             <div class="card-header p-0 position-relative mt-4 mx-3 z-index-2">
-                <div class="bg-gradient-danger shadow-info border-radius-lg px-3 pt-4 pb-3">
+                <div class="bg-gradient-info shadow-info border-radius-lg px-3 pt-4 pb-3">
                     <h4 class="text-white text-center  ps-3">    شناسنامه شاخص عملکرد</h4>
                 </div>
             </div>
@@ -32,7 +32,7 @@
                                     <h6 class="py-2">  فرآیند مرتبط : {{obj.performanceIndexRelated.processRelated}}  </h6>
                                     <h6 class="py-2">  مرجع : {{obj.performanceIndexRelated.reference}}  </h6>
                                     <h6 class="py-2">   استاندارد مرتبط  : {{obj.performanceIndexRelated.standardRelated}}  </h6>
-                                    <h6 class="py-2">   ذینفعان : {{obj.performanceIndexRelated.stackHolder}}  </h6>
+                                    <h6 class="py-2">   ذی نفعان : {{obj.performanceIndexRelated.stackHolder}}  </h6>
                                     <h6 class="py-2">   فایل : {{obj.performanceIndexRelated.document}}  </h6>
                                     
                             </div>
@@ -52,7 +52,8 @@
                                     <h6 class="py-2">    مسئول پایش شاخص : {{obj.responsible.profile.firstName}} - {{obj.responsible.profile.lastName}}  </h6>
                                     
                                     <h6 class="py-2"> واحد شاخص عملکردی  : {{obj.metric}}  </h6>
-                                    <h6 class="py-2"> فرمول شاخص عملکردی  : {{obj.PerformanceFormula}}  </h6>
+                                    <h6 class="py-2"> فرمول شاخص عملکردی  :</h6>
+                                    <span style="direction: ltr;float: left;"> {{obj.PerformanceFormula}}</span> 
                                     
                                     
                             </div>
@@ -64,7 +65,7 @@
                  
                 </div>
                 <div class="card-header p-0 position-relative mt-4 mx-3 z-index-2">
-                    <div class="bg-gradient-danger shadow-info border-radius-lg px-3 pt-4 pb-3">
+                    <div class="bg-gradient-info shadow-info border-radius-lg px-3 pt-4 pb-3">
                         <h5 class="text-white  ps-3">اطلاعات تکمیلی فرمول:</h5>
                     </div>
                 </div>

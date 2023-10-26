@@ -23,8 +23,8 @@ class BeneficiaryList(models.Model):
     updated_at       = models.DateTimeField(auto_now=True)
     
     class Meta:
-        verbose_name = "لیست ذینفعان سازمان"
-        verbose_name_plural = "لیست ذینفعان سازمان"
+        verbose_name = "لیست ذی نفعان سازمان"
+        verbose_name_plural = "لیست ذی نفعان سازمان"
     
     def __str__(self):
         
@@ -41,8 +41,8 @@ class ClassificationBeneficiary(models.Model):
     updated_at       = models.DateTimeField(auto_now=True)
     
     class Meta:
-        verbose_name = "طبقه بندی ذینفعان"
-        verbose_name_plural = "طبقه بندی ذینفعان"
+        verbose_name = "طبقه بندی ذی نفعان"
+        verbose_name_plural = "طبقه بندی ذی نفعان"
     
     def __str__(self):
         
@@ -57,8 +57,8 @@ class GroupBeneficiary(models.Model):
     updated_at       = models.DateTimeField(auto_now=True)
     
     class Meta:
-        verbose_name = "گروه ذینفعان"
-        verbose_name_plural = "گروه ذینفعان"
+        verbose_name = "گروه ذی نفعان"
+        verbose_name_plural = "گروه ذی نفعان"
     
     def __str__(self):
         
@@ -72,8 +72,8 @@ class Beneficiary(models.Model):
     updated_at       = models.DateTimeField(auto_now=True)
     
     class Meta:
-        verbose_name = "ذینفعان"
-        verbose_name_plural = "ذینفعان"
+        verbose_name = "ذی نفعان"
+        verbose_name_plural = "ذی نفعان"
     
     def __str__(self):
         

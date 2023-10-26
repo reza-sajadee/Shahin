@@ -184,13 +184,22 @@
            
             <div class="card-footer">
               <div class="row">
-                <div class="col-6">
+                <div class="col-8">
                   {%if modir %}
-                  <a class="btn btn-lg w-100 btn-outline-success "  href="{%url 'CreateViewCalenderMomayezi'  typeMomayezi %}">افزودن</a>
-                  
+                  <div class="row">
+                    <div class="col-6">
+                      <a class="btn btn-lg w-100 btn-outline-success "  href="{%url 'CreateViewCalenderMomayezi'  typeMomayezi %}">افزودن</a>
+                    </div>
+                    
+                    
+                    <div class="col-6">
+                      <a class="btn btn-lg w-100 btn-outline-warning "  href="{%url 'ComplateViewCalenderMomayezi'  typeMomayezi %}">اتمام</a>
+                    </div>
+                  </div>
+                 
                   {%endif%}
                 </div>
-                <div class="col-6">
+                <div class="col-4">
                   <a class=" btn btn-lg w-100 btn-outline-info"  href="{%url 'ViewMomayeziDashboard' %}"> منو </a>
                 </div>
                 

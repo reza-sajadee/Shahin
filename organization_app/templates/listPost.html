@@ -41,7 +41,7 @@
                 {% for header in header_table %}
                   <th class="text-center text-lg font-weight-bolder opacity-7">{{header}}</th>
                 {% endfor %}
-                <th class="text-center text-lg font-weight-bolder opacity-7">نمایش</th>
+                <th class="text-center text-lg font-weight-bolder opacity-7">شرح وظایف</th>
                 <th class="text-center text-lg font-weight-bolder opacity-7">دانلود</th>
              
                
@@ -53,7 +53,7 @@
               {%for datas in list_data%}
                 {% for key, values in datas.items %}
                 <tr>
-                  <td class="narowFont text-center overflow-hidden">{{forloop.counter}}</td>
+                  <td class="narowFont text-center overflow-hidden">{{forloop.forloop.counter}}</td>
                    
                     
                     <td class="narowFont text-center overflow-hidden">{{values.0}}</td>

@@ -3,73 +3,121 @@
  {% load jalali_tags %}
 {%block dashboard%}
 
-              <div class="container ">
-                <div class="row">
-                  <div class="col-8">
-                    <div class="row justify-content-center">
-                     <div class="col-6">
-                      <canvas id="allPlan"></canvas>
-                     </div>
-                     <div class="col-6">
-                      <canvas id="myPlan"></canvas>
-                     </div>
-                    
-                    </div>
-                  </div>
-                  <div class="col-4">
-                    <div class="row my-5 justify-content-center">
-                      <div class="col-lg-12 col-sm-4 mb-lg-0 mb-3">
-                        <a href="{%url 'CreateViewPlanProfile' %}">
-                          <div class="card bg-info">
-                            <div class="card-header bg-info p-3 pt-2">
-                              <div class="pt-1">
-                                <p class="text-lg mb-0 text-white opacity-7 text-capitalize">
-                                  تعریف یک برنامه اجرایی جدید
-                                </p>
-                                
-                                
-                              </div>
-                            </div>
-                            <hr class="dark horizontal my-0" />
-                            <div class="card-footer"> <p class="mb-0 text-white opacity-8 narowFont">
-                              در این بخش میتوانید برای خود برنامه اجرایی شخصی جدید بسازید .
-                              </p>  </div>
-                          </div>
-                        </a>
-                      </div>
-                    
-                      <div class="col-lg-12 col-sm-4 mb-lg-0 mb-3 py-3">
-                        <a href="{%url 'ListViewPlanProfile' %}">
-                          <div class="card bg-warning">
-                            <div class="card-header bg-warning p-3 pt-2">
-                              <div class="pt-1">
-                                <p class="text-lg text-white opacity-7 mb-0 text-capitalize">
-                                  برنامه های اجرایی در دست
-                                </p>
-                                
-                              </div>
-                            </div>
-                            <hr class="dark horizontal my-0" />
-                            <div class="card-footer"> <p class="mb-0 text-white opacity-8 narowFont">
-                              در این بخش میتواند برنامه های اجرایی  در دست اقدام را مشاهده نمایید و در صورت لزوم فعالیت های مورد نظر را به روز رسانی کنید
-                              </p>  </div>
-                          </div>
-                        </a>
-                      </div>
-                      
-                    
-                    </div>
-                  </div>
+<div class="container ">
+  <div class="row">
+    <div class="col-8">
+      <div class="row justify-content-center">
+       <!-- <div class="col-6">
+        <canvas id="allPlan"></canvas>
+       </div>
+       <div class="col-6">
+        <canvas id="myPlan"></canvas>
+       </div> -->
+       <div class="col-12  ">
+        <h4 class="py-5 text-center">نمودار برنامه های اجرایی </h4>
+        <div>
+          <canvas id="myChartBar"></canvas>
+        </div>
+      </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="row my-5 justify-content-center">
+        <div class="col-lg-12 col-sm-4 mb-lg-0 mb-3">
+          <a href="{%url 'CreateViewPlanProfile' %}">
+            <div class="card bg-info">
+              <div class="card-header bg-info p-3 pt-2">
+                <div class="pt-1">
+                  <p class="text-lg mb-0 text-white opacity-7 text-capitalize">
+                    تعریف یک برنامه اجرایی جدید
+                  </p>
+                  
+                  
                 </div>
-                
-              </div>   
+              </div>
+              <hr class="dark horizontal my-0" />
+              <div class="card-footer"> <p class="mb-0 text-white opacity-8 narowFont">
+                در این بخش می توانید برای خود برنامه اجرایی شخصی جدید بسازید .
+                </p>  </div>
+            </div>
+          </a>
+        </div>
+      
+        <div class="col-lg-12 col-sm-4 mb-lg-0 mb-3 py-3">
+          <a href="{%url 'ListViewPlanProfile' %}">
+            <div class="card bg-warning">
+              <div class="card-header bg-warning p-3 pt-2">
+                <div class="pt-1">
+                  <p class="text-lg text-white opacity-7 mb-0 text-capitalize">
+                    برنامه های اجرایی در دست
+                  </p>
+                  
+                </div>
+              </div>
+              <hr class="dark horizontal my-0" />
+              <div class="card-footer"> <p class="mb-0 text-white opacity-8 narowFont">
+                در این بخش میتواند برنامه های اجرایی  در دست اقدام را مشاهده نمایید و در صورت لزوم فعالیت های مورد نظر را به روز رسانی کنید
+                </p>  </div>
+            </div>
+          </a>
+        </div>
+        
+      
+      </div>
+    </div>
+  </div>
+  
+</div>   
    
  
 {% endblock dashboard %}
  
 
 {% block scripts %}
+<script name="asd">
+  const ctx7 = document.getElementById('myChartBar').getContext('2d');
+const chartCanvas = () => {
+   
+const chart = new Chart(ctx7, {
 
+    type: 'bar',
+    // The data for our dataset
+    data: {
+        labels: {{dataBars.label|safe}},
+        datasets: [
+            {
+                label: 'در حال انجام',
+                data: {{dataBars.doing|safe}}, 
+                backgroundColor: '#F56565',
+            },
+            {
+                label: 'اتمام رسیده',
+                data: {{dataBars.done|safe}}, 
+                backgroundColor: '#b2e061',
+            },
+           
+        ]
+    },
+
+    // Configuration options go here
+    options: {
+        scales: {
+            xAxes: [{
+              stacked: true
+            }],
+            yAxes: [{
+              stacked: true
+            }]
+          },
+        legend: {
+            display: false,
+        },
+       
+    }
+});
+}
+chartCanvas()
+</script>
 
 <script>
   $(document).ready(function () {

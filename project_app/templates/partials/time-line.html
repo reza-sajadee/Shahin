@@ -14,7 +14,11 @@
             <div class="title">{{action.title}}</div>
             <hr class="dark horizontal ">
             <div class="descr narowFont">{{action.description}}</div>
-            
+            <hr class="dark horizontal ">
+            <div class="descr narowFont text-success">تاریخ شروع : {{action.startTiem|to_jalali:'%Y/%m/%d'}}</div>
+     
+            <div class="descr narowFont text-danger">تاریخ پایان : {{action.deadLine|to_jalali:'%Y/%m/%d'}}</div>
+            <hr class="dark horizontal ">
             <form class="text-center" hx-post="{%url 'change-status' %}" hx-target="#timeLine2" hx-swap="innerHTML" >
               {%csrf_token%}
               <input type="hidden" id="actionId"   name="actionId"   value={{action.id}}>
@@ -34,9 +38,9 @@
             {%endif%}
             
            {%if request.user.is_superuser%}
-            <a href="{%url 'UpdateViewPlanProfile' action.id%}" class="btn text-lg btn-lg  justify-content-center btn-outline-success" style="border: None;"  > 
+            <!-- <a href="{%url 'UpdateViewPlanProfile' action.id%}" class="btn text-lg btn-lg  justify-content-center btn-outline-success" style="border: None;"  > 
               <img style="max-width: 50px; min-width: 10px;" src="{% static 'img/svg/edit2.svg' %}" >
-            </a>
+            </a> -->
             <a class="btn text-lg btn-lg  justify-content-center btn-outline-success" style="border: None;"  data-bs-toggle="modal" data-bs-target="#deleteModal{{action.id}}" >
                <img style="max-width: 50px; min-width: 10px;" src="{% static 'img/svg/close.svg' %}" >
             </a>
@@ -82,72 +86,6 @@
       
     </ul>
 </div>
-<div class="row justify-content-md-center">
-    <div class="col-5">
-      <a class="btn w-100  btn-outline-primary" data-bs-toggle="modal" data-bs-target="#createModal">
-        افزودن فعالیت جدید </a>
-    </div>
-    <div class="col-5">
-      <a href="{{menuBack}}" class="btn w-100  btn-outline-danger">
-        بازگشت </a>
-    </div>
-  </div>
-
-  <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title font-weight-normal" id="exampleModalLabel"> افزودن فعالیت جدید</h5>
-          <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-
-            <form action="" method="POST" enctype="multipart/form-data">
-                <input type="hidden" id="planProfileRelated"   name="planProfileRelated"   value={{planProfileSelected.id}}>
-                {% csrf_token %}
-               
-                <div class="input-group input-group-static mb-4">
-                    <label class="" for="id_title">
-                        عنوان  فعالیت را وارد کنید
-                    </label>
-                    <input type="text" name="title" maxlength="250" class="form-control" id="id_title" >
-        
-                    </div>
-                
-                 
-                <div class="input-group input-group-static mb-4">
-                    <label for="id_description">
-                        توضیحات فعالیت  را وارد کنید : 
-                    </label>
-                    <textarea name="description" cols="40" rows="5" class="form-control" id="id_description"></textarea>
-                    
-                    </div>
-                  
-                    <div class="input-group input-group-static mb-4">
-                        <label class="" for="id_startTiem">
-                          مهلت اکشن را انتحاب نمایید
-                        </label>
-                        <input type="text" name="startTiem" class="jalali_date-date  form-control"   id="id_startTiem" autocomplete="False">
-            
-                      </div>
-            
-                     
-                 
-            
-         
-          
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">بستن</button>
-          <button type="submit" class="btn bg-gradient-primary">ثبت </button>
-        </div>
-    </form>
-      </div>
-    </div>
-  </div>
-
 
 
   {% block scripts%}

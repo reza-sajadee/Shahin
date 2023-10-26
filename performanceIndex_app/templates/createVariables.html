@@ -5,6 +5,7 @@
   integrity="sha384-7aHh9lqPYGYZ7sTHvzP1t3BAfLhYSTy9ArHdP3Xsr9/3TlGurYgcPBoFmXX2TX/w" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/htmx.org/dist/ext/multi-swap.js"></script>
 <link rel="stylesheet" type="text/css" href="{% static '/css/dataTables.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static '/css/calculator.css' %}">
 
 <link rel="stylesheet" href="{%static '/css/select2.min.css'%}">
 <link rel="stylesheet" href="{%static '/css/select2-bootstrap-5-theme.rtl.min.css'%}">
@@ -108,13 +109,13 @@
                 </div>
               </div>
               <div class="col-6">
-                <div class="input-group input-group-static mb-4">
+                <!-- <div class="input-group input-group-static mb-4">
                   <label class="" for="{{ field.auto_id }}">
                     {{ form.code.label }}
                   </label>
                   {{form.code }}
 
-                </div>
+                </div> -->
               </div>
             </div>
             <div class="row">
@@ -197,6 +198,38 @@
       </div>
       <div class="card-body">
         
+        <div class="calculator">
+          <div class="calculator__output">0</div>
+          <div class="calculator__keys">
+            {%for variable in performanceVariable.variablesRelated.all%}
+            <button class="calculator__key calculator__key--variable" data-action="add">{{variable.code}}</button>
+            {%endfor%}
+            <button class="calculator__key calculator__key--operator" data-action="add">+</button>
+            <button class="calculator__key calculator__key--operator" data-action="subtract">-</button>
+            <button class="calculator__key calculator__key--operator" data-action="multiply">*</button>
+            <button class="calculator__key calculator__key--operator" data-action="divide">/</button>
+            <button class="calculator__key calculator__key--operator" data-action="practice1">)</button>
+            <button class="calculator__key calculator__key--operator" data-action="practice2">(</button>
+            <button class="calculator__key calculator__key--operator" data-action="practice3">AC</button>
+           
+            <button class="calculator__key">7</button>
+            <button class="calculator__key">8</button>
+            <button class="calculator__key">9</button>
+            <button class="calculator__key">4</button>
+            <button class="calculator__key">5</button>
+            <button class="calculator__key">6</button>
+            <button class="calculator__key">1</button>
+            <button class="calculator__key">2</button>
+            <button class="calculator__key">3</button>
+            <button class="calculator__key">0</button>
+            <button class="calculator__key">.</button>
+            
+            
+          </div>
+        </div>
+
+
+
         <form action="{% url 'CreateViewPerformanceVariables' performanceVariable.id %}" method="POST">
           {%csrf_token%}
           <div class="input-group input-group-static my-4">
@@ -204,7 +237,7 @@
               فرمول محاسبه را وارد نمایید
             </label>
           
-            <input type="text" name="formula" maxlength="250" class="form-control"  id="id_formula" >
+            <input type="text"  required style="direction: ltr;" name="formula" maxlength="250" class="form-control"  id="id_formula" value="">
   
           </div>
           <button type="submit" name="submit" class="btn w-100  btn-outline-primary" >
@@ -225,6 +258,44 @@
 
 {% endblock content %}
 {%block scripts%}
+<script>
+  const display = document.querySelector('.calculator__output')
+  const calculator = document.querySelector('.calculator')
+  const keys = calculator.querySelector('.calculator__keys')
+  const formula = document.getElementById("id_formula")
+  keys.addEventListener('click', e => {
+  if (e.target.matches('button')) {
+    
+    const key = e.target
+    const action = key.dataset.action
+    const keyContent = key.textContent
+    const displayedNum = display.textContent
+    
+    if(keyContent == "AC"){
+      display.textContent = 0;
+      formula.value = ''
+    }
+    else{
+      if(keyContent != ''){
+        if(display.textContent == 0){
+        display.textContent =keyContent
+        formula.value = display.textContent
+      }
+      else{
+        display.textContent = display.textContent + keyContent
+        formula.value = display.textContent
+      }
+      }
+      
+    }
+    
+    
+}
+   
+})
+</script>
+
+
 <script>
 
   document.body.addEventListener('htmx:configRequest', (event) => {

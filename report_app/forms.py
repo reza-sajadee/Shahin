@@ -29,8 +29,10 @@ class CreateFormReportActivityManager(forms.ModelForm):
      
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['startTime'] = JalaliDateField(label=('startTime'), widget=AdminJalaliDateWidget )
-        self.fields['deadLine'] = JalaliDateField(label=('deadLine'), widget=AdminJalaliDateWidget )
+       
+        self.fields['deadLine'] = JalaliDateField(label=('deadLine'), # date format is  "yyyy-mm-dd"
+            widget=AdminJalaliDateWidget # optional, to use default datepicker
+        )
 
       
 

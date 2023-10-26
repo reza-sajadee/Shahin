@@ -91,7 +91,7 @@
               
               <div class="input-group input-group-static mb-4">
                 <label class="" for="id_responsibleFollow">
-                  مسئول اجرا را انتخاب کنید  
+                  مسئول اجرا انتخاب کنید  
                 </label>
                 <select name="responsibleExecutive" class="form-control" id="id_responsibleExecutive">
                   <option value="" selected>---------</option>
@@ -122,12 +122,16 @@
           
           <input type="hidden" name="meetingRelated" id="id_meetingRelated" value="{{meetingSelected.id}}">
           <div class="row justify-content-md-center">
-            <div class="col-5">
+            <div class="col-4">
               <button type="submit"  class="btn w-100  btn-outline-primary">
                 افزودن </button>
             </div>
-            <div class="col-5">
-              <a href="{%url 'ViewProfileMeeting' %}" class="btn w-100  btn-outline-danger">
+            <div class="col-4">
+              <a href="{%url 'CreateViewMeetingMinute' meetingSelected.id %}" class="btn w-100  btn-outline-info">
+                اتمام </a>
+            </div>
+            <div class="col-4">
+              <a href="{%url 'ListViewMeeting' %}" class="btn w-100  btn-outline-danger">
                 کنسل </a>
             </div>
           </div>

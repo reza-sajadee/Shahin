@@ -41,7 +41,7 @@ class RiskTopic(models.Model):
 
 
 class RiskProfile(models.Model):
-    STEP_LIST    = (('1','تعریف تیم ها '),('2','شناسایی ریسک'),('2','بررسی ریسک های شناسایی شده'),('3','ارزیابی ریسک'),('4','پایان'),('5','پایان') )
+    STEP_LIST    = (('1','تعریف تیم ها '),('2','شناسایی ریسک'),('2','بررسی ریسک های شناسایی شده'),('3','ارزیابی ریسک'),('4','پایان'), )
     step           = models.CharField(max_length=75, choices= STEP_LIST ,default='1' )
     title            = models.CharField(max_length=250 )
     committeeRisk    = models.ForeignKey(Committee , related_name="committeeRisk" , on_delete = models.CASCADE )

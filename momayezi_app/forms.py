@@ -59,15 +59,15 @@ class CreateFormTypeMomayezi(forms.ModelForm):
         super().__init__(*args, **kwargs)
         #کلاس های css
         self.fields['title'].widget.attrs.update({'class': 'form-control'})
-        self.fields['typeMomayeziCode'].widget.attrs.update({'class': 'form-control'})
+        
         self.fields['modir'].widget.attrs.update({'class': 'form-control'})
   
         
 
         #لیبل توضیح 
         self.fields['title'].label                  ='عنوان را وارد کنید'
-        self.fields['typeMomayeziCode'].label         =' کد نوع ممیزی را وارد کنید'
-        self.fields['modir'].label         ='  مدیر بهبود را  را انتخاب کنید'
+        
+        self.fields['modir'].label         ='  مدیر بهبود را انتخاب کنید'
 
         
         

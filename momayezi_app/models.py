@@ -12,7 +12,7 @@ from standardTable_app.models import RequirementStandards
 class TypeMomayezi(models.Model):
     STEP_LIST    = (('1','تعریف تیم') ,('2','برنامه زمانی'),('3','چک لیست سوال'),('4','چک لیست') , ('5' , 'گزارش') , ('6' , 'پایان'))
     title = models.CharField(max_length=100)
-    typeMomayeziCode = models.CharField(max_length=100)
+    
     modir = models.ForeignKey(Profile , related_name="modirMomayezi" , on_delete=models.CASCADE)
      
     step           = models.CharField(max_length=75, choices= STEP_LIST ,default='1' )
@@ -236,7 +236,7 @@ class CheckListMomayezi(models.Model):
 class ReportMomayezi(models.Model):
     RESULT_LIST    = (('ghovat','نقطه قوت') ,('behbod','فرصت بهبود'),('adam','عدم انطباق'),)
 
-    report  = models.CharField(max_length=100)
+    report  = models.CharField(max_length=250)
     vahedRelated           = models.ForeignKey(Vahed , blank=True, null=True, related_name="vahedRelatedReport" , on_delete = models.CASCADE )
     typeMomayeziRelated    = models.ForeignKey(TypeMomayezi , blank=True, null=True, related_name="typeMomayeziRelatedReport" , on_delete = models.CASCADE )
     result           = models.CharField(max_length=75, choices= RESULT_LIST ,default='ghovat' )

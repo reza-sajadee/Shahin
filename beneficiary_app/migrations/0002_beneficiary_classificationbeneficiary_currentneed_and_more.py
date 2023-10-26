@@ -19,8 +19,8 @@ class Migration(migrations.Migration):
                 ('updated_at', models.DateTimeField(auto_now=True)),
             ],
             options={
-                'verbose_name': 'ذینفعان',
-                'verbose_name_plural': 'ذینفعان',
+                'verbose_name': 'ذی نفعان',
+                'verbose_name_plural': 'ذی نفعان',
             },
         ),
         migrations.CreateModel(
@@ -32,8 +32,8 @@ class Migration(migrations.Migration):
                 ('updated_at', models.DateTimeField(auto_now=True)),
             ],
             options={
-                'verbose_name': 'طبقه بندی ذینفعان',
-                'verbose_name_plural': 'طبقه بندی ذینفعان',
+                'verbose_name': 'طبقه بندی ذی نفعان',
+                'verbose_name_plural': 'طبقه بندی ذی نفعان',
             },
         ),
         migrations.CreateModel(
@@ -71,8 +71,8 @@ class Migration(migrations.Migration):
                 ('updated_at', models.DateTimeField(auto_now=True)),
             ],
             options={
-                'verbose_name': 'گروه ذینفعان',
-                'verbose_name_plural': 'گروه ذینفعان',
+                'verbose_name': 'گروه ذی نفعان',
+                'verbose_name_plural': 'گروه ذی نفعان',
             },
         ),
     ]

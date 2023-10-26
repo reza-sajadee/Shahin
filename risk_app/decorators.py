@@ -8,19 +8,20 @@ def user_is_dabir(function):
             print('user is admin')
             return function(self, *args, **kwargs)
         try:
-            risk_profile = RiskProfile.objects.all()[0]
+            risk_profile = RiskProfile.objects.all()
         except:
             print('user is rased erore')
             raise PermissionDenied
         
+        for profile in risk_profile:
+                
+            if profile.committeeRisk.dabir.profile == Profile.objects.filter(user =self.request.user)[0]   :
+                print('user is dabir ')
+                return function(self, *args, **kwargs)
+        
             
-        if risk_profile.committeeRisk.dabir == Profile.objects.filter(user =self.request.user)[0]   :
-            print('user is dabir ')
-            return function(self, *args, **kwargs)
-        else:
-            
-            print('user is not dabir ' , risk_profile.committeeRisk.dabir.user ,Profile.objects.filter(user =self.request.user) )
-            raise PermissionDenied
+        print('user is not dabir ' , profile.committeeRisk.dabir.profile.user ,Profile.objects.get(user =self.request.user) )
+        raise PermissionDenied
     wrap.__doc__ = function.__doc__
     wrap.__name__ = function.__name__
     return wrap

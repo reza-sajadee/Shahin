@@ -1,0 +1,202 @@
+
+{% extends 'baseEmployee.html' %} 
+
+
+
+
+ {% load static %}
+ {% block style %}
+ <link rel="stylesheet" type="text/css" href="{% static '/css/dataTables.css' %}">
+
+
+ <!-- <script src="{%static '/js/zoom.js' %}"></script>
+ <script src="{%static '/js/hammer.js' %}"></script> -->
+ <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3"></script>
+<script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.7"></script>
+
+ <script type="text/javascript" charset="utf8" src="{% static '/js/dataTables.js' %}"></script>
+ <!-- <script src="{%static '/js/chart.js' %}"></script> -->
+ <script src="{% static '/js/jquery.dataTables.js' %}"  ></script>
+ {%endblock style%}
+ 
+{%block content%}
+ <div class="container py-6">
+  
+   <div class="row justify-content-md-center">
+     <div class="card card-fram col-12">
+       <div class="card-header my-5 p-0 position-relative mt-n4 mx-3 z-index-2">
+         <div class="row">
+          
+           <div class="bg-gradient-{{ color }} shadow-{{ color }} text-center border-radius-lg pt-4 pb-3">
+             <h4 class="text-white text-capitalize ps-3">داشبورد چارت</h4>
+ 
+           </div>
+         </div>
+       </div>
+    
+       <div class="container" id="dashboard">
+        <div class="container py-6">
+
+          <div class="row justify-content-md-center">
+            <div class="card card-fram col-12">
+            
+              <div class="container ">
+        
+                <div class="row  col-12 py-3">
+                  
+                  <div class="col-11 row">
+                    <div class=" col-12">
+                      <div>
+                        
+                        <canvas id="myChartBar"></canvas>
+                     
+                        <script>
+                          let ctx = document.getElementById("myChartBar").getContext("2d");
+       let chart = new Chart(ctx, {
+         type: "line",
+         options: {
+          plugins: {
+      zoom: {
+        pan: {
+          enabled: true,
+          mode: 'xy',
+          threshold: 5,
+        },
+        zoom: {
+          wheel: {
+            enabled: true
+          },
+          pinch: {
+            enabled: true
+          },
+          mode: 'xy',
+        },
+      }
+    },
+           responsive: true,
+           maintainAspectRatio: false,
+           aspectRatio: 1,
+           title: {
+             display: false,
+             text: ""
+           },
+           layout: {
+             padding: {
+               left: 0,
+               right: 0,
+               top: 0,
+               bottom: 25
+             }
+           }
+         }
+       });
+                       </script>
+                      </div>
+                    </div>
+                   
+                  
+                  </div>
+        
+                </div>
+        
+
+              </div>
+             
+            </div>
+        
+        
+        
+        
+          </div>
+        
+          
+        </div>
+      </div>
+      
+     </div>
+      
+      
+     
+     
+   </div>
+         
+    
+</div>
+
+{% endblock content%}
+ 
+ 
+   {% block scripts %}
+  
+  
+<script>
+ function loadChart(chart, endpoint) {
+    $.ajax({
+      url: endpoint,
+      type: "GET",
+      dataType: "json",
+      success: (jsonResponse) => {
+        // Extract data from the response
+        const title = jsonResponse.title;
+        const labels = jsonResponse.data.labels;
+        const datasets = jsonResponse.data.datasets;
+
+        // Reset the current chart
+        chart.data.datasets = [];
+        chart.data.labels = [];
+
+        // Load new data into the chart
+        chart.options.title.text = title;
+        chart.options.title.display = true;
+        chart.data.labels = labels;
+        datasets.forEach(dataset => {
+          chart.data.datasets.push(dataset);
+        });
+        chart.update();
+      },
+      error: () => console.log("Failed to fetch chart data from " + endpoint + "!")
+    });
+  }
+  loadChart(chart,'/performance/chartData');
+</script>
+
+  <script>
+    $(document).ready( function() {
+  $('#example').dataTable( {
+    "order": [ 3, 'dsc' ] ,
+    "pageLength": 25 ,
+    "oLanguage": {
+      "oPaginate": {
+        "sNext": "صفحه بعدی",
+        "sPrevious": "صفحه قبلی"
+      },
+      "sEmptyTable": "اطلاعاتی برای نمایش وجود ندارد",
+      "sSearch": "جستجو   :  ",
+      "sInfo": "نمایش _START_ تا_END_ از تعداد کل _TOTAL_" ,
+      "sLengthMenu": "  تعداد در صفحه  _MENU_ ",
+      "sInfoEmpty": "رکوردی برای نمایش وجود ندارد",
+      
+    
+    }
+  } );
+} );
+  </script>
+
+  
+  {%endblock scripts%}
+ 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+

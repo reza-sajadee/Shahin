@@ -46,7 +46,7 @@ class ViewRiskMenu( LoginRequiredMixin,View):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "مدیریت ریسک"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در زیر بخش های محتلف ریسک را میتوانید مشاهده نمایید "
+        discribtion   = "در زیر بخش های محتلف ریسک را می توانید مشاهده نمایید "
         #آیکون نمایش داده شده در بخش بالای سایت            
         icon_name     = "person_add"
         #تعداد ستون ها            
@@ -173,7 +173,7 @@ class ListViewQuestionDaste(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست ارزیابی ریسک سوال  ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام ارزیابی ریسک سوال  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام ارزیابی ریسک سوال  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -236,7 +236,7 @@ class ViewQuestionDaste( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "اطلاعات ارزیابی ریسک سوال   "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "چزییات ارزیابی ریسک سوال را در این صفحه میتوانید مشاهده کنید"
+            discribtion   = "چزییات ارزیابی ریسک سوال را در این صفحه می توانید مشاهده کنید"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "person_add"
             #تعداد ستون ها            
@@ -344,7 +344,7 @@ class DeleteViewQuestionDaste( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "پاک کردن یک ارزیابی ریسک سوال "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "آیا میخواهید که ارزیابی ریسک سوال   " + obj.title + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که ارزیابی ریسک سوال   " + obj.title + " "  + " را پاک کنید   ؟"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "delete_forever"
             #تعداد ستون ها            
@@ -453,7 +453,7 @@ class ListViewRiskProfile(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست پروفایل ریسک  ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام پروفایل ریسک  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام پروفایل ریسک  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -522,7 +522,7 @@ class ViewRiskProfile( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "  اطلاعات پروفایل ریسک   "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "چزییات پروفایل ریسک را در این صفحه میتوانید مشاهده کنید"
+            discribtion   = "چزییات پروفایل ریسک را در این صفحه می توانید مشاهده کنید"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "person_add"
             #تعداد ستون ها            
@@ -539,7 +539,7 @@ class ViewRiskProfile( LoginRequiredMixin,View):
             #class_queryset_filter = RiskProfileFilter(self.request.GET, queryset=class_queryset)
             RiskProfile_list_data = []
 
-            RiskProfile_queryset = RiskProfile.objects.all().filter(id = id)[0]
+            RiskProfile_queryset = RiskProfile.objects.get(id = id)
             
             
             committeeOfRiskProfile = Committee.objects.filter(id =RiskProfile_queryset.committeeRisk.id )[0]
@@ -594,7 +594,7 @@ class ViewRiskProfile( LoginRequiredMixin,View):
             allHozes = allHozes.exclude(id__in=list(set(usedHozes)))
             
             context =  {'extend':self.extend , 'menuBack':self.menuBack,'riskDabir':is_dabir(self),'object':obj , 'header_title':header_title,
-                'discribtion':discribtion,'icon_name':icon_name,'RiskTopics':RiskTopics , 'hozes' : hozes,
+                'discribtion':discribtion,'icon_name':icon_name,'RiskTopics':RiskTopics , 'hozes' : hozes,'profileSelected':id,
                 'color':color , 'columns':columns,'RiskProfile':RiskProfile_queryset , 'committeeOfRiskProfile' : committeeOfRiskProfile , 'form':form , 'membersOfCommittee':membersOfCommittee ,'header_table':header_table , 'list_data':list_data ,'allHozes' : allHozes}
 
 
@@ -688,6 +688,26 @@ class ViewRiskProfile( LoginRequiredMixin,View):
         return render(request,self.template_name,context)
 
 
+class ComplateViewRiskProfile( LoginRequiredMixin,View): 
+    redirect_field_name = '/profile/login'
+    #قالب کلی ایجاد 
+    template_name = "createCalenderMomayezi.html"
+    extend = 'baseEmployee.html'
+    menuBack ="ViewRiskDashboard"
+    menu_link = 'ViewRiskDashboard'
+    def get(self, request,id, *args, **kwargs):
+        
+        riskProfileSelected = RiskProfile.objects.get(id = id)
+        
+        activitySelected = RiskActivityManager.objects.get(riskProfile = riskProfileSelected ,activity = 'team' )
+        activitySelected.status = 'done'
+        activitySelected.save()
+        sweetify.toast(self.request,timer=30000 , icon="success",title ='ثبت تیم های ریسک  به اتمام رسید        !!!')
+        #دیکشنری داده ها
+        contex = {'extend':self.extend , 'menuBack':self.menuBack ,'riskDabir':is_dabir(self),}
+        return redirect('ViewRiskDashboardMember' ,id )
+
+
 
 
 class UpdateViewRiskProfile( LoginRequiredMixin,View):
@@ -772,7 +792,7 @@ class DeleteViewRiskProfile( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "پاک کردن یک پروفایل ریسک "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "آیا میخواهید که پروفایل ریسک   " + obj.title + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که پروفایل ریسک   " + obj.title + " "  + " را پاک کنید   ؟"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "delete_forever"
             #تعداد ستون ها            
@@ -872,7 +892,7 @@ class ListViewRiskTeam(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست تیم  ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام تیم  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام تیم  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -1006,7 +1026,7 @@ class DeleteViewRiskTeam( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "پاک کردن یک تیم "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "آیا میخواهید که تیم   " + obj.title + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که تیم   " + obj.title + " "  + " را پاک کنید   ؟"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "delete_forever"
             #تعداد ستون ها            
@@ -1131,7 +1151,7 @@ class CreateViewRiskIdentification( LoginRequiredMixin,View):
         
         contex= {'extend':self.extend , 'menuBack':self.menuBack,'riskDabir':is_dabir(self),'form': form, 'header_title':header_title,
         'discribtion':discribtion,'icon_name':icon_name ,
-        'columns' : columns , 'color' : color , 'list_data':list_data ,
+        'columns' : columns , 'color' : color , 'list_data':list_data ,'queryset':queryset,
         'header_table':header_table,'activitySlected' : activitySlected ,'groupFiltered':groupFiltered , 'hozeSelected':hozeSelected}
         return render(request,self.template_name,contex)
 
@@ -1193,7 +1213,7 @@ class ListViewRiskIdentification(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست شناسایی ریسک  ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام شناسایی ریسک  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام شناسایی ریسک  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -1254,7 +1274,7 @@ class ListViewRiskIdentificationConcule(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست جمع بندی شناسایی ریسک  ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام شناسایی ریسک  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام شناسایی ریسک  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -1393,7 +1413,7 @@ class ChangeViewRiskIdentification( LoginRequiredMixin,View):
          #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست شناسایی ریسک  ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام شناسایی ریسک  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام شناسایی ریسک  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -1459,11 +1479,12 @@ class DeleteViewRiskIdentification( LoginRequiredMixin,View):
     def get(self, request,id=None ,*args, **kwargs):
 
         obj = self.get_obj()
+        activitySelected = obj.activity
         if obj is not None:
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "پاک کردن یک شناسایی ریسک "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "آیا میخواهید که شناسایی ریسک   " + obj.riskFailureModes + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که شناسایی ریسک   " + obj.riskFailureModes + " "  + " را پاک کنید   ؟"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "delete_forever"
             #تعداد ستون ها            
@@ -1471,10 +1492,12 @@ class DeleteViewRiskIdentification( LoginRequiredMixin,View):
             #رنگ             
             columns       = 1
             #دیکشنری داده ها
-            context       = {'extend':self.extend , 'menuBack':self.menuBack,'riskDabir':is_dabir(self) ,'object': obj, 'header_title':header_title,
-            'discribtion':discribtion,'icon_name':icon_name , 'color':color}
+            obj.delete()
+            sweetify.toast(self.request,timer=30000 , icon="warning",title ='شناسایی ریسک  با موفقیت پاک شد !!!')
+            return redirect('CreateViewRiskIdentification' , activitySelected.id)
             
-        return render(request,self.template_name,context)
+            
+        return render(request,self.template_name)
     @staff_only
     def post( self, request,id=None ,*args, **kwargs):
         context= {'extend':self.extend , 'menuBack':self.menuBack,'riskDabir':is_dabir(self),}
@@ -1561,7 +1584,7 @@ class ListViewRiskActivityManager(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست فعالیت  ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام فعالیت  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام فعالیت  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -1692,7 +1715,7 @@ class DeleteViewRiskActivityManager( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "پاک کردن یک فعالیت "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "آیا میخواهید که فعالیت   " + obj.activity + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که فعالیت   " + obj.activity + " "  + " را پاک کنید   ؟"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "delete_forever"
             #تعداد ستون ها            
@@ -1744,7 +1767,7 @@ class CreateViewRiskIdentificationSelecting( LoginRequiredMixin,View):
     menuBack = 'ViewRiskDashboard'
     @user_is_dabir
     @staff_only 
-    def get(self, request,hoze, *args, **kwargs):
+    def get(self, request,hoze , profileId, *args, **kwargs):
         
         
         
@@ -1758,7 +1781,7 @@ class CreateViewRiskIdentificationSelecting( LoginRequiredMixin,View):
         columns       = 1
         #رنگ 
         color         = "success"
-        header_table   = [  'شناسه', 'عنوان ریسک' , 'علل بروز' , 'اثرات بروز' , 'کنترل های فعلی' , 'نام فرآیند' ,'گروه' ]
+        header_table   = [ 'شناسه' , 'عنوان ریسک' , 'علل بروز' , 'اثرات بروز' , 'کنترل های فعلی' , 'نام فرآیند' ,'گروه' ]
         #اسم داده های جدول
 
         #دریافت تمام داده ها
@@ -1766,11 +1789,11 @@ class CreateViewRiskIdentificationSelecting( LoginRequiredMixin,View):
         
         allDoneActivity = RiskActivityManager.objects.filter(activity = 'Conclusion').filter(status = 'done').filter(hoze__id = hoze)
         allRiskIdentificaion = RiskIdentification.objects.filter()
-        queryset = RiskIdentification.objects.all().filter(status = 'identification').filter(hoze = hoze)
+        queryset = RiskIdentification.objects.all().filter(status = 'identification').filter(hoze = hoze).filter(activity__riskProfile__id = profileId)
         list_data = []
         if(len(queryset) ==0):
             sweetify.toast(self.request,timer=30000 , icon="warning",title ='ریسکی برای بررسی وجود ندارد          !!!')
-            return redirect('ListViewRiskIdentificationSelecting')
+            return redirect('ListViewRiskIdentificationSelecting' ,profileId )
         #ایجاد لیست داده ها
         for query in queryset:
             data = []
@@ -1828,7 +1851,7 @@ class CreateViewRiskIdentificationSelecting( LoginRequiredMixin,View):
         
         
         riskProfileSelected = RiskIdentification.objects.filter(id =allRiskIdentificationsSelectedId[0] )[0].activity.riskProfile
-        asdasd
+        
         for reciver in teamSelected.memberProfile.all():    
             profileReciver = Profile.objects.all().filter(id = reciver.id)[0]
             
@@ -1875,8 +1898,8 @@ class CreateViewRiskIdentificationSelecting( LoginRequiredMixin,View):
             riskSelected.save()
             
         #     #تابع نمایش پیغام
-        sweetify.toast(self.request,timer=30000 , icon="success",title ='انتخاب ریسک شناسایی شده  جدید با موفقیت ساخته شد !!!')
-        return HttpResponseRedirect(reverse('CreateViewRiskIdentificationSelecting' , kwargs={'profileId':riskProfileSelected.id}) )
+        sweetify.toast(self.request,timer=30000 , icon="success",title ='انتخاب ریسک شناسایی شده  جدید با موفقیت ساخته شد !!!') , 
+        return HttpResponseRedirect(reverse('CreateViewRiskIdentificationSelecting' , kwargs={'profileId':instanceRiskActivityManager.riskProfile.id , 'hoze':hoze}) )
         
         # except:
             
@@ -1887,16 +1910,21 @@ class CreateViewRiskIdentificationSelecting( LoginRequiredMixin,View):
 
 class ListViewRiskIdentificationSelecting(ListView):
   
+    redirect_field_name = '/profile/login'
+    #قالب کلی ایجاد 
+    template_name = "listRiskIdentificationSelecting.html"
+    
     
     extend ='baseEmployee.html'
     menuBack = 'ViewRiskDashboard'
     @user_is_dabir
     @staff_only
-    def get_context_data(self, **kwargs):
+    
+    def get(self, request,profileId, *args, **kwargs):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست انتخاب ریسک شناسایی شده  ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام انتخاب ریسک شناسایی شده  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام انتخاب ریسک شناسایی شده  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -1906,11 +1934,11 @@ class ListViewRiskIdentificationSelecting(ListView):
         #عنوان های جدول
         header_table   = ['حوزه های ریسک','تعداد ریسک های شناسایی شده']
         #اسم داده های جدول
-
+        riskProfileSelected = RiskProfile.objects.get(id = profileId)
         #دریافت تمام داده ها
-        queryset = RiskIdentificationSelecting.objects.all()
+       
         activitysForSelecting = RiskActivityManager.objects.filter(activity = 'Conclusion')
-        riskSelecting = RiskIdentification.objects.all()
+        riskSelecting = RiskIdentification.objects.all().filter(activity__riskProfile =riskProfileSelected )
         
        
         alltopics = RiskTopic.objects.all()
@@ -1952,14 +1980,34 @@ class ListViewRiskIdentificationSelecting(ListView):
             list_data.append(dict_temp)
         #دیکشنری داده ها
         context= {'extend':self.extend , 'menuBack':self.menuBack,'riskDabir':is_dabir(self), 'header_title':header_title,
-        'discribtion':discribtion,'icon_name':icon_name,
+        'discribtion':discribtion,'icon_name':icon_name,'profileId':profileId,
         'columns':columns , 'color':color , 'header_table': header_table 
           ,  'list_data' : list_data ,}
-        return context
+        
+        return render(request,self.template_name,context)
+    
 
-    model = RiskIdentificationSelecting
-    ordering = '-created_at' 
-    template_name ='listRiskIdentificationSelecting.html'
+class ComplateViewRiskProfile( LoginRequiredMixin,View): 
+    redirect_field_name = '/profile/login'
+    #قالب کلی ایجاد 
+    template_name = "createCalenderMomayezi.html"
+    extend = 'baseEmployee.html'
+    menuBack ="ViewRiskDashboard"
+    menu_link = 'ViewRiskDashboard'
+    def get(self, request,id, *args, **kwargs):
+        
+        riskProfileSelected = RiskProfile.objects.get(id = id)
+        
+        activitySelected = RiskActivityManager.objects.all().filter(riskProfile = riskProfileSelected ,activity = 'Conclusion' )
+        for activity in activitySelected:
+
+            activity.status = 'done'
+            activity.save()
+        sweetify.toast(self.request,timer=30000 , icon="success",title ='ثبت تیم های ریسک  به اتمام رسید        !!!')
+        #دیکشنری داده ها
+        contex = {'extend':self.extend , 'menuBack':self.menuBack ,'riskDabir':is_dabir(self),}
+        return redirect('ViewRiskDashboardMember' ,id )
+
 
 
 
@@ -1990,7 +2038,7 @@ class ViewRiskIdentificationSelecting( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "اطلاعات انتخاب ریسک شناسایی شده   "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "چزییات انتخاب ریسک شناسایی شده را در این صفحه میتوانید مشاهده کنید"
+            discribtion   = "چزییات انتخاب ریسک شناسایی شده را در این صفحه می توانید مشاهده کنید"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "person_add"
             #تعداد ستون ها            
@@ -2103,7 +2151,7 @@ class DeleteViewRiskIdentificationSelecting( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "پاک کردن یک انتخاب ریسک شناسایی شده "
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "آیا میخواهید که انتخاب ریسک شناسایی شده   " + obj.riskFailureModes + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که انتخاب ریسک شناسایی شده   " + obj.riskFailureModes + " "  + " را پاک کنید   ؟"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "delete_forever"
             #تعداد ستون ها            
@@ -2155,7 +2203,7 @@ class  CreateViewRiskMeasurement( LoginRequiredMixin,View):
     extend ='baseEmployee.html'
     menuBack = 'ViewRiskDashboard'
     @staff_only
-    def get(self, request,hoze, *args, **kwargs):
+    def get(self, request,hoze , profileId, *args, **kwargs):
         form = CreateFormRiskMeasurement()
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "ساخت یک ارزیابی ریسک سازمانی جدید "
@@ -2167,20 +2215,23 @@ class  CreateViewRiskMeasurement( LoginRequiredMixin,View):
         columns       = 1
         #رنگ 
         color         = "info"
-        profilereciver = Profile.objects.all().filter(user = request.user)[0]
-        allActivityRiskMeasurement = RiskMeasurement.objects.all().filter(activity__reciver = profilereciver).filter(activity__hoze = hoze)
-        teamSelected = allActivityRiskMeasurement[0].activity.team
+        profilereciver = Profile.objects.get(user = request.user)
+        if(request.user.is_superuser):
+            allActivityRiskMeasurement = RiskMeasurement.objects.all().filter(activity__riskProfile__id = profileId).filter(activity__hoze = hoze)
+        else:
+            allActivityRiskMeasurement = RiskMeasurement.objects.all().filter(activity__reciver = profilereciver).filter(activity__riskProfile__id = profileId).filter(activity__hoze = hoze)
+        #teamSelected = allActivityRiskMeasurement[0].activity.team
         tiskTopicSelected = allActivityRiskMeasurement[0].activity.riskTopic
         hozeSelected = allActivityRiskMeasurement[0].activity.hoze.title
         #دیکشنری داده ها
         contex= {'extend':self.extend , 'menuBack':self.menuBack,'riskDabir':is_dabir(self),'form': form, 'header_title':header_title,
         'discribtion':discribtion,'icon_name':icon_name ,
         'columns' : columns , 'color' : color , 'allActivityRiskMeasurement' : allActivityRiskMeasurement,
-        'teamSelected':teamSelected,'riskTopicSelected':tiskTopicSelected,'hozeSelected':hozeSelected}
+        'riskTopicSelected':tiskTopicSelected,'hozeSelected':hozeSelected}
         return render(request,self.template_name,contex  )
 
     @staff_only
-    def post(self, request, hoze,*args, **kwargs):
+    def post(self, request, hoze, profileId,*args, **kwargs):
         #فرم دریافت شده
         form = CreateFormRiskMeasurement(request.POST,request.FILES)
    
@@ -2199,16 +2250,21 @@ class  CreateViewRiskMeasurement( LoginRequiredMixin,View):
 
 class ListViewRiskMeasurement(ListView):
   
-
+    redirect_field_name = '/profile/login'
+    #قالب کلی ایجاد 
+    template_name = "listRiskMeasurement.html"
+    
+    extend ='baseEmployee.html'
+    menuBack = 'ViewRiskDashboard'
     
     extend ='baseEmployee.html'
     menuBack = 'ViewRiskDashboard'
     @staff_only
-    def get_context_data(self, **kwargs):
+    def get(self, request,profileId, *args, **kwargs):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست ریسک‌های قابل ارزیابی "
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام انتخاب ریسک شناسایی شده  ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام انتخاب ریسک شناسایی شده  ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -2221,63 +2277,72 @@ class ListViewRiskMeasurement(ListView):
 
         #دریافت تمام داده ها
         profileReciver = Profile.objects.filter(user=self.request.user)[0]
-        
-        activitysForMeasurement = RiskActivityManager.objects.filter(activity = 'measurement').filter(reciver = profileReciver)
+        if (self.request.user.is_superuser):
+            activitysForMeasurement = RiskActivityManager.objects.filter(activity = 'measurement').filter(riskProfile = profileId)
+        else:
+            activitysForMeasurement = RiskActivityManager.objects.filter(activity = 'measurement').filter(reciver = profileReciver).filter(riskProfile = profileId)
         riskSelecting = RiskIdentification.objects.all()
         
        
         alltopics = RiskTopic.objects.all()
         allhozes  = Hoze.objects.all()
-        hozes = {}
+        hozeList = []
         finalActivity = []
         counter = 0
-        for activitySelected in activitysForMeasurement:
-            risk = RiskIdentification.objects.all().filter(activity = activitySelected)[0]
-         
-            if(risk.status != "measurement"):
-                continue
-           
-            if risk.hoze in hozes :
-                hozes[risk.hoze] +=1
+
+        for hozeSelected in allhozes:
+            temp = {}
+            if(activitysForMeasurement.filter(hoze =hozeSelected ).count() == 0 ):
+                pass
             else:
-                hozes[risk.hoze] = 1
-            if(risk.activity.status == 'doing'):
-                counter+=1
+                temp = {'hoze' :hozeSelected , 'activityDoing' : activitysForMeasurement.filter(hoze=hozeSelected).count() - activitysForMeasurement.filter(hoze=hozeSelected).filter(status = 'done').count() , 'activityDone' : activitysForMeasurement.filter(hoze=hozeSelected).filter(status = 'done').count()  }
+                hozeList.append(temp)
+
+        # for activitySelected in activitysForMeasurement:
+        #     risk = RiskIdentification.objects.get(activity = activitySelected)[0]
+         
+        #     if(risk.status != "measurement"):
+        #         continue
+           
+        #     if risk.hoze in hozes :
+        #         hozes[risk.hoze] +=1
+        #     else:
+        #         hozes[risk.hoze] = 1
+        #     if(risk.activity.status == 'doing'):
+        #         counter+=1
         list_data = []
         allLenght = 0
-        for alls in hozes:
-            allLenght+= hozes[alls]
+        # for alls in hozes:
+        #     allLenght+= hozes[alls]
             
             
         #ایجاد لیست داده ها
-        for query in hozes:
-            data = []
-            dict_temp = {}
+        # for query in hozes:
+        #     data = []
+        #     dict_temp = {}
          
 
 
 
 
 
-            data.append(query)
-            data.append(hozes[query])
-            data.append(counter)
+        #     data.append(query)
+        #     data.append(hozes[query])
+        #     data.append(counter)
            
    
             
            
-            dict_temp = {allhozes.filter(title =query )[0].id : data}
-            list_data.append(dict_temp)
+        #     dict_temp = {allhozes.filter(title =query )[0].id : data}
+        #     list_data.append(dict_temp)
         #دیکشنری داده ها
         context= {'extend':self.extend , 'menuBack':self.menuBack,'riskDabir':is_dabir(self), 'header_title':header_title,
-        'discribtion':discribtion,'icon_name':icon_name,
+        'discribtion':discribtion,'icon_name':icon_name,'profileId':profileId,
         'columns':columns , 'color':color , 'header_table': header_table 
-          ,  'list_data' : list_data ,}
-        return context
-    
-    model = RiskMeasurement
-    ordering = '-created_at' 
-    template_name ='listRiskMeasurement.html'
+          ,  'list_data' : list_data , 'hozeList': hozeList}
+
+        return render(request,self.template_name,context  )
+
 
 
 class ChangeViewRiskMeasurement( LoginRequiredMixin,View):
@@ -2324,7 +2389,7 @@ class ChangeViewRiskMeasurement( LoginRequiredMixin,View):
             if form.is_valid():
                 form.save()
                 sweetify.toast(self.request,timer=30000 , icon="success",title ='ارزیابی ریسک سازمانی جدید با موفقیت ساخته شد !!!')
-                return redirect('CreateViewRiskMeasurement' , hozeSelected )
+                return redirect('CreateViewRiskMeasurement' , hozeSelected , obj.activity.riskProfile.id )
             else:
                 sweetify.toast(self.request,timer=30000 , icon="error",title ='ارزیابی ریسک سازمانی مورد نظر ساخته نشد !')           
             context= {'extend':self.extend , 'menuBack':self.menuBack,'riskDabir':is_dabir(self),'form': form,'object':obj}
@@ -2410,7 +2475,7 @@ class DeleteViewRiskMeasurement( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "پاک کردن یک ارزیابی ریسک سازمانی"
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "آیا میخواهید که ارزیابی ریسک سازمانی  " + obj.RiskIdentificated.riskFailureModes + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که ارزیابی ریسک سازمانی  " + obj.RiskIdentificated.riskFailureModes + " "  + " را پاک کنید   ؟"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "delete_forever"
             #تعداد ستون ها            
@@ -2451,7 +2516,7 @@ class CreateViewRiskProcessRelated( LoginRequiredMixin,View):
     template_name = "create.html"
     extend='baseEmployee.html'
     menuBack = 'ViewRiskDashboard'
-    def get(self, request, *args, **kwargs):
+    def get(self, request , profileId, *args, **kwargs):
         form = CreateFormRiskProcessRelated()
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "ساخت یک ارتباط ریسک با فرآیند جدید "
@@ -2463,11 +2528,45 @@ class CreateViewRiskProcessRelated( LoginRequiredMixin,View):
         columns       = 1
         #رنگ 
         color         = "success"
+        allProccess = Process.objects.all()
+        allMeasurement = RiskMeasurement.objects.all().filter(riskIdentificated__activity__riskProfile__id = profileId) 
+        for process in allProccess:
+            processMeasurements = allMeasurement.filter(riskIdentificated__process = process)
+            
+            if(len(processMeasurements)!= 0):
+                riskSeverityList    = []
+                riskOccurrenceList  = []
+                riskDetectionList   = []
+                for processMeasurement in processMeasurements:
+                    if(processMeasurement.riskSeverity == None or processMeasurement.riskOccurrence == None or processMeasurement.riskDetection ==None ):
+                        if(processMeasurement.riskSeverity == None and processMeasurement.riskOccurrence == None and processMeasurement.riskDetection ==None ):
+                            
+                            continue
+                        
+                    riskSeverityList.append(processMeasurement.riskSeverity)
+                    riskOccurrenceList.append(processMeasurement.riskOccurrence)
+                    riskDetectionList.append(processMeasurement.riskDetection)
+                if(len(riskSeverityList) == 0 or len(riskOccurrenceList) == 0  or len(riskDetectionList) == 0):
+                    
+                    continue
+                
+                avgRiskSeverity   = avrage(riskSeverityList)
+                stdRiskSeverity   = std(riskSeverityList)
+                avgRiskOccurrence = avrage(riskOccurrenceList)
+                stdRiskOccurrence   = std(riskOccurrenceList)
+                avgRiskDetection  = avrage(riskDetectionList)
+                stdRiskDetection   = std(riskDetectionList)
+                rpn = avgRiskSeverity *avgRiskOccurrence * avgRiskDetection
+                rpnAdjusted = float(rpn) *process.impactFactor
+                
+                #instanceRiskProcessRelated = RiskProcessRelated.objects.create(riskProfile = RiskProfile.objects.get(id=profileId) ,title = '1' )
+                instance = RiskProcess.objects.create(riskProfileRelated =RiskProfile.objects.get(id = profileId)  , riskMeasurement = processMeasurements[0],process = process,avgRiskSeverity = avgRiskSeverity,avgRiskOccurrence = avgRiskOccurrence,avgRiskDetection =avgRiskDetection ,rpn = rpn,rpnAdjusted = rpnAdjusted)
+                instance.save()
         #دیکشنری داده ها
         contex = {'extend':self.extend , 'menuBack':self.menuBack,'riskDabir':is_dabir(self),'form': form, 'header_title':header_title,
         'discribtion':discribtion,'icon_name':icon_name ,
         'columns' : columns , 'color' : color}
-        return render(request,self.template_name,contex)
+        return redirect('ViewRiskDashboard')
 
 
     def post(self, request, *args, **kwargs):
@@ -2532,7 +2631,7 @@ class ListViewRiskProcessRelated(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست ارتباط ریسک با فرآیند ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام ارتباط ریسک با فرآیند ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام ارتباط ریسک با فرآیند ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -2650,7 +2749,7 @@ class DeleteViewRiskProcessRelated( LoginRequiredMixin,View):
             #عنوان نمایش داده شده در بالای صفحه
             header_title  = "پاک کردن یک ارتباط ریسک با فرآیند"
             #توضحات نمایش داده شده در زیر عنوان
-            discribtion   = "آیا میخواهید که ارتباط ریسک با فرآیند  " + obj.title + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که ارتباط ریسک با فرآیند  " + obj.title + " "  + " را پاک کنید   ؟"
             #آیکون نمایش داده شده در بخش بالای سایت            
             icon_name     = "delete_forever"
             #تعداد ستون ها            
@@ -2682,11 +2781,11 @@ class ListViewRiskProcess(ListView):
     menuBack = 'ViewRiskDashboard'
     extend='baseEmployee.html'
     @staff_only 
-    def get(self, request,*args, **kwargs):
+    def get(self, request , profileId,*args, **kwargs):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "گزارش ریسک های شناسایی شده"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام ریسک فرآیند ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام ریسک فرآیند ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -2701,7 +2800,7 @@ class ListViewRiskProcess(ListView):
         #اسم داده های جدول
         object_name    = ['title','RiskProcessRelated']
         #دریافت تمام داده ها
-        allRiskProcess = RiskProcess.objects.all()
+        allRiskProcess = RiskProcess.objects.all().filter(riskProfileRelated__id = profileId)
         allProcess = Process.objects.all()
         allGroupProcess = Group.objects.all()
         
@@ -2754,8 +2853,9 @@ class ListViewRiskProcess(ListView):
                 
             else:
                 
-                if(risk.rpnAdjusted > sum(riskGroupProccess) ):
-                    riskGroupProccess.append(risk)
+                # if(risk.rpnAdjusted > sum(riskGroupProccess) ):
+                #     riskGroupProccess.append(risk)
+                pass
             riskGroupProccesList.append(riskGroupProccess)
             
             
@@ -2803,7 +2903,7 @@ class ListViewRiskProcess2(ListView):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "لیست ریسک فرآیند ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در این بخش لیست تمام ریسک فرآیند ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام ریسک فرآیند ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         #آیکون نمایش داده شده در بخش بالای سایت
         icon_name     = "table_chart"
         #تعداد ستون ها
@@ -2952,7 +3052,7 @@ class ViewRiskDashboard( LoginRequiredMixin,View):
         
         for riskProcess in allRiskProcess:
          
-            
+            x = riskProcess.id
             allRpn.append(riskProcess.rpn)
             allRpnAdjusted.append(riskProcess.rpnAdjusted)
             
@@ -2985,8 +3085,9 @@ class ViewRiskDashboard( LoginRequiredMixin,View):
                 
             else:
                 
-                if(risk.rpnAdjusted > sum(riskGroupProccess) ):
-                    riskGroupProccess.append(risk)
+                # if(risk.rpnAdjusted > sum(riskGroupProccess) ):
+                #     riskGroupProccess.append(risk)
+                pass
             riskGroupProccesList.append(riskGroupProccess)
             
             
@@ -3040,7 +3141,7 @@ class ViewRiskDashboard( LoginRequiredMixin,View):
         'columns':columns , 'color':color , 'header_table': header_table ,'partials':partials,'profileSelected':profileRiskSelected,
          'object_name' : object_name ,  'list_data' : list_data ,'highRisk' : highRisk , 'riskGroupProccesList':riskGroupProccesList,'createNewProfile':createNewProfile ,
          'riskBarez1' : riskBarez1 ,'riskBarez2' : riskBarez2 ,'riskMedian' : riskMedian ,'riskLow' : riskLow ,'totalRisk':totalRisk ,'riskBarez1Percent':riskBarez1Percent ,'riskBarez2Percent':riskBarez2Percent ,'riskMedianPercent':riskMedianPercent ,'riskLowPercent':riskLowPercent ,'allProfile' :allProfile ,
-         'responsibleCount':responsibleCount , 'memberCount': memberCount , 'visio':visio}
+         'responsibleCount':responsibleCount , 'memberCount': memberCount , 'visio':visio , 'profileRiskSelected':profileRiskSelected}
 
         return render(request,self.template_name,context)
     
@@ -3065,7 +3166,7 @@ class ViewRiskDashboardResponsible( LoginRequiredMixin,View):
        
         profileSelected = RiskProfile.objects.get(id = profileId)
       
-        steps_link = ['#','ViewRiskProfile','ListViewRiskIdentification' , 'ListViewRiskIdentificationSelecting','ListViewRiskMeasurement' ,'#']
+        steps_link = ['#','ViewRiskProfile','ListViewRiskIdentification' , 'ListViewRiskIdentificationSelecting','ListViewRiskMeasurement' ]
         steps = []
         for idx, step in enumerate(profileSelected.STEP_LIST):
         
@@ -3136,22 +3237,28 @@ class ViewRiskDashboardMember( LoginRequiredMixin,View):
 
             steps.append(dict_temp)
         allActivity = []
-        query = RiskActivityManager.objects.all().filter(Q(riskProfile = profileSelected)& Q(reciver__user = request.user)).order_by('status')
+        if(request.user.is_superuser):
+            query = RiskActivityManager.objects.all().filter(riskProfile = profileSelected)
+        else:
+            query = RiskActivityManager.objects.all().filter(Q(riskProfile = profileSelected)& Q(reciver__user = request.user)).order_by('status')
         for item in query:
             if(item.activity == 'identification' and item.status =='doing'):
                 allActivity.append(('CreateViewRiskIdentification',item , item.id , -1))    
             elif(item.activity == 'measurement' and item.status =='doing'):
                 if(item.activity == item.ACTIVITY_LIST[int(profileSelected.step)-1][0]):
-                    allActivity.append(('ListViewRiskMeasurement',item , -1))    
+                    allActivity.append(('ListViewRiskMeasurement',item , profileSelected.id,-1))    
                 else:
-                    allActivity.append(('#' , item))
+                    #allActivity.append(('#' , item))
+                    allActivity.append(('ListViewRiskMeasurement',item , profileSelected.id,-1))
+                    
             elif(item.activity == 'team' and item.status =='doing'):
                 allActivity.append(('ViewRiskProfile'  ,item , item.riskProfile.id , -1))  
             elif(item.activity == 'Conclusion' and item.status =='doing') :
                 if(item.activity == item.ACTIVITY_LIST[int(profileSelected.step)-1][0]):
-                    allActivity.append(('ListViewRiskIdentificationSelecting'  ,item , -1))  
+                    allActivity.append(('ListViewRiskIdentificationSelecting'  ,item ,item.riskProfile.id, -1))  
                 else:
-                    allActivity.append(('#' , item))
+                    #allActivity.append(('#' , item))
+                    allActivity.append(('ListViewRiskIdentificationSelecting'  ,item ,item.riskProfile.id, -1))  
             else:
                 allActivity.append(('#' , item))
         #عنوان نمایش داده شده در بالای صفحه
@@ -3190,6 +3297,10 @@ class ViewChangeRiskProfileStep( LoginRequiredMixin,View):
         lenSteps = len(profileSelected.STEP_LIST)
         profileSelected.STEP_LIST[stepId]
         
+        x = profileSelected.STEP_LIST[stepId]
+        
+        
+        
         allActivity = RiskActivityManager.objects.all().filter(Q(riskProfile = profileSelected)& Q(status = 'doing'))
         for activity in allActivity:
             x= activity.ACTIVITY_LIST[stepId]
@@ -3201,7 +3312,7 @@ class ViewChangeRiskProfileStep( LoginRequiredMixin,View):
                 activity.save()
         if(stepId +2 != (lenSteps)):
             x = profileSelected.STEP_LIST[stepId+2]
-
+            
             
             profileSelected.step = x[0]
             
@@ -3218,8 +3329,11 @@ class ViewChangeRiskProfileStep( LoginRequiredMixin,View):
             
             profileSelected.save()
             y=  profileSelected.step
+        g= profileSelected.step
+        
+        if(profileSelected.step == '4'):
             
-
+            return redirect('CreateViewRiskProcessRelated', profileId=profileSelected.id)
       
         #دیکشنری داده ها
         context = {}
@@ -3294,3 +3408,36 @@ class ViewRiskProcces( LoginRequiredMixin,View):
     
     
     
+
+class UpdateRiskManualy( LoginRequiredMixin,View): 
+    redirect_field_name = '/profile/login'
+    template_name = "CorrectiveAction.html"
+    def get(self, request,*args, **kwargs):
+        #CorrectiveActionActivityManager.objects.create( sender =  , reciver =  , status =  , activity =  , CorrectiveActionRelated =  , texts =  , previousActivity =  , nextActivity =  , confirmations =  )
+        import pandas as pd
+        ed = pd.read_excel("ed.xlsx")
+        ed= ed.astype(str)
+        ri = pd.read_excel("ri.xlsx")
+        ri= ri.astype(str)
+        rm = pd.read_excel("rm.xlsx")
+        rm= rm.astype(str)
+        riskTeamSelected = RiskTeam.objects.get(id = 44)
+        riskProfileSelected = RiskProfile.objects.get(id = 12) 
+        riskActivitySelected = RiskActivityManager.objects.get(id = 321)
+        riskRecomenderSelected = Profile.objects.get(id = 324)
+
+
+        
+        for index, row in ri.iterrows():
+            riCreated = RiskIdentification.objects.create(id = row['id']	,riskFailureModes = row['riskFailureModes'] , riskCauses= row['riskCauses'] ,	riskEffects= row['riskEffects'] ,	currentAction= row['currentAction'] ,	team= riskTeamSelected ,	recommender= riskRecomenderSelected ,	process=Process.objects.get(id = row['process'])  ,	group=Group.objects.get(id = row['group'])  ,	activity= riskActivitySelected ,		hoze=Hoze.objects.get(id = row['hoze'])  )
+            rmCreated = RiskMeasurement.objects.create(id = row['id'] , riskSeverity = int(float(rm.loc[index:index]['riskSeverity'])) , riskOccurrence = int(float(rm.loc[index:index]['riskOccurrence'])) , riskDetection = int(float(rm.loc[index:index]['riskDetection'])) , riskIdentificated = RiskIdentification.objects.get(id = row['id']) , activity = riskActivitySelected ,  ) 
+            rpCreated = RiskProcess.objects.create(id = row['id'] , riskProfileRelated = riskProfileSelected ,  riskMeasurement = rmCreated, process =Process.objects.get(id = row['process'])   , avgRiskSeverity = (rm.loc[index:index]['riskSeverity']) , avgRiskOccurrence = (rm.loc[index:index]['riskOccurrence']) , avgRiskDetection = (rm.loc[index:index]['riskDetection']) ,  rpn = (ed.loc[index:index]['rpn']), rpnAdjusted =(ed.loc[index:index]['rpnAdjusted']) )
+            #edCreated = extraData.objects.create(id = row['id'], RiskProcessRelated = rpCreated , control = str(ed.loc[index:index]['control'][0]), eghdam = str(ed.loc[index:index]['eghdam'][0]),masol = str(ed.loc[index:index]['masol'][0]) , tarikh = str(ed.loc[index:index]['tarikh'][0]),natije = str(ed.loc[index:index]['natije'][0]) , newRisk = str(ed.loc[index:index]['newRisk'][0]),tarif = str(ed.loc[index:index]['tarif'][0]) , dec = str(ed.loc[index:index]['dec'][0]))
+            
+
+            
+            
+            
+
+
+        return redirect('ViewCorrectiveActionDashboard')

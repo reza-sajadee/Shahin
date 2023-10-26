@@ -1,8 +1,12 @@
 from import_export import resources
-from .models import  TextDataBase , BoolDataBase  , ConfirmationDataBase , SubjectPerformanceIndex,TopicPerformanceIndex ,PerformanceIndex , VariableDataBase,PerformanceFormula,PerformanceIndexActivityManager 
+
+from .models import  TextDataBase , BoolDataBase  , ConfirmationDataBase , SubjectPerformanceIndex,TopicPerformanceIndex ,PerformanceIndex , VariableDataBase,PerformanceFormula,PerformanceIndexActivityManager  ,PerformanceSettings
 
 
 
+class PerformanceSettingsResource(resources.ModelResource):
+     class Meta:
+          model = PerformanceSettings
 class TextDataBaseResource(resources.ModelResource):
      class Meta:
           model = TextDataBase

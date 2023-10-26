@@ -3,12 +3,16 @@
 
 {% load static %}
 {% block style %}
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css">
+
 <!-- <link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
 <link rel="stylesheet" href="{% static 'css/tabs.css' %}"> -->
+<link href="{% static '/css/picker.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+
 {%endblock style%}
 
 {% block content %}
+
 {{get_jalali_date}}
 <style>
 
@@ -186,6 +190,16 @@ ul li .descr::before {
 .credits a {
   color: var(--color);
 }
+
+
+
+
+#id_deadLine{
+  width: 100%;border-top: 0 !important;border-left: 0 !important; border-right: 0 !important;
+  border-color: rgba(118, 118, 118, 0.35);
+  border-width: 1px;
+}
+
 </style>
 <div class="container-fluid">
     <div class="row py-3 justify-content-md-center">
@@ -280,6 +294,90 @@ ul li .descr::before {
                                         
                                             {%include 'partials/time-line.html'  %}
                                             
+
+                                            <div class="row justify-content-md-center">
+    <div class="col-5">
+      <a class="btn w-100  btn-outline-primary" data-bs-toggle="modal" data-bs-target="#createModal">
+        افزودن فعالیت جدید </a>
+    </div>
+    <div class="col-5">
+      <a href="{%url menuBack %}" class="btn w-100  btn-outline-danger">
+        بازگشت </a>
+    </div>
+  </div>
+
+  <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title font-weight-normal" id="exampleModalLabel"> افزودن فعالیت جدید</h5>
+          <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+            <form action="" method="POST" enctype="multipart/form-data">
+                <input type="hidden" id="planProfileRelated"   name="planProfileRelated"   value={{planProfileSelected.id}}>
+                {% csrf_token %}
+               
+                <div class="input-group input-group-static mb-4">
+                    <label class="" for="id_title">
+                        عنوان  فعالیت را وارد کنید
+                    </label>
+                    <input type="text" name="title" maxlength="250" class="form-control" id="id_title" >
+        
+                    </div>
+
+                    <div class="input-group input-group-static mb-4">
+                      <label class="" for="id_responsible">
+                          مسئول اجرا انتخاب کنید
+                      </label>
+                      {{form.responsible}}
+
+                      </div>
+                
+                 
+                <div class="input-group input-group-static mb-4">
+                    <label for="id_description">
+                        توضیحات فعالیت  را وارد کنید : 
+                    </label>
+                    <textarea name="description" cols="40" rows="5" class="form-control" id="id_description"></textarea>
+                    
+                    </div>
+                  
+                  
+                    <div class="input-group input-group-static mb-4">
+                      <label class="" for="startTiem">
+                        تاریخ شروع  اکشن را انتخاب نمایید
+                      </label>
+                      {{form.startTiem}}
+          
+                    </div>
+                    <div class="input-group input-group-static mb-4">
+                      <label class="" for="id_deadLine">
+                        تاریخ پایان  اکشن را انتخاب نمایید
+                      </label>
+                      {{form.deadLine}}
+                      
+                    </div>
+            
+                    
+                 
+            
+         
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">بستن</button>
+          <button type="submit" class="btn bg-gradient-primary">ثبت </button>
+        </div>
+    </form>
+      </div>
+    </div>
+  </div>
+
+
                                        
                                     </div>
                                    
@@ -309,30 +407,48 @@ ul li .descr::before {
 src="https://code.jquery.com/jquery-3.6.0.min.js"
 integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
 crossorigin="anonymous"></script>
-<script type="text/javascript" charset="utf8" src="{% static '/js/dataTables.js' %}"></script>
 
+<script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
+<script src="{% static 'js/picker.js' %}"></script>
 <script>
-  $(document).ready( function() {
-$('#example').dataTable( {
-  "oLanguage": {
-    "oPaginate": {
-      "sNext": "صفحه بعدی",
-      "sPrevious": "صفحه قبلی"
+  new Picker(document.querySelector('.js-time-picker'), {
+    format: 'HH:mm',
+    headers: true,
+    date: new Date(1, 0),
+    text: {
+      title: 'مدت زمان را انتخاب کنید',
     },
-    "sEmptyTable": "اطلاعاتی برای نمایش وجود ندارد",
-    "sSearch": "جستجو   :  ",
-    "sInfo": "نمایش _START_ تا_END_ از تعداد کل _TOTAL_" ,
-    "sLengthMenu": "  تعداد در صفحه  _MENU_ ",
-    "sInfoEmpty": "رکوردی برای نمایش وجود ندارد"
-  
-  }
-} );
-} );
+    increment: {
+      hour: 1,
+      minute: 15,
+
+    },
+  });
+
+  new Picker(document.querySelector('.js-time-picker-start'), {
+    format: 'HH:mm',
+    headers: true,
+    date: new Date(1, 0),
+    text: {
+      title: 'مدت زمان را انتخاب کنید',
+
+    },
+    increment: {
+      hour: 1,
+      minute: 15,
+
+    },
+  });
+
+
 </script>
+
+
+
 		<!-- <script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
 	<!-- OR -->
 	<!-- loading by form (if used AdminJalaliDateWidget) -->
-		{{ form.media }} -->
+		{{ form.media }} 
 
 {%endblock scripts%}
 

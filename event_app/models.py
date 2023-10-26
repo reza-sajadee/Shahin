@@ -19,8 +19,8 @@ class EventAbstract(models.Model):
 class EventManager(models.Manager):
     """ Event manager """
 
-    def get_all_events(self):
-        events = Event.objects.filter( is_active=True, is_deleted=False)
+    def get_all_events(self , request):
+        events = Event.objects.filter( is_active=True, is_deleted=False ,user = Profile.objects.get(user = request.user))
         return events
 
     def get_running_events(self):
@@ -36,16 +36,16 @@ class EventManager(models.Manager):
 
 class Event(EventAbstract):
     """ Event model """
-    COLOR_STATUS  = (('#F44335 ','قرمز'),('#4CAF50','سبز') , ('#fb8c00','نارنجی') )
+    COLOR_STATUS  = (('#F44335 ','red'),('#4CAF50','green') , ('#fb8c00','orange') ,('#1c3c60' , 'blue') )
     DISPLAY_STATUS  = (('auto','خودکار'),('list-item','نقطه') , )
-    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="profileEvent")
-    title = models.CharField(max_length=200, unique=True)
-    description = models.TextField()
-    start = models.DateField()
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="profileEvent" ,blank=True ,null=True )
+    title = models.CharField(max_length=200,)
+    description = models.TextField(blank=True , null=True)
+    start = models.DateField(blank=True , null=True)
     end = models.DateField()
-    color = models.CharField(max_length=8 ,  choices= COLOR_STATUS , blank=True , null=True)
-    
-    display = models.CharField(max_length=20 ,   choices= DISPLAY_STATUS ,default='auto' , blank=True , null=True)
+    color = models.CharField(max_length=8 ,  choices= COLOR_STATUS ,default='سبز' , blank=True , null=True)
+    allUser = models.BooleanField(default=0)
+    display = models.CharField(max_length=20 ,   choices= DISPLAY_STATUS ,default='list-item' , blank=True , null=True)
     objects = EventManager()
 
     class Meta:

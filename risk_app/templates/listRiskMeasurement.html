@@ -31,11 +31,13 @@
             <br>
             <thead>
               
-              <tr>
+              <tr class="text-center">
                 
-                {% for header in header_table %}
-                  <th class="text-uppercase text-secondary text-md font-weight-bolder opacity-7">{{header}}</th>
-                {% endfor %}
+             
+                  <th class="text-uppercase text-secondary text-md font-weight-bolder opacity-7">حوزه ریسک</th>
+                  <th class="text-uppercase text-secondary text-md font-weight-bolder opacity-7">تعداد ریسک های قابل ارزیابی</th>
+                  <th class="text-uppercase text-secondary text-md font-weight-bolder opacity-7">تعداد ریسک های ارزیابی شده</th>
+               
                 <th class="text-uppercase text-secondary text-md font-weight-bolder opacity-7">انجام دادن</th>
                 
               </tr>
@@ -43,30 +45,32 @@
             <tbody>
               
             
-              {%for datas in list_data%}
-                {% for key, values in datas.items %}
-                <tr {% if values.2 == 0%} class="table-success" {%endif%}>
+              {%for hoze in hozeList%}
+               
+                <tr  class="text-center {% if hoze.activityDoing == 0 %} table-success {%endif%}" >
                   
-                    {% for v in values %}
-                    <td class="narowFont overflow-hidden">{{v}}</td>
-                    {% endfor %}
+                   
+                    <td class="narowFont overflow-hidden">{{hoze.hoze.title}}</td>
+                    <td class="narowFont overflow-hidden">{{hoze.activityDoing}}</td>
+                    <td class="narowFont overflow-hidden">{{hoze.activityDone}}</td>
+                    
 
                     
-                    {% if values.2 != 0%}
+                   
                     <td >
-                      <a class="nav-link text-black-80" method="GET" href="{%  url 'CreateViewRiskMeasurement' values.0.id  %}"  >
+                      <a class="nav-link text-black-80" method="GET" href="{%url 'CreateViewRiskMeasurement' hoze.hoze.id  profileId %}"  >
                         <div class="  ms-2 d-flex align-items-center justify-content-center">
                           <img style="max-width: 50px;" src="{% static 'img/svg/view.svg' %}" >
                         </div>
                       </a>
                       
                     </td>
-                    {%else%}
-                      <td></td>
-                    {% endif %}
+                   
+                    
+                  
                     
                 </tr>
-                {% endfor %}
+                
               {%endfor%}
               
 

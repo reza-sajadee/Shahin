@@ -112,13 +112,14 @@ class CreateFormAction(forms.ModelForm):
        
         #فیلد های نمایش داده شده در فرم
         
-        fields  = '__all__'
+        #fields  = '__all__'
         
-
+        fields  = ['planProfileRelated','responsible','title','description','startTiem','deadLine',]
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['startTiem'] = JalaliDateField(label=('startTiem'), widget=AdminJalaliDateWidget )
         self.fields['deadLine'] = JalaliDateField(label=('deadLine'), widget=AdminJalaliDateWidget )
-     
+      
 
       
 

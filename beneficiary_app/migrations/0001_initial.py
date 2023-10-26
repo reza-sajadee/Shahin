@@ -30,8 +30,8 @@ class Migration(migrations.Migration):
                 ('updated_at', models.DateTimeField(auto_now=True)),
             ],
             options={
-                'verbose_name': 'لیست ذینفعان سازمان',
-                'verbose_name_plural': 'لیست ذینفعان سازمان',
+                'verbose_name': 'لیست ذی نفعان سازمان',
+                'verbose_name_plural': 'لیست ذی نفعان سازمان',
             },
         ),
     ]

@@ -1,0 +1,67 @@
+
+{%if memberOtherList %}
+
+
+
+
+<div class="table-responsive ">
+          
+    <table id="memberOtherListTable" class="table uk-table uk-table-hover uk-table-striped align-items-center py-3 mb-0">
+      <br>
+      <thead>
+        
+        <tr>
+            
+            
+            
+            
+            <th class="text-center text-lg font-weight-bolder opacity-7">ردیف</th>
+            <th class="text-center text-lg font-weight-bolder opacity-7">نام </th>
+            
+            
+            <th class="text-center text-lg font-weight-bolder opacity-7">حذف کردن</th>
+
+      
+         
+        </tr>
+      </thead>
+      <tbody>
+      
+      {%for memmber in memberOtherList%}
+       
+          <tr>
+              
+              <td class="narowFont text-center overflow-hidden">{{forloop.counter}}</td>
+              <td class="narowFont text-center overflow-hidden">{{memmber.otherPerson}}</td>
+                         
+              <td class="narowFont text-center overflow-hidden">
+                 <form>
+                  {% csrf_token %}
+                <a class="nav-link text-black-80  text-center"  role="button" hx-post="{%url 'delete_other_member' memberId=memmber.id %}" hx-target="#memberOtherList"    >
+                  <div class="  ms-2 d-flex align-items-center justify-content-center">
+                    <span style="cursor:pointer" class="badge  bg-danger badge-pill">-</span >
+                  </div>
+                </a>
+              </form>
+              </td>
+              
+               
+              
+             
+             
+
+           
+          </tr>
+         
+        {%endfor%}
+
+                  
+      </tbody>
+    </table>
+   
+ 
+{%else%}
+
+<p>عضو  اضافه نشده است   </p>
+
+{%endif%}

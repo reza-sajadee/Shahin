@@ -30,13 +30,14 @@ from .views import (
     VieweExternalComunication,
     ViewPerformanceIndex,
     ViewCommittee,
-
+DashboardHome2,
 )
 
 urlpatterns = [
 
     path('', DashboardEmployeeHome.as_view() ,name='DashboardEmployee'),
     path('a/', DashboardHome.as_view() ,name='Dashboard'),
+    path('b/', DashboardHome2.as_view() ,name='Dashboard'),
     path('login', Login.as_view() ,name='Login'),
     path('create', CreateViewDasboard.as_view() ,name='CreateViewDasboard'),
     path('list', ListViewDashboard.as_view() ,name='ListViewDashboard'),

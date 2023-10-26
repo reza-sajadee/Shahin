@@ -8,6 +8,7 @@ from .views import (
     UpdateViewMessages,
     DeleteViewMessages,
     ListViewAdminMessages,
+    ListMessagesAPI,
 )
 
 
@@ -20,4 +21,6 @@ urlpatterns = [
     path('list', ListViewMessages.as_view() ,name='ListViewMessages'),
     path('<int:id>', UpdateViewMessages.as_view(),name='UpdateViewMessages'),
     path('delete/<int:id>', DeleteViewMessages.as_view(),name='DeleteViewMessages'),
+
+    path('api/all', ListMessagesAPI.as_view(),name='ListMessagesAPI'),
 ]

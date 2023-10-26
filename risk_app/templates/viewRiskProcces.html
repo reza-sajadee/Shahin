@@ -11,7 +11,7 @@
     <div class="col-12">
         <div class="card my-4">
             <div class="card-header p-0 position-relative mt-4 mx-3 z-index-2">
-                <div class="bg-gradient-danger shadow-info border-radius-lg px-3 pt-4 pb-3">
+                <div class="bg-gradient-info shadow-info border-radius-lg px-3 pt-4 pb-3">
                     <h5 class="text-white  ps-3">بررسی ریسک فرآیند  : <strong> {{proccessSelected.title}}</strong></h5>
                 </div>
             </div>
@@ -55,7 +55,7 @@
                  
                 </div>
                 <div class="card-header p-0 position-relative mt-4 mx-3 z-index-2">
-                    <div class="bg-gradient-danger shadow-info border-radius-lg px-3 pt-4 pb-3">
+                    <div class="bg-gradient-info shadow-info border-radius-lg px-3 pt-4 pb-3">
                         <h5 class="text-white  ps-3">اطلاعات ریسک شناسایی شده برای فرآیند : <strong> {{proccessSelected.title}}</strong></h5>
                     </div>
                 </div>
@@ -64,7 +64,7 @@
                         <div class="col-lg-3">
                             <div class="card card-frame mx-3">
                                 <div class="card-body">
-                                        <h5 class="card-title">نام فرآیند : </h5> 
+                                        <h5 class="card-title">عنوان ریسک  : </h5> 
                                         <hr class="dark horizontal">
                                         <span class="narowFont">
                                             {{riskProcess.riskMeasurement.riskIdentificated.riskFailureModes}}
@@ -128,7 +128,7 @@
 
 
                 <div class="card-header p-0 position-relative mt-4 mx-3 z-index-2">
-                    <div class="bg-gradient-danger shadow-info border-radius-lg px-3 pt-4 pb-3">
+                    <div class="bg-gradient-info shadow-info border-radius-lg px-3 pt-4 pb-3">
                         <h5 class="text-white  ps-3">  کنترل های انجام شده </h5>
                     </div>
                 </div>
@@ -183,7 +183,7 @@
                         <div class="col-lg-4">
                             <div class="card card-frame mx-3">
                                 <div class="card-body">
-                                        <h5 class="card-title">عدد الویت ریسک تراز شده پس از اقدام : </h5> 
+                                        <h5 class="card-title">عدد اولویت ریسک تراز شده پس از اقدام : </h5> 
                                         
                                         <span class="narowFont">
                                             {% if extraDataSelected.newRisk == None  %} تعریف نشده {%else%}  {{extraDataSelected.newRisk|floatformat:2}} {%endif%}

@@ -12,6 +12,7 @@ from .views import (
     UpdateViewMomayeziTeam,
     DeleteViewMomayeziTeam,
     RegisterViewMomayeziTeamRequest,
+    ListViewMomayeziTeamComplate,
     
     TypeMomayeziHome,
     CreateViewTypeMomayezi,
@@ -59,7 +60,7 @@ from .views import (
     ViewCalenderMomayezi,
     ListViewCalenderMomayeziType,
     CreateViewCalenderMomayeziListType,
-    
+    ComplateViewCalenderMomayezi,
     
     
     CreateViewRoleMomayezi,
@@ -105,7 +106,7 @@ from .views import (
     ListViewReportEntering,
     ListViewVahedReportEnteringVahed,
     CreateViewReportEntering,
-    
+    ComplateViewReportEntering,
     
     ViewMomayeziDashboard,
     select_type_momayezi,
@@ -136,6 +137,7 @@ urlpatterns = [
     path('report/list/entering', ListViewReportEntering.as_view() ,name='ListViewReportEntering'),
     path('report/list/entering/<int:typeId>/vahed', ListViewVahedReportEnteringVahed.as_view() ,name='ListViewVahedReportEnteringVahed'),
     path('report/list/entering/<int:typeId>/<int:actId>', CreateViewReportEntering.as_view() ,name='CreateViewReportEntering'),
+    path('report/list/entering/complate/<int:actId>', ComplateViewReportEntering.as_view() ,name='ComplateViewReportEntering'),
     path('report/list/<int:typeId>', ListViewVahedReportMomayezi.as_view() ,name='ListViewVahedReportMomayezi'),
     path('report/<int:id>', UpdateViewReportMomayezi.as_view(),name='MomayeziUpdateViewReportMomayezi'),
     path('report/view/<int:typeId>/<int:vahedId>', ViewReportMomayezi.as_view(),name='ViewReportMomayezi'),
@@ -168,6 +170,7 @@ urlpatterns = [
     path('calender/', ViewCalenderMomayezi.as_view() ,name='CalenderMomayezi'),
     path('calender/create', CreateViewCalenderMomayeziListType.as_view() ,name='CreateViewCalenderMomayeziListType'),
     path('calender/create/<int:typeMomayezi>', CreateViewCalenderMomayezi.as_view() ,name='CreateViewCalenderMomayezi'),
+    path('calender/complate/<int:typeMomayezi>', ComplateViewCalenderMomayezi.as_view() ,name='ComplateViewCalenderMomayezi'),
     path('calender/type', ListViewCalenderMomayeziType.as_view() ,name='ListViewCalenderMomayeziType'),
     path('calender/<int:typeMomayezi>', ViewCalenderMomayezi.as_view() ,name='ViewCalenderMomayezi'),
     #path('calender/<int:id>', UpdateViewCalenderMomayezi.as_view(),name='UpdateViewCalenderMomayezi'),
@@ -181,8 +184,11 @@ urlpatterns = [
     path('role/delete/<int:id>', DeleteViewRoleMomayezi.as_view(),name='DeleteViewRoleMomayezi'),
     
     path('team/', ListViewMomayeziTeam.as_view() ,name='ListViewMomayeziTeam'),
-    path('team/create', CreateViewMomayeziTeam.as_view() ,name='CreateViewMomayeziTeam'),
+    path('team/create/<int:typeId>', CreateViewMomayeziTeam.as_view() ,name='CreateViewMomayeziTeam'),
+    #path('team/create', CreateViewMomayeziTeam.as_view() ,name='CreateViewMomayeziTeam'),
     path('team/list', ListViewMomayeziTeam.as_view() ,name='ListViewMomayeziTeam'),
+    
+    path('team/complate/<int:typeMomayezi>', ListViewMomayeziTeamComplate.as_view() ,name='ListViewMomayeziTeamComplate'),
     path('team/update/<int:id>', UpdateViewMomayeziTeam.as_view(),name='UpdateViewMomayeziTeam'),
     path('team/<int:id>', ViewMomayeziTeam.as_view(),name='ViewMomayeziTeam'),
     path('team/delete/<int:id>', DeleteViewMomayeziTeam.as_view(),name='DeleteViewMomayeziTeam'),
@@ -220,7 +226,7 @@ urlpatterns = [
     path('dashboard/<int:profileId>/responsible/change/<int:stepId>', ViewChangeMomayeziProfileStep.as_view() ,name='ViewChangeMomayeziProfileStep'),
     path('dashboard/<int:profileId>/responsible', ViewMomayeziDashboardResponsible.as_view() ,name='ViewMomayeziDashboardResponsible'),
     path('dashboard/<int:profileId>/member', ViewMomayeziDashboardMember.as_view() ,name='ViewMomayeziDashboardMember'),
-    path('dashboard/<int:profileId>/member', ViewMomayeziDashboardMember.as_view() ,name='ViewMomayeziDashboardMember'),
+    
 
 ]
 

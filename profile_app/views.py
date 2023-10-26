@@ -13,9 +13,15 @@ from django.contrib.auth.models import User
 from django.contrib import auth
 from django.utils import timezone
 from news_app.models import News
+
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework import permissions , status
 import math
 from risk_app.utils import is_dabir
-
+from .serializers import ProfileSerializer
 class UserRegisterView(generic.CreateView):
     form_class = UserCreationForm   
     template_name = 'login.html'
@@ -107,3 +113,14 @@ class UpdateViewNotifStatusPersonal( LoginRequiredMixin,View):
                 sweetify.toast(self.request,timer=30000 , icon="error",title ='نوبت ممیزی  مورد نظر ساخته نشد !')           
             
         return redirect('ProfileHome') 
+
+
+
+@permission_classes([IsAuthenticated]) 
+class ViewProfileAPI(APIView):
+    def get(self, request,id=None ,*args, **kwargs):
+        
+       
+        query = Profile.objects.all()
+        serializers = ProfileSerializer(query )
+        return Response(serializers.data , status = status.HTTP_200_OK)

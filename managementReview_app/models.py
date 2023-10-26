@@ -54,8 +54,8 @@ class InviteManagementReview(models.Model):
     
     
     class Meta:
-        verbose_name = " دعوت نامه جلسه بازنگری مدیریت"
-        verbose_name_plural = "دعوت نامه جلسه بازنگری مدیریت "
+        verbose_name = " دعوت به جلسه جلسه بازنگری مدیریت"
+        verbose_name_plural = "دعوت به جلسه جلسه بازنگری مدیریت "
         
     def __str__(self):
         return str(self.id)  

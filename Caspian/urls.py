@@ -43,13 +43,13 @@ urlpatterns = [
     path('messages/', include('messages_app.urls')),
    
 
-    path('risk/', include('risk_app.urls')),
+       path('risk/', include('risk_app.urls')),
     path('event/', include('event_app.urls')),
     path('corrective/', include('corrective_app.urls')),
     path('management/', include('managementReview_app.urls')),
     path('beneficiary/', include('beneficiary_app.urls')),
     path('communications/', include('communications_app.urls')),
-    path('Performance/', include('performanceIndex_app.urls')),
+    path('performance/', include('performanceIndex_app.urls')),
     path('meeting/', include('meeting_app.urls')),
     path('report/', include('report_app.urls')),
     path('library/', include('library_app.urls')),

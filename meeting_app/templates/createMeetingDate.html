@@ -38,7 +38,7 @@
 
           <div class="input-group input-group-static mb-4">
             <label class="" for="id_meetingDate">
-              زمان شروع برنامه اجرایی  را انتخاب کنید
+              تاریخ شروع جلسه را انتخاب کنید
             </label>
             <input type="text" name="meetingDate" class="jalali_date-date  form-control" value="{{ form.meetingDate.value|default_if_none:'' }}" size="10" required=""
               id="id_meetingDate" autocomplete="False">
@@ -47,10 +47,10 @@
 
           <div class="input-group input-group-static mb-4">
             <label class="" for="id_meetingTime">
-              زمان پایان برنامه اجرایی  را انتخاب کنید
+              زمان شروع جلسه را انتخاب کنید
             </label>
-            <input type="text" name="meetingDate" class="jalali_date-date  form-control" value="{{ form.meetingDate.value|default_if_none:'' }}" size="10" required=""
-            id="id_meetingDate" autocomplete="False">
+            <input type="text" name="meetingTime" class="form-control js-time-picker-start  form-control" value="{{ form.meetingTime.value|default_if_none:'' }}" size="10" required=""
+            id="id_meetingTime" autocomplete="False">
 
           </div>
           <div class="input-group input-group-static mb-4">
@@ -81,7 +81,7 @@
                 افزودن </button>
             </div>
             <div class="col-5">
-              <a href="{%url 'ViewProfileMeeting' %}" class="btn w-100  btn-outline-danger">
+              <a href="{%url 'ListViewMeeting' %}" class="btn w-100  btn-outline-danger">
                 کنسل </a>
             </div>
           </div>

@@ -11,7 +11,7 @@
     <div class="col-12">
         <div class="card my-4">
             <div class="card-header p-0 position-relative mt-4 mx-3 z-index-2">
-                <div class="bg-gradient-danger shadow-info border-radius-lg px-3 pt-4 pb-3">
+                <div class="bg-gradient-info shadow-info border-radius-lg px-3 pt-4 pb-3">
                     <h4 class="text-white text-center text-capitalize ps-3">شناسنامه سند خارجی</h4>
                 </div>
             </div>
@@ -30,10 +30,10 @@
                             
                             
                             <div class="card-body">
-                                    <h5 class=" text-center">عنوان سند : {{sanadTitle}}  </h5> 
-                                    <h6 class="py-3"> کد سند : {{sanadCode}}  </h6>
-                                    <h6 class="py-3"> شماره نسخه  : {{versionNumber}}  </h6>
-                                    <h6 class="py-3"> سازمان مسئول به روز رسانی سند : {{govermentUpdate}}  </h6>
+                                    <h5 class=" text-center">عنوان سند : {{sanadTitle|default_if_none:'موجود نیست'}}  </h5> 
+                                    <h6 class="py-3"> کد سند : {{sanadCode|default_if_none:'موجود نیست'}}  </h6>
+                                    <h6 class="py-3"> شماره نسخه  : {{versionNumber|default_if_none:'موجود نیست'}}  </h6>
+                                    <h6 class="py-3"> سازمان مسئول به روز رسانی سند : {{govermentUpdate|default_if_none:'موجود نیست'}}  </h6>
                                    
                                     
                             </div>
@@ -66,22 +66,22 @@
                             
                             <div class="tabs-panel" id="content2"> 
                                 <h5 class="">  اطلاعات زمانی :</h5> 
-                                <h6 class="py-3"> تاریخ  انتشار  : {{entesharDate}}  </h6>
-                                <h6 class="py-3">  تاریخ اعتباردهی   : {{etebarDate}}  </h6>
-                                <h6 class="py-3">  تاریخ  انقضا : {{expiredDate}}  </h6>
-                                <h6 class="py-3">  دوره به روز رسانی   : {{updatePeriod}}  </h6>
+                                <h6 class="py-3"> تاریخ  انتشار  : {{entesharDate|default_if_none:'موجود نیست'}}  </h6>
+                                <h6 class="py-3">  تاریخ اعتباردهی   : {{etebarDate|default_if_none:'موجود نیست'}}  </h6>
+                                <h6 class="py-3">  تاریخ  انقضا : {{expiredDate|default_if_none:'موجود نیست'}}  </h6>
+                                <h6 class="py-3">  دوره به روز رسانی   : {{updatePeriod|default_if_none:'موجود نیست'}}  </h6>
                             </div>
                             <div class="tabs-panel"id="content3">
-                                <h6 class="py-3">  فرآیند های مرتبط  : {{ProcessMortabet}} </h6>
-                                <h6 class="py-3">  نام مرجع   : {{refrenceName}} </h6>
-                                <h6 class="py-3">   پست مسئول به روز رسانی: {{postmasolUpdate}}</h6>
+                                <h6 class="py-3">  فرآیند های مرتبط  : {{ProcessMortabet|default_if_none:'موجود نیست'}} </h6>
+                                <h6 class="py-3">  نام مرجع   : {{refrenceName|default_if_none:'موجود نیست'}} </h6>
+                                <h6 class="py-3">   پست مسئول به روز رسانی: {{postmasolUpdate|default_if_none:'موجود نیست'}}</h6>
                                 
                        
                                
                             </div>
                             <div class="tabs-panel is-active"id="content4">
                                 <h5 class="">توضیحات </h5> 
-                                {{tozihat}}
+                                {{tozihat|default_if_none:'موجود نیست'}}
                                
                             </div>
                           
@@ -137,7 +137,7 @@
                       <tr>
                           
                           {% for v in values %}
-                          <td class="narowFont overflow-hidden">{{v}}</td>
+                          <td class="narowFont overflow-hidden">{{v|default_if_none:'موجود نیست'}}</td>
                           {% endfor %}
                           <td>
                             
@@ -148,7 +148,7 @@
                           </td>
                           <td>
                 
-                            <a class="btn btn-link text-danger text-gradient px-3 mb-0" method="POST" href="delete/{{ key }}">
+                            <a class="btn btn-link text-danger text-gradient px-3 mb-0" method="POST" href="delete/{{ key}}">
                               <i class="material-icons text-sm me-2">delete</i>
                               حذف کردن
                             </a>

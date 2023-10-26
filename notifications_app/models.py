@@ -31,7 +31,7 @@ class Notifications(models.Model):
     icon             = models.CharField(max_length=100, choices=icon_choices , blank = True , null = True ,default='alarm') 
     recivers         = models.ForeignKey(Profile, on_delete = models.CASCADE)
     sender           = models.ForeignKey(Profile , related_name='senderProfile' , blank=True ,null=True , on_delete = models.CASCADE)
-    link             = models.CharField(max_length=200 , default = '')
+    link             = models.CharField(max_length=200 , blank=True , null=True , default = '')
     created_at       = models.DateTimeField(auto_now_add=True)
     updated_at       = models.DateTimeField(auto_now=True)
     

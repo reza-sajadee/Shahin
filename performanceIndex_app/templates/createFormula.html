@@ -8,7 +8,17 @@
 {% block content %}
 <script>
   $(document).ready(function() { 
-  $("select").select2({
+  $("#id_cycle").select2({
+   theme: "bootstrap-5",
+   placeholder: "یک گزینه را انتخاب کنید",
+   allowClear: true
+  });
+  });
+
+ </script>
+<script>
+  $(document).ready(function() { 
+  $("#id_responsible").select2({
    theme: "bootstrap-5",
    placeholder: "یک گزینه را انتخاب کنید",
    allowClear: true
@@ -49,39 +59,103 @@
         </div>
       </div>
       <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
         <div class="card-body">
           <div class="card card-frame col-12">
             <div class="card-body">
 
-              {% csrf_token %}
+             
           
 
-              {% for field in form.visible_fields %}
+              
 
               <div class="input-group input-group-static mb-4">
-                <label class="" for="{{ field.auto_id }}">
-                  {{ field.label }}
+                <label class="" for="id_performanceIndexRelated">
+                   معیار عملکردی مرتبط را انتخاب کنید
                 </label>
-                {{field }}
-                {% if field.errors %}
-                <div class="alert alert-danger" role="alert">
-                  {{ field.errors.as_text}}
-                </div>
-                {% endif %}
+                {{form.performanceIndexRelated}}
+                
               </div>
-              {%endfor%}
+              
+
+              <div class="input-group input-group-static mb-4">
+                <label class="" for="id_acceptableCondition">
+                   شرط معیار پذیرش را وارد کنید
+                </label>
+                <select  name="acceptableCondition" class="form-control" id="id_acceptableCondition">
+                  <option value="" selected="">---------</option>
+                
+                  <option value="smaller">کوچکتر</option>
+                
+                  <option value="bigger">بزرگتر</option>
+                
+                  <option value="equal">برابر</option>
+                
+                  <option value="beetween">بین</option>
+                
+                </select>
+                
+              </div>
+              
+              <div id="one-criteria">
+                <div class="input-group input-group-static mb-4">
+                  <label class="" for="id_acceptableCriteria">
+                    مقدار معیار پذیرش را وارد کنید
+                  </label>
+                  {{form.acceptableCriteria}}
+                  
+                </div>
+              </div>
+              <div  id="two-criteria" style="display: none;">
+
+              
+                <div class="col-6 input-group input-group-static mb-4">
+                  <label class="" for="id_acceptableCriteriaSecond">
+                    مقدار معیار پذیرش کمتر از
+                  </label>
+                  {{form.acceptableCriteriaSecond}}
+                  
+                </div>
+              </div>
+
+              <div class="input-group input-group-static mb-4">
+                <label class="" for="id_cycle">
+                   دوره را انتخاب کنید
+                </label>
+                {{form.cycle}}
+                
+              </div>
+              
+
+              <div class="input-group input-group-static mb-4">
+                <label class="" for="id_responsible">
+                   مسئول وارد کردن را انتخاب کنید
+                </label>
+                {{form.responsible}}
+ 
+                
+              </div>
+              
+
+              <div class="input-group input-group-static mb-4">
+                <label class="" for="id_metric">
+                   واحد را وارد کنید
+                </label>
+                {{form.metric}}
+                
+              </div>
+              
 
 
               <div class="row justify-content-md-center">
-                <div class="col-5"><button type="submit" name="submit" class="btn w-100  btn-outline-primary"
-                    value="yes">ثبت</button></div>
-                <div class="col-5"><button type="submit" name="submit" class="btn w-100  btn-outline-danger"
-                    value="no">کنسل </button></div>
+                <div class="col-5"><button type="submit" name="submit" class="btn w-100  btn-outline-primary" value="yes">ثبت</button></div>
+                <div class="col-5"><button type="submit" name="submit" class="btn w-100  btn-outline-danger" value="no">کنسل </button></div>
               </div>
 
 
 
             </div>
+           
           </div>
 
         </div>
@@ -96,5 +170,24 @@
 
 {% endblock content %}
 {%block scripts%}
+
+<script>
+  const blocks =  document.getElementById("#two-criteria");
+
+document.querySelector('#id_acceptableCondition').addEventListener("change", function() {
+  if (this.value == "beetween") {
+    
+    document.getElementById("two-criteria").style.display = "block";
+   
+
+
+  }else{
+    document.getElementById("two-criteria").style.display = "none";
+  
+  }
+});
+
+  
+</script>
 <script src="{% static '/js/select2.min.js' %}"></script>
 {%endblock scripts%}

@@ -13,7 +13,7 @@ from profile_app.decorators import  staff_only
 from profile_app.models import Profile
 from notifications_app.models import Notifications
 from messages_app.models import Messages
-
+from django.db.models import Q
 
 class DashboardHome( LoginRequiredMixin,View):
     template_name = "dashboard.html"
@@ -22,6 +22,15 @@ class DashboardHome( LoginRequiredMixin,View):
     def get(self, request,*args, **kwargs):
         
         context={ 'extend' : 'base.html'}
+        return render(request,self.template_name ,context)
+
+class DashboardHome2( LoginRequiredMixin,View):
+    template_name = "dashboard2.html"
+    redirect_field_name = '/profile/login'
+    
+    def get(self, request,*args, **kwargs):
+        
+        context={ 'extend' : 'baseEmployee.html'}
         return render(request,self.template_name ,context)
 
 
@@ -37,13 +46,15 @@ class DashboardEmployeeHome( LoginRequiredMixin,View):
         if(len(news) > 3):
             news = news[:2]
         sliders= News.objects.filter(NewsCategoriy__title = 'اسلایدر')
-        events = Event.objects.get_all_events()
+        #events = Event.objects.all().filter(Q(user = Profile.objects.get(user = request.user)) | Q(allUser = False))
+        #events = events| Event.objects.all().filter(allUser = False)
+        #events = list(Event.objects.all().filter(user = Profile.objects.get(user = request.user)))
+        #events.append(list(Event.objects.all().filter(allUser = True)))
+        events = (Event.objects.all().filter(allUser = True))
         profileNot =Profile.objects.all().filter(user=request.user)[0]
         notifications = Notifications.objects.all().filter(recivers = profileNot).order_by('-created_at').filter(personalStatus ='pending')
         messages = Messages.objects.all().filter(reciver = profileNot).order_by('-created_at').filter(personalStatus ='pending')
         
-        countNotif = len(notifications)
-        countmsg = len(messages)
         if(len(sliders) == 0):
             firstSlide = sliders
         else:
@@ -58,7 +69,7 @@ class DashboardEmployeeHome( LoginRequiredMixin,View):
                 else:
                     sliders=sliders[1:]
        
-        context={ 'extend' : 'base.html' , 'news':news , 'sliders':sliders ,'firstSlide':firstSlide , 'events' : events , 'notifications' :notifications , 'countNotif':countNotif , 'countmsg' : countmsg , 'messages':messages}
+        context={ 'extend' : 'base.html' , 'news':news , 'sliders':sliders ,'firstSlide':firstSlide , 'events' : events , 'notifications' :notifications ,  'messages':messages}
         return render(request,self.template_name,context)
 
 
@@ -110,7 +121,7 @@ class ListViewDashboard(ListView):
 
     def get_context_data(self, **kwargs):
         header_title  = "لیست بخش بندی ها"
-        discribtion   = "در این بخش لیست تمام بخش بندی ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام بخش بندی ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         icon_name     = "table_chart"
         columns       = 1
         color         = "success"
@@ -200,7 +211,7 @@ class DeleteViewDashboard( LoginRequiredMixin,View):
         obj = self.get_obj()
         if obj is not None:
             header_title  = "پاک کردن یک بخش بندی"
-            discribtion   = "آیا میخواهید که بخش بندی  " + obj.name + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که بخش بندی  " + obj.name + " "  + " را پاک کنید   ؟"
             icon_name     = "delete_forever"
             color         = "danger"
             context       = {'object': obj, 'header_title':header_title,
@@ -229,7 +240,7 @@ class ViewModelProccess( LoginRequiredMixin,View):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "مدل فرآیندی"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در زیر بخش های محتلف مدل فرآیندی را میتوانید مشاهده نمایید "
+        discribtion   = "در زیر بخش های محتلف مدل فرآیندی را می توانید مشاهده نمایید "
         #آیکون نمایش داده شده در بخش بالای سایت            
         icon_name     = "person_add"
         #تعداد ستون ها            
@@ -265,7 +276,7 @@ class ViewStrategyPlan( LoginRequiredMixin,View):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "برنامه راهبردی "
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در زیر بخش های محتلف برنامه راهبردی  را میتوانید مشاهده نمایید "
+        discribtion   = "در زیر بخش های محتلف برنامه راهبردی  را می توانید مشاهده نمایید "
         #آیکون نمایش داده شده در بخش بالای سایت            
         icon_name     = "person_add"
         #تعداد ستون ها            
@@ -287,7 +298,7 @@ class ViewStrategyPlan( LoginRequiredMixin,View):
             }
         return render(request,self.template_name,context)
    
-# اطلاعات پایه --- >  ذینفعان سازمان  
+# اطلاعات پایه --- >  ذی نفعان سازمان  
 class ViewStockHoldersOrganization( LoginRequiredMixin,View):
     redirect_field_name = '/profile/login'
     template_name = "listMenu.html"
@@ -295,9 +306,9 @@ class ViewStockHoldersOrganization( LoginRequiredMixin,View):
     @staff_only 
     def get(self, request,id=None ,*args, **kwargs):
         #عنوان نمایش داده شده در بالای صفحه
-        header_title  = "ذینفعان سازمان "
+        header_title  = "ذی نفعان سازمان "
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در زیر بخش های محتلف ذینفعان سازمان  را میتوانید مشاهده نمایید "
+        discribtion   = "در زیر بخش های محتلف ذی نفعان سازمان  را می توانید مشاهده نمایید "
         #آیکون نمایش داده شده در بخش بالای سایت            
         icon_name     = "person_add"
         #تعداد ستون ها            
@@ -306,8 +317,8 @@ class ViewStockHoldersOrganization( LoginRequiredMixin,View):
 
         #لینک های دکمه های بزرگ درون صفحه
         list_menu = [
-            { 'staticLink' : '','title' : ' ذینفعان' , 'link' : 'ListViewBeneficiaryList' ,'icon':'control-panel' , 'color' : '1' , } ,
-            { 'staticLink' : '','title' : 'نیازها و انتظارات ذینفعان' , 'link' : '' ,'icon':'control-panel' , 'color' : '1' , } ,
+            { 'staticLink' : '','title' : ' 2' , 'link' : 'ListViewBeneficiaryList' ,'icon':'control-panel' , 'color' : '1' , } ,
+            { 'staticLink' : '','title' : 'نیازها و انتظارات ذی نفعان' , 'link' : '' ,'icon':'control-panel' , 'color' : '1' , } ,
                 ]
         context =  {'extend':self.extend, 'header_title':header_title,
             'discribtion':discribtion,'icon_name':icon_name,
@@ -325,7 +336,7 @@ class ViewGoalAndPlan( LoginRequiredMixin,View):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "اهداف و برنامه ها "
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در زیر هدف و برنامه های  را میتوانید مشاهده نمایید "
+        discribtion   = "در زیر هدف و برنامه های  را می توانید مشاهده نمایید "
         #آیکون نمایش داده شده در بخش بالای سایت            
         icon_name     = "person_add"
         #تعداد ستون ها            
@@ -358,7 +369,7 @@ class ViewCommittee( LoginRequiredMixin,View):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = " کمیته "
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در زیر هدف و برنامه های  را میتوانید مشاهده نمایید "
+        discribtion   = "در زیر هدف و برنامه های  را می توانید مشاهده نمایید "
         #آیکون نمایش داده شده در بخش بالای سایت            
         icon_name     = "person_add"
         #تعداد ستون ها            
@@ -390,7 +401,7 @@ class ViewProccessManagment( LoginRequiredMixin,View):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "مدیریت فرآیند ها"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در زیر مدیریت و فرآیند ها  را میتوانید مشاهده نمایید "
+        discribtion   = "در زیر مدیریت و فرآیند ها  را می توانید مشاهده نمایید "
         #آیکون نمایش داده شده در بخش بالای سایت            
         icon_name     = "person_add"
         #تعداد ستون ها            
@@ -426,7 +437,7 @@ class ViewAdamEntebagh( LoginRequiredMixin,View):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "کنترل عدم انطباق و اقدام اصلاحی"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در زیر مدیریت و فرآیند ها  را میتوانید مشاهده نمایید "
+        discribtion   = "در زیر مدیریت و فرآیند ها  را می توانید مشاهده نمایید "
         #آیکون نمایش داده شده در بخش بالای سایت            
         icon_name     = "person_add"
         #تعداد ستون ها            
@@ -465,7 +476,7 @@ class ViewParadigmManagment( LoginRequiredMixin,View):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "مدیریت تغییر"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در زیربخش های مختلف مدیریت تغییر را میتوانید مشاهده نمایید "
+        discribtion   = "در زیربخش های مختلف مدیریت تغییر را می توانید مشاهده نمایید "
         #آیکون نمایش داده شده در بخش بالای سایت            
         icon_name     = "person_add"
         #تعداد ستون ها            
@@ -498,7 +509,7 @@ class ViewMomayezi( LoginRequiredMixin,View):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "ممیزی داخلی"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در زیر بخش های مختبف ممیزی  را میتوانید مشاهده نمایید "
+        discribtion   = "در زیر بخش های مختبف ممیزی  را می توانید مشاهده نمایید "
         #آیکون نمایش داده شده در بخش بالای سایت            
         icon_name     = "person_add"
         #تعداد ستون ها            
@@ -551,7 +562,7 @@ class ViewPerformanceIndex( LoginRequiredMixin,View):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "ارزیابی عملکرد"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در زیر بخش های مختبف ممیزی  را میتوانید مشاهده نمایید "
+        discribtion   = "در زیر بخش های مختبف ممیزی  را می توانید مشاهده نمایید "
         #آیکون نمایش داده شده در بخش بالای سایت            
         icon_name     = "person_add"
         #تعداد ستون ها            
@@ -590,7 +601,7 @@ class ViewManagmentReview( LoginRequiredMixin,View):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "مدیریت بازنگری"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در زیر بخش های مختلف مدیریت تغییر   را میتوانید مشاهده نمایید "
+        discribtion   = "در زیر بخش های مختلف مدیریت تغییر   را می توانید مشاهده نمایید "
         #آیکون نمایش داده شده در بخش بالای سایت            
         icon_name     = "person_add"
         #تعداد ستون ها            
@@ -625,7 +636,7 @@ class ViewMostanadatChange( LoginRequiredMixin,View):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "درخواست تهیه / تغییر در مدرک"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در زیر بخش های مختلف مدیریت تغییر   را میتوانید مشاهده نمایید "
+        discribtion   = "در زیر بخش های مختلف مدیریت تغییر   را می توانید مشاهده نمایید "
         #آیکون نمایش داده شده در بخش بالای سایت            
         icon_name     = "person_add"
         #تعداد ستون ها            
@@ -660,7 +671,7 @@ class ViewProfileMeeting( LoginRequiredMixin,View):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "پروفایل جلسات"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در زیر بخش های مختلف پروفایل جلسات  را میتوانید مشاهده نمایید "
+        discribtion   = "در زیر بخش های مختلف پروفایل جلسات  را می توانید مشاهده نمایید "
         #آیکون نمایش داده شده در بخش بالای سایت            
         icon_name     = "person_add"
         #تعداد ستون ها            
@@ -691,7 +702,7 @@ class ViewReport( LoginRequiredMixin,View):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = " گزارش"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در زیر بخش های مختلف پروفایل جلسات  را میتوانید مشاهده نمایید "
+        discribtion   = "در زیر بخش های مختلف پروفایل جلسات  را می توانید مشاهده نمایید "
         #آیکون نمایش داده شده در بخش بالای سایت            
         icon_name     = "person_add"
         #تعداد ستون ها            
@@ -722,7 +733,7 @@ class VieweMeeting( LoginRequiredMixin,View):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "برگزاری جلسه"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در زیر  بخش های مختلف بیرگزاری جلسه  را میتوانید مشاهده نمایید "
+        discribtion   = "در زیر  بخش های مختلف بیرگزاری جلسه  را می توانید مشاهده نمایید "
         #آیکون نمایش داده شده در بخش بالای سایت            
         icon_name     = "person_add"
         #تعداد ستون ها            
@@ -754,7 +765,7 @@ class ViewProject( LoginRequiredMixin,View):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "مدیریت پروژه"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در زیر  بخش های مختلف بیرگزاری جلسه  را میتوانید مشاهده نمایید "
+        discribtion   = "در زیر  بخش های مختلف بیرگزاری جلسه  را می توانید مشاهده نمایید "
         #آیکون نمایش داده شده در بخش بالای سایت            
         icon_name     = "person_add"
         #تعداد ستون ها            
@@ -789,7 +800,7 @@ class VieweInternalComunication( LoginRequiredMixin,View):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "ارتباطات درون سازمانی"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در زیر بخش های مختلف ارتباطات درون سازمانی   را میتوانید مشاهده نمایید "
+        discribtion   = "در زیر بخش های مختلف ارتباطات درون سازمانی   را می توانید مشاهده نمایید "
         #آیکون نمایش داده شده در بخش بالای سایت            
         icon_name     = "person_add"
         #تعداد ستون ها            
@@ -822,7 +833,7 @@ class VieweExternalComunication( LoginRequiredMixin,View):
         #عنوان نمایش داده شده در بالای صفحه
         header_title  = "ارتباطات برون سازمانی"
         #توضحات نمایش داده شده در زیر عنوان
-        discribtion   = "در زیر بخش های مختلف ارتباطات برون سازمانی را میتوانید مشاهده نمایید "
+        discribtion   = "در زیر بخش های مختلف ارتباطات برون سازمانی را می توانید مشاهده نمایید "
         #آیکون نمایش داده شده در بخش بالای سایت            
         icon_name     = "person_add"
         #تعداد ستون ها            

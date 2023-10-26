@@ -97,7 +97,7 @@ class ListViewEmployeeList(ListView):
     extend='base.html'
     def get_context_data(self, **kwargs):
         header_title  = "لیست کارمند ها"
-        discribtion   = "در این بخش لیست تمام کارمند ها را میتوانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر میتوانید داستفاده کنید "
+        discribtion   = "در این بخش لیست تمام کارمند ها را می توانید مشاهده کنید ،جهت جستجو و یا گرفتن خروجی از گزینه های زیر می توانید داستفاده کنید "
         icon_name     = "table_chart"
         columns       = 1
         color         = "info"
@@ -191,7 +191,7 @@ class DeleteViewEmployeeList( LoginRequiredMixin,View):
         obj = self.get_obj()
         if obj is not None:
             header_title  = "پاک کردن یک کارمند"
-            discribtion   = "آیا میخواهید که کارمند  " + obj.firstName + " "  + " را پاک کنید   ؟"
+            discribtion   = "آیا می خواهید که کارمند  " + obj.firstName + " "  + " را پاک کنید   ؟"
             icon_name     = "delete_forever"
             color         = "danger"
             context       = {'object': obj, 'header_title':header_title,'extend':self.extend,'riskDabir':is_dabir(self),

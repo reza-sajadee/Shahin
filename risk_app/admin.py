@@ -84,7 +84,7 @@ class RiskProcessRelatedAdmin(ImportExportModelAdmin):
 
 @admin.register(RiskProcess)
 class RiskProcessAdmin(ImportExportModelAdmin):
-     list_display = ('process' , )
+     list_display = ('riskProfileRelated' , )
      list_filter = ('process' , )
      search_fields = ('process' ,)
      resource_class  = RiskProcessResource

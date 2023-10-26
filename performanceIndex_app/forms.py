@@ -50,7 +50,7 @@ class CreateFormPerformanceIndex(forms.ModelForm):
         self.fields['indexType'].label              =' نوع معیار را انتخاب کنید'
         self.fields['reference'].label              =' مرجع را وارد کنید'
         self.fields['standardRelated'].label        =' استاندارد مرتبط را انتخاب کنید'
-        self.fields['stackHolder'].label            =' ذینفعان را وارد کنید'
+        self.fields['stackHolder'].label            =' ذی نفعان را وارد کنید'
        
         
      
@@ -72,6 +72,7 @@ class CreateFormPerformanceFormula(forms.ModelForm):
 
         self.fields['performanceIndexRelated'].widget.attrs.update({'class': 'form-control' , 'disabled':''})
         self.fields['acceptableCriteria'].widget.attrs.update({'class': 'form-control'})
+        self.fields['acceptableCriteriaSecond'].widget.attrs.update({'class': 'form-control'})
         self.fields['acceptableCondition'].widget.attrs.update({'class': 'form-control'})
         self.fields['cycle'].widget.attrs.update({'class': 'form-control'})
         self.fields['responsible'].widget.attrs.update({'class': 'form-control'})
