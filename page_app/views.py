@@ -22,6 +22,15 @@ class aboutUs( LoginRequiredMixin,View):
 
         return render(request,self.template_name)
 
+class qms( LoginRequiredMixin,View):
+    redirect_field_name = '/profile/login'
+    template_name = "qms.html"
+    @staff_only 
+    def get(self, request,*args, **kwargs):
+        
+
+        return render(request,self.template_name)
+
 class strategyPlan( LoginRequiredMixin,View):
     redirect_field_name = '/profile/login'
     template_name = "strategyPlan.html"

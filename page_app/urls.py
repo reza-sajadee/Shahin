@@ -9,13 +9,15 @@ from .views import (
     stockHolders,
     modelProccess,
     mostanadChange,
-    performanceIndex
+    performanceIndex,
+    qms
 )
 
 
 urlpatterns = [
 
    
+    path('qms/', qms.as_view() ,name='qms'),
     path('about/', aboutUs.as_view() ,name='aboutUs'),
     path('strategyPlan/', strategyPlan.as_view() ,name='strategyPlan'),
     path('stockHolders/', stockHolders.as_view() ,name='stockHolders'),
